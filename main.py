@@ -17,6 +17,28 @@ app.add_middleware(
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY", "TU_API_KEY_AQUI"))
 
+# =========================================================
+# CONFIGURACIÓN DEL CLIENTE (Cambia esto para cada empresa)
+# =========================================================
+USA_CASHEA = True   # Cambia a False si la empresa NO tiene Cashea
+USA_KRECE = True    # Cambia a False si la empresa NO tiene Krece
+
+PRODUCTOS = """
+- Smart TV 55" Samsung: $450
+- Licuadora Oster (10 vel): $65
+- Aire Acondicionado 12k BTU: $310
+- Plancha Black+Decker: $25
+"""
+
+# Info detallada que solo se usará si los interruptores están en True
+INFO_FINANCIAMIENTO = ""
+if USA_CASHEA:
+    INFO_FINANCIAMIENTO += "- CASHEA: Inicial del 40-50% y 3 cuotas sin interés cada 14 días. Recomienda descargar la App.\n"
+if USA_KRECE:
+    INFO_FINANCIAMIENTO += "- KRECE: Inicial y cuotas mensuales. Requiere registro y cédula.\n"
+
+# =========================================================
+
 def obtener_tasa_bcv_real():
     try:
         url = "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv"
@@ -32,58 +54,56 @@ class ChatRequest(BaseModel):
     mensaje: str
     historial: Optional[List[dict]] = []
 
-PRODUCTOS = """
-- Smart TV 55" Samsung: $450 (Disponible en Cashea)
-- Licuadora Oster: $65
-- Aire Acondicionado 12k BTU: $310 (Disponible en Krece)
-- Plancha Black+Decker: $25
-"""
-
-# INFO FINANCIAMIENTO
-INFO_PAGOS = """
-CASHEA: 
-- Pagas una inicial (usualmente 40% o 50%) y 3 cuotas sin interés cada 14 días. 
-- Requisito: Tener la app activa y cupo disponible.
-KRECE: 
-- Pagas inicial y cuotas. Ideal para electrodomésticos. 
-- Requisito: Registro en la plataforma Krece.
-"""
+@app.get("/")
+def home():
+    tasa = obtener_tasa_bcv_real()
+    return {"status": "Javier Pro activo", "cashea": USA_CASHEA, "krece": USA_KRECE, "tasa": tasa}
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
     tasa_actual = obtener_tasa_bcv_real()
     
+    # Lógica de aviso de tasa
     if tasa_actual:
         info_tasa = f"La tasa oficial BCV de hoy es: {tasa_actual} Bs/USD."
     else:
         info_tasa = "ERROR: La página del BCV está caída. Pide la tasa al cliente amablemente."
 
+    # PROMPT DINÁMICO
+    instruccion_financiamiento = f"Ofrece estas opciones de pago: {INFO_FINANCIAMIENTO}" if INFO_FINANCIAMIENTO else "NO ofrezcas pagos en cuotas ni Cashea/Krece, esta empresa solo acepta pagos de contado."
+
     SYSTEM_PROMPT = f"""
-    Eres Javier, el asesor experto de ElectroVentas Cumaná.
+    Eres Javier, asesor de ventas experto. 
+    
+    CONTEXTO DE HOY:
+    - {info_tasa}
+    - {instruccion_financiamiento}
+    - PRODUCTOS: {PRODUCTOS}
+    - MÉTODOS DE PAGO: Efectivo, Zelle, Binance y Pago Móvil.
 
-    ESTADO DE LA TASA: {info_tasa}
-    FINANCIAMIENTO: {INFO_PAGOS}
-
-    REGLAS DE VENTA:
-    1. Si el cliente pregunta por cuotas, Cashea o Krece, explica brevemente cómo funciona según la INFO_PAGOS.
-    2. Ejemplo Cashea: "Para el TV de $450, pagarías una inicial aproximada de $180 y el resto en cuotas con la App Cashea".
-    3. Si la tasa falló, mantén la regla de pedir ayuda al cliente con el monto del dólar.
-    4. IVA: Recuérdales que el presupuesto final con IVA se da por WhatsApp.
-
-    PRODUCTOS:
-    {PRODUCTOS}
+    REGLAS DE ORO:
+    1. Precios siempre en $ primero y luego aproximado en Bs (si hay tasa).
+    2. Si la tasa falló, pide ayuda al cliente con sinceridad.
+    3. IVA: Aclara que el presupuesto formal con IVA se da por WhatsApp.
+    4. Si el cliente pregunta por cuotas y la empresa NO las tiene, di amablemente que por ahora solo aceptan pagos de contado.
+    5. CIERRE: Usa el botón de WhatsApp para concretar ventas.
     """
 
     try:
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        if request.historial:
+            messages.extend(request.historial[-8:])
+        messages.append({"role": "user", "content": request.mensaje})
+
         completion = client.chat.completions.create(
-            messages=[{"role": "system", "content": SYSTEM_PROMPT}] + (request.historial[-10:] if request.historial else []) + [{"role": "user", "content": request.mensaje}],
+            messages=messages,
             model="llama-3.3-70b-versatile",
             temperature=0.1,
-            max_tokens=700
+            max_tokens=800
         )
         return {"respuesta": completion.choices[0].message.content}
     except Exception as e:
-        return {"respuesta": "Lo siento, tuve un error técnico. Escríbenos al WhatsApp para ayudarte."}
+        return {"respuesta": "Tengo un problema técnico. ¡Hablemos por WhatsApp para atenderte mejor!"}
 
 if __name__ == "__main__":
     import uvicorn
