@@ -1,7 +1,7 @@
-fastapi==0.110.0
-uvicorn[standard]==0.29.0
-groq==0.5.1
-requests==2.31.0
-pydantic==2.6.4
-python-multipart==0.0.9
-gunicorn==21.2.0
+fastapi
+uvicorn[standard]
+groq
+requests
+pydantic
+python-multipart
+gunicorn
