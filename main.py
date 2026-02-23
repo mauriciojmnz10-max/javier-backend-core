@@ -8,7 +8,7 @@ from typing import List, Optional
 
 app = FastAPI()
 
-# Configuración de seguridad para conectar con tu index.html
+# Configuración de seguridad
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,16 +16,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configuración de la IA (Asegúrate de tener la variable GROQ_API_KEY en Render)
+# Configuración de la IA
 client = Groq(api_key=os.environ.get("GROQ_API_KEY", "TU_API_KEY_AQUI"))
 
 # =========================================================
-# 1. CONFIGURACIÓN DEL NEGOCIO (Actualizado con tu nueva info)
+# 1. CONFIGURACIÓN DEL NEGOCIO
 # =========================================================
 USA_CASHEA = True   
 USA_KRECE = True    
 
-# Aquí puedes actualizar tus productos cuando quieras
 PRODUCTOS = """
 📱 TELÉFONOS (Disponibles con Cashea):
 - Infinix Hot 40 Pro: $195
@@ -45,7 +44,6 @@ PRODUCTOS = """
 - Ventilador de Pedestal 18": $35
 """
 
-# Info Logística de Electroventas Cumaná
 UBICACION = "Centro de Cumaná, Calle Mariño, Edificio Electroventas (frente a la Plaza)."
 HORARIO = "Lunes a Sábado de 8:30 AM a 5:30 PM."
 DELIVERY = "Contamos con Delivery GRATIS en zonas céntricas de Cumaná. Envíos nacionales por Zoom y Tealca."
@@ -108,11 +106,10 @@ async def chat(request: ChatRequest):
         if USA_CASHEA: opciones_pago += "Cashea (Inicial + 3 cuotas cada 14 días). "
         if USA_KRECE: opciones_pago += "Krece (Financiamiento por cuotas)."
 
-    # SYSTEM PROMPT: El cerebro inyectado con la nueva lógica
     SYSTEM_PROMPT = f"""
-    Eres Javier, el asesor experto de Electroventas Cumaná. Tu tono es profesional, servicial y experto.
+    Eres Javier, el asesor experto de Electroventas Cumaná. Tu tono es profesional y experto.
 
-    INFORMACIÓN CRUCIAL DEL NEGOCIO:
+    INFORMACIÓN CRUCIAL:
     - UBICACIÓN: {UBICACION}
     - HORARIO: {HORARIO}
     - DELIVERY: {DELIVERY}
@@ -121,13 +118,12 @@ async def chat(request: ChatRequest):
     - PAGOS: {opciones_pago}
     - CATÁLOGO: {PRODUCTOS}
 
-    REGLAS DE ORO:
-    1. Si preguntan por UBICACIÓN o DÓNDE ESTÁN, da la dirección exacta en el centro y menciona que somos tienda física.
-    2. Si preguntan por DELIVERY, explica que es gratis en el centro de Cumaná.
-    3. Si preguntan por CATÁLOGO, menciona las categorías principales y marcas (Infinix, Tecno, Samsung).
-    4. Si hay tasa, da precios en $ y aproximado en Bs.
-    5. Siempre invita a usar el botón de WhatsApp para concretar o ver el catálogo en PDF.
-    6. Mantén las respuestas claras y con buen uso de negritas (**texto**).
+    REGLAS:
+    1. Si preguntan por UBICACIÓN, da la dirección y menciona que somos tienda física.
+    2. Si preguntan por DELIVERY, explica que es gratis en el centro.
+    3. Si preguntan por CATÁLOGO, menciona marcas como Infinix, Tecno y Samsung.
+    4. Si el cliente está listo para comprar o pregunta cómo pagar, dile que escriba la palabra 'comprar' o 'concretar' para que aparezca el enlace directo a WhatsApp.
+    5. No inventes precios.
     """
 
     try:
@@ -146,10 +142,9 @@ async def chat(request: ChatRequest):
         return {"respuesta": completion.choices[0].message.content}
 
     except Exception as e:
-        return {"respuesta": "Lo siento, mi conexión falló. ¿Puedes escribirme por WhatsApp para atenderte mejor?"}
+        return {"respuesta": "Lo siento, mi conexión falló. ¿Puedes escribirme por WhatsApp?"}
 
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
-
