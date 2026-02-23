@@ -2,11 +2,9 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
-import uvicorn
 
 app = FastAPI()
 
-# Esto permite que CodePen se conecte sin bloqueos
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,36 +12,50 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Render nos pasará la API KEY de forma segura
+# =========================================================
+# CONFIGURACIÓN DE JAVIER (EDITA SOLO ESTO PARA PERSONALIZAR)
+# =========================================================
+NOMBRE_EMPRESA = "ElectroVentas Cumaná"
+UBICACION = "Av. Bermúdez, Cumaná, Edo. Sucre"
+PRODUCTOS_PRECIOS = """
+- Smart TV 55 Pulgadas: $450
+- Licuadora Oster: $60
+- Aire Acondicionado 12k BTU: $320
+- Ventilador de Pedestal: $35
+"""
+# =========================================================
+
+# El "Cerebro" de Javier que lee la configuración de arriba
+SYSTEM_PROMPT = f"""
+Eres Javier, un asistente virtual de ventas para {NOMBRE_EMPRESA}.
+Estás ubicado en {UBICACION}.
+Aquí tienes los productos y precios actuales:
+{PRODUCTOS_PRECIOS}
+
+Instrucciones: Responde de forma amable, profesional y concisa. 
+Si te preguntan por algo que no está en la lista, indica que el equipo de ventas humano le dará el detalle exacto.
+"""
+
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 @app.post("/chat")
 async def chat(request: Request):
-    try:
-        data = await request.json()
-        mensaje_usuario = data.get("mensaje", "")
+    data = await request.json()
+    mensaje_usuario = data.get("mensaje")
 
-        instrucciones_vendedor = """
-        Eres 'Javier', encargado de 'ElectroVentas Cumaná'. 
-        Ubicación: Av. Bermúdez, Cumaná.
-        Estilo: Amable y profesional. Usa siempre 'amigo' o 'amiga'.
-        PROHIBIDO usar la palabra 'chamo'.
-        """
-
-        completion = client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": instrucciones_vendedor},
-                {"role": "user", "content": mensaje_usuario}
-            ],
-            model="llama-3.1-8b-instant",
-            temperature=0.7
-        )
-        return {"respuesta": completion.choices[0].message.content}
-    except Exception as e:
-        return {"respuesta": f"Error: {str(e)}"}
+    completion = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": mensaje_usuario}
+        ],
+        temperature=0.7,
+        max_tokens=500
+    )
+    
+    return {"respuesta": completion.choices[0].message.content}
 
 if __name__ == "__main__":
-    # Render asigna un puerto automáticamente
-    port = int(os.environ.get("PORT", 8000))
-
+    import uvicorn
+    port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
