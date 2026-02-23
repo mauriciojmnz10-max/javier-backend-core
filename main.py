@@ -20,7 +20,7 @@ client = Groq(api_key=os.environ.get("GROQ_API_KEY", "TU_API_KEY_AQUI"))
 
 # --- CONFIGURACIÓN DE TASA Y NEGOCIO ---
 # Recuerda actualizar TASA_BCV en el panel de Render cada mañana
-TASA_BCV = float(os.environ.get("TASA_BCV", "405,35"))
+TASA_BCV = float(os.environ.get("TASA_BCV", "405.35"))
 
 class ChatRequest(BaseModel):
     mensaje: str
@@ -85,4 +85,5 @@ if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+
 
