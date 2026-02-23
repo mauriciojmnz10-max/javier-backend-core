@@ -27,12 +27,22 @@ USA_KRECE = True
 
 # Aquí puedes actualizar tus productos cuando quieras
 PRODUCTOS = """
-- Smartphones: Infinix, Tecno y Samsung (Disponibles con Cashea)
-- Smart TV 55" Samsung: $450 (Acepta Cashea)
-- Aire Acondicionado 12k BTU: $310 (Acepta Krece/Cashea)
-- Nevera LG 14 Pies: $780 (Acepta Cashea/Krece)
-- Licuadora Oster: $65
-- Plancha Black+Decker: $25
+📱 TELÉFONOS (Disponibles con Cashea):
+- Infinix Hot 40 Pro: $195
+- Tecno Spark 20 Pro: $180
+- Samsung A15: $210
+- Infinix Smart 8: $105
+
+📺 ENTRETENIMIENTO:
+- Smart TV 32" (Varios modelos): $160
+- Smart TV 43" 4K: $280
+- Smart TV 55" Samsung Crystal: $450 (Acepta Cashea)
+
+🏠 HOGAR Y LÍNEA BLANCA:
+- Aire Acondicionado 12.000 BTU (Split): $310
+- Nevera Ejecutiva: $220
+- Licuadora Oster 10 velocidades: $65
+- Ventilador de Pedestal 18": $35
 """
 
 # Info Logística de Electroventas Cumaná
@@ -142,3 +152,4 @@ if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+
