@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Render nos pasar· la API KEY de forma segura
+# Render nos pasar√° la API KEY de forma segura
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 @app.post("/chat")
@@ -24,8 +24,8 @@ async def chat(request: Request):
         mensaje_usuario = data.get("mensaje", "")
 
         instrucciones_vendedor = """
-        Eres 'Javier', encargado de 'ElectroVentas Cuman·'. 
-        UbicaciÛn: Av. Berm˙dez, Cuman·.
+        Eres 'Javier', encargado de 'ElectroVentas Cuman√°'. 
+        Ubicaci√≥n: Av. Berm√∫dez, Cuman√°.
         Estilo: Amable y profesional. Usa siempre 'amigo' o 'amiga'.
         PROHIBIDO usar la palabra 'chamo'.
         """
@@ -43,6 +43,7 @@ async def chat(request: Request):
         return {"respuesta": f"Error: {str(e)}"}
 
 if __name__ == "__main__":
-    # Render asigna un puerto autom·ticamente
+    # Render asigna un puerto autom√°ticamente
     port = int(os.environ.get("PORT", 8000))
+
     uvicorn.run(app, host="0.0.0.0", port=port)
