@@ -20,9 +20,9 @@ app = FastAPI(title="Javier - Asistente de Ventas", version="2.0")
 # =========================================================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permite todos los orígenes para evitar bloqueos en GitHub Pages
+    allow_origins=["*"],  # Permite todo
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],  # Agregamos OPTIONS explícitamente
     allow_headers=["*"],
 )
 
@@ -180,3 +180,4 @@ async def chat(request: ChatRequest):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
