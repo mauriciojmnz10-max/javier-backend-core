@@ -8,7 +8,7 @@ from typing import List, Optional
 
 app = FastAPI()
 
-# Configuración de seguridad para conectar con tu index.html en GitHub
+# Configuración de seguridad para conectar con tu index.html
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,21 +20,28 @@ app.add_middleware(
 client = Groq(api_key=os.environ.get("GROQ_API_KEY", "TU_API_KEY_AQUI"))
 
 # =========================================================
-# 1. CONFIGURACIÓN DEL NEGOCIO (Personalizable)
+# 1. CONFIGURACIÓN DEL NEGOCIO (Actualizado con tu nueva info)
 # =========================================================
-USA_CASHEA = True   # Cambiar a False si el cliente no usa Cashea
-USA_KRECE = True    # Cambiar a False si el cliente no usa Krece
+USA_CASHEA = True   
+USA_KRECE = True    
 
+# Aquí puedes actualizar tus productos cuando quieras
 PRODUCTOS = """
+- Smartphones: Infinix, Tecno y Samsung (Disponibles con Cashea)
 - Smart TV 55" Samsung: $450 (Acepta Cashea)
-- Licuadora Oster (10 vel): $65 (Solo contado)
 - Aire Acondicionado 12k BTU: $310 (Acepta Krece/Cashea)
-- Plancha Black+Decker: $25 (Solo contado)
 - Nevera LG 14 Pies: $780 (Acepta Cashea/Krece)
+- Licuadora Oster: $65
+- Plancha Black+Decker: $25
 """
 
+# Info Logística de Electroventas Cumaná
+UBICACION = "Centro de Cumaná, Calle Mariño, Edificio Electroventas (frente a la Plaza)."
+HORARIO = "Lunes a Sábado de 8:30 AM a 5:30 PM."
+DELIVERY = "Contamos con Delivery GRATIS en zonas céntricas de Cumaná. Envíos nacionales por Zoom y Tealca."
+
 # =========================================================
-# 2. SISTEMA DE REDUNDANCIA DE TASA (3 FUENTES)
+# 2. SISTEMA DE REDUNDANCIA DE TASA
 # =========================================================
 def obtener_tasa_bcv_ultra():
     urls = [
@@ -48,7 +55,6 @@ def obtener_tasa_bcv_ultra():
             response = requests.get(url, timeout=3)
             if response.status_code == 200:
                 data = response.json()
-                # Lógica para diferentes formatos de API
                 if "monitors" in data:
                     return float(data['monitors']['bcv']['price'])
                 elif "promedio" in data:
@@ -56,8 +62,8 @@ def obtener_tasa_bcv_ultra():
                 elif "price" in data:
                     return float(data['price'])
         except:
-            continue # Si una falla, intenta con la siguiente
-    return None # Si todas fallan
+            continue
+    return None
 
 # =========================================================
 # 3. DEFINICIÓN DEL CHAT
@@ -72,70 +78,67 @@ def home():
     return {
         "status": "Javier Pro Online",
         "tasa_en_memoria": tasa if tasa else "Fuentes caídas",
-        "cashea_activo": USA_CASHEA,
-        "krece_activo": USA_KRECE
+        "negocio": "Electroventas Cumaná"
     }
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
     tasa_actual = obtener_tasa_bcv_ultra()
     
-    # Manejo de la información de la tasa para el prompt
     if tasa_actual:
         info_tasa = f"La tasa oficial BCV de hoy es: {tasa_actual} Bs/USD."
         calculo_instruccion = f"Usa {tasa_actual} para calcular precios aproximados en Bs."
     else:
         info_tasa = "AVISO: Las fuentes del BCV están caídas."
-        calculo_instruccion = "No tienes la tasa. Pide disculpas sinceramente y solicita al cliente si conoce el valor del BCV para ayudarle con la cuenta."
+        calculo_instruccion = "No tienes la tasa. Pide disculpas y solicita al cliente si conoce el valor del BCV."
 
-    # Lógica de financiamiento opcional
-    opciones_pago = "Solo aceptamos pagos de contado por ahora."
+    opciones_pago = "Solo contado."
     if USA_CASHEA or USA_KRECE:
-        opciones_pago = "Contamos con: "
+        opciones_pago = "Aceptamos: "
         if USA_CASHEA: opciones_pago += "Cashea (Inicial + 3 cuotas cada 14 días). "
-        if USA_KRECE: opciones_pago += "Krece (Financiamiento por cuotas con registro)."
+        if USA_KRECE: opciones_pago += "Krece (Financiamiento por cuotas)."
 
-    # SYSTEM PROMPT: La personalidad y reglas de Javier
+    # SYSTEM PROMPT: El cerebro inyectado con la nueva lógica
     SYSTEM_PROMPT = f"""
-    Eres Javier, el asesor experto de ElectroVentas Cumaná. 
-    Tu meta es vender y ser extremadamente amable.
+    Eres Javier, el asesor experto de Electroventas Cumaná. Tu tono es profesional, servicial y experto.
 
-    INFO ACTUALIZADA:
+    INFORMACIÓN CRUCIAL DEL NEGOCIO:
+    - UBICACIÓN: {UBICACION}
+    - HORARIO: {HORARIO}
+    - DELIVERY: {DELIVERY}
     - {info_tasa}
     - {calculo_instruccion}
-    - FINANCIAMIENTO: {opciones_pago}
+    - PAGOS: {opciones_pago}
     - CATÁLOGO: {PRODUCTOS}
 
-    REGLAS ESTRICTAS:
-    1. Precios siempre en $ primero. Si hay tasa, da el equivalente en Bs aclarando que es "Aproximado".
-    2. IVA: Indica siempre que el presupuesto formal con IVA se entrega por WhatsApp.
-    3. FINANCIAMIENTO: Si preguntan por cuotas, explica Cashea/Krece solo si están activos en la INFO arriba. Calcula una inicial estimada del 50%.
-    4. SI LA TASA FALLA: Di exactamente esto: 'Mil disculpas, mis fuentes oficiales del BCV están fallando. ¿Tendrás el monto de la tasa a mano? Así te doy el precio exacto en bolívares.'
-    5. CIERRE: Invita siempre a usar el botón de WhatsApp para concretar la compra.
+    REGLAS DE ORO:
+    1. Si preguntan por UBICACIÓN o DÓNDE ESTÁN, da la dirección exacta en el centro y menciona que somos tienda física.
+    2. Si preguntan por DELIVERY, explica que es gratis en el centro de Cumaná.
+    3. Si preguntan por CATÁLOGO, menciona las categorías principales y marcas (Infinix, Tecno, Samsung).
+    4. Si hay tasa, da precios en $ y aproximado en Bs.
+    5. Siempre invita a usar el botón de WhatsApp para concretar o ver el catálogo en PDF.
+    6. Mantén las respuestas claras y con buen uso de negritas (**texto**).
     """
 
     try:
-        # Construir mensajes con el historial para que tenga memoria
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
         if request.historial:
-            # Tomamos los últimos 8 mensajes para no saturar la memoria
             messages.extend(request.historial[-8:])
         messages.append({"role": "user", "content": request.mensaje})
 
         completion = client.chat.completions.create(
             messages=messages,
             model="llama-3.3-70b-versatile",
-            temperature=0.1, # Muy baja para que no invente números
+            temperature=0.2, 
             max_tokens=800
         )
         
         return {"respuesta": completion.choices[0].message.content}
 
     except Exception as e:
-        return {"respuesta": "Lo siento, mi conexión con el cerebro central falló. ¿Podemos hablar por WhatsApp?"}
+        return {"respuesta": "Lo siento, mi conexión falló. ¿Puedes escribirme por WhatsApp para atenderte mejor?"}
 
 if __name__ == "__main__":
     import uvicorn
-    # Render usa la variable de entorno PORT
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
