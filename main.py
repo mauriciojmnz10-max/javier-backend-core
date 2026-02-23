@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from groq import Groq
@@ -7,86 +7,79 @@ from typing import List, Optional
 
 app = FastAPI()
 
-# CONFIGURACIÓN DE SEGURIDAD (CORS)
+# Configuración de seguridad para conectar con tu index.html
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Cuando tengas tu URL definitiva de GitHub Pages, cámbialo por esa URL
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# MODELO DE DATOS PARA VALIDACIÓN
-class MensajeChat(BaseModel):
+# Configuración de la IA (Usa la variable de entorno GROQ_API_KEY en Render)
+client = Groq(api_key=os.environ.get("GROQ_API_KEY", "TU_API_KEY_AQUI"))
+
+# --- CONFIGURACIÓN DE TASA Y NEGOCIO ---
+# Recuerda actualizar TASA_BCV en el panel de Render cada mañana
+TASA_BCV = float(os.environ.get("TASA_BCV", "54.50"))
+
+class ChatRequest(BaseModel):
     mensaje: str
     historial: Optional[List[dict]] = []
 
-# =========================================================
-# CONFIGURACIÓN DE JAVIER (CATÁLOGO Y PERSONALIDAD)
-# =========================================================
-NOMBRE_NEGOCIO = "ElectroVentas Cumaná"
-UBICACION = "Av. Bermúdez, Edificio CC Bermúdez, Local 4, Cumaná."
+# PRODUCTOS Y DATOS (Personaliza esto según tu cliente)
 PRODUCTOS = """
-- Smart TV 55" Samsung (4K): $450 (1 año garantía)
-- Licuadora Oster (10 vel): $65
-- Aire Acondicionado 12,000 BTU Split: $310
+- Smart TV 55" Samsung: $450
+- Licuadora Oster: $65
+- Aire Acondicionado 12k BTU: $310
 - Plancha Black+Decker: $25
-- Nevera LG 14 Pies: $780
-- Microondas Panasonic: $110
 """
-PAGOS = "Divisas (Zelle, Binance, Efectivo) y Pago Móvil a tasa BCV."
-DELIVERY = "Gratis en el centro de Cumaná para compras > $50. Otros sectores $3."
 
+# PROMPT DEL SISTEMA: Aquí es donde Javier recibe sus instrucciones
 SYSTEM_PROMPT = f"""
-Eres Javier, asesor de ventas experto de {NOMBRE_NEGOCIO}.
+Eres Javier, el asesor de ventas oficial de ElectroVentas Cumaná.
 
-INFORMACIÓN DEL NEGOCIO:
-- Ubicación: {UBICACION}
-- Productos: {PRODUCTOS}
-- Métodos de pago: {PAGOS}
-- Delivery: {DELIVERY}
+REGLAS DE PRECIOS Y PAGOS:
+1. La tasa oficial BCV de hoy es: {TASA_BCV} Bs/USD.
+2. Formato de precio: Siempre da el precio en dólares ($) primero. 
+3. Conversión a Bolívares: Di que el monto en bolívares es una REFERENCIA APROXIMADA.
+   Ejemplo: "Son $100, que equivalen aproximadamente a {100 * TASA_BCV} Bs."
+4. IVA: Aclara siempre que "Los precios publicados son base. El monto exacto con IVA y céntimos se confirma en su presupuesto formal al finalizar la compra".
+5. Métodos de Pago: Aceptamos Zelle, Binance, Efectivo y Pago Móvil.
 
-DIRECTRICES DE VENTA:
-1. Saluda siempre de forma amigable y preséntate como Javier.
-2. Escucha las necesidades del cliente y recomienda productos específicos.
-3. Cuando el cliente muestre interés, proporciona precio y disponibilidad.
-4. Si el cliente quiere comprar, guíalo suavemente a WhatsApp diciendo: "¡Excelente decisión! Para concretar tu compra, haz clic en el botón de WhatsApp y con gusto te atenderé personalmente".
-5. NO inventes información. Si no sabes algo, ofrece averiguar con el equipo humano.
-6. Sé proactivo y mantén un tono cálido, profesional y oriental/venezolano respetuoso.
+PRODUCTOS DISPONIBLES:
+{PRODUCTOS}
+
+LÓGICA DE CIERRE (BOTÓN WHATSAPP):
+- Si el cliente pregunta cómo comprar, métodos de pago o muestra interés claro, dile: 
+  "Para enviarle su presupuesto formal con IVA y concretar el pago, haga clic en el botón de WhatsApp que aparecerá abajo".
 """
-# =========================================================
-
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 @app.get("/")
 def home():
-    return {"status": "Javier está activo y con memoria mejorada"}
+    return {{"status": "Javier activo", "tasa_actual": TASA_BCV}}
 
 @app.post("/chat")
-async def chat(input_data: MensajeChat):
-    # Construir el array de mensajes para la IA
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-    
-    # Si hay historial previo, lo agregamos antes del mensaje actual
-    if input_data.historial:
-        # Limitamos a los últimos 10 mensajes para no saturar
-        messages.extend(input_data.historial[-10:])
-    
-    # Agregamos el mensaje actual del usuario
-    messages.append({"role": "user", "content": input_data.mensaje})
-
+async def chat(request: ChatRequest):
     try:
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        
+        # Cargar historial para que Javier tenga memoria
+        if request.historial:
+            messages.extend(request.historial[-10:])
+        
+        messages.append({"role": "user", "content": request.mensaje})
+
         completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
             messages=messages,
-            temperature=0.7,
-            max_tokens=500
+            model="llama-3.3-70b-versatile", # El modelo más potente disponible
+            temperature=0.5, # Mantenerlo enfocado en ventas
+            max_tokens=600
         )
         
-        respuesta_ia = completion.choices[0].message.content
-        return {"respuesta": respuesta_ia}
-        
+        return {"respuesta": completion.choices[0].message.content}
+
     except Exception as e:
-        return {"respuesta": "Lo siento, amigo. Hubo un detalle técnico. ¿Podrías repetir tu pregunta?"}
+        return {"respuesta": "Lo siento, tuve un problema con el cálculo. ¿Podemos continuar por WhatsApp para darte el precio exacto?"}
 
 if __name__ == "__main__":
     import uvicorn
