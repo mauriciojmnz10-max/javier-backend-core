@@ -1,183 +1,152 @@
 import os
-import requests
-import asyncio
 import logging
+import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from groq import Groq
-from typing import List, Optional
 from datetime import datetime, timedelta
 
-# Configurar logging
+# Configuración de Logs
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Javier - Asistente de Ventas", version="2.0")
+app = FastAPI(title="Javier - Asistente de Ventas", version="3.0")
 
 # =========================================================
-# CONFIGURACIÓN CORS - CORREGIDA
+# CONFIGURACIÓN CORS (ACTUALIZADA PARA PRODUCCIÓN)
 # =========================================================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permite todo
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],  # Agregamos OPTIONS explícitamente
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
-# Inicializar cliente de Groq
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    logger.error("GROQ_API_KEY no está configurada")
-    # No levantamos error aquí para permitir que la app inicie y muestre error en logs
-    client = None
-else:
-    client = Groq(api_key=GROQ_API_KEY)
-
 # =========================================================
-# SISTEMA DE CACHE PARA TASA BCV
+# LÓGICA DE TASA BCV (MULTIFUENTE + CACHÉ)
 # =========================================================
-class CacheTasa:
-    def __init__(self):
-        self.tasa = None
-        self.ultima_actualizacion = None
-        self.ttl = 300  # 5 minutos
-    
-    def obtener(self):
-        if self.tasa and self.ultima_actualizacion:
-            if datetime.now() - self.ultima_actualizacion < timedelta(seconds=self.ttl):
-                return self.tasa
-        return None
-    
-    def actualizar(self, tasa):
-        self.tasa = tasa
-        self.ultima_actualizacion = datetime.now()
-        logger.info(f"Tasa BCV actualizada: {tasa}")
+cache_tasa = {"valor": None, "fecha": None}
 
-cache_tasa = CacheTasa()
-
-async def obtener_tasa_bcv_con_cache():
-    tasa_cache = cache_tasa.obtener()
-    if tasa_cache:
-        return tasa_cache
+def obtener_tasa_bcv():
+    """Busca la tasa en múltiples fuentes para evitar fallos"""
+    ahora = datetime.now()
     
-    tasa = await obtener_tasa_bcv_async()
-    if tasa:
-        cache_tasa.actualizar(tasa)
-        return tasa
-    return None
+    # Si tenemos tasa en caché de hace menos de 1 hora, la usamos
+    if cache_tasa["valor"] and cache_tasa["fecha"] > ahora - timedelta(hours=1):
+        return cache_tasa["valor"]
 
-async def obtener_tasa_bcv_async():
     urls = [
-        "https://ve.dolarapi.com/v1/dolares/oficial",
-        "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv",
+        "https://pydolarve.org/api/v1/dollar?monitor=bcv",
+        "https://ve.dolarapi.com/v1/dolares/oficial"
     ]
-    
+
     for url in urls:
         try:
-            loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(
-                None, 
-                lambda: requests.get(url, timeout=5)
-            )
-            
+            response = requests.get(url, timeout=5)
             if response.status_code == 200:
                 data = response.json()
-                # DolarAPI format
-                if "price" in data:
-                    return float(data['price'])
-                # PyDolar format
-                elif "monitors" in data:
-                    return float(data['monitors']['bcv']['price'])
+                # Extraer valor según la estructura de la API
+                valor = data.get("price") or data.get("promedio") or data.get("valor")
+                if valor:
+                    cache_tasa["valor"] = float(valor)
+                    cache_tasa["fecha"] = ahora
+                    logger.info(f"✅ Tasa BCV actualizada: {valor}")
+                    return float(valor)
         except Exception as e:
-            logger.warning(f"Error consultando {url}: {str(e)}")
+            logger.error(f"❌ Error consultando {url}: {e}")
             continue
-    return None
-
-# =========================================================
-# CONFIGURACIÓN DEL NEGOCIO
-# =========================================================
-def get_config():
-    return {
-        "USA_CASHEA": os.environ.get("USA_CASHEA", "true").lower() == "true",
-        "USA_KRECE": os.environ.get("USA_KRECE", "true").lower() == "true",
-        "NOMBRE_TIENDA": os.environ.get("NOMBRE_TIENDA", "Electroventas Cumaná"),
-        "PRODUCTOS": os.environ.get("PRODUCTOS", """
-📱 TELÉFONOS: Infinix Hot 40 Pro ($195), Tecno Spark 20 Pro ($180), Samsung A15 ($210).
-📺 TV: Smart TV 32" ($160), 43" 4K ($280).
-🏠 HOGAR: Aire 12.000 BTU ($310), Nevera Ejecutiva ($220).
-"""),
-        "UBICACION": "Centro de Cumaná, Calle Mariño, Edificio Electroventas",
-        "HORARIO": "Lunes a Sábado de 8:30 AM a 5:30 PM",
-        "DELIVERY": "Delivery GRATIS en zonas céntricas de Cumaná",
-        "WHATSAPP": os.environ.get("WHATSAPP", "584120000000"),
-    }
-
-def construir_prompt(tasa, config):
-    info_tasa = f"La tasa oficial BCV es: {tasa:.2f} Bs/USD." if tasa else "Consultar tasa al privado."
     
-    return f"""Eres Javier, asesor de ventas de {config['NOMBRE_TIENDA']}.
-Ubicación: {config['UBICACION']}. Horario: {config['HORARIO']}.
-Tasa BCV: {info_tasa}.
-Productos: {config['PRODUCTOS']}
-Métodos: Cashea (Inicial + 3 cuotas), Krece, Pago Móvil, Zelle.
+    return cache_tasa["valor"] or 40.50  # Valor de respaldo si todo falla
 
-REGLAS:
-1. Sé amable y breve.
-2. Si el cliente quiere comprar o pregunta cómo pagar, dile que use el botón de WhatsApp.
-3. Siempre menciona que somos tienda física en Cumaná."""
+# =========================================================
+# CONFIGURACIÓN DE NEGOCIO
+# =========================================================
+CONFIG_TIENDA = {
+    "NOMBRE_TIENDA": "ELECTROVENTAS CUMANÁ",
+    "UBICACION": "Cumaná, Estado Sucre (Centro de la ciudad)",
+    "DELIVERY": "Gratis en zona central, costos bajos para zonas periféricas",
+    "PRODUCTOS": """
+    - Infinix Hot 40 Pro ($190)
+    - Infinix Note 40 Pro ($260)
+    - Tecno Spark 20 Pro ($175)
+    - Samsung A15 ($155)
+    - Televisor 32" Smart ($130)
+    - (Preguntar por otros modelos disponibles)
+    """,
+    "METODOS_PAGO": "Pago Móvil, Zelle, Efectivo, Cashea (Cuotas), Krece."
+}
 
-class ChatRequest(BaseModel):
+# =========================================================
+# MODELOS DE DATOS
+# =========================================================
+class Message(BaseModel):
     mensaje: str
-    historial: Optional[List[dict]] = []
+    historial: list = []
 
-class ChatResponse(BaseModel):
-    respuesta: str
-    mostrar_whatsapp: bool = False
-
-@app.get("/")
-async def home():
-    return {"status": "Javier API Online", "tasa": await obtener_tasa_bcv_con_cache()}
-
-@app.post("/chat", response_model=ChatResponse)
-async def chat(request: ChatRequest):
-    if not client:
-        return ChatResponse(respuesta="Error: API Key de Groq no configurada.", mostrar_whatsapp=True)
-        
+# =========================================================
+# ENDPOINT PRINCIPAL
+# =========================================================
+@app.post("/chat")
+async def chat(msg: Message):
     try:
-        config = get_config()
-        tasa_actual = await obtener_tasa_bcv_con_cache()
-        system_prompt = construir_prompt(tasa_actual, config)
+        tasa = obtener_tasa_bcv()
+        client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+
+        # CONSTRUCCIÓN DEL PROMPT CON CÁLCULO FORZADO
+        prompt_sistema = f"""
+        Eres Javier, asesor experto de {CONFIG_TIENDA['NOMBRE_TIENDA']}.
         
-        messages = [{"role": "system", "content": system_prompt}]
-        if request.historial:
-            messages.extend(request.historial[-10:])
-        messages.append({"role": "user", "content": request.mensaje})
+        SITUACIÓN FINANCIERA HOY:
+        - Tasa Oficial BCV: {tasa} Bs/USD.
         
-        completion = await asyncio.to_thread(
-            client.chat.completions.create,
-            messages=messages,
+        INSTRUCCIÓN MATEMÁTICA OBLIGATORIA:
+        - Siempre que menciones un precio, muestra primero el monto en $ y luego calcula e indica el monto en Bs. usando la tasa de {tasa}.
+        - Ejemplo de formato: 'El costo es de $100 ({100 * tasa:,.2f} Bs. a tasa BCV)'.
+        
+        INFORMACIÓN ADICIONAL:
+        - Ubicación: {CONFIG_TIENDA['UBICACION']}
+        - Delivery: {CONFIG_TIENDA['DELIVERY']}
+        - Métodos de Pago: {CONFIG_TIENDA['METODOS_PAGO']}
+        
+        CATÁLOGO:
+        {CONFIG_TIENDA['PRODUCTOS']}
+
+        REGLAS DE PERSONALIDAD:
+        - Sé elegante, breve y muy servicial.
+        - Si el cliente menciona 'comprar', 'precio', 'pago' o un producto específico, activa el botón de WhatsApp.
+        """
+
+        # Preparar mensajes para Groq
+        mensajes_groq = [{"role": "system", "content": prompt_sistema}]
+        for m in msg.historial[-6:]:  # Enviamos los últimos 6 mensajes para contexto
+            mensajes_groq.append(m)
+        mensajes_groq.append({"role": "user", "content": msg.mensaje})
+
+        completion = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
-            temperature=0.3,
+            messages=mensajes_groq,
+            temperature=0.7,
             max_tokens=500
         )
-        
-        respuesta = completion.choices[0].message.content
-        
-        # Lógica mejorada para mostrar WhatsApp
-        disparadores = ["comprar", "pago", "precio", "interesa", "ubicacion", "donde estan", "quiero"]
-        mostrar_ws = any(p in request.mensaje.lower() or p in respuesta.lower() for p in disparadores)
-        
-        return ChatResponse(respuesta=respuesta, mostrar_whatsapp=mostrar_ws)
-            
-    except Exception as e:
-        logger.error(f"Error: {e}")
-        return ChatResponse(respuesta="Lo siento, tengo un problema técnico. ¿Hablamos por WhatsApp?", mostrar_whatsapp=True)
 
-# No es estrictamente necesario el if __name__ en Render si usas gunicorn, 
-# pero lo dejamos por compatibilidad local.
+        respuesta_texto = completion.choices[0].message.content
+        
+        # Lógica para mostrar botón de WhatsApp
+        palabras_venta = ["comprar", "precio", "pago", "disponible", "cuanto cuesta", "cashea", "krece"]
+        mostrar_ws = any(p in msg.mensaje.lower() or p in respuesta_texto.lower() for p in palabras_venta)
+
+        return {
+            "respuesta": respuesta_texto,
+            "mostrar_whatsapp": mostrar_ws,
+            "tasa_usada": tasa
+        }
+
+    except Exception as e:
+        logger.error(f"Error en el endpoint /chat: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
-
+    uvicorn.run(app, host="0.0.0.0", port=10000)
