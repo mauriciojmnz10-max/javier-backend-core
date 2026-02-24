@@ -1,15 +1,13 @@
 {
-    "nombre_tienda": "REPUESTOS MOTO CENTRO CUMANÁ",
-    "ubicacion": "Av. Perimetral, Edif. Automotriz, PB Local 3, Cumaná, Sucre.",
-    "horario": "Lunes a Viernes: 8:00 AM - 5:00 PM, Sábados: 8:00 AM - 1:00 PM",
-    "contacto_whatsapp": "+584129874561",
-    "metodos_pago": {
-        "bolivares": "Pago Móvil (Banesco/Mercantil/Provincial), Transferencia, Punto de Venta.",
-        "divisas": "Efectivo (USD/EUR), Zelle, Binance Pay, PayPal.",
-        "financiamiento": "Cashea (Cuotas), Krece, Mercado Pago."
-    },
-    "catalogo_motopartes": "- MOTORES: Bajaj 150cc ($420), Yamaha 115cc ($380), Empire 125cc ($290).\n- TRANSMISIÓN: Kit de arrastre ($25-45), Cadena ($18-35), Piñones ($8-15).\n- FRENOS: Pastillas delanteras/traseras ($8-22), Bombines ($25-40), Kit reparación ($5-12).\n- SUSPENSIÓN: Amortiguadores ($35-85), Horquillas delanteras ($45-120).",
-    "accesorios_repuestos": "- ELÉCTRICO: Baterías (YTX4L $35, YTX7L $48), Bobinas ($12-25), CDI ($15-30), Bombillos LED ($8-25).\n- CARROCERÍA: Espejos retrovisores ($8-18), Guayas de velocidad ($5-15), Guardabarros ($20-45).\n- LUBRICANTES: Aceite 20W50 ($5), Aceite 2T ($6), Grasa para rodamientos ($4).\n- LLANTAS: Pirelli 90/90-18 ($55), Pirelli 2.75-17 ($48), Cámaras ($8-12).",
-    "servicios": "- Diagnóstico computarizado ($15).\n- Cambio de aceite ($5 mano de obra, incluye aceite si se compra aquí).\n- Instalación de repuestos (15% del valor del repuesto).\n- Rectificación de frenos y cilindros (consultar).",
-    "politicas": "- Garantía: 3 meses en repuestos eléctricos, 6 meses en partes mecánicas.\n- Delivery: Gratis en zona centro, $3-5 en zonas periféricas (Mochima, San Luis).\n- Instalación: Precios especiales si compras el repuesto con nosotros.\n- Cashea: Requiere 30-50% inicial según aprobación.\n- Repuestos: Amplia variedad para marcas Empire, Bera, Bajaj, Yamaha, Suzuki, Honda."
+    "nombre_tienda": "REPUESTOS MOTO CENTRO",
+    "tagline": "Tu moto siempre al 100%",
+    "color_primario": "#e62117",
+    "contacto_whatsapp": "584129874561",
+    "mensaje_bienvenida": "¡Saludos! Soy **Javier**. ¿Qué repuesto buscas para tu Empire, Bera o Yamaha hoy?",
+    "ubicacion": "Av. Perimetral, Edif. Automotriz, Cumaná. Lun-Vie 8am-5pm, Sáb 8am-1pm.",
+    "metodos_pago": "Pago Móvil, Punto de Venta, Zelle, Binance y PayPal.",
+    "financiamiento": "Cashea (Cuotas), Krece y Mercado Pago.",
+    "catalogo_telefonos": "MOTORES: 150cc ($420), 125cc ($290). REPUESTOS: Kit arrastre ($25), Baterías ($35), Cauchos Pirelli ($48-$55), Aceite 20W50 ($5).",
+    "ofertas_mes": "Cambio de aceite mano de obra GRATIS si compras el aceite con nosotros.",
+    "politicas": "Garantía 3 meses eléctrico / 6 meses mecánico. Delivery GRATIS en el centro ($3-$5 zonas periféricas)."
 }
