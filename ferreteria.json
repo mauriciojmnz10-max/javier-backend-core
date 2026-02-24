@@ -1,14 +1,15 @@
-﻿{
-    "nombre_tienda": "ELECTROVENTAS CUMANÁ",
-    "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná, Sucre.",
-    "horario": "Lunes a Sábado: 8:00 AM - 6:00 PM (Corrido)",
-    "contacto_whatsapp": "+584120000000",
+{
+    "nombre_tienda": "FERREFIJA CUMANÁ (Materiales y Ferretería)",
+    "ubicacion": "Av. Cancamure, cruce con calle Los Chaimas, Cumaná, Sucre.",
+    "horario": "Lunes a Viernes: 7:30 AM - 5:30 PM, Sábados: 8:00 AM - 3:00 PM",
+    "contacto_whatsapp": "+584129873210",
     "metodos_pago": {
-        "bolivares": "Pago Móvil (Banesco/Mercantil), Transferencia.",
-        "divisas": "Efectivo, Zelle, Binance Pay.",
-        "financiamiento": "Cashea (Cuotas sin interés), Krece (Créditos telefónicos)."
+        "bolivares": "Pago Móvil (Banesco/Mercantil/Banco Venezuela), Transferencia, Punto de Venta (débito/crédito).",
+        "divisas": "Efectivo (USD/EUR), Zelle, Binance Pay.",
+        "financiamiento": "Cashea (Materiales de construcción), Credi-Ferretero (Crédito directo previa aprobación)."
     },
-    "catalogo_telefonos": "- INFINIX: Hot 40 Pro ($190), Note 40 Pro ($260), Smart 8 ($95).\n- TECNO: Spark 20 Pro ($175), Pova 6 Pro ($240), Spark 20C ($120).\n- SAMSUNG: Galaxy A15 ($155), A54 ($310), A05 ($115).\n- XIAOMI: Redmi Note 13 ($185), Poco X6 Pro ($340).",
-    "linea_blanca": "- Neveras: Samsung 11p ($550), Haier ($420).\n- Lavadoras: LG 12kg ($380), Midea 10kg ($290).\n- Televisores: Smart TV 32\" ($130), 43\" 4K ($260), 55\" QLED ($480).\n- Aires: Split 12.000 BTU ($280), 18.000 BTU ($450).",
-    "politicas": "- Garantía: 1 año en teléfonos, 6 meses en línea blanca.\n- Delivery: Gratis en el centro de Cumaná, $3-5 zonas lejanas.\n- Cashea: Pago inicial 40-50% según el nivel del cliente."
+    "materiales_construccion": "- CEMENTO: Cemento Caribe (sacos 42.5kg) $12, Cemento Cemex $13, Cemento gris ($11).\n- BLOQUES: Bloque de arcilla 10x20x40 ($0.90), Bloque de concreto 15x20x40 ($1.20), Ladrillo bloque ($0.70).\n- ARENA Y PIEDRA: Arena lavada ($35/m³), Piedra picada ($40/m³), Granzón ($30/m³).\n- CABILLAS: Cabilla 1/2\" ($15/und), Cabilla 3/8\" ($12/und), Malla electrosoldada ($45).",
+    "ferreteria_general": "- HERRAMIENTAS: Taladros Black & Decker ($65), Pulidoras Makita ($85), Juego de llaves Stanley ($40), Martillos ($8-20).\n- PINTURAS: Pintura látex Mont ($25/galón), Esmalte sintético ($18), Brochas y rodillos ($3-15).\n- PLOMERÍA: Tubería PVC 1/2\" ($3), Codos y uniones ($1-4), Tanques de agua (500L $120, 1000L $190).\n- ELECTRICIDAD: Cables TW #12 ($0.90/metro), Breakers ($8-25), Tomas y switches ($2-6).\n- ACABADOS: Cerámicas piso ($12-25/m²), Pegamento para cerámica ($10/saco), Grifería ($25-80).",
+    "productos_adicionales": "- MADERA: Tablas de pino ($12), Estantillos ($5), Formaleta ($30/pliego).\n- TECHOS: Láminas de zinc ($10-18), Eternit ($25), Tejas ($3-8).\n- SEGURIDAD INDUSTRIAL: Cascos ($8), Guantes ($3), Botas punta de acero ($35).",
+    "politicas": "- Despacho: Despacho por volumen disponible (camiones 3m, 6m, 12m) con costo adicional según zona.\n- Delivery (mensajería): Gratis en compras mayores a $50 en el casco central, $4-8 en zonas residenciales.\n- Garantía: Cambio físico dentro de los 8 días (productos sin uso). Garantía de fábrica en herramientas eléctricas (3 meses).\n- Crédito: Financiamiento directo para proyectos de construcción con referencias comerciales.\n- Presupuestos: Servicio de cotización para proyectos (obra gris, acabados, techos)."
 }
