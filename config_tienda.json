@@ -1,13 +1,17 @@
 {
     "nombre_tienda": "ELECTROVENTAS CUMANÁ",
-    "tagline": "Tecnología a tu alcance",
+    "tagline": "Tecnología a tu alcance y Financiación Inmediata",
     "color_primario": "#0066ff",
     "contacto_whatsapp": "584120000000",
     "mensaje_bienvenida": "¡Hola! Soy **Javier**, experto en tecnología. ¿Buscas un Infinix, Samsung o quizá línea blanca para tu hogar?",
-    "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná. Lunes a Sábado: 8:00 AM - 6:00 PM.",
-    "metodos_pago": "Pago Móvil, Zelle, Efectivo, Binance Pay.",
-    "financiamiento": "Cashea (Cuotas sin interés) y Krece (Créditos telefónicos).",
-    "catalogo_telefonos": "INFINIX: Hot 40 Pro ($190), Smart 8 ($95). SAMSUNG: A15 ($155), A54 ($310). XIAOMI: Redmi Note 13 ($185). LÍNEA BLANCA: Neveras ($420+), Lavadoras ($290+).",
-    "ofertas_mes": "Pregunta por nuestros combos de teléfono + protector de pantalla gratis.",
-    "politicas": "Garantía oficial por escrito. Delivery disponible en toda Cumaná."
+    "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná. Punto de referencia: Al lado de la Plaza Bolívar.",
+    "horario": "Lunes a Sábado: 8:00 AM - 6:00 PM. (No cerramos al mediodía).",
+    "metodos_pago": "Pago Móvil (Tasa BCV), Zelle, Efectivo, Binance Pay (USDT) y Punto de Venta.",
+    "financiamiento": "CASHEA: Compra hoy y paga en 3 cuotas sin interés (Nivel 1 al 5). KRECE: Créditos para teléfonos con inicial desde $40 (Solo cédula).",
+    "catalogo_telefonos": "INFINIX: Hot 40 Pro ($190), Smart 8 ($95), Note 40 Pro ($260). SAMSUNG: A15 ($155), A54 ($310), A05 ($115). XIAOMI: Redmi Note 13 ($185), Poco X6 Pro ($340). LÍNEA BLANCA: Neveras Mabe/Samsung ($420+), Lavadoras semiautomáticas ($290+), Aires Acondicionados Split 12k BTU ($285).",
+    "televisores": "Smart TV 32' ($145), 43' 4K ($275), 55' 4K ($390). Marcas: Samsung, LG y RCA.",
+    "ofertas_mes": "COMBO GAMER: Teléfono Infinix + Audífonos Bluetooth + Protector de pantalla GRATIS por este mes.",
+    "politicas": "Garantía de 1 año por defectos de fábrica en teléfonos. 6 meses en línea blanca. No aceptamos devoluciones por mal uso físico.",
+    "servicios_tecnicos": "Contamos con servicio técnico especializado para configuración inicial de equipos y respaldo de datos.",
+    "preguntas_frecuentes": "¿Aceptan Cashea? Sí. ¿Hacen delivery? Sí, gratis en el casco central de Cumaná. ¿Tienen servicio técnico? Sí."
 }
