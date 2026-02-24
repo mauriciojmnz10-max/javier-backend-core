@@ -1,14 +1,14 @@
-﻿{
-    "nombre_tienda": "ELECTROVENTAS CUMANÁ",
-    "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná, Sucre.",
-    "horario": "Lunes a Sábado: 8:00 AM - 6:00 PM (Corrido)",
-    "contacto_whatsapp": "+584120000000",
+{
+    "nombre_tienda": "PANADERÍA Y PASTELERÍA EL TRIGAL",
+    "ubicacion": "Av. Universidad, cruce con calle Sucre, Local 5, Cumaná, Sucre.",
+    "horario": "Lunes a Domingo: 6:00 AM - 9:00 PM (Corrido)",
+    "contacto_whatsapp": "+584129876543",
     "metodos_pago": {
-        "bolivares": "Pago Móvil (Banesco/Mercantil), Transferencia.",
-        "divisas": "Efectivo, Zelle, Binance Pay.",
-        "financiamiento": "Cashea (Cuotas sin interés), Krece (Créditos telefónicos)."
+        "bolivares": "Pago Móvil (Banesco/Mercantil), Transferencia, Biopago.",
+        "divisas": "Efectivo (Dólar/Euro), Zelle, Binance Pay.",
+        "financiamiento": "No aplica (ventas al contado)."
     },
-    "catalogo_telefonos": "- INFINIX: Hot 40 Pro ($190), Note 40 Pro ($260), Smart 8 ($95).\n- TECNO: Spark 20 Pro ($175), Pova 6 Pro ($240), Spark 20C ($120).\n- SAMSUNG: Galaxy A15 ($155), A54 ($310), A05 ($115).\n- XIAOMI: Redmi Note 13 ($185), Poco X6 Pro ($340).",
-    "linea_blanca": "- Neveras: Samsung 11p ($550), Haier ($420).\n- Lavadoras: LG 12kg ($380), Midea 10kg ($290).\n- Televisores: Smart TV 32\" ($130), 43\" 4K ($260), 55\" QLED ($480).\n- Aires: Split 12.000 BTU ($280), 18.000 BTU ($450).",
-    "politicas": "- Garantía: 1 año en teléfonos, 6 meses en línea blanca.\n- Delivery: Gratis en el centro de Cumaná, $3-5 zonas lejanas.\n- Cashea: Pago inicial 40-50% según el nivel del cliente."
+    "catalogo_panaderia": "- PANES: Canilla (Q), Campesino (Q), Sandwich (Q), Integral (Q).\n- PANES DULCES: Croissant, Mojicón, Golfeados, Guayoyito.\n- PASTELERÍA: Tortas (3 leches, chocolate, piña), Enrollados de jamón y queso.\n- GALLETAS: Catalinas, Polvorosas, de Hojaldre.",
+    "pasteleria_reposteria": "- TORTAS PERSONALIZADAS: Cumpleaños y bodas (encargar con 48h de anticipación).\n- POSTRES: Flan, Quesillo, Tiramisú, Mousse de Chocolate.\n- BEBIDAS CALIENTES: Café negro, Espresso, Capuchino, Chocolate caliente.",
+    "politicas": "- Horario especial de desayuno: 6:00 AM a 10:00 AM (Pan con jamón, empanadas, pastelitos).\n- Delivery: Gratis en un radio de 2km, $2 o su equivalente en Bs. para zonas residenciales.\n- Encargos: Para tortas decoradas se requiere el 50% de anticipo.\n- Productos: Elaboración artesanal, hechos en el día. Precios sujetos a variación según el mercado."
 }
