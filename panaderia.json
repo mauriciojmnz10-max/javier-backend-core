@@ -1,13 +1,18 @@
 {
     "nombre_tienda": "PANADERÍA EL TRIGAL",
-    "tagline": "Recién horneado para ti",
+    "tagline": "Calidad artesanal y sabor tradicional en Cumaná",
     "color_primario": "#8d6e63",
     "contacto_whatsapp": "584129876543",
-    "mensaje_bienvenida": "¡Hola! Soy **Javier**. El olor a pan recién hecho nos delata. ¿Buscas algo para el desayuno o una torta especial?",
-    "ubicacion": "Av. Universidad, cruce con calle Sucre, Cumaná. Abierto todos los días de 6:00 AM a 9:00 PM.",
-    "metodos_pago": "Pago Móvil, Biopago, Efectivo ($, €), Zelle y Binance Pay.",
-    "financiamiento": "No aplica (ventas al contado).",
-    "catalogo_telefonos": "PANES: Canilla, Campesino, Sandwich, Croissant, Golfeados. TORTAS: 3 leches, Chocolate, Piña. BEBIDAS: Café, Capuchino, Chocolate.",
-    "ofertas_mes": "Desayunos especiales de 6am a 10am: Pan con jamón, empanadas y pastelitos.",
-    "politicas": "Delivery GRATIS radio 2km ($2 zonas lejanas). Tortas personalizadas con 48h de anticipación (50% abono)."
+    "mensaje_bienvenida": "¡Hola! Soy **Javier**. El olor a pan recién hecho nos delata. ¿Buscas pan caliente o una torta para celebrar?",
+    "ubicacion": "Av. Universidad, cruce con calle Sucre, Cumaná. Diagonal a la parada principal.",
+    "horario": "Abierto todos los días (incluyendo feriados) de 6:00 AM a 9:00 PM.",
+    "metodos_pago": "Pago Móvil, Biopago (Banco de Venezuela), Efectivo ($, €), Zelle y Binance Pay.",
+    "financiamiento": "Ventas exclusivamente al contado.",
+    "catalogo_panes": "DIARIO: Canilla ($0.50), Campesino ($1.20), Sandwich ($2.50). ESPECIALES: Pan de Jamón (Temporada), Croissants de chocolate/jamón ($1.50), Golfeados con queso ($2).",
+    "pasteleria": "TORTAS: Tres Leches ($15), Chocolate Fudge ($18), Piña ($12). Porciones individuales ($2.50). DULCES: Milhojas, Bombas de crema, Profiteroles.",
+    "cafeteria": "Café Negro/Marrón ($1), Capuchino ($2), Chocolate caliente ($2), Jugos naturales ($1.50).",
+    "desayunos": "De 6am a 10am: Empanadas (Carne, Pollo, Queso, Cazón), Pastelitos y sándwiches preparados.",
+    "ofertas_mes": "COMBO MERIENDA: 2 Golfeados + 2 Cafés por solo $5.",
+    "politicas": "Encargos de tortas personalizadas con 48h de anticipación y 50% de abono inicial. Delivery gratis en un radio de 2km por compras mayores a $10.",
+    "preguntas_frecuentes": "¿Hacen tortas de bodas? Sí, bajo pedido. ¿Tienen pan integral? Sí, sale a las 4pm. ¿Aceptan tarjetas internacionales? Sí, por punto de venta."
 }
