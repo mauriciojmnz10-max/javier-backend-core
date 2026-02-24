@@ -68,11 +68,12 @@ async def chat(msg: Message):
         api_key = os.environ.get("GROQ_API_KEY")
         client = Groq(api_key=api_key)
 
+        # Prompt del sistema (Mantenemos toda la INFO de tu JSON para Javier)
         prompt_sistema = f"""
         Eres Javier, el cerebro de ventas de {INFO.get('nombre_tienda')}.
-        Tasa BCV: {tasa} Bs. Calcula siempre ($ x {tasa}).
-        INFO: {INFO}
-        Reglas: Sé elegante, usa emojis y ofrece WhatsApp para cerrar ventas.
+        Tasa BCV de hoy: {tasa} Bs. Calcula siempre los precios ($ x {tasa}).
+        Información de la tienda: {INFO}
+        Reglas: Sé elegante, usa emojis, responde breve y ofrece WhatsApp para cerrar la venta.
         """
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
@@ -91,18 +92,21 @@ async def chat(msg: Message):
 
         resp = completion.choices[0].message.content
         
-        # --- LÓGICA DINÁMICA DE IMÁGENES DESDE EL JSON ---
+        # --- LÓGICA DE IMÁGENES MEJORADA ---
         imagen_url = None
         txt_user = msg.mensaje.lower()
-        diccionario_fotos = INFO.get("imagenes_productos", {}) # Busca en el JSON
+        # Traemos el diccionario de imágenes del JSON
+        diccionario_fotos = INFO.get("imagenes_productos", {}) 
         
+        # Verificamos si alguna palabra clave del JSON está en el mensaje del usuario
         for prod, url in diccionario_fotos.items():
-            if prod in txt_user:
+            if prod.lower() in txt_user:
                 imagen_url = url
                 break
         
-        disparadores = ["comprar", "precio", "pago", "disponible", "cuanto", "cashea", "krece", "ubicacion", "oferta", "credito"]
-        mostrar_ws = any(p in msg.mensaje.lower() or p in resp.lower() for p in disparadores)
+        # Disparadores para el botón de WhatsApp
+        disparadores = ["comprar", "precio", "pago", "disponible", "cuanto", "cashea", "krece", "ubicacion", "oferta", "credito", "interesado"]
+        mostrar_ws = any(p in txt_user or p in resp.lower() for p in disparadores)
 
         return {
             "respuesta": resp, 
@@ -112,4 +116,13 @@ async def chat(msg: Message):
         }
     except Exception as e:
         logger.error(f"Error: {str(e)}")
-        return {"respuesta": "Consultar vía WhatsApp.", "mostrar_whatsapp": True}
+        # En caso de error, devolvemos un mensaje seguro y el botón de contacto
+        return {
+            "respuesta": "Disculpa, estoy recibiendo muchas consultas. ¿Podemos concretar por WhatsApp para darte una mejor atención? 🚀", 
+            "mostrar_whatsapp": True,
+            "imagen": None
+        }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=10000)
