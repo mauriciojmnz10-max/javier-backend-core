@@ -8,11 +8,10 @@ from pydantic import BaseModel
 from groq import Groq
 from datetime import datetime, timedelta
 
-# 1. CONFIGURACIÓN Y LOGS
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Javier - Sistema de Ventas Pro", version="6.0")
+app = FastAPI(title="Javier - Sistema de Ventas Pro", version="6.1")
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,15 +21,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- PUNTO 1: DICCIONARIO DE FOTOS (Añadido) ---
-PRODUCTOS_FOTOS = {
-    "hot 40 pro": "https://miracomosehace.com/wp-content/uploads/2024/02/Infinix-Hot-40-Pro.jpg",
-    "smart 8": "https://tiendatodo.com.ve/wp-content/uploads/2024/03/Infinix-Smart-8-Tiendatodo.webp",
-    "note 40 pro": "https://storage.googleapis.com/stateless-com-ve-tienda-pan/2024/05/9212a439-note-40-pro-verde.jpg",
-    "cashea": "https://blog.cashea.app/content/images/2023/10/Que-es-Cashea.jpg"
-}
-
-# 2. CARGA DE CONFIGURACIÓN DINÁMICA
 def cargar_info_tienda():
     nombre_archivo = os.environ.get("ARCHIVO_CONFIG", "config_tienda.json")
     try:
@@ -40,13 +30,8 @@ def cargar_info_tienda():
         raise FileNotFoundError
     except Exception as e:
         logger.error(f"Error cargando {nombre_archivo}: {e}")
-        return {
-            "nombre_tienda": "TIENDA EN MANTENIMIENTO",
-            "color_primario": "#0066ff",
-            "mensaje_bienvenida": "Hola, soy Javier. Estamos actualizando nuestra info."
-        }
+        return {"nombre_tienda": "TIENDA", "mensaje_bienvenida": "Hola"}
 
-# 3. SISTEMA DE TASA BCV
 cache_tasa = {"valor": None, "fecha": None}
 
 def obtener_tasa_bcv():
@@ -67,7 +52,6 @@ def obtener_tasa_bcv():
         except: continue
     return cache_tasa["valor"] or 45.00
 
-# 4. ENDPOINTS
 class Message(BaseModel):
     mensaje: str
     historial: list = []
@@ -82,33 +66,13 @@ async def chat(msg: Message):
         INFO = cargar_info_tienda()
         tasa = obtener_tasa_bcv()
         api_key = os.environ.get("GROQ_API_KEY")
-        
-        if not api_key:
-            raise ValueError("Falta la API KEY de Groq")
-            
         client = Groq(api_key=api_key)
 
-        # PROMPT ACTUALIZADO PARA EL FORMULARIO COMPLETO
         prompt_sistema = f"""
-        Eres Javier, el cerebro de ventas premium de {INFO.get('nombre_tienda', 'nuestra tienda')}.
-        Tu objetivo: Vender con elegancia, persuasión y precisión. Usa emojis.
-
-        CONTEXTO ECONÓMICO:
-        - Tasa BCV: {tasa} Bs. 
-        - REGLA: Siempre calcula precios en Bs: ($ x {tasa}).
-
-        CONOCIMIENTO DE LA TIENDA (Usa esto para responder):
-        - PRODUCTOS/CATÁLOGO: {INFO.get('catalogo_telefonos', 'Consultar disponibilidad')}
-        - OFERTAS DEL MES: {INFO.get('ofertas_mes', 'No hay ofertas activas')}
-        - FINANCIAMIENTO/CRÉDITO: {INFO.get('financiamiento', 'No disponible')}
-        - MÉTODOS DE PAGO: {INFO.get('metodos_pago', 'Consultar')}
-        - UBICACIÓN Y HORARIO: {INFO.get('ubicacion', 'Consultar')}
-        - PREGUNTAS FRECUENTES/POLÍTICAS: {INFO.get('politicas', 'Consultar')}
-
-        REGLAS DE ORO:
-        1. Si el cliente pregunta por algo que NO está en el catálogo, ofrece revisar almacén vía WhatsApp.
-        2. Si hay OFERTAS DEL MES, menciónalas cuando sea oportuno para cerrar la venta.
-        3. Sé amable, ejecutivo y nunca inventes datos.
+        Eres Javier, el cerebro de ventas de {INFO.get('nombre_tienda')}.
+        Tasa BCV: {tasa} Bs. Calcula siempre ($ x {tasa}).
+        INFO: {INFO}
+        Reglas: Sé elegante, usa emojis y ofrece WhatsApp para cerrar ventas.
         """
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
@@ -127,27 +91,25 @@ async def chat(msg: Message):
 
         resp = completion.choices[0].message.content
         
-        # --- PUNTO 2: DETECCIÓN DE IMAGEN (Añadido) ---
+        # --- LÓGICA DINÁMICA DE IMÁGENES DESDE EL JSON ---
         imagen_url = None
         txt_user = msg.mensaje.lower()
-        for prod, url in PRODUCTOS_FOTOS.items():
+        diccionario_fotos = INFO.get("imagenes_productos", {}) # Busca en el JSON
+        
+        for prod, url in diccionario_fotos.items():
             if prod in txt_user:
                 imagen_url = url
                 break
         
-        # Palabras que activan el botón de WhatsApp
-        disparadores = ["comprar", "precio", "pago", "disponible", "cuanto", "cashea", "krece", "ubicacion", "donde", "interesado", "oferta", "credito"]
+        disparadores = ["comprar", "precio", "pago", "disponible", "cuanto", "cashea", "krece", "ubicacion", "oferta", "credito"]
         mostrar_ws = any(p in msg.mensaje.lower() or p in resp.lower() for p in disparadores)
 
         return {
             "respuesta": resp, 
             "mostrar_whatsapp": mostrar_ws,
             "tasa": tasa,
-            "imagen": imagen_url # PUNTO 3: Enviamos la url al HTML
+            "imagen": imagen_url
         }
     except Exception as e:
-        logger.error(f"Error en chat: {str(e)}")
-        return {
-            "respuesta": "Lo siento, tengo muchas consultas. ¿Podrías contactarnos por WhatsApp?",
-            "mostrar_whatsapp": True
-        }
+        logger.error(f"Error: {str(e)}")
+        return {"respuesta": "Consultar vía WhatsApp.", "mostrar_whatsapp": True}
