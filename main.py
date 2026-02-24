@@ -84,7 +84,7 @@ async def chat(msg: Message):
         mensajes_groq.append({"role": "user", "content": msg.mensaje})
 
         completion = client.chat.completions.create(
-            model="llama-3-8b-8192",
+            model="llama3-8b-8192",
             messages=mensajes_groq,
             temperature=0.6,
             max_tokens=800
@@ -126,5 +126,6 @@ async def chat(msg: Message):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=10000)
+
 
 
