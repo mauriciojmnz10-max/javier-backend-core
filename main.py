@@ -77,7 +77,7 @@ async def chat(msg: Message):
         """
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
-        for m in msg.historial[-6:]:
+        for m in msg.historial[-4:]:
             if isinstance(m, dict) and "role" in m:
                 mensajes_groq.append(m)
         
@@ -126,4 +126,5 @@ async def chat(msg: Message):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=10000)
+
 
