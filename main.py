@@ -102,7 +102,7 @@ async def chat(msg: Message):
 
         REGLAS DE ORO:
         1. Si el producto NO está en la lista, invita a preguntar en almacén vía WhatsApp.
-        2. Mantén un tono ejecutivo, usa emojis y sé muy amable.
+        2. Mantén un tono ejecutivo, usa emojis pero no tantos y sé muy amable.
         """
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
@@ -138,3 +138,4 @@ async def chat(msg: Message):
             "respuesta": "Lo siento, estoy recibiendo muchas consultas. ¿Podrías repetirme eso o contactarnos por WhatsApp?",
             "mostrar_whatsapp": True
         }
+
