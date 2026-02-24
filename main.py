@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Javier - Sistema de Ventas Pro", version="5.0")
+app = FastAPI(title="Javier - Sistema de Ventas Pro", version="6.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,27 +22,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 2. CARGA DE CONFIGURACIÓN DINÁMICA (CON MANEJO DE ERRORES)
+# 2. CARGA DE CONFIGURACIÓN DINÁMICA
 def cargar_info_tienda():
     nombre_archivo = os.environ.get("ARCHIVO_CONFIG", "config_tienda.json")
     try:
-        # Verificamos si el archivo existe antes de abrirlo
         if os.path.exists(nombre_archivo):
             with open(nombre_archivo, "r", encoding="utf-8") as f:
                 return json.load(f)
         raise FileNotFoundError
     except Exception as e:
         logger.error(f"Error cargando {nombre_archivo}: {e}")
-        # Retorno de emergencia para que la app nunca se caiga
         return {
-            "nombre_tienda": "ELECTROVENTAS",
+            "nombre_tienda": "TIENDA EN MANTENIMIENTO",
             "color_primario": "#0066ff",
-            "contacto_whatsapp": "584120000000",
-            "mensaje_bienvenida": "¡Hola! Soy Javier. ¿En qué puedo ayudarte?",
-            "tagline": "Asesoría en Tecnología"
+            "mensaje_bienvenida": "Hola, soy Javier. Estamos actualizando nuestra info."
         }
 
-# 3. SISTEMA DE TASA BCV (CON FALLBACK)
+# 3. SISTEMA DE TASA BCV
 cache_tasa = {"valor": None, "fecha": None}
 
 def obtener_tasa_bcv():
@@ -61,7 +57,7 @@ def obtener_tasa_bcv():
                     cache_tasa.update({"valor": float(v), "fecha": ahora})
                     return float(v)
         except: continue
-    return cache_tasa["valor"] or 45.00 # Tasa de respaldo actualizada
+    return cache_tasa["valor"] or 45.00
 
 # 4. ENDPOINTS
 class Message(BaseModel):
@@ -77,36 +73,37 @@ async def chat(msg: Message):
     try:
         INFO = cargar_info_tienda()
         tasa = obtener_tasa_bcv()
-        
         api_key = os.environ.get("GROQ_API_KEY")
+        
         if not api_key:
-            raise ValueError("Falta la API KEY de Groq en las variables de entorno")
+            raise ValueError("Falta la API KEY de Groq")
             
         client = Groq(api_key=api_key)
 
-        # Formateo de precios en el prompt para precisión matemática
+        # PROMPT ACTUALIZADO PARA EL FORMULARIO COMPLETO
         prompt_sistema = f"""
-        Eres Javier, el cerebro de ventas premium de {INFO.get('nombre_tienda', 'la tienda')}.
-        Tu objetivo: Vender con elegancia y persuasión.
-        Tasa BCV hoy: {tasa} Bs.
+        Eres Javier, el cerebro de ventas premium de {INFO.get('nombre_tienda', 'nuestra tienda')}.
+        Tu objetivo: Vender con elegancia, persuasión y precisión. Usa emojis.
 
-        REGLA CRÍTICA DE PRECIOS:
-        Cada vez que menciones un precio en $, calcula el equivalente en Bolívares inmediatamente: (Precio $ x {tasa}).
-        Ejemplo: "Cuesta $100 ({tasa * 100} Bs)".
+        CONTEXTO ECONÓMICO:
+        - Tasa BCV: {tasa} Bs. 
+        - REGLA: Siempre calcula precios en Bs: ($ x {tasa}).
 
-        CONOCIMIENTO ACTUALIZADO:
-        - CATÁLOGO: {INFO.get('catalogo_telefonos', 'Consultar')}
-        - HOGAR: {INFO.get('linea_blanca', 'Consultar')}
-        - PAGOS: {INFO.get('metodos_pago', 'Consultar')}
-        - UBICACIÓN: {INFO.get('ubicacion', 'Consultar')}
+        CONOCIMIENTO DE LA TIENDA (Usa esto para responder):
+        - PRODUCTOS/CATÁLOGO: {INFO.get('catalogo_telefonos', 'Consultar disponibilidad')}
+        - OFERTAS DEL MES: {INFO.get('ofertas_mes', 'No hay ofertas activas')}
+        - FINANCIAMIENTO/CRÉDITO: {INFO.get('financiamiento', 'No disponible')}
+        - MÉTODOS DE PAGO: {INFO.get('metodos_pago', 'Consultar')}
+        - UBICACIÓN Y HORARIO: {INFO.get('ubicacion', 'Consultar')}
+        - PREGUNTAS FRECUENTES/POLÍTICAS: {INFO.get('politicas', 'Consultar')}
 
         REGLAS DE ORO:
-        1. Si el producto NO está en la lista, invita a preguntar en almacén vía WhatsApp.
-        2. Mantén un tono ejecutivo, usa emojis y sé muy amable.
+        1. Si el cliente pregunta por algo que NO está en el catálogo, ofrece revisar almacén vía WhatsApp.
+        2. Si hay OFERTAS DEL MES, menciónalas cuando sea oportuno para cerrar la venta.
+        3. Sé amable, ejecutivo y nunca inventes datos.
         """
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
-        # Validación de historial para evitar errores de formato
         for m in msg.historial[-6:]:
             if isinstance(m, dict) and "role" in m:
                 mensajes_groq.append(m)
@@ -122,9 +119,9 @@ async def chat(msg: Message):
 
         resp = completion.choices[0].message.content
         
-        # Lógica de cierre de ventas (Activación de botón de WhatsApp)
-        palabras_cierre = ["comprar", "precio", "pago", "disponible", "cuanto", "cashea", "krece", "ubicacion", "donde", "interesado"]
-        mostrar_ws = any(p in msg.mensaje.lower() or p in resp.lower() for p in palabras_cierre)
+        # Palabras que activan el botón de WhatsApp
+        disparadores = ["comprar", "precio", "pago", "disponible", "cuanto", "cashea", "krece", "ubicacion", "donde", "interesado", "oferta", "credito"]
+        mostrar_ws = any(p in msg.mensaje.lower() or p in resp.lower() for p in disparadores)
 
         return {
             "respuesta": resp, 
@@ -133,10 +130,7 @@ async def chat(msg: Message):
         }
     except Exception as e:
         logger.error(f"Error en chat: {str(e)}")
-        # Respuesta amigable en caso de error técnico
         return {
-            "respuesta": "Lo siento, estoy recibiendo muchas consultas. ¿Podrías repetirme eso o contactarnos por WhatsApp?",
+            "respuesta": "Lo siento, tengo muchas consultas. ¿Podrías contactarnos por WhatsApp?",
             "mostrar_whatsapp": True
         }
-
-
