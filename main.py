@@ -8,38 +8,41 @@ from pydantic import BaseModel
 from groq import Groq
 from datetime import datetime, timedelta
 
-# 1. CONFIGURACIÓN Y LOGS [cite: 19]
+# 1. CONFIGURACIÓN Y LOGS
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Javier - Sistema de Ventas Pro", version="4.5")
+app = FastAPI(title="Javier - Sistema de Ventas Pro", version="5.0")
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 2. CARGA DE CONFIGURACIÓN DINÁMICA [cite: 18, 20]
+# 2. CARGA DE CONFIGURACIÓN DINÁMICA (CON MANEJO DE ERRORES)
 def cargar_info_tienda():
-    # Render usará esta variable para decidir qué archivo cargar
     nombre_archivo = os.environ.get("ARCHIVO_CONFIG", "config_tienda.json")
     try:
-        with open(nombre_archivo, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        logger.error(f"No se encontró {nombre_archivo}")
+        # Verificamos si el archivo existe antes de abrirlo
+        if os.path.exists(nombre_archivo):
+            with open(nombre_archivo, "r", encoding="utf-8") as f:
+                return json.load(f)
+        raise FileNotFoundError
+    except Exception as e:
+        logger.error(f"Error cargando {nombre_archivo}: {e}")
+        # Retorno de emergencia para que la app nunca se caiga
         return {
-            "nombre_tienda": "ELECTROVENTAS CUMANÁ",
+            "nombre_tienda": "ELECTROVENTAS",
             "color_primario": "#0066ff",
             "contacto_whatsapp": "584120000000",
-            "mensaje_bienvenida": "¡Hola! 👋 Soy Javier. ¿Cómo puedo ayudarte hoy?",
+            "mensaje_bienvenida": "¡Hola! Soy Javier. ¿En qué puedo ayudarte?",
             "tagline": "Asesoría en Tecnología"
         }
 
-# 3. SISTEMA DE TASA BCV [cite: 22, 24]
+# 3. SISTEMA DE TASA BCV (CON FALLBACK)
 cache_tasa = {"valor": None, "fecha": None}
 
 def obtener_tasa_bcv():
@@ -58,16 +61,15 @@ def obtener_tasa_bcv():
                     cache_tasa.update({"valor": float(v), "fecha": ahora})
                     return float(v)
         except: continue
-    return cache_tasa["valor"] or 43.50
+    return cache_tasa["valor"] or 45.00 # Tasa de respaldo actualizada
 
-# 4. ENDPOINTS [cite: 25]
+# 4. ENDPOINTS
 class Message(BaseModel):
     mensaje: str
     historial: list = []
 
 @app.get("/config")
 async def get_config():
-    """Entrega la configuración visual al frontend"""
     return cargar_info_tienda()
 
 @app.post("/chat")
@@ -75,36 +77,64 @@ async def chat(msg: Message):
     try:
         INFO = cargar_info_tienda()
         tasa = obtener_tasa_bcv()
-        client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+        
+        api_key = os.environ.get("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("Falta la API KEY de Groq en las variables de entorno")
+            
+        client = Groq(api_key=api_key)
 
+        # Formateo de precios en el prompt para precisión matemática
         prompt_sistema = f"""
-        Eres Javier, el cerebro de ventas de {INFO['nombre_tienda']}. [cite: 26]
-        Tu objetivo: Vender con precisión y elegancia. [cite: 26]
-        Tasa actual: {tasa} Bs. [cite: 26]
+        Eres Javier, el cerebro de ventas premium de {INFO.get('nombre_tienda', 'la tienda')}.
+        Tu objetivo: Vender con elegancia y persuasión.
+        Tasa BCV hoy: {tasa} Bs.
 
-        REGLA CRÍTICA: Precios en $ deben mostrar el cálculo en Bs ({tasa} x $). [cite: 26]
+        REGLA CRÍTICA DE PRECIOS:
+        Cada vez que menciones un precio en $, calcula el equivalente en Bolívares inmediatamente: (Precio $ x {tasa}).
+        Ejemplo: "Cuesta $100 ({tasa * 100} Bs)".
 
-        INFORMACIÓN:
-        - PRODUCTOS: {INFO.get('catalogo_telefonos')} | {INFO.get('linea_blanca')}
-        - PAGOS: {INFO.get('metodos_pago')}
-        - UBICACIÓN: {INFO.get('ubicacion')}
-        - POLÍTICAS: {INFO.get('politicas')}
+        CONOCIMIENTO ACTUALIZADO:
+        - CATÁLOGO: {INFO.get('catalogo_telefonos', 'Consultar')}
+        - HOGAR: {INFO.get('linea_blanca', 'Consultar')}
+        - PAGOS: {INFO.get('metodos_pago', 'Consultar')}
+        - UBICACIÓN: {INFO.get('ubicacion', 'Consultar')}
+
+        REGLAS DE ORO:
+        1. Si el producto NO está en la lista, invita a preguntar en almacén vía WhatsApp.
+        2. Mantén un tono ejecutivo, usa emojis y sé muy amable.
         """
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
-        for m in msg.historial[-8:]: mensajes_groq.append(m)
+        # Validación de historial para evitar errores de formato
+        for m in msg.historial[-6:]:
+            if isinstance(m, dict) and "role" in m:
+                mensajes_groq.append(m)
+        
         mensajes_groq.append({"role": "user", "content": msg.mensaje})
 
         completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile", # [cite: 30]
+            model="llama-3.3-70b-versatile",
             messages=mensajes_groq,
-            temperature=0.6
+            temperature=0.6,
+            max_tokens=800
         )
 
         resp = completion.choices[0].message.content
-        palabras_venta = ["comprar", "precio", "pago", "disponible", "cuanto", "cashea", "krece", "ubicacion"] [cite: 31]
-        mostrar_ws = any(p in msg.mensaje.lower() or p in resp.lower() for p in palabras_venta)
+        
+        # Lógica de cierre de ventas (Activación de botón de WhatsApp)
+        palabras_cierre = ["comprar", "precio", "pago", "disponible", "cuanto", "cashea", "krece", "ubicacion", "donde", "interesado"]
+        mostrar_ws = any(p in msg.mensaje.lower() or p in resp.lower() for p in palabras_cierre)
 
-        return {"respuesta": resp, "mostrar_whatsapp": mostrar_ws}
+        return {
+            "respuesta": resp, 
+            "mostrar_whatsapp": mostrar_ws,
+            "tasa": tasa
+        }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error en chat: {str(e)}")
+        # Respuesta amigable en caso de error técnico
+        return {
+            "respuesta": "Lo siento, estoy recibiendo muchas consultas. ¿Podrías repetirme eso o contactarnos por WhatsApp?",
+            "mostrar_whatsapp": True
+        }
