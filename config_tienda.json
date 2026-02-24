@@ -3,11 +3,11 @@
     "tagline": "Tecnología a tu alcance",
     "color_primario": "#0066ff",
     "contacto_whatsapp": "584120000000",
-    "mensaje_bienvenida": "¡Hola! Soy **Javier**. ¿En qué equipo estás interesado hoy?",
-    "ubicacion": "Cumaná, Sucre",
-    "metodos_pago": {
-        "bolivares": "Pago Móvil",
-        "divisas": "Zelle, Efectivo",
-        "financiamiento": "Cashea, Krece"
-    }
+    "mensaje_bienvenida": "¡Hola! Soy **Javier**, experto en tecnología. ¿Buscas un Infinix, Samsung o quizá línea blanca para tu hogar?",
+    "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná. Lunes a Sábado: 8:00 AM - 6:00 PM.",
+    "metodos_pago": "Pago Móvil, Zelle, Efectivo, Binance Pay.",
+    "financiamiento": "Cashea (Cuotas sin interés) y Krece (Créditos telefónicos).",
+    "catalogo_telefonos": "INFINIX: Hot 40 Pro ($190), Smart 8 ($95). SAMSUNG: A15 ($155), A54 ($310). XIAOMI: Redmi Note 13 ($185). LÍNEA BLANCA: Neveras ($420+), Lavadoras ($290+).",
+    "ofertas_mes": "Pregunta por nuestros combos de teléfono + protector de pantalla gratis.",
+    "politicas": "Garantía oficial por escrito. Delivery disponible en toda Cumaná."
 }
