@@ -1,13 +1,16 @@
 {
     "nombre_tienda": "ELECTROVENTAS CUMANÁ",
+    "tagline": "Asesoría en Tecnología • Javier AI",
     "color_primario": "#0066ff",
     "contacto_whatsapp": "584120000000",
+    "mensaje_bienvenida": "¡Hola! 👋 Soy **Javier**. Consulto la tasa BCV en tiempo real y calculo tus precios al instante.\n\n¿En qué puedo ayudarte hoy?",
     "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná, Sucre.",
     "horario": "Lunes a Sábado: 8:00 AM - 6:00 PM",
     "metodos_pago": {
-        "bolivares": "Pago Móvil (Banesco/Mercantil)",
-        "divisas": "Efectivo, Zelle, Binance Pay"
+        "bolivares": "Pago Móvil, Transferencia.",
+        "financiamiento": "Cashea y Krece."
     },
     "catalogo_telefonos": "- INFINIX: Hot 40 Pro ($190)\n- TECNO: Spark 20 Pro ($175)",
-    "politicas": "- Garantía: 1 año en teléfonos\n- Delivery: Gratis en el centro"
+    "linea_blanca": "- Neveras Samsung ($550)\n- Split 12k BTU ($280)",
+    "politicas": "Garantía de 1 año en teléfonos."
 }
