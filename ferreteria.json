@@ -1,13 +1,17 @@
 {
     "nombre_tienda": "FERREFIJA CUMANÁ",
-    "tagline": "Materiales y Ferretería para tu Hogar",
+    "tagline": "Todo para la construcción: Desde los cimientos hasta el acabado",
     "color_primario": "#FF8C00",
     "contacto_whatsapp": "584129873210",
-    "mensaje_bienvenida": "¡Hola! Bienvenido a **Ferrefija**. Soy Javier, ¿qué proyecto tienes en mente hoy? Tenemos desde cemento hasta herramientas Stanley.",
-    "ubicacion": "Av. Cancamure, cruce con calle Los Chaimas, Cumaná. Lun-Vie 7:30am-5:30pm, Sáb 8am-3pm.",
-    "metodos_pago": "Pago Móvil, Transferencia, Punto de Venta, Efectivo (USD/EUR), Zelle y Binance Pay.",
-    "financiamiento": "Cashea (Materiales) y Credi-Ferretero (Crédito directo previa aprobación).",
-    "catalogo_telefonos": "CONSTRUCCIÓN: Cemento ($11-$13), Bloques ($0.70-$1.20), Arena/Piedra ($30-$40/m³), Cabillas ($12-$15). FERRETERÍA: Taladros ($65), Pinturas ($25), Tanques de agua ($120+).",
-    "ofertas_mes": "Despacho por volumen disponible en camiones de 3m, 6m y 12m.",
-    "politicas": "Delivery GRATIS en compras > $50 (Casco Central). Garantía de 8 días en cambios físicos y 3 meses en herramientas eléctricas."
+    "mensaje_bienvenida": "¡Hola! Bienvenido a **Ferrefija**. Soy Javier, ¿qué proyecto tienes en mente hoy? Tenemos desde cemento hasta herramientas profesionales.",
+    "ubicacion": "Av. Cancamure, cruce con calle Los Chaimas, Cumaná. Frente a la estación de servicio.",
+    "horario": "Lunes a Viernes 7:30am-5:30pm, Sábados 8am-3pm. Domingos: Cerrado.",
+    "metodos_pago": "Pago Móvil, Transferencia bancaria, Punto de Venta, Efectivo (USD/EUR), Zelle y Binance Pay.",
+    "financiamiento": "CASHEA: Disponible para herramientas y materiales seleccionados. CREDI-FERRETERO: Crédito directo para maestros de obra previa verificación de datos.",
+    "catalogo_construccion": "CEMENTO: Gris Portland ($11), Blanco ($18). BLOQUES: Arcilla 10cm ($0.75), 15cm ($0.95). AGREGADOS: Arena amarilla, lavada y piedra picada (Camión 3m³ desde $35). ACERO: Cabillas 3/8 ($12.50), 1/2 ($16), Vigas y mallas truckson.",
+    "herramientas_y_pintura": "TALADROS: DeWalt ($145), Stanley ($65). PINTURAS: Caucho Clase A ($25 galón), Aceite ($32 galón). TANQUES: 1000L ($125), 1500L ($180).",
+    "ofertas_mes": "DESPACHO MAYORISTA: Precios especiales para constructoras y proyectos de más de 100 sacos de cemento.",
+    "politicas": "Delivery GRATIS en compras mayores a $50 (Zona central). Material de construcción a pie de camión. Garantía de 3 meses en herramientas eléctricas.",
+    "despacho": "Flota propia de camiones de 3m, 6m y 12m. Despachos en máximo 24 horas después del pago.",
+    "preguntas_frecuentes": "¿Venden arena por metro? Sí. ¿Tienen tuberías? Sí, PVC aguas blancas y negras. ¿Aceptan divisas en efectivo? Sí."
 }
