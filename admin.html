@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurador Pro - Javier AI</title>
+    <style>
+        :root { --blue: #0066ff; --dark: #1a1a1b; --bg: #f8fafc; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; display: flex; height: 100vh; color: #334155; }
+        
+        /* Formulario */
+        .sidebar { width: 45%; background: white; padding: 40px; overflow-y: auto; border-right: 1px solid #e2e8f0; }
+        .sidebar h1 { font-size: 24px; color: var(--blue); margin-bottom: 5px; }
+        .sidebar p { font-size: 14px; color: #64748b; margin-bottom: 30px; }
+        
+        /* Preview */
+        .preview { width: 55%; background: #0f172a; padding: 40px; display: flex; flex-direction: column; }
+        .preview h2 { color: white; margin-top: 0; font-size: 18px; display: flex; justify-content: space-between; }
+        
+        .section-card { background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        .section-card h3 { font-size: 13px; text-transform: uppercase; color: var(--blue); margin-top: 0; letter-spacing: 1px; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; transition: 0.2s; }
+        input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,102,255,0.1); }
+        
+        #json-output { background: #1e293b; border-radius: 12px; padding: 25px; flex-grow: 1; font-family: 'Fira Code', monospace; font-size: 13px; color: #38bdf8; overflow: auto; line-height: 1.6; }
+        
+        .btn-copy { background: #38bdf8; color: #0f172a; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-copy:hover { background: #7dd3fc; }
+        .btn-download { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h1>⚙️ Configuración Maestra</h1>
+    <p>Completa los datos para entrenar a Javier.</p>
+    
+    <div class="section-card">
+        <h3>1. Identidad Visual</h3>
+        <div class="form-group">
+            <label>Nombre de la Empresa</label>
+            <input type="text" id="nombre" placeholder="Ej: Inversiones El Fuerte C.A." oninput="update()">
+        </div>
+        <div class="form-group">
+            <label>Color de la Interfaz</label>
+            <input type="color" id="color" value="#0066ff" oninput="update()">
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3>2. Ubicación y Contacto</h3>
+        <div class="form-group">
+            <label>WhatsApp de Ventas (Formato: 58412...)</label>
+            <input type="text" id="ws" placeholder="584120000000" oninput="update()">
+        </div>
+        <div class="form-group">
+            <label>Dirección Física y Horario</label>
+            <textarea id="ubicacion" placeholder="Ej: Av. Principal, Cumaná. Lun-Sab 8am a 6pm." oninput="update()"></textarea>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3>3. Inventario y Precios</h3>
+        <div class="form-group">
+            <label>Productos (Nombre y Precio $)</label>
+            <textarea id="productos" placeholder="Ej: - Arroz 1kg ($1.2)&#10;- Harina Pan ($1.1)" oninput="update()"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Ofertas del Mes (¡Esto ayuda a vender!)</label>
+            <textarea id="ofertas" placeholder="Ej: Combo parrillero por solo $25" oninput="update()"></textarea>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3>4. Pagos y Crédito</h3>
+        <div class="form-group">
+            <label>Métodos de Pago (Bs y $)</label>
+            <textarea id="pagos" placeholder="Ej: Pago Móvil, Zelle, Binance, Efectivo." oninput="update()"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Información de Crédito (Cashea/Krece)</label>
+            <textarea id="financiamiento" placeholder="Ej: Aceptamos Cashea modo envío y retiro." oninput="update()"></textarea>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3>5. FAQ y Reglas</h3>
+        <div class="form-group">
+            <label>Preguntas Frecuentes (Delivery, Garantía, etc.)</label>
+            <textarea id="faq" placeholder="Ej: Delivery gratis compras > $20. Garantía de 48h." oninput="update()"></textarea>
+        </div>
+    </div>
+
+    <button class="btn-download" onclick="downloadJSON()">Descargar archivo .json</button>
+</div>
+
+<div class="preview">
+    <h2>
+        <span>📄 JSON Generado</span>
+        <button class="btn-copy" onclick="copyJSON()">Copiar Código</button>
+    </h2>
+    <div id="json-output"></div>
+</div>
+
+<script>
+    function update() {
+        const data = {
+            "nombre_tienda": document.getElementById('nombre').value || "Nombre Tienda",
+            "color_primario": document.getElementById('color').value,
+            "contacto_whatsapp": document.getElementById('ws').value || "584120000000",
+            "mensaje_bienvenida": "¡Hola! 👋 Soy Javier, asesor de **" + (document.getElementById('nombre').value || "la tienda") + "**. ¿Qué buscas hoy?",
+            "ubicacion": document.getElementById('ubicacion').value || "Consultar ubicación",
+            "catalogo_telefonos": document.getElementById('productos').value || "Consultar precios",
+            "ofertas_mes": document.getElementById('ofertas').value || "No hay ofertas activas",
+            "metodos_pago": document.getElementById('pagos').value || "Consultar pagos",
+            "financiamiento": document.getElementById('financiamiento').value || "No disponible",
+            "politicas": document.getElementById('faq').value || "Consultar garantías",
+            "tagline": "Asistente de Ventas Inteligente"
+        };
+        
+        document.getElementById('json-output').innerText = JSON.stringify(data, null, 4);
+    }
+
+    function copyJSON() {
+        const text = document.getElementById('json-output').innerText;
+        navigator.clipboard.writeText(text);
+        alert("¡Código copiado! Pégalo en tu GitHub.");
+    }
+
+    function downloadJSON() {
+        const text = document.getElementById('json-output').innerText;
+        const blob = new Blob([text], {type: "application/json"});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = "config_tienda.json";
+        a.click();
+    }
+
+    update(); // Inicializar
+</script>
+
+</body>
+</html>
