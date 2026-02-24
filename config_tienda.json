@@ -1,15 +1,13 @@
 {
     "nombre_tienda": "ELECTROVENTAS CUMANÁ",
     "color_primario": "#0066ff",
-    "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná, Sucre.",
-    "horario": "Lunes a Sábado: 8:00 AM - 6:00 PM (Corrido)",
     "contacto_whatsapp": "584120000000",
+    "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná, Sucre.",
+    "horario": "Lunes a Sábado: 8:00 AM - 6:00 PM",
     "metodos_pago": {
-        "bolivares": "Pago Móvil (Banesco/Mercantil), Transferencia.",
-        "divisas": "Efectivo, Zelle, Binance Pay.",
-        "financiamiento": "Cashea (Cuotas sin interés), Krece (Créditos telefónicos)."
+        "bolivares": "Pago Móvil (Banesco/Mercantil)",
+        "divisas": "Efectivo, Zelle, Binance Pay"
     },
-    "catalogo_telefonos": "- INFINIX: Hot 40 Pro ($190), Note 40 Pro ($260).\n- TECNO: Spark 20 Pro ($175).",
-    "linea_blanca": "- Neveras: Samsung 11p ($550).\n- Aires: Split 12.000 BTU ($280).",
-    "politicas": "- Garantía: 1 año en teléfonos.\n- Delivery: Gratis en el centro."
+    "catalogo_telefonos": "- INFINIX: Hot 40 Pro ($190)\n- TECNO: Spark 20 Pro ($175)",
+    "politicas": "- Garantía: 1 año en teléfonos\n- Delivery: Gratis en el centro"
 }
