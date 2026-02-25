@@ -13,5 +13,16 @@
     "ofertas_mes": "DESPACHO MAYORISTA: Precios especiales para constructoras y proyectos de más de 100 sacos de cemento.",
     "politicas": "Delivery GRATIS en compras mayores a $50 (Zona central). Material de construcción a pie de camión. Garantía de 3 meses en herramientas eléctricas.",
     "despacho": "Flota propia de camiones de 3m, 6m y 12m. Despachos en máximo 24 horas después del pago.",
-    "preguntas_frecuentes": "¿Venden arena por metro? Sí. ¿Tienen tuberías? Sí, PVC aguas blancas y negras. ¿Aceptan divisas en efectivo? Sí."
+    "preguntas_frecuentes": "¿Venden arena por metro? Sí. ¿Tienen tuberías? Sí, PVC aguas blancas y negras. ¿Aceptan divisas en efectivo? Sí.",
+    "imagenes_productos": {
+        "cemento": "PONER_LINK_AQUÍ",
+        "taladro": "PONER_LINK_AQUÍ",
+        "stanley": "PONER_LINK_AQUÍ",
+        "dewalt": "PONER_LINK_AQUÍ",
+        "pintura": "PONER_LINK_AQUÍ",
+        "tanque": "PONER_LINK_AQUÍ",
+        "bloque": "PONER_LINK_AQUÍ",
+        "cashea": "PONER_LINK_AQUÍ",
+        "krece": "PONER_LINK_AQUÍ"
+    }
 }
