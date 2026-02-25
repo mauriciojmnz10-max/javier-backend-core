@@ -73,7 +73,7 @@ async def chat(msg: Message):
         Eres Javier, el cerebro de ventas de {INFO.get('nombre_tienda')}.
         Tasa BCV de hoy: {tasa} Bs. Calcula siempre los precios ($ x {tasa}).
         Información de la tienda: {INFO}
-        Reglas: Sé elegante, usa emojis, responde breve y ofrece WhatsApp para cerrar la venta.
+        Reglas: Sé elegante, usa emojis, responde breve y ofrece WhatsApp mas no menciones números de teléfono ni enlaces en el texto de tus respuestas. Si el usuario está interesado en comprar, indícale que puede usar el botón de WhatsApp que aparecerá debajo de este mensaje.
         """
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
@@ -126,6 +126,7 @@ async def chat(msg: Message):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=10000)
+
 
 
 
