@@ -14,5 +14,16 @@
     "desayunos": "De 6am a 10am: Empanadas (Carne, Pollo, Queso, Cazón), Pastelitos y sándwiches preparados.",
     "ofertas_mes": "COMBO MERIENDA: 2 Golfeados + 2 Cafés por solo $5.",
     "politicas": "Encargos de tortas personalizadas con 48h de anticipación y 50% de abono inicial. Delivery gratis en un radio de 2km por compras mayores a $10.",
-    "preguntas_frecuentes": "¿Hacen tortas de bodas? Sí, bajo pedido. ¿Tienen pan integral? Sí, sale a las 4pm. ¿Aceptan tarjetas internacionales? Sí, por punto de venta."
+    "preguntas_frecuentes": "¿Hacen tortas de bodas? Sí, bajo pedido. ¿Tienen pan integral? Sí, sale a las 4pm. ¿Aceptan tarjetas internacionales? Sí, por punto de venta.",
+    "imagenes_productos": {
+        "canilla": "PONER_LINK_AQUÍ",
+        "campesino": "PONER_LINK_AQUÍ",
+        "golfeado": "PONER_LINK_AQUÍ",
+        "tres leches": "PONER_LINK_AQUÍ",
+        "torta de chocolate": "PONER_LINK_AQUÍ",
+        "empanada": "PONER_LINK_AQUÍ",
+        "cafe": "PONER_LINK_AQUÍ",
+        "pan de jamon": "PONER_LINK_AQUÍ",
+        "combo": "PONER_LINK_AQUÍ"
+    }
 }
