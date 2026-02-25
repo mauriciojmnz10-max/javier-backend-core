@@ -13,5 +13,17 @@
     "ofertas_mes": "PROMOCIÓN: Por la compra de tu Kit de Arrastre y Aceite, el delivery te sale GRATIS en Cumaná.",
     "servicios": "Asesoría técnica para identificar fallas eléctricas y mecánicas básicas vía chat.",
     "politicas": "Garantía de 3 meses en partes eléctricas siempre que sean instaladas en taller autorizado. No hay devolución por piezas instaladas y rayadas.",
-    "preguntas_frecuentes": "¿Tienen repuestos para Bera Socialista? Sí, todo. ¿Hacen envíos nacionales? Sí, por Zoom o Tealca. ¿Tienen taller? No, solo venta de repuestos."
+    "preguntas_frecuentes": "¿Tienen repuestos para Bera Socialista? Sí, todo. ¿Hacen envíos nacionales? Sí, por Zoom o Tealca. ¿Tienen taller? No, solo venta de repuestos.",
+    "imagenes_productos": {
+        "motor": "PONER_LINK_AQUÍ",
+        "cilindro": "PONER_LINK_AQUÍ",
+        "carburador": "PONER_LINK_AQUÍ",
+        "aceite": "PONER_LINK_AQUÍ",
+        "kit arrastre": "PONER_LINK_AQUÍ",
+        "bateria": "PONER_LINK_AQUÍ",
+        "caucho": "PONER_LINK_AQUÍ",
+        "pirelli": "PONER_LINK_AQUÍ",
+        "cashea": "PONER_LINK_AQUÍ",
+        "krece": "PONER_LINK_AQUÍ"
+    }
 }
