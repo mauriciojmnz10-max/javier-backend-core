@@ -1,36 +1,44 @@
 {
-    "nombre_tienda": "ELECTROVENTAS CUMANÁ",
-    "tagline": "Tecnología a tu alcance y Financiación Inmediata",
-    "color_primario": "#0066ff",
+    "nombre_tienda": "MULTIKAP",
+    "tagline": "TAZ 2080 • CAOS ORGANIZADO",
+    "color_primario": "#ff5500",
     "contacto_whatsapp": "584120000000",
-    "mensaje_bienvenida": "¡Hola! Soy **Javier**, experto en tecnología de **Electroventas Cumaná**. ¿Buscas un Infinix, Samsung o quizá línea blanca para tu hogar?",
-    "ubicacion": "Calle Mariño, Edif. Centro, Local 2, Cumaná. Punto de referencia: Al lado de la Plaza Bolívar.",
-    "horario": "Lunes a Sábado: 8:00 AM - 6:00 PM. (No cerramos al mediodía).",
+    "mensaje_bienvenida": "⚡ ¡Hola! Soy Taz, tu asistente virtual de MultiKAP. Tengo varios modos de asesoramiento que puedes ver en el botón naranja. Selecciona un asesor para ver nuestro catálogo completo con precios en $ y Bs.",
+    
+    "ubicacion": "Disponible en línea las 24/7. Envíos a toda Venezuela.",
+    "horario": "Atención digital: Lunes a Domingo - 8:00 AM a 10:00 PM",
     "metodos_pago": "Pago Móvil (Tasa BCV), Zelle, Efectivo, Binance Pay (USDT) y Punto de Venta.",
-    "financiamiento": "CASHEA: Compra hoy y paga en 3 cuotas sin interés (Nivel 1 al 5). KRECE: Créditos para teléfonos con inicial desde $40 (Solo cédula).",
-    "catalogo_telefonos": "INFINIX: Hot 40 Pro ($190), Smart 8 ($95), Note 40 Pro ($260). SAMSUNG: A15 ($155), A54 ($310), A05 ($115). XIAOMI: Redmi Note 13 ($185), Poco X6 Pro ($340). LÍNEA BLANCA: Neveras Mabe/Samsung ($420+), Lavadoras semiautomáticas ($290+), Aires Acondicionados Split 12k BTU ($285).",
-    "televisores": "Smart TV 32' ($145), 43' 4K ($275), 55' 4K ($390). Marcas: Samsung, LG y RCA.",
-    "ofertas_mes": "COMBO GAMER: Teléfono Infinix + Audífonos Bluetooth + Protector de pantalla GRATIS por este mes.",
-    "politicas": "Garantía de 1 año por defectos de fábrica en teléfonos. 6 meses en línea blanca. No aceptamos devoluciones por mal uso físico.",
-    "servicios_tecnicos": "Contamos con servicio técnico especializado para configuración inicial de equipos y respaldo de datos.",
-    "preguntas_frecuentes": "¿Aceptan Cashea? Sí. ¿Hacen delivery? Sí, gratis en el casco central de Cumaná. ¿Tienen servicio técnico? Sí.",
-    "imagenes_productos": {
-        "hot 40 pro": "https://i.postimg.cc/yNd50nGy/hot-40-pro.jpg",
-        "smart 8": "https://i.postimg.cc/gJLTTjmh/smart_8.png",
-        "note 40 pro": "https://i.postimg.cc/Bv6y2Nzg/note-40-pro.webp",
-        "a15": "https://i.postimg.cc/wT39N09R/samsung_a15.jpg",
-        "a54": "https://i.postimg.cc/CK72mpNT/samsung_a54.jpg",
-        "a05": "https://i.postimg.cc/MpfwXHqm/samsung-a05.webp",
-        "note 13": "https://i.postimg.cc/SxY4jRk7/redmi-note-13.jpg",
-        "x6 pro": "https://i.postimg.cc/Vk0w5vm9/poco-x6-pro.jpg",
-        "nevera": "https://i.postimg.cc/jSnTC2tn/neveras.webp",
-        "lavadora": "https://i.postimg.cc/qM50kyVG/lavadoras.webp",
-        "aire": "https://i.postimg.cc/W1qVtzTg/aires-acondicionados.jpg",
-        "tv 32": "https://i.postimg.cc/zGHN3v8c/Smart-TV-32.jpg",
-        "tv 43": "https://i.postimg.cc/JzH8t0Md/Smart-TV-43-4K.webp",
-        "tv 55": "https://i.postimg.cc/d0MYCFVH/Smart-TV-55-4K.webp",
-        "gamer": "https://i.postimg.cc/SKWp7PXj/combo-gamer.png",
-        "cashea": "https://i.postimg.cc/ZKMZTpt0/cashea.png",
-        "krece": "https://i.postimg.cc/BQVsqH9b/krece.jpg"
-    }
+    "financiamiento": "Consultar opciones de financiamiento directamente por WhatsApp.",
+    
+    "catalogo_motos": [
+        {"emoji": "🏍️", "nombre": "Freno Delantero", "detalles": "Pastillas y disco, alta duración", "precio": 25},
+        {"emoji": "🔧", "nombre": "Cadena Transmisión", "detalles": "Kit completo, resistencia máxima", "precio": 45},
+        {"emoji": "🛢️", "nombre": "Aceite 20W50", "detalles": "1 litro, motor 4 tiempos", "precio": 12},
+        {"emoji": "🔋", "nombre": "Batería", "detalles": "12V 7Ah, libre mantenimiento", "precio": 60},
+        {"emoji": "💡", "nombre": "Foco LED", "detalles": "Luz blanca, alta potencia", "precio": 15},
+        {"emoji": "⚙️", "nombre": "Kit de Arrastre", "detalles": "Relación 428, alta durabilidad", "precio": 35}
+    ],
+    
+    "catalogo_papeleria": [
+        {"emoji": "📓", "nombre": "Cuaderno Universitario", "detalles": "100 hojas, cuadros / rayas", "precio": 5},
+        {"emoji": "✏️", "nombre": "Lápices (pack 10)", "detalles": "HB #2, grafito negro", "precio": 3},
+        {"emoji": "🖊️", "nombre": "Bolígrafos (pack 10)", "detalles": "Tinta azul/negra, punta fina", "precio": 8},
+        {"emoji": "🎒", "nombre": "Mochila Escolar", "detalles": "Compartimentos, resistente", "precio": 35},
+        {"emoji": "📏", "nombre": "Regla Metálica", "detalles": "30cm, acero inoxidable", "precio": 3},
+        {"emoji": "📌", "nombre": "Resaltadores (pack 6)", "detalles": "Colores surtidos", "precio": 6}
+    ],
+    
+    "catalogo_hogar": [
+        {"emoji": "🧹", "nombre": "Escoba", "detalles": "Cerdas duras, mango largo", "precio": 10},
+        {"emoji": "🧽", "nombre": "Esponjas (pack 3)", "detalles": "Multiuso, anti-rayas", "precio": 4},
+        {"emoji": "🧴", "nombre": "Detergente 5L", "detalles": "Líquido, aroma a limón", "precio": 15},
+        {"emoji": "🏠", "nombre": "Ambientador", "detalles": "Spray 400ml, lavanda", "precio": 7},
+        {"emoji": "🧺", "nombre": "Cesto para Ropa", "detalles": "Plástico resistente, 50L", "precio": 22},
+        {"emoji": "🧼", "nombre": "Jabón Líquido", "detalles": "1L, antibacterial", "precio": 9}
+    ],
+    
+    "ofertas_mes": "🔥 Este mes: Compra 2 productos y obtén 10% de descuento en el segundo.",
+    "politicas": "Garantía de 3 meses por defectos de fábrica. Cambios solo con factura y producto en perfecto estado.",
+    "servicios_tecnicos": "Consultoría online gratuita para ayudarte a elegir el producto correcto.",
+    "preguntas_frecuentes": "¿Hacen envíos? Sí, a toda Venezuela. ¿Aceptan pagos en divisas? Sí, dólares efectivo, Zelle y Binance Pay. ¿Tienen tienda física? Venta exclusivamente online."
 }
