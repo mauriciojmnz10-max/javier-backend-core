@@ -4,12 +4,10 @@
     "color_primario": "#ff5500",
     "contacto_whatsapp": "584120000000",
     "mensaje_bienvenida": "⚡ ¡Hola! Soy Taz, tu asistente virtual de MultiKAP. Tengo varios modos de asesoramiento que puedes ver en el botón naranja. Selecciona un asesor para ver nuestro catálogo completo con precios en $ y Bs.",
-    
     "ubicacion": "Disponible en línea las 24/7. Envíos a toda Venezuela.",
     "horario": "Atención digital: Lunes a Domingo - 8:00 AM a 10:00 PM",
     "metodos_pago": "Pago Móvil (Tasa BCV), Zelle, Efectivo, Binance Pay (USDT) y Punto de Venta.",
     "financiamiento": "Consultar opciones de financiamiento directamente por WhatsApp.",
-    
     "catalogo_motos": [
         {"emoji": "🏍️", "nombre": "Freno Delantero", "detalles": "Pastillas y disco, alta duración", "precio": 25},
         {"emoji": "🔧", "nombre": "Cadena Transmisión", "detalles": "Kit completo, resistencia máxima", "precio": 45},
@@ -18,7 +16,6 @@
         {"emoji": "💡", "nombre": "Foco LED", "detalles": "Luz blanca, alta potencia", "precio": 15},
         {"emoji": "⚙️", "nombre": "Kit de Arrastre", "detalles": "Relación 428, alta durabilidad", "precio": 35}
     ],
-    
     "catalogo_papeleria": [
         {"emoji": "📓", "nombre": "Cuaderno Universitario", "detalles": "100 hojas, cuadros / rayas", "precio": 5},
         {"emoji": "✏️", "nombre": "Lápices (pack 10)", "detalles": "HB #2, grafito negro", "precio": 3},
@@ -27,7 +24,6 @@
         {"emoji": "📏", "nombre": "Regla Metálica", "detalles": "30cm, acero inoxidable", "precio": 3},
         {"emoji": "📌", "nombre": "Resaltadores (pack 6)", "detalles": "Colores surtidos", "precio": 6}
     ],
-    
     "catalogo_hogar": [
         {"emoji": "🧹", "nombre": "Escoba", "detalles": "Cerdas duras, mango largo", "precio": 10},
         {"emoji": "🧽", "nombre": "Esponjas (pack 3)", "detalles": "Multiuso, anti-rayas", "precio": 4},
@@ -36,7 +32,6 @@
         {"emoji": "🧺", "nombre": "Cesto para Ropa", "detalles": "Plástico resistente, 50L", "precio": 22},
         {"emoji": "🧼", "nombre": "Jabón Líquido", "detalles": "1L, antibacterial", "precio": 9}
     ],
-    
     "ofertas_mes": "🔥 Este mes: Compra 2 productos y obtén 10% de descuento en el segundo.",
     "politicas": "Garantía de 3 meses por defectos de fábrica. Cambios solo con factura y producto en perfecto estado.",
     "servicios_tecnicos": "Consultoría online gratuita para ayudarte a elegir el producto correcto.",
