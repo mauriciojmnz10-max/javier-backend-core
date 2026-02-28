@@ -1,29 +1,21 @@
 {
-    "nombre_tienda": "PANADERÍA EL TRIGAL",
-    "tagline": "Calidad artesanal y sabor tradicional en Cumaná",
-    "color_primario": "#8d6e63",
-    "contacto_whatsapp": "584129876543",
-    "mensaje_bienvenida": "¡Hola! Soy **Javier**. El olor a pan recién hecho nos delata. ¿Buscas pan caliente o una torta para celebrar?",
-    "ubicacion": "Av. Universidad, cruce con calle Sucre, Cumaná. Diagonal a la parada principal.",
-    "horario": "Abierto todos los días (incluyendo feriados) de 6:00 AM a 9:00 PM.",
-    "metodos_pago": "Pago Móvil, Biopago (Banco de Venezuela), Efectivo ($, €), Zelle y Binance Pay.",
-    "financiamiento": "Ventas exclusivamente al contado.",
-    "catalogo_panes": "DIARIO: Canilla ($0.50), Campesino ($1.20), Sandwich ($2.50). ESPECIALES: Pan de Jamón (Temporada), Croissants de chocolate/jamón ($1.50), Golfeados con queso ($2).",
-    "pasteleria": "TORTAS: Tres Leches ($15), Chocolate Fudge ($18), Piña ($12). Porciones individuales ($2.50). DULCES: Milhojas, Bombas de crema, Profiteroles.",
-    "cafeteria": "Café Negro/Marrón ($1), Capuchino ($2), Chocolate caliente ($2), Jugos naturales ($1.50).",
-    "desayunos": "De 6am a 10am: Empanadas (Carne, Pollo, Queso, Cazón), Pastelitos y sándwiches preparados.",
-    "ofertas_mes": "COMBO MERIENDA: 2 Golfeados + 2 Cafés por solo $5.",
-    "politicas": "Encargos de tortas personalizadas con 48h de anticipación y 50% de abono inicial. Delivery gratis en un radio de 2km por compras mayores a $10.",
-    "preguntas_frecuentes": "¿Hacen tortas de bodas? Sí, bajo pedido. ¿Tienen pan integral? Sí, sale a las 4pm. ¿Aceptan tarjetas internacionales? Sí, por punto de venta.",
-    "imagenes_productos": {
-        "canilla": "PONER_LINK_AQUÍ",
-        "campesino": "PONER_LINK_AQUÍ",
-        "golfeado": "PONER_LINK_AQUÍ",
-        "tres leches": "PONER_LINK_AQUÍ",
-        "torta de chocolate": "PONER_LINK_AQUÍ",
-        "empanada": "PONER_LINK_AQUÍ",
-        "cafe": "PONER_LINK_AQUÍ",
-        "pan de jamon": "PONER_LINK_AQUÍ",
-        "combo": "PONER_LINK_AQUÍ"
-    }
+    "nombre_tienda": "PANADERÍA ARTESANAL",
+    "tipo": "panaderia",
+    "tagline": "El sabor de lo auténtico",
+    "color_primario": "#d4a574",
+    "contacto_whatsapp": "584120000001",
+    "mensaje_bienvenida": "🥖 **¡Hola! Soy Javier, tu panadero virtual.** 🥐\n\nSelecciona una categoría para ver nuestros productos frescos del día.",
+    "ubicacion": "Disponible en línea. Envíos a toda Venezuela.",
+    "horario": "Atención: Lunes a Domingo - 7:00 AM a 8:00 PM",
+    "metodos_pago": "Pago Móvil, Zelle, Efectivo, Transferencia",
+    "catalogo_panes": [
+        {"nombre": "Pan Artesanal", "descripcion": "Elaborado con masa madre", "precio": 3},
+        {"nombre": "Baguette", "descripcion": "Crujiente por fuera, suave por dentro", "precio": 2}
+    ],
+    "catalogo_dulces": [
+        {"nombre": "Croissant", "descripcion": "Hojaldrado y mantecoso", "precio": 2.5},
+        {"nombre": "Medialuna", "descripcion": "Suave y dulce", "precio": 2}
+    ],
+    "ofertas_mes": "🔥 Promo: Lleva 3 panes y paga 2",
+    "politicas": "Productos frescos, horneados diariamente."
 }
