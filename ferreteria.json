@@ -1,28 +1,19 @@
 {
-    "nombre_tienda": "FERREFIJA CUMANÁ",
-    "tagline": "Todo para la construcción: Desde los cimientos hasta el acabado",
-    "color_primario": "#FF8C00",
-    "contacto_whatsapp": "584129873210",
-    "mensaje_bienvenida": "¡Hola! Bienvenido a **Ferrefija**. Soy Javier, ¿qué proyecto tienes en mente hoy? Tenemos desde cemento hasta herramientas profesionales.",
-    "ubicacion": "Av. Cancamure, cruce con calle Los Chaimas, Cumaná. Frente a la estación de servicio.",
-    "horario": "Lunes a Viernes 7:30am-5:30pm, Sábados 8am-3pm. Domingos: Cerrado.",
-    "metodos_pago": "Pago Móvil, Transferencia bancaria, Punto de Venta, Efectivo (USD/EUR), Zelle y Binance Pay.",
-    "financiamiento": "CASHEA: Disponible para herramientas y materiales seleccionados. CREDI-FERRETERO: Crédito directo para maestros de obra previa verificación de datos.",
-    "catalogo_construccion": "CEMENTO: Gris Portland ($11), Blanco ($18). BLOQUES: Arcilla 10cm ($0.75), 15cm ($0.95). AGREGADOS: Arena amarilla, lavada y piedra picada (Camión 3m³ desde $35). ACERO: Cabillas 3/8 ($12.50), 1/2 ($16), Vigas y mallas truckson.",
-    "herramientas_y_pintura": "TALADROS: DeWalt ($145), Stanley ($65). PINTURAS: Caucho Clase A ($25 galón), Aceite ($32 galón). TANQUES: 1000L ($125), 1500L ($180).",
-    "ofertas_mes": "DESPACHO MAYORISTA: Precios especiales para constructoras y proyectos de más de 100 sacos de cemento.",
-    "politicas": "Delivery GRATIS en compras mayores a $50 (Zona central). Material de construcción a pie de camión. Garantía de 3 meses en herramientas eléctricas.",
-    "despacho": "Flota propia de camiones de 3m, 6m y 12m. Despachos en máximo 24 horas después del pago.",
-    "preguntas_frecuentes": "¿Venden arena por metro? Sí. ¿Tienen tuberías? Sí, PVC aguas blancas y negras. ¿Aceptan divisas en efectivo? Sí.",
-    "imagenes_productos": {
-        "cemento": "PONER_LINK_AQUÍ",
-        "taladro": "PONER_LINK_AQUÍ",
-        "stanley": "PONER_LINK_AQUÍ",
-        "dewalt": "PONER_LINK_AQUÍ",
-        "pintura": "PONER_LINK_AQUÍ",
-        "tanque": "PONER_LINK_AQUÍ",
-        "bloque": "PONER_LINK_AQUÍ",
-        "cashea": "PONER_LINK_AQUÍ",
-        "krece": "PONER_LINK_AQUÍ"
-    }
+    "nombre_tienda": "FERREMAX",
+    "tipo": "ferreteria",
+    "tagline": "Todo para tu proyecto",
+    "color_primario": "#0047ab",
+    "contacto_whatsapp": "584120000002",
+    "mensaje_bienvenida": "🔨 **¡Bienvenido a FERREMAX!** ⚙️\n\nTu ferretería de confianza. ¿Qué necesitas para tu proyecto hoy?",
+    "ubicacion": "Envíos a toda Venezuela.",
+    "horario": "Atención: Lunes a Sábado - 8:00 AM a 6:00 PM",
+    "metodos_pago": "Pago Móvil, Transferencia, Tarjeta de Crédito, Efectivo",
+    "catalogo_herramientas": [
+        {"nombre": "Martillo", "descripcion": "Mango de madera, cabeza de acero", "precio": 8},
+        {"nombre": "Destornillador", "descripcion": "Juego 6 piezas, puntas intercambiables", "precio": 12}
+    ],
+    "catalogo_electricidad": [
+        {"nombre": "Cable THHN", "descripcion": "Calibre 12, 100 metros", "precio": 25},
+        {"nombre": "Interruptor", "descripcion": "Sencillo, color blanco", "precio": 3}
+    ]
 }
