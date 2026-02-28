@@ -9,32 +9,118 @@
     "horario": "Atención digital: Lunes a Domingo - 8:00 AM a 10:00 PM",
     "metodos_pago": "Pago Móvil (Tasa BCV), Zelle, Efectivo, Binance Pay (USDT) y Punto de Venta.",
     "financiamiento": "Consultar opciones de financiamiento directamente por WhatsApp.",
-    "catalogo_motos": [
-        {"emoji": "🏍️", "nombre": "Freno Delantero", "detalles": "Pastillas y disco, alta duración", "precio": 25},
-        {"emoji": "🔧", "nombre": "Cadena Transmisión", "detalles": "Kit completo, resistencia máxima", "precio": 45},
-        {"emoji": "🛢️", "nombre": "Aceite 20W50", "detalles": "1 litro, motor 4 tiempos", "precio": 12},
-        {"emoji": "🔋", "nombre": "Batería", "detalles": "12V 7Ah, libre mantenimiento", "precio": 60},
-        {"emoji": "💡", "nombre": "Foco LED", "detalles": "Luz blanca, alta potencia", "precio": 15},
-        {"emoji": "⚙️", "nombre": "Kit de Arrastre", "detalles": "Relación 428, alta durabilidad", "precio": 35}
-    ],
-    "catalogo_papeleria": [
-        {"emoji": "📓", "nombre": "Cuaderno Universitario", "detalles": "100 hojas, cuadros / rayas", "precio": 5},
-        {"emoji": "✏️", "nombre": "Lápices (pack 10)", "detalles": "HB #2, grafito negro", "precio": 3},
-        {"emoji": "🖊️", "nombre": "Bolígrafos (pack 10)", "detalles": "Tinta azul/negra, punta fina", "precio": 8},
-        {"emoji": "🎒", "nombre": "Mochila Escolar", "detalles": "Compartimentos, resistente", "precio": 35},
-        {"emoji": "📏", "nombre": "Regla Metálica", "detalles": "30cm, acero inoxidable", "precio": 3},
-        {"emoji": "📌", "nombre": "Resaltadores (pack 6)", "detalles": "Colores surtidos", "precio": 6}
-    ],
-    "catalogo_hogar": [
-        {"emoji": "🧹", "nombre": "Escoba", "detalles": "Cerdas duras, mango largo", "precio": 10},
-        {"emoji": "🧽", "nombre": "Esponjas (pack 3)", "detalles": "Multiuso, anti-rayas", "precio": 4},
-        {"emoji": "🧴", "nombre": "Detergente 5L", "detalles": "Líquido, aroma a limón", "precio": 15},
-        {"emoji": "🏠", "nombre": "Ambientador", "detalles": "Spray 400ml, lavanda", "precio": 7},
-        {"emoji": "🧺", "nombre": "Cesto para Ropa", "detalles": "Plástico resistente, 50L", "precio": 22},
-        {"emoji": "🧼", "nombre": "Jabón Líquido", "detalles": "1L, antibacterial", "precio": 9}
-    ],
-    "ofertas_mes": "🔥 Este mes: Compra 2 productos y obtén 10% de descuento en el segundo.",
     "politicas": "Garantía de 3 meses por defectos de fábrica. Cambios solo con factura y producto en perfecto estado.",
     "servicios_tecnicos": "Consultoría online gratuita para ayudarte a elegir el producto correcto.",
-    "preguntas_frecuentes": "¿Hacen envíos? Sí, a toda Venezuela. ¿Aceptan pagos en divisas? Sí, dólares efectivo, Zelle y Binance Pay. ¿Tienen tienda física? Venta exclusivamente online."
+    "preguntas_frecuentes": "¿Hacen envíos? Sí, a toda Venezuela. ¿Aceptan pagos en divisas? Sí, dólares efectivo, Zelle y Binance Pay. ¿Tienen tienda física? Venta exclusivamente online.",
+    
+    "catalogo_motos": [
+        {
+            "emoji": "🏍️", 
+            "nombre": "Freno Delantero", 
+            "detalles": "Pastillas y disco, alta duración. Compatible con la mayoría de las motos 150cc. Incluye juego de pastillas de alto rendimiento.", 
+            "precio": 25,
+            "marcas_compatibles": ["Bera", "Empire", "Haojin", "Keller"],
+            "modelos_compatibles": ["150", "200", "250"],
+            "especificaciones": "Disco de 220mm, pastillas sinterizadas",
+            "stock": 15,
+            "categoria": "frenos"
+        },
+        {
+            "emoji": "🔧", 
+            "nombre": "Cadena Transmisión", 
+            "detalles": "Kit completo, resistencia máxima. Incluye piñón y corona reforzados. 120 eslabones, para motos 150-200cc.", 
+            "precio": 45,
+            "marcas_compatibles": ["Bera", "Empire", "Haojin", "Keller", "Yamaha"],
+            "modelos_compatibles": ["150", "200", "250", "XTZ"],
+            "especificaciones": "Relación 428, acero endurecido",
+            "stock": 8,
+            "categoria": "transmision"
+        },
+        {
+            "emoji": "🛢️", 
+            "nombre": "Aceite 20W50", 
+            "detalles": "1 litro, motor 4 tiempos. Protección superior para tu motor. Lubricante mineral de alta calidad.", 
+            "precio": 12,
+            "marcas_compatibles": ["Universal", "Castrol", "Motul", "Shell"],
+            "especificaciones": "API SL, JASO MA2",
+            "stock": 45,
+            "categoria": "lubricantes"
+        },
+        {
+            "emoji": "🔋", 
+            "nombre": "Batería", 
+            "detalles": "12V 7Ah, libre mantenimiento. Alta durabilidad y potencia. Ideal para motos y cuatriciclos.", 
+            "precio": 60,
+            "marcas_compatibles": ["Universal", "Yuasa", "Bosch"],
+            "modelos_compatibles": ["150", "200", "250", "400"],
+            "especificaciones": "12N7-4B, bornes estándar",
+            "stock": 12,
+            "categoria": "electrico"
+        },
+        {
+            "emoji": "💡", 
+            "nombre": "Foco LED", 
+            "detalles": "Luz blanca, alta potencia. Iluminación superior, bajo consumo. 6000K, 12V, fácil instalación.", 
+            "precio": 15,
+            "marcas_compatibles": ["Universal", "Philips", "Osram"],
+            "especificaciones": "H4, 30W, 3000 lúmenes",
+            "stock": 25,
+            "categoria": "iluminacion"
+        },
+        {
+            "emoji": "⚙️", 
+            "nombre": "Kit de Arrastre", 
+            "detalles": "Relación 428, alta durabilidad. Mejor rendimiento y agarre. Incluye piñón y corona de acero.", 
+            "precio": 35,
+            "marcas_compatibles": ["Bera", "Empire", "Haojin"],
+            "modelos_compatibles": ["150", "200"],
+            "especificaciones": "Piñón 15 dientes, corona 45 dientes",
+            "stock": 10,
+            "categoria": "transmision"
+        }
+    ],
+    
+    "catalogo_papeleria": [
+        {
+            "emoji": "📓", 
+            "nombre": "Cuaderno Universitario", 
+            "detalles": "100 hojas, cuadros / rayas. Tapa dura, papel de alta calidad. Ideal para la universidad.", 
+            "precio": 5,
+            "marcas": ["Norma", "Omega", "Pionner"],
+            "especificaciones": "100 hojas, papel bond 75g",
+            "stock": 50,
+            "categoria": "cuadernos"
+        },
+        {
+            "emoji": "✏️", 
+            "nombre": "Lápices (pack 10)", 
+            "detalles": "HB #2, grafito negro. Punta resistente, borrable. Excelente para escritura y dibujo.", 
+            "precio": 3,
+            "marcas": ["Mongol", "Paper Mate", "Staedtler"],
+            "especificaciones": "HB #2, caja con 10 unidades",
+            "stock": 100,
+            "categoria": "escritura"
+        }
+    ],
+    
+    "catalogo_hogar": [
+        {
+            "emoji": "🧹", 
+            "nombre": "Escoba", 
+            "detalles": "Cerdas duras, mango largo. Ideal para todo tipo de pisos. Con recogedor incluido.", 
+            "precio": 10,
+            "especificaciones": "Mango de madera, cerdas de plástico",
+            "stock": 30,
+            "categoria": "limpieza"
+        },
+        {
+            "emoji": "🧽", 
+            "nombre": "Esponjas (pack 3)", 
+            "detalles": "Multiuso, anti-rayas. 3 capas, absorción superior. No raya superficies delicadas.", 
+            "precio": 4,
+            "especificaciones": "Pack 3 unidades, fibra verde",
+            "stock": 60,
+            "categoria": "limpieza"
+        }
+    ]
 }
