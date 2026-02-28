@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Sistema Multi-Tienda", version="7.0")
+app = FastAPI(title="Sistema Multi-Tienda", version="8.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,27 +22,21 @@ app.add_middleware(
 )
 
 # ========== CONFIGURACIÓN POR TIENDA ==========
-# La tienda se selecciona mediante variable de entorno o parámetro
-TIENDA_ACTUAL = os.environ.get("TIENDA", "electroventas")  # "electroventas" o "multikap"
+# La tienda se selecciona mediante el parámetro en la URL
+CONFIG_DIR = "configs"
 
-def obtener_nombre_config():
-    """Retorna el nombre del archivo de configuración según la tienda"""
-    configs = {
-        "electroventas": "config_electroventas.json",
-        "multikap": "config_multikap.json"
-    }
-    return configs.get(TIENDA_ACTUAL, "config_electroventas.json")
-
-def cargar_info_tienda():
-    nombre_archivo = obtener_nombre_config()
+def cargar_config_tienda(store_id: str):
+    """Carga la configuración de una tienda específica"""
+    nombre_archivo = os.path.join(CONFIG_DIR, f"{store_id}.json")
     try:
         if os.path.exists(nombre_archivo):
             with open(nombre_archivo, "r", encoding="utf-8") as f:
                 return json.load(f)
-        raise FileNotFoundError
+        logger.error(f"Archivo no encontrado: {nombre_archivo}")
+        return None
     except Exception as e:
         logger.error(f"Error cargando {nombre_archivo}: {e}")
-        return {"nombre_tienda": "TIENDA", "mensaje_bienvenida": "Hola"}
+        return None
 
 # ========== TASA BCV (COMPARTIDA) ==========
 cache_tasa = {"valor": None, "fecha": None}
@@ -69,33 +63,21 @@ def obtener_tasa_bcv():
 class Message(BaseModel):
     mensaje: str
     historial: list = []
-    advisor: str = "default"  # Para MultiKAP: motos/papeleria/hogar, para otros: default
+    advisor: str = "default"  # Para MultiKAP: motos/papeleria/hogar
+
+class ChatRequest(BaseModel):
+    store_id: str
+    message: Message
 
 # ========== GENERADOR DE PROMPTS POR TIENDA ==========
-def generar_prompt_segun_tienda(info, tasa, advisor="default"):
-    """Genera el prompt del sistema según la tienda activa"""
+def generar_prompt_segun_tienda(store_id: str, info: dict, tasa: float, advisor: str = "default"):
+    """Genera el prompt del sistema según la tienda"""
     
-    tienda = info.get("nombre_tienda", "").upper()
+    tienda_nombre = info.get("nombre_tienda", "").upper()
+    tipo = info.get("tipo", "").lower()
     
-    # ===== PROMPT PARA ELECTROVENTAS (JAVIER) =====
-    if "ELECTROVENTAS" in tienda:
-        return f"""
-        Eres Javier, el cerebro de ventas de {info.get('nombre_tienda')}.
-        Tasa BCV de hoy: {tasa} Bs. Calcula siempre los precios ($ x {tasa}).
-        
-        Información de la tienda: {info}
-        
-        Reglas: 
-        - Sé elegante, usa emojis, responde breve
-        - IMPORTANTE: Siempre que un usuario mencione un producto o marca, identifica el producto más cercano en tu lista de imagenes_productos y envíalo inmediatamente.
-        - No preguntes '¿Quieres ver una foto?', simplemente muéstrala mientras das la información técnica.
-        - Nunca escribas números de teléfono en el texto.
-        - Para finalizar la compra, indica que deben usar el botón verde de WhatsApp.
-        """
-    
-    # ===== PROMPT PARA MULTIKAP (TAZ) =====
-    elif "MULTIKAP" in tienda:
-        # Prompt según el asesor seleccionado
+    # ===== MULTIKAP =====
+    if store_id == "multikap" or "MULTIKAP" in tienda_nombre:
         prompts_asesor = {
             "motos": "Eres TAZ MOTOS 🏍️, experto en repuestos y accesorios para motos. Responde con energía y pasión por las motos.",
             "papeleria": "Eres TAZ PAPELERÍA 📚, especialista en útiles escolares y de oficina. Responde con creatividad y orden.",
@@ -108,7 +90,7 @@ def generar_prompt_segun_tienda(info, tasa, advisor="default"):
         
         Tasa BCV de hoy: {tasa} Bs. Calcula siempre los precios ($ x {tasa}).
         
-        Información de la tienda: {info}
+        Información de la tienda: {json.dumps(info, indent=2, ensure_ascii=False)}
         
         REGLAS IMPORTANTES:
         1. Este es un sistema SIN IMÁGENES. NO menciones "fotos", "imágenes", "mirar", "ver". Usa SOLO texto.
@@ -120,35 +102,106 @@ def generar_prompt_segun_tienda(info, tasa, advisor="default"):
         7. Puedes mencionar los productos del catálogo en tus respuestas
         """
     
-    # ===== PROMPT GENÉRICO (POR SI ACASO) =====
+    # ===== PANADERÍA =====
+    elif store_id == "panaderia" or tipo == "panaderia":
+        return f"""
+        Eres Javier, el panadero virtual y experto en productos de panadería artesanal.
+        
+        Tasa BCV de hoy: {tasa} Bs. Calcula siempre los precios ($ x {tasa}).
+        
+        Información de la panadería: {json.dumps(info, indent=2, ensure_ascii=False)}
+        
+        REGLAS IMPORTANTES:
+        1. Habla con calidez y pasión por el arte de la panadería
+        2. Describe los productos con detalle (textura, sabor, ingredientes)
+        3. Los precios deben mostrarse en $ y Bs
+        4. Usa emojis de panes, dulces y café 🥖🥐☕
+        5. NUNCA escribas números de teléfono en el texto
+        6. Para finalizar la compra, indica que usen el botón verde de WhatsApp
+        """
+    
+    # ===== FERRETERÍA =====
+    elif store_id == "ferreteria" or tipo == "ferreteria":
+        return f"""
+        Eres un experto en ferretería y construcción. Conoces todas las herramientas, materiales y soluciones para el hogar y la obra.
+        
+        Tasa BCV de hoy: {tasa} Bs. Calcula siempre los precios ($ x {tasa}).
+        
+        Información de la ferretería: {json.dumps(info, indent=2, ensure_ascii=False)}
+        
+        REGLAS IMPORTANTES:
+        1. Habla con conocimiento técnico pero de forma clara
+        2. Ofrece consejos prácticos para cada proyecto
+        3. Los precios deben mostrarse en $ y Bs
+        4. Usa emojis de herramientas 🔨🔧⚒️
+        5. NUNCA escribas números de teléfono en el texto
+        6. Para finalizar la compra, indica que usen el botón verde de WhatsApp
+        """
+    
+    # ===== MOTO-REPUESTOS =====
+    elif store_id == "motorepuestos" or tipo == "motorepuestos":
+        return f"""
+        Eres un experto en motos y repuestos. Conoces todas las marcas, modelos y piezas.
+        
+        Tasa BCV de hoy: {tasa} Bs. Calcula siempre los precios ($ x {tasa}).
+        
+        Información de la tienda: {json.dumps(info, indent=2, ensure_ascii=False)}
+        
+        REGLAS IMPORTANTES:
+        1. Habla con pasión por las motos y conocimiento técnico
+        2. Ayuda a identificar repuestos por marca y modelo
+        3. Los precios deben mostrarse en $ y Bs
+        4. Usa emojis de motos y repuestos 🏍️🔧⚙️
+        5. NUNCA escribas números de teléfono en el texto
+        6. Para finalizar la compra, indica que usen el botón verde de WhatsApp
+        """
+    
+    # ===== PROMPT GENÉRICO =====
     else:
         return f"""
         Eres el asistente virtual de {info.get('nombre_tienda', 'la tienda')}.
         Tasa BCV de hoy: {tasa} Bs.
         
-        Información de la tienda: {info}
+        Información de la tienda: {json.dumps(info, indent=2, ensure_ascii=False)}
         
         Sé amable, breve y útil. Usa emojis cuando sea apropiado.
         """
 
 # ========== ENDPOINTS ==========
-@app.get("/config")
-async def get_config():
-    return cargar_info_tienda()
+@app.get("/config/{store_id}")
+async def get_config(store_id: str):
+    """Obtiene la configuración de una tienda específica"""
+    config = cargar_config_tienda(store_id)
+    if config is None:
+        raise HTTPException(status_code=404, detail="Tienda no encontrada")
+    return config
 
-@app.post("/chat")
-async def chat(msg: Message):
+@app.post("/chat/{store_id}")
+async def chat(store_id: str, msg: Message):
+    """Procesa mensajes para una tienda específica"""
     try:
-        INFO = cargar_info_tienda()
+        # Cargar configuración de la tienda
+        INFO = cargar_config_tienda(store_id)
+        if INFO is None:
+            raise HTTPException(status_code=404, detail="Tienda no encontrada")
+        
         tasa = obtener_tasa_bcv()
         api_key = os.environ.get("GROQ_API_KEY")
+        if not api_key:
+            logger.error("GROQ_API_KEY no configurada")
+            return {
+                "respuesta": "Lo siento, el servicio de IA no está configurado. Por favor contacta al administrador.",
+                "mostrar_whatsapp": True,
+                "tasa": tasa
+            }
+        
         client = Groq(api_key=api_key)
 
         # Generar prompt según la tienda y el asesor
-        prompt_sistema = generar_prompt_segun_tienda(INFO, tasa, msg.advisor)
+        prompt_sistema = generar_prompt_segun_tienda(store_id, INFO, tasa, msg.advisor)
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
-        for m in msg.historial[-4:]:
+        for m in msg.historial[-6:]:  # Últimos 6 mensajes para contexto
             if isinstance(m, dict) and "role" in m:
                 mensajes_groq.append(m)
         
@@ -157,44 +210,41 @@ async def chat(msg: Message):
         completion = client.chat.completions.create(
             model="llama-3.1-8b-instant",
             messages=mensajes_groq,
-            temperature=0.6,
+            temperature=0.7,
             max_tokens=800
         )
 
         resp = completion.choices[0].message.content
         
-        # ===== LÓGICA DE IMÁGENES (SOLO PARA ELECTROVENTAS) =====
-        imagen_url = None
-        if "ELECTROVENTAS" in INFO.get("nombre_tienda", "").upper():
-            txt_user = msg.mensaje.lower()
-            diccionario_fotos = INFO.get("imagenes_productos", {}) 
-            
-            for prod, url in diccionario_fotos.items():
-                if prod.lower() in txt_user:
-                    imagen_url = url
-                    break
-        
-        # ===== DISPARADORES DE WHATSAPP (COMPARTIDO) =====
+        # ===== DISPARADORES DE WHATSAPP =====
         disparadores = ["comprar", "precio", "pago", "disponible", "cuanto", 
-                       "cashea", "krece", "ubicacion", "oferta", "credito", 
-                       "interesado", "quiero", "deseo", "adquirir"]
-        mostrar_ws = any(p in msg.mensaje.lower() or p in resp.lower() for p in disparadores)
+                       "ubicacion", "oferta", "interesado", "quiero", "deseo", 
+                       "adquirir", "pedir", "ordenar"]
+        texto_completo = (msg.mensaje + " " + resp).lower()
+        mostrar_ws = any(p in texto_completo for p in disparadores)
 
         return {
             "respuesta": resp, 
             "mostrar_whatsapp": mostrar_ws,
-            "tasa": tasa,
-            "imagen": imagen_url  # Solo tendrá valor para Electroventas
+            "tasa": tasa
         }
         
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"Error: {str(e)}")
+        logger.error(f"Error en chat: {str(e)}")
         return {
             "respuesta": "Disculpa, estoy recibiendo muchas consultas. ¿Podemos concretar por WhatsApp para darte una mejor atención? 🚀", 
             "mostrar_whatsapp": True,
-            "imagen": None
+            "tasa": obtener_tasa_bcv()
         }
+
+@app.get("/tasa-bcv")
+async def get_tasa():
+    """Endpoint para obtener tasa BCV actualizada"""
+    return {"tasa": obtener_tasa_bcv()}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=10000)
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
