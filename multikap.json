@@ -1,9 +1,10 @@
 {
     "nombre_tienda": "MULTIKAP",
+    "tipo": "multitienda",
     "tagline": "TAZ 2080 • CAOS ORGANIZADO",
     "color_primario": "#ff5500",
     "contacto_whatsapp": "584120000000",
-    "mensaje_bienvenida": "⚡ ¡Hola! Soy Taz, tu asistente virtual de MultiKAP. Tengo varios modos de asesoramiento que puedes ver en el botón naranja. Selecciona un asesor para ver nuestro catálogo completo con precios en $ y Bs.",
+    "mensaje_bienvenida": "⚡ **¡Hola! Soy Taz, tu asistente virtual de MultiKAP.** ⚡\n\nTengo varios modos de asesoramiento que puedes ver en el botón naranja de la parte superior derecha (🏍️).\n\nSelecciona un asesor para ver nuestro **catálogo completo** con precios en $ y Bs.",
     "ubicacion": "Disponible en línea las 24/7. Envíos a toda Venezuela.",
     "horario": "Atención digital: Lunes a Domingo - 8:00 AM a 10:00 PM",
     "metodos_pago": "Pago Móvil (Tasa BCV), Zelle, Efectivo, Binance Pay (USDT) y Punto de Venta.",
