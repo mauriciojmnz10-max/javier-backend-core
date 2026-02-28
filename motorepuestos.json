@@ -1,0 +1,19 @@
+{
+    "nombre_tienda": "MOTO PART'S",
+    "tipo": "motorepuestos",
+    "tagline": "Todo para tu moto",
+    "color_primario": "#ff3300",
+    "contacto_whatsapp": "584120000003",
+    "mensaje_bienvenida": "🏍️ **¡Hola! Bienvenido a MOTO PART'S** ⚡\n\nEspecialistas en repuestos para todas las marcas. ¿Qué necesitas para tu moto hoy?",
+    "ubicacion": "Envíos a toda Venezuela.",
+    "horario": "Atención: Lunes a Sábado - 8:00 AM a 7:00 PM",
+    "metodos_pago": "Pago Móvil, Transferencia, Zelle, Efectivo",
+    "catalogo_motores": [
+        {"nombre": "Pistón", "descripcion": "Estándar, para motor 150cc", "precio": 18},
+        {"nombre": "Anillos", "descripcion": "Juego de anillos, estándar", "precio": 10}
+    ],
+    "catalogo_frenos": [
+        {"nombre": "Pastillas de Freno", "descripcion": "Delanteras, cerámicas", "precio": 12},
+        {"nombre": "Disco de Freno", "descripcion": "Delantero, 220mm", "precio": 22}
+    ]
+}
