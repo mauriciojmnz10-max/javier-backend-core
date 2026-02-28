@@ -22,12 +22,11 @@ app.add_middleware(
 )
 
 # ========== CONFIGURACIÓN POR TIENDA ==========
-# La tienda se selecciona mediante el parámetro en la URL
-CONFIG_DIR = "configs"
+# Los JSON están en la raíz del repositorio
 
 def cargar_config_tienda(store_id: str):
-    """Carga la configuración de una tienda específica"""
-    nombre_archivo = os.path.join(CONFIG_DIR, f"{store_id}.json")
+    """Carga la configuración de una tienda específica desde la raíz"""
+    nombre_archivo = f"{store_id}.json"  # Directamente en la raíz
     try:
         if os.path.exists(nombre_archivo):
             with open(nombre_archivo, "r", encoding="utf-8") as f:
@@ -63,21 +62,16 @@ def obtener_tasa_bcv():
 class Message(BaseModel):
     mensaje: str
     historial: list = []
-    advisor: str = "default"  # Para MultiKAP: motos/papeleria/hogar
-
-class ChatRequest(BaseModel):
-    store_id: str
-    message: Message
+    advisor: str = "default"
 
 # ========== GENERADOR DE PROMPTS POR TIENDA ==========
 def generar_prompt_segun_tienda(store_id: str, info: dict, tasa: float, advisor: str = "default"):
     """Genera el prompt del sistema según la tienda"""
     
     tienda_nombre = info.get("nombre_tienda", "").upper()
-    tipo = info.get("tipo", "").lower()
     
     # ===== MULTIKAP =====
-    if store_id == "multikap" or "MULTIKAP" in tienda_nombre:
+    if store_id == "multikap":
         prompts_asesor = {
             "motos": "Eres TAZ MOTOS 🏍️, experto en repuestos y accesorios para motos. Responde con energía y pasión por las motos.",
             "papeleria": "Eres TAZ PAPELERÍA 📚, especialista en útiles escolares y de oficina. Responde con creatividad y orden.",
@@ -103,7 +97,7 @@ def generar_prompt_segun_tienda(store_id: str, info: dict, tasa: float, advisor:
         """
     
     # ===== PANADERÍA =====
-    elif store_id == "panaderia" or tipo == "panaderia":
+    elif store_id == "panaderia":
         return f"""
         Eres Javier, el panadero virtual y experto en productos de panadería artesanal.
         
@@ -121,7 +115,7 @@ def generar_prompt_segun_tienda(store_id: str, info: dict, tasa: float, advisor:
         """
     
     # ===== FERRETERÍA =====
-    elif store_id == "ferreteria" or tipo == "ferreteria":
+    elif store_id == "ferreteria":
         return f"""
         Eres un experto en ferretería y construcción. Conoces todas las herramientas, materiales y soluciones para el hogar y la obra.
         
@@ -139,7 +133,7 @@ def generar_prompt_segun_tienda(store_id: str, info: dict, tasa: float, advisor:
         """
     
     # ===== MOTO-REPUESTOS =====
-    elif store_id == "motorepuestos" or tipo == "motorepuestos":
+    elif store_id == "motorepuestos":
         return f"""
         Eres un experto en motos y repuestos. Conoces todas las marcas, modelos y piezas.
         
@@ -201,7 +195,7 @@ async def chat(store_id: str, msg: Message):
         prompt_sistema = generar_prompt_segun_tienda(store_id, INFO, tasa, msg.advisor)
 
         mensajes_groq = [{"role": "system", "content": prompt_sistema}]
-        for m in msg.historial[-6:]:  # Últimos 6 mensajes para contexto
+        for m in msg.historial[-6:]:
             if isinstance(m, dict) and "role" in m:
                 mensajes_groq.append(m)
         
