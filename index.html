@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Arbitraje USDT - Deep</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-header h1 {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-header h1 .icon {
+            font-size: 32px;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-info:hover {
+            background: white;
+            color: #203a43;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        /* Flow Visualization */
+        .process-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 15px;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            font-size: 13px;
+            color: #333;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .flow-arrow {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .flow-step.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Calculator */
+        .calculator-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #203a43;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-weight: bold;
+        }
+
+        .input-with-icon input {
+            padding-left: 35px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .result-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-box.highlight {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left-color: #38ef7d;
+        }
+
+        .result-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #203a43;
+        }
+
+        .result-value.positive {
+            color: #11998e;
+        }
+
+        .result-value.negative {
+            color: #eb3349;
+        }
+
+        /* History Table */
+        .history-section {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            background: #203a43;
+            color: white;
+            padding: 12px 10px;
+            font-size: 12px;
+            text-align: center;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        tr:hover td {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .badge-MD {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-CP {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .badge-JB {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h2 {
+            color: #203a43;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .modal-content p {
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .summary-card .label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #203a43;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.success {
+            border-left: 4px solid #11998e;
+        }
+
+        .notification.error {
+            border-left: 4px solid #eb3349;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            font-size: 11px;
+            border-radius: 6px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 968px) {
+            .calculator-section {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <h1>
+                <span class="icon">💱</span>
+                Calculadora de Arbitraje USDT
+            </h1>
+            <div class="user-section" id="userSection">
+                <button class="btn btn-info" onclick="showLoginModal()">🔐 Iniciar Sesión</button>
+            </div>
+        </div>
+
+        <!-- Flow -->
+        <div class="main-content">
+            <div class="process-flow">
+                <div class="flow-step active">💰<br>Monto Bs</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">💵<br>Compra $</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">🏦<br>Merma BDV</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">💳<br>Merma BPAY</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">💎<br>$ Netos</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">📈<br>Venta USDT</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">🔄<br>Correr</div>
+            </div>
+
+            <!-- Calculator -->
+            <div class="calculator-section">
+                <!-- Inputs -->
+                <div class="card">
+                    <div class="card-title">
+                        📝 Datos de la Operación
+                    </div>
+
+                    <div class="form-group">
+                        <label>📅 Fecha</label>
+                        <input type="date" id="fecha" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label>👤 Inversor</label>
+                        <select id="inversor">
+                            <option value="MD">MD</option>
+                            <option value="CP">CP</option>
+                            <option value="JB">JB</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>💰 Monto Inicial en Bs</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">Bs</span>
+                            <input type="number" id="montoBs" step="0.01" placeholder="0,00">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>💵 Precio de Compra del $</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">Bs</span>
+                            <input type="number" id="precioCompra" step="0.01" placeholder="0,00">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🏦 Porcentaje Merma BDV (%)</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">%</span>
+                            <input type="number" id="porcentajeBDV" step="0.01" value="3" placeholder="3%">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>💳 Porcentaje Merma BPAY (%)</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">%</span>
+                            <input type="number" id="porcentajeBPAY" step="0.01" value="3.6" placeholder="3.6%">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📈 Precio de Venta USDT</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">Bs</span>
+                            <input type="number" id="precioVenta" step="0.01" placeholder="0,00">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="calcularOperacion()" style="width: 100%; margin-top: 10px;">
+                        🔄 Calcular Operación
+                    </button>
+                </div>
+
+                <!-- Results -->
+                <div class="card">
+                    <div class="card-title">
+                        📊 Resultados del Cálculo
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="result-box">
+                            <div class="result-label">💵 Monto Compra en $</div>
+                            <div class="result-value" id="rMontoUsd">0,00</div>
+                        </div>
+
+                        <div class="result-box">
+                            <div class="result-label">🏦 Merma BDV ($)</div>
+                            <div class="result-value negative" id="rMermaBDV">0,00</div>
+                        </div>
+
+                        <div class="result-box">
+                            <div class="result-label">💳 Merma BPAY ($)</div>
+                            <div class="result-value negative" id="rMermaBPAY">0,00</div>
+                        </div>
+
+                        <div class="result-box highlight">
+                            <div class="result-label">💎 Monto Neto en $</div>
+                            <div class="result-value" id="rMontoNeto">0,00</div>
+                        </div>
+
+                        <div class="result-box">
+                            <div class="result-label">📈 Monto Venta en Bs</div>
+                            <div class="result-value" id="rMontoVentaBs">0,00</div>
+                        </div>
+
+                        <div class="result-box highlight">
+                            <div class="result-label">🔄 Monto para Correr</div>
+                            <div class="result-value positive" id="rMontoCorrer">0,00</div>
+                        </div>
+
+                        <div class="result-box">
+                            <div class="result-label">📊 Ganancia Neta Bs</div>
+                            <div class="result-value" id="rGananciaBs">0,00</div>
+                        </div>
+
+                        <div class="result-box">
+                            <div class="result-label">💎 Ganancia Neta $</div>
+                            <div class="result-value" id="rGananciaUsd">0,00</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-success" onclick="guardarOperacion()" style="flex: 1;">
+                            💾 Guardar
+                        </button>
+                        <button class="btn btn-warning" onclick="correrDeNuevo()" style="flex: 1;">
+                            🔄 Correr de Nuevo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="label">📊 Total Operaciones</div>
+                    <div class="value" id="totalOps">0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">💰 Total Invertido Bs</div>
+                    <div class="value" id="totalInvertido">0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">📈 Ganancia Total $</div>
+                    <div class="value" id="gananciaTotal">0</div>
+                </div>
+            </div>
+
+            <!-- History -->
+            <div class="history-section">
+                <div class="history-header">
+                    <h3 style="color: #203a43;">📋 Historial de Operaciones</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-success btn-sm" onclick="exportarExcel()">📥 Excel</button>
+                        <button class="btn btn-danger btn-sm" onclick="limpiarHistorial()">🗑️ Limpiar</button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha</th>
+                                <th>Inversor</th>
+                                <th>MI Bs</th>
+                                <th>PC $</th>
+                                <th>MI $</th>
+                                <th>%BDV</th>
+                                <th>%BPAY</th>
+                                <th>Merma BDV</th>
+                                <th>Merma BPAY</th>
+                                <th>$ Neto</th>
+                                <th>PV USDT</th>
+                                <th>MV Bs</th>
+                                <th>Correr Bs</th>
+                                <th>Ganancia Bs</th>
+                                <th>Ganancia $</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody">
+                            <tr>
+                                <td colspan="17" style="text-align: center; padding: 30px; color: #999;">
+                                    📝 No hay operaciones registradas
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2>🔐 Bienvenido</h2>
+            <p>Inicia sesión o regístrate para guardar tus operaciones</p>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchAuthTab('login')">Iniciar Sesión</button>
+                <button class="tab-btn" onclick="switchAuthTab('register')">Registrarse</button>
+            </div>
+
+            <div id="loginForm">
+                <div class="form-group">
+                    <label>👤 Usuario</label>
+                    <input type="text" id="loginUser" placeholder="Tu usuario">
+                </div>
+                <div class="form-group">
+                    <label>🔒 Contraseña</label>
+                    <input type="password" id="loginPass" placeholder="Tu contraseña">
+                </div>
+                <button class="btn btn-primary" onclick="login()" style="width: 100%;">Ingresar</button>
+            </div>
+
+            <div id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label>👤 Usuario</label>
+                    <input type="text" id="registerUser" placeholder="Elige un usuario">
+                </div>
+                <div class="form-group">
+                    <label>🔒 Contraseña</label>
+                    <input type="password" id="registerPass" placeholder="Crea una contraseña">
+                </div>
+                <button class="btn btn-success" onclick="register()" style="width: 100%;">Crear Cuenta</button>
+            </div>
+
+            <button class="btn btn-danger" onclick="closeModal()" style="width: 100%; margin-top: 10px;">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        // ============ ESTADO DE LA APP ============
+        let currentUser = null;
+        let operaciones = [];
+        let ultimoCalculo = null;
+
+        // ============ BASE DE DATOS LOCAL ============
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('arbitrajeUsers') || '{}');
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('arbitrajeUsers', JSON.stringify(users));
+        }
+
+        function getOperaciones() {
+            if (!currentUser) return [];
+            return JSON.parse(localStorage.getItem(`arbitrajeOps_${currentUser}`) || '[]');
+        }
+
+        function saveOperaciones(ops) {
+            if (!currentUser) return;
+            localStorage.setItem(`arbitrajeOps_${currentUser}`, JSON.stringify(ops));
+            operaciones = ops;
+            actualizarHistorial();
+            actualizarResumen();
+        }
+
+        // ============ AUTENTICACIÓN ============
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+        }
+
+        function login() {
+            const username = document.getElementById('loginUser').value.trim();
+            const password = document.getElementById('loginPass').value;
+            const users = getUsers();
+
+            if (!username || !password) {
+                mostrarNotificacion('Completa todos los campos', 'error');
+                return;
+            }
+
+            if (users[username] && users[username].password === password) {
+                currentUser = username;
+                actualizarUI();
+                closeModal();
+                cargarDatos();
+                mostrarNotificacion('¡Bienvenido ' + username + '! 🎉', 'success');
+            } else {
+                mostrarNotificacion('Usuario o contraseña incorrectos', 'error');
+            }
+        }
+
+        function register() {
+            const username = document.getElementById('registerUser').value.trim();
+            const password = document.getElementById('registerPass').value;
+            
+            if (!username || !password) {
+                mostrarNotificacion('Completa todos los campos', 'error');
+                return;
+            }
+
+            const users = getUsers();
+            if (users[username]) {
+                mostrarNotificacion('El usuario ya existe', 'error');
+                return;
+            }
+
+            users[username] = { 
+                password, 
+                createdAt: new Date().toISOString() 
+            };
+            saveUsers(users);
+            
+            currentUser = username;
+            actualizarUI();
+            closeModal();
+            mostrarNotificacion('¡Cuenta creada exitosamente! 🚀', 'success');
+        }
+
+        function logout() {
+            if (confirm('¿Cerrar sesión?')) {
+                currentUser = null;
+                operaciones = [];
+                actualizarUI();
+                limpiarPantalla();
+                mostrarNotificacion('Sesión cerrada', 'success');
+            }
+        }
+
+        // ============ CÁLCULOS PRINCIPALES ============
+        function calcularOperacion() {
+            // Obtener valores
+            const montoBs = parseFloat(document.getElementById('montoBs').value) || 0;
+            const precioCompra = parseFloat(document.getElementById('precioCompra').value) || 0;
+            const porcentajeBDV = parseFloat(document.getElementById('porcentajeBDV').value) || 0;
+            const porcentajeBPAY = parseFloat(document.getElementById('porcentajeBPAY').value) || 0;
+            const precioVenta = parseFloat(document.getElementById('precioVenta').value) || 0;
+
+            // Validaciones
+            if (montoBs <= 0 || precioCompra <= 0) {
+                mostrarNotificacion('Ingresa Monto Bs y Precio de Compra', 'error');
+                return;
+            }
+
+            // CÁLCULOS:
+            // 1. Monto Compra en $ = Monto Bs / Precio Compra
+            const montoUsd = montoBs / precioCompra;
+            
+            // 2. Merma BDV = Monto $ * (%BDV / 100)
+            const mermaBDV = montoUsd * (porcentajeBDV / 100);
+            
+            // 3. Merma BPAY = Monto $ * (%BPAY / 100)
+            const mermaBPAY = montoUsd * (porcentajeBPAY / 100);
+            
+            // 4. Monto Neto $ = Monto $ - Merma BDV - Merma BPAY
+            const montoNeto = montoUsd - mermaBDV - mermaBPAY;
+            
+            // 5. Monto Venta Bs = Monto Neto $ * Precio Venta
+            const montoVentaBs = montoNeto * precioVenta;
+            
+            // 6. Monto para Correr = Monto Venta Bs
+            const montoCorrer = montoVentaBs;
+            
+            // 7. Ganancia Bs = Monto Venta Bs - Monto Inicial Bs
+            const gananciaBs = montoVentaBs - montoBs;
+            
+            // 8. Ganancia $ = Ganancia Bs / Precio Compra
+            const gananciaUsd = gananciaBs / precioCompra;
+
+            // Guardar cálculo actual
+            ultimoCalculo = {
+                fecha: document.getElementById('fecha').value || new Date().toISOString().split('T')[0],
+                inversor: document.getElementById('inversor').value,
+                montoBs,
+                precioCompra,
+                montoUsd,
+                porcentajeBDV,
+                porcentajeBPAY,
+                mermaBDV,
+                mermaBPAY,
+                montoNeto,
+                precioVenta,
+                montoVentaBs,
+                montoCorrer,
+                gananciaBs,
+                gananciaUsd
+            };
+
+            // Mostrar resultados
+            actualizarResultados(ultimoCalculo);
+            mostrarNotificacion('✅ Cálculo completado', 'success');
+        }
+
+        function actualizarResultados(calc) {
+            document.getElementById('rMontoUsd').textContent = '$ ' + calc.montoUsd.toFixed(2);
+            document.getElementById('rMermaBDV').textContent = '-$ ' + calc.mermaBDV.toFixed(2);
+            document.getElementById('rMermaBPAY').textContent = '-$ ' + calc.mermaBPAY.toFixed(2);
+            document.getElementById('rMontoNeto').textContent = '$ ' + calc.montoNeto.toFixed(2);
+            document.getElementById('rMontoVentaBs').textContent = 'Bs ' + calc.montoVentaBs.toFixed(2);
+            document.getElementById('rMontoCorrer').textContent = 'Bs ' + calc.montoCorrer.toFixed(2);
+            
+            const gananciaBsEl = document.getElementById('rGananciaBs');
+            gananciaBsEl.textContent = 'Bs ' + calc.gananciaBs.toFixed(2);
+            gananciaBsEl.className = 'result-value ' + (calc.gananciaBs >= 0 ? 'positive' : 'negative');
+            
+            const gananciaUsdEl = document.getElementById('rGananciaUsd');
+            gananciaUsdEl.textContent = '$ ' + calc.gananciaUsd.toFixed(2);
+            gananciaUsdEl.className = 'result-value ' + (calc.gananciaUsd >= 0 ? 'positive' : 'negative');
+        }
+
+        function correrDeNuevo() {
+            if (!ultimoCalculo) {
+                mostrarNotificacion('Primero realiza un cálculo', 'error');
+                return;
+            }
+
+            // Usar el Monto para Correr como nuevo Monto Inicial
+            document.getElementById('montoBs').value = ultimoCalculo.montoCorrer.toFixed(2);
+            
+            // Mantener los otros valores
+            mostrarNotificacion('🔄 Monto para correr establecido como nuevo inicial', 'success');
+            
+            // Hacer scroll al inicio
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============ GESTIÓN DE OPERACIONES ============
+        function guardarOperacion() {
+            if (!currentUser) {
+                mostrarNotificacion('Debes iniciar sesión para guardar', 'error');
+                showLoginModal();
+                return;
+            }
+
+            if (!ultimoCalculo) {
+                mostrarNotificacion('Primero realiza un cálculo', 'error');
+                return;
+            }
+
+            const ops = getOperaciones();
+            ultimoCalculo.id = Date.now();
+            ultimoCalculo.timestamp = new Date().toISOString();
+            ops.push(ultimoCalculo);
+            saveOperaciones(ops);
+            
+            mostrarNotificacion('💾 Operación guardada exitosamente', 'success');
+        }
+
+        function eliminarOperacion(id) {
+            if (!confirm('¿Eliminar esta operación?')) return;
+            
+            const ops = getOperaciones().filter(op => op.id !== id);
+            saveOperaciones(ops);
+            mostrarNotificacion('Operación eliminada', 'success');
+        }
+
+        function limpiarHistorial() {
+            if (!confirm('¿Eliminar TODO el historial? Esta acción no se puede deshacer.')) return;
+            saveOperaciones([]);
+            mostrarNotificacion('Historial limpiado', 'success');
+        }
+
+        // ============ UI ============
+        function actualizarHistorial() {
+            const tbody = document.getElementById('historyBody');
+            const ops = getOperaciones();
+            
+            if (ops.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="17" style="text-align: center; padding: 30px;">📝 No hay operaciones</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = ops.map((op, index) => `
+                <tr>
+                    <td><strong>${index + 1}</strong></td>
+                    <td>${op.fecha}</td>
+                    <td><span class="badge badge-${op.inversor}">${op.inversor}</span></td>
+                    <td>Bs ${op.montoBs.toFixed(2)}</td>
+                    <td>Bs ${op.precioCompra.toFixed(2)}</td>
+                    <td>$ ${op.montoUsd.toFixed(2)}</td>
+                    <td>${op.porcentajeBDV}%</td>
+                    <td>${op.porcentajeBPAY}%</td>
+                    <td style="color: #eb3349;">-$ ${op.mermaBDV.toFixed(2)}</td>
+                    <td style="color: #eb3349;">-$ ${op.mermaBPAY.toFixed(2)}</td>
+                    <td><strong>$ ${op.montoNeto.toFixed(2)}</strong></td>
+                    <td>Bs ${op.precioVenta.toFixed(2)}</td>
+                    <td>Bs ${op.montoVentaBs.toFixed(2)}</td>
+                    <td><strong>Bs ${op.montoCorrer.toFixed(2)}</strong></td>
+                    <td style="color: ${op.gananciaBs >= 0 ? '#11998e' : '#eb3349'};">
+                        Bs ${op.gananciaBs.toFixed(2)}
+                    </td>
+                    <td style="color: ${op.gananciaUsd >= 0 ? '#11998e' : '#eb3349'};">
+                        $ ${op.gananciaUsd.toFixed(2)}
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarOperacion(${op.id})">✕</button>
+                    </td>
+                </tr>
+            `).reverse().join('');
+        }
+
+        function actualizarResumen() {
+            const ops = getOperaciones();
+            
+            document.getElementById('totalOps').textContent = ops.length;
+            
+            const totalInvertido = ops.reduce((sum, op) => sum + op.montoBs, 0);
+            document.getElementById('totalInvertido').textContent = 'Bs ' + totalInvertido.toFixed(2);
+            
+            const gananciaTotal = ops.reduce((sum, op) => sum + op.gananciaUsd, 0);
+            document.getElementById('gananciaTotal').textContent = '$ ' + gananciaTotal.toFixed(2);
+        }
+
+        function actualizarUI() {
+            const userSection = document.getElementById('userSection');
+            if (currentUser) {
+                userSection.innerHTML = `
+                    <span class="user-badge">👤 ${currentUser}</span>
+                    <button class="btn btn-danger" onclick="logout()">Cerrar Sesión</button>
+                `;
+            } else {
+                userSection.innerHTML = `
+                    <button class="btn btn-info" onclick="showLoginModal()">🔐 Iniciar Sesión</button>
+                `;
+            }
+            actualizarHistorial();
+            actualizarResumen();
+        }
+
+        function limpiarPantalla() {
+            document.querySelectorAll('.result-value').forEach(el => el.textContent = '0,00');
+            document.getElementById('historyBody').innerHTML = '<tr><td colspan="17" style="text-align: center;">📝 No hay operaciones</td></tr>';
+            document.getElementById('totalOps').textContent = '0';
+            document.getElementById('totalInvertido').textContent = '0';
+            document.getElementById('gananciaTotal').textContent = '0';
+        }
+
+        function cargarDatos() {
+            operaciones = getOperaciones();
+            actualizarHistorial();
+            actualizarResumen();
+        }
+
+        // ============ MODAL ============
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        // ============ EXPORTACIÓN ============
+        function exportarExcel() {
+            const ops = getOperaciones();
+            if (ops.length === 0) {
+                mostrarNotificacion('No hay datos para exportar', 'error');
+                return;
+            }
+
+            let csv = 'Fila,Fecha,Inversor,MI Bs,PC $,MI $,%BDV,%BPAY,Merma BDV,Merma BPAY,$ Neto,PV USDT,MV Bs,Correr Bs,Ganancia Bs,Ganancia $\n';
+            
+            ops.forEach((op, i) => {
+                csv += `${i + 1},${op.fecha},${op.inversor},${op.montoBs},${op.precioCompra},`;
+                csv += `${op.montoUsd},${op.porcentajeBDV},${op.porcentajeBPAY},${op.mermaBDV},`;
+                csv += `${op.mermaBPAY},${op.montoNeto},${op.precioVenta},${op.montoVentaBs},`;
+                csv += `${op.montoCorrer},${op.gananciaBs},${op.gananciaUsd}\n`;
+            });
+
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `arbitraje_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            
+            mostrarNotificacion('📥 Archivo exportado exitosamente', 'success');
+        }
+
+        // ============ NOTIFICACIONES ============
+        function mostrarNotificacion(mensaje, tipo) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${tipo}`;
+            notification.innerHTML = `
+                <span>${tipo === 'success' ? '✅' : '❌'}</span>
+                ${mensaje}
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // ============ INICIALIZACIÓN ============
+        function init() {
+            // Fecha por defecto: hoy
+            document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+            
+            // Valores por defecto de porcentajes
+            document.getElementById('porcentajeBDV').value = '3';
+            document.getElementById('porcentajeBPAY').value = '3.6';
+            
+            actualizarUI();
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Iniciar app
+        init();
+    </script>
+</body>
+</html>
