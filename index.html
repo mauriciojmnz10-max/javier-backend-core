@@ -3,1586 +3,951 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v3 | Mau • Gestión Profesional USDT/VES</title>
+    <title>ArbitrajePro v2 - Tema MultiKAP</title>
     <style>
-        /* ============================================================
-           TEMA MULTIKAP - Identidad Visual Corporativa Completa
-           ============================================================ */
+        /* ============ VARIABLES GLOBALES DEL TEMA MULTIKAP ============ */
         :root {
-            /* Fondos */
-            --bg: #0a0e17;
-            --surface: #111827;
-            --card: #1a2336;
-            --card-hover: #1f2b42;
-            --border: #26354a;
-            --border-light: #334155;
-
-            /* Texto */
-            --text: #f0f4f8;
-            --text-secondary: #8b9db5;
-            --text-muted: #5f7188;
-
-            /* Paleta Principal MultiKAP */
+            --bg-main: #0b0f19;
+            --bg-surface: #121824;
+            --bg-card: #1a2336;
+            --border-color: #26354a;
+            --text-primary: #f0f4f8;
+            --text-secondary: #7a8fa8;
+            
+            /* Identidad MultiKAP */
             --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --primary-light: #6b83ff;
-            --primary-glow: rgba(67, 97, 238, 0.25);
-            --primary-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-
-            /* Semánticos */
+            --primary-hover: #3a0ca3;
             --success: #10b981;
-            --success-dark: #059669;
-            --success-glow: rgba(16, 185, 129, 0.25);
-            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
-
-            --warning: #f59e0b;
-            --warning-dark: #d97706;
-            --warning-glow: rgba(245, 158, 11, 0.25);
-            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-
             --danger: #ef4444;
-            --danger-dark: #dc2626;
-            --danger-glow: rgba(239, 68, 68, 0.25);
-            --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-
-            /* Perfiles de Inversión */
-            --profile-MD: #4361ee;
-            --profile-MD-glow: rgba(67, 97, 238, 0.3);
-            --profile-CP: #7c3aed;
-            --profile-CP-glow: rgba(124, 58, 237, 0.3);
-            --profile-JB: #10b981;
-            --profile-JB-glow: rgba(16, 185, 129, 0.3);
-
-            /* Sombras */
-            --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.4);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.7);
-            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.8);
-
-            /* Bordes */
-            --radius-xs: 4px;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-            --radius-2xl: 24px;
-
-            /* Transiciones */
-            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-            --transition-fast: 0.15s var(--ease-out);
-            --transition-base: 0.25s var(--ease-out);
-            --transition-slow: 0.4s var(--ease-in-out);
-
-            /* Tipografía */
-            --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+            --warning: #f59e0b;
+            
+            /* Perfiles Co-Inversores */
+            --profile-md: #2563eb;
+            --profile-cp: #7c3aed;
+            --profile-jb: #db2777;
         }
 
-        /* Modo Claro */
-        .light-mode {
-            --bg: #f1f5f9;
-            --surface: #ffffff;
-            --card: #ffffff;
-            --card-hover: #f8fafc;
-            --border: #e2e8f0;
-            --border-light: #cbd5e1;
-            --text: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.06);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.10);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
-            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
         body {
-            font-family: var(--font-sans);
-            background: var(--bg);
-            color: var(--text);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
             min-height: 100vh;
-            transition: background var(--transition-slow), color var(--transition-slow);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            padding-bottom: 50px;
+            padding: 20px;
         }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        /* Contenedor de Interacción Flotante con Resguardo Inferior */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding-bottom: 50px; /* Previene superposición con controles flotantes */
+        }
 
-        /* Header */
-        .header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 14px 28px;
+        .app-header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 14px;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-md);
         }
 
-        .logo {
-            font-size: 20px;
-            font-weight: 800;
+        .app-header h1 {
+            font-size: 22px;
             display: flex;
             align-items: center;
             gap: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-gradient);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: white;
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        .logo-text {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .logo-subtitle {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 500;
-            -webkit-text-fill-color: var(--text-muted);
-        }
-
-        .ticker-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-
-        .ticker-item {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: var(--transition-fast);
-            position: relative;
-            overflow: hidden;
         }
 
-        .ticker-item:hover {
-            border-color: var(--primary);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px var(--primary-glow);
-        }
-
-        .ticker-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-        }
-
-        .ticker-value {
-            font-size: 15px;
-            font-weight: 700;
-            font-family: var(--font-mono);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .ticker-up { color: var(--success); }
-        .ticker-down { color: var(--danger); }
-
-        .update-indicator {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--success);
-            box-shadow: 0 0 6px var(--success-glow);
-            flex-shrink: 0;
-        }
-
-        .update-indicator.loading {
-            background: var(--warning);
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.7); }
-        }
-
-        .user-controls { display: flex; gap: 8px; align-items: center; }
-
-        /* Botones */
-        .btn {
-            padding: 9px 18px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            transition: var(--transition-fast);
-            background: var(--card);
-            color: var(--text);
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: var(--font-sans);
-            letter-spacing: 0.2px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
-        .btn:active { transform: translateY(0); box-shadow: var(--shadow-xs); }
-
-        .btn-primary {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            font-weight: 700;
-            box-shadow: 0 4px 16px var(--primary-glow);
-        }
-        .btn-primary:hover { box-shadow: 0 6px 24px var(--primary-glow); }
-
-        .btn-success {
-            background: var(--success-gradient);
-            color: white;
-            border: none;
-            font-weight: 700;
-            box-shadow: 0 4px 16px var(--success-glow);
-        }
-        .btn-success:hover { box-shadow: 0 6px 24px var(--success-glow); }
-
-        .btn-warning {
-            background: var(--warning-gradient);
-            color: #1a1a1a;
-            border: none;
-            font-weight: 700;
-            box-shadow: 0 4px 16px var(--warning-glow);
-        }
-        .btn-warning:hover { box-shadow: 0 6px 24px var(--warning-glow); }
-
-        .btn-danger {
-            background: var(--danger-gradient);
-            color: white;
-            border: none;
-            font-weight: 700;
-            box-shadow: 0 4px 16px var(--danger-glow);
-        }
-        .btn-danger:hover { box-shadow: 0 6px 24px var(--danger-glow); }
-
-        .btn-sm { padding: 6px 12px; font-size: 11px; border-radius: 6px; }
-        .btn-xs { padding: 4px 9px; font-size: 10px; border-radius: 5px; }
-        .btn-icon {
-            width: 36px;
-            height: 36px;
-            padding: 0;
+        .user-section {
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: var(--radius-sm);
+            gap: 15px;
         }
 
-        select, input {
-            padding: 9px 14px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            background: var(--card);
-            color: var(--text);
-            font-family: var(--font-sans);
-            transition: var(--transition-fast);
-        }
-
-        select:focus, input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-glow);
-        }
-
-        input[type="number"] {
-            font-family: var(--font-mono);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .badge {
-            padding: 4px 12px;
+        .user-badge {
+            background: var(--border-color);
+            padding: 8px 16px;
             border-radius: 20px;
-            font-weight: 700;
-            font-size: 11px;
-            display: inline-block;
-            letter-spacing: 0.3px;
+            font-weight: 600;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .badge-MD { background: rgba(67, 97, 238, 0.15); color: var(--profile-MD); border: 1px solid rgba(67, 97, 238, 0.3); }
-        .badge-CP { background: rgba(124, 58, 237, 0.15); color: var(--profile-CP); border: 1px solid rgba(124, 58, 237, 0.3); }
-        .badge-JB { background: rgba(16, 185, 129, 0.15); color: var(--profile-JB); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .badge-admin { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-        .app-container { max-width: 1500px; margin: 0 auto; padding: 24px; }
+        .btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
 
-        .section-title {
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-info {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-info:hover { background: var(--border-color); }
+
+        .main-content { padding: 25px; }
+
+        /* Flujo de Proceso MultiKAP */
+        .process-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+            min-width: 95px;
+        }
+
+        .flow-arrow {
             font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .flow-step.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Grid de Trabajo */
+        .calculator-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: var(--primary-gradient);
-            border-radius: 2px;
-        }
+        .form-group { margin-bottom: 16px; }
 
-        /* Steps */
-        .steps-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 28px;
-        }
-
-        @media (max-width: 1100px) { .steps-container { grid-template-columns: 1fr; } }
-
-        .step-card {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 22px;
-            transition: var(--transition-base);
-            position: relative;
-        }
-
-        .step-card:hover { border-color: var(--border-light); }
-
-        .step-card.active {
-            border-color: var(--primary);
-            box-shadow: 0 0 32px var(--primary-glow);
-            animation: glowPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 32px var(--primary-glow); }
-            50% { box-shadow: 0 0 48px var(--primary-glow); }
-        }
-
-        .step-card.completed {
-            border-color: var(--success);
-            box-shadow: 0 0 24px var(--success-glow);
-        }
-
-        .step-card.completed::after {
-            content: '✓';
-            position: absolute;
-            top: -12px;
-            right: -12px;
-            width: 28px;
-            height: 28px;
-            background: var(--success-gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 14px;
-            color: white;
-            box-shadow: 0 4px 12px var(--success-glow);
-            z-index: 2;
-        }
-
-        .step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-
-        .step-number {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 15px;
-            background: var(--border);
-            color: var(--text-muted);
-            transition: var(--transition-base);
-            flex-shrink: 0;
-        }
-
-        .step-card.active .step-number {
-            background: var(--primary-gradient);
-            color: white;
-            box-shadow: 0 0 16px var(--primary-glow);
-        }
-
-        .step-card.completed .step-number {
-            background: var(--success-gradient);
-            color: white;
-        }
-
-        .step-title { font-weight: 700; font-size: 15px; }
-        .step-body { display: flex; flex-direction: column; gap: 11px; }
-        .input-row { display: flex; gap: 8px; align-items: center; }
-        .input-row input { flex: 1; }
-        .currency-select { width: 72px; padding: 9px 6px; font-weight: 600; }
-
-        .step-result {
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            padding: 14px;
-            margin-top: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            text-align: center;
-            border-left: 4px solid var(--primary);
-            word-break: break-word;
-            line-height: 1.6;
-        }
-
-        .step-result.success { border-left-color: var(--success); }
-
-        .autofill-btn {
-            background: transparent;
-            border: 1px dashed var(--border);
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
             color: var(--text-secondary);
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 11px;
             font-weight: 600;
-            transition: var(--transition-fast);
-            white-space: nowrap;
-            font-family: var(--font-sans);
+            font-size: 13px;
         }
 
-        .autofill-btn:hover {
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
             border-color: var(--primary);
-            color: var(--primary-light);
-            background: var(--primary-glow);
         }
 
-        /* Comparativa */
-        .comparison-grid {
+        .input-with-icon { position: relative; }
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .input-with-icon input { padding-left: 38px; }
+
+        .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 28px;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
-        .investor-card {
-            background: var(--card);
-            border-radius: var(--radius-lg);
-            padding: 20px;
-            border: 1px solid var(--border);
-            transition: var(--transition-base);
+        .result-box {
+            background: var(--bg-main);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary);
         }
 
-        .investor-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-
-        .investor-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-        .stat-item {
-            background: var(--surface);
-            padding: 14px;
-            border-radius: var(--radius-md);
-            text-align: center;
-            transition: var(--transition-fast);
+        .result-box.highlight {
+            border-left-color: var(--success);
+            background: rgba(16, 185, 129, 0.04);
         }
 
-        .stat-item:hover { background: var(--card-hover); }
-
-        .stat-label {
-            font-size: 10px;
-            color: var(--text-muted);
+        .result-label {
+            font-size: 11px;
+            color: var(--text-secondary);
             text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
 
-        .stat-value {
+        .result-value {
             font-size: 20px;
             font-weight: 700;
-            font-family: var(--font-mono);
-            font-variant-numeric: tabular-nums;
+            color: var(--text-primary);
         }
+        .result-value.positive { color: var(--success); }
+        .result-value.negative { color: var(--danger); }
 
-        /* Gráficos */
-        .charts-container {
+        /* Tarjetas de Resumen */
+        .summary-cards {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            margin-bottom: 28px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
-        @media (max-width: 1000px) { .charts-container { grid-template-columns: 1fr; } }
-
-        .chart-card {
-            background: var(--card);
-            border-radius: var(--radius-lg);
-            padding: 22px;
-            border: 1px solid var(--border);
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
         }
 
-        .chart-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
-
-        .chart-tab {
-            padding: 7px 16px;
-            border-radius: 20px;
-            cursor: pointer;
+        .summary-card .label {
             font-size: 12px;
-            font-weight: 600;
-            border: 1px solid var(--border);
-            background: transparent;
             color: var(--text-secondary);
-            transition: var(--transition-fast);
-            font-family: var(--font-sans);
-        }
-
-        .chart-tab.active {
-            background: var(--primary-gradient);
-            color: white;
-            border-color: transparent;
-            box-shadow: 0 4px 12px var(--primary-glow);
-        }
-
-        .modern-chart {
-            height: 300px;
-            display: flex;
-            align-items: flex-end;
-            gap: 6px;
-            padding: 10px 0;
-            position: relative;
-            overflow-x: auto;
-        }
-
-        .chart-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-            min-width: 50px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .chart-bars {
-            display: flex;
-            gap: 3px;
-            align-items: flex-end;
-            height: 100%;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .chart-bar {
-            width: 100%;
-            max-width: 28px;
-            border-radius: 6px 6px 0 0;
-            transition: all 0.5s var(--ease-in-out);
-            cursor: pointer;
-            min-height: 4px;
-        }
-
-        .chart-bar:hover { filter: brightness(1.3); transform: scaleY(1.08); transform-origin: bottom; }
-        .chart-bar.MD { background: linear-gradient(to top, #4361ee, #6b83ff); }
-        .chart-bar.CP { background: linear-gradient(to top, #7c3aed, #a78bfa); }
-        .chart-bar.JB { background: linear-gradient(to top, #059669, #10b981); }
-
-        .chart-tooltip {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 10px 14px;
-            border-radius: var(--radius-md);
-            font-size: 11px;
-            font-weight: 600;
-            white-space: nowrap;
-            display: none;
-            z-index: 10;
-            box-shadow: var(--shadow-lg);
             margin-bottom: 6px;
         }
 
-        .chart-group:hover .chart-tooltip { display: block; }
-        .chart-label { font-size: 9px; color: var(--text-muted); margin-top: 6px; text-align: center; }
-
-        .chart-legend { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
-        .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; }
-        .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
-
-        /* Tabla */
-        .table-container {
-            background: var(--card);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            overflow: hidden;
-            margin-bottom: 28px;
+        .summary-card .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
         }
 
-        .table-header {
-            padding: 16px 22px;
+        /* Sección del Historial Contable */
+        .history-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 10px;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .table-scroll { overflow-x: auto; max-height: 480px; overflow-y: auto; }
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 450px;
+        }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1600px;
-            font-size: 12px;
+            min-width: 1200px;
         }
 
-        thead { position: sticky; top: 0; z-index: 5; }
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
 
         th {
-            background: var(--surface);
-            padding: 11px 8px;
-            font-size: 10px;
-            font-weight: 700;
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 10px;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--text-muted);
-            border-bottom: 2px solid var(--border);
-            white-space: nowrap;
-            text-align: center;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 10px 7px;
+            padding: 12px 10px;
             text-align: center;
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-            font-family: var(--font-mono);
-            font-variant-numeric: tabular-nums;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-primary);
         }
 
-        tr:hover td { background: rgba(67, 97, 238, 0.03); }
-        .currency-bs { color: var(--warning); font-weight: 600; }
-        .currency-usd { color: var(--success); font-weight: 600; }
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
-        .text-warning { color: var(--warning); }
-        .hidden { display: none !important; }
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
 
-        /* Modal & Toast */
-        .modal-overlay {
+        /* Badges de Co-Inversores */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 11px;
+            color: white;
+        }
+        .badge-MD { background: var(--profile-md); }
+        .badge-CP { background: var(--profile-cp); }
+        .badge-JB { background: var(--profile-jb); }
+
+        /* Modales */
+        .modal {
             display: none;
             position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 100;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 7, 12, 0.8);
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(6px);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
         }
 
-        .modal-overlay.active { display: flex; }
+        .modal.active { display: flex; }
 
-        .modal {
-            background: var(--surface);
-            border-radius: var(--radius-xl);
-            padding: 28px;
-            width: 95%;
-            max-width: 520px;
-            max-height: 85vh;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-xl);
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
         }
 
-        .toast {
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-main);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .notification {
             position: fixed;
-            bottom: 28px;
-            right: 28px;
-            padding: 14px 24px;
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            z-index: 200;
+            top: 20px;
+            right: 20px;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 2000;
             font-weight: 600;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
-            animation: slideUp 0.35s var(--ease-out);
-            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+        }
+        .notification.success { border-left: 4px solid var(--success); }
+        .notification.error { border-left: 4px solid var(--danger); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(120px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        .btn-sm { padding: 6px 12px; font-size: 11px; border-radius: 6px; }
 
-        /* Indicador de datos precargados */
-        .seed-badge {
-            background: var(--primary-glow);
-            color: var(--primary-light);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 9px;
-            font-weight: 700;
-            margin-left: 6px;
+        @media (max-width: 968px) {
+            .calculator-section, .results-grid, .summary-cards {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <h1><span>💱</span> ArbitrajePro v2</h1>
+            <div class="user-section" id="userSection">
+                <button class="btn btn-info" onclick="showLoginModal()">🔐 Iniciar Sesión</button>
+            </div>
+        </div>
 
-<!-- HEADER MULTIKAP -->
-<header class="header">
-    <div class="logo">
-        <div class="logo-icon">💱</div>
-        <div>
-            <div class="logo-text">ArbitrajePro</div>
-            <div class="logo-subtitle">MultiKAP • Libro de Operaciones USDT/VES</div>
+        <div class="main-content">
+            <!-- Flow Visualizer -->
+            <div class="process-flow">
+                <div class="flow-step active">💰<br>MI Bs</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">💵<br>Tasa Ent.</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">🏦<br>Merma 3%</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">💳<br>Merma 3.6%</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">💎<br>USDT Netos</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">📈<br>Tasa Sal.</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">🔄<br>Retorno Bs</div>
+            </div>
+
+            <!-- Calculadora Central -->
+            <div class="calculator-section">
+                <!-- Tarjeta de Entradas -->
+                <div class="card">
+                    <div class="card-title">📝 Registro de Operación</div>
+                    <div class="form-group">
+                        <label>📅 Fecha de Ejecución</label>
+                        <input type="date" id="fecha">
+                    </div>
+                    <div class="form-group">
+                        <label>👤 Perfil de Inversión</label>
+                        <select id="inversor">
+                            <option value="MD">MD (Fondo Principal)</option>
+                            <option value="CP">CP (Fondo Secundario)</option>
+                            <option value="JB">JB (Fondo Externo)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>💰 Monto Inicial (MI - Bs)</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">Bs</span>
+                            <input type="number" id="montoBs" step="0.01" placeholder="0.00" onfocus="this.select()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>💵 Tasa de Compra (USD Tasa)</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">Bs</span>
+                            <input type="number" id="precioCompra" step="0.01" placeholder="0.00" onfocus="this.select()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>🏦 Comisión BDV Movilización (%)</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">%</span>
+                            <input type="number" id="porcentajeBDV" step="0.01" value="3.0" onfocus="this.select()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>💳 Comisión Binance Pay (%)</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">%</span>
+                            <input type="number" id="porcentajeBPAY" step="0.01" value="3.6" onfocus="this.select()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>📈 Tasa de Venta P2P (USDT Tasa)</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">Bs</span>
+                            <input type="number" id="precioVenta" step="0.01" placeholder="0.00" onfocus="this.select()">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="calcularOperacion()" style="width: 100%; margin-top: 10px;">
+                        📊 Calcular Vuelta
+                    </button>
+                </div>
+
+                <!-- Tarjeta de Desglose Matemático -->
+                <div class="card">
+                    <div class="card-title">📊 Desglose de Resultados</div>
+                    <div class="results-grid">
+                        <div class="result-box">
+                            <div class="result-label">💵 Volumen Bruto Entry</div>
+                            <div class="result-value" id="rMontoUsd">$ 0.00</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">🏦 Merma Banco (3%)</div>
+                            <div class="result-value negative" id="rMermaBDV">-$ 0.00</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">💳 Merma Pasarela (3.6%)</div>
+                            <div class="result-value negative" id="rMermaBPAY">-$ 0.00</div>
+                        </div>
+                        <div class="result-box highlight">
+                            <div class="result-label">💎 Activo Disponible Real</div>
+                            <div class="result-value" id="rMontoNeto">0.00 USDT</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">📈 Retorno Bruto Saliendo</div>
+                            <div class="result-value" id="rMontoVentaBs">Bs 0.00</div>
+                        </div>
+                        <div class="result-box highlight">
+                            <div class="result-label">🔄 Capital Disponible (Correr)</div>
+                            <div class="result-value positive" id="rMontoCorrer">Bs 0.00</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">📊 Margen Neto Fiat</div>
+                            <div class="result-value" id="rGananciaBs">Bs 0.00</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">💎 Margen Neto Eq. Divisa</div>
+                            <div class="result-value" id="rGananciaUsd">$ 0.00</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
+                        <button class="btn btn-success" onclick="guardarOperacion()" style="flex: 1;">💾 Confirmar Vuelta</button>
+                        <button class="btn btn-warning" onclick="correrDeNuevo()" style="flex: 1;">🔄 Ciclar Capital</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Control Métrico -->
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="label">📊 Vueltas Totales</div>
+                    <div class="value" id="totalOps">0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">💰 Volumen Contabilizado (Bs)</div>
+                    <div class="value" id="totalInvertido">Bs 0.00</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">📈 Rendimiento Acumulado ($)</div>
+                    <div class="value" id="gananciaTotal">$ 0.00</div>
+                </div>
+            </div>
+
+            <!-- Libro de Operaciones Históricas -->
+            <div class="history-section">
+                <div class="history-header">
+                    <h3>📋 Historial del Libro Contable</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-success btn-sm" onclick="exportarExcel()">📥 Exportar CSV</button>
+                        <button class="btn btn-danger btn-sm" onclick="limpiarHistorial()">🗑️ Purgar Todo</button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Fecha</th>
+                                <th>Perfil</th>
+                                <th>MI Bs</th>
+                                <th>Tasa In</th>
+                                <th>USD Bruto</th>
+                                <th>%BDV</th>
+                                <th>%BPAY</th>
+                                <th>Merma BDV</th>
+                                <th>Merma BPAY</th>
+                                <th>USDT Net</th>
+                                <th>Tasa Out</th>
+                                <th>MV Bs</th>
+                                <th>Correr Bs</th>
+                                <th>Ganancia Bs</th>
+                                <th>Ganancia $</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="ticker-bar">
-        <div class="ticker-item" onclick="usarPrecioBCV()" title="Click para usar tasa BCV">
-            <span class="ticker-label">🏦 BCV</span>
-            <span class="ticker-value" id="tickerBCV">Cargando...</span>
-            <span class="update-indicator" id="bcvIndicator"></span>
-        </div>
-        <div class="ticker-item" onclick="usarPrecioBinance()" title="Click para usar tasa Binance P2P">
-            <span class="ticker-label">🟡 Binance P2P</span>
-            <span class="ticker-value" id="tickerBinance">Cargando...</span>
-            <span class="update-indicator" id="binanceIndicator"></span>
-        </div>
-        <div class="ticker-item">
-            <span class="ticker-label">📊 Spread</span>
-            <span class="ticker-value" id="tickerSpread">-</span>
-        </div>
-        <button class="btn btn-sm btn-icon" onclick="cargarTickers()" title="Actualizar precios">🔄</button>
-    </div>
-
-    <div class="user-controls">
-        <select id="perfilSelect" onchange="cambiarPerfil()">
-            <option value="">👤 Perfil...</option>
-            <option value="MD">💠 MD</option>
-            <option value="CP">💜 CP</option>
-            <option value="JB">💚 JB</option>
-            <option value="admin">👑 Admin</option>
-        </select>
-        <span id="badgePerfil"></span>
-        <button class="btn btn-sm" onclick="toggleTheme()" title="Tema Claro/Oscuro">🌓</button>
-        <button class="btn btn-sm hidden" id="btnAdmin" onclick="abrirAdmin()">⚙️</button>
-    </div>
-</header>
-
-<div class="app-container">
-
-    <!-- 3 STEPS -->
-    <div class="section-title">📋 Flujo de Arbitraje — 3 Etapas</div>
-    <div class="steps-container">
-
-        <!-- STEP 1: Pre-Cálculo -->
-        <div class="step-card active" id="step1Card">
-            <div class="step-header">
-                <div class="step-number">1</div>
-                <div class="step-title">💡 Pre-Cálculo / Fondeo</div>
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 15px;">🔐 Autenticación Operador</h3>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchAuthTab('login')">Ingresar</button>
+                <button class="tab-btn" onclick="switchAuthTab('register')">Nuevo Perfil</button>
             </div>
-            <div class="step-body">
-                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
-                    <button class="autofill-btn" onclick="autocompletarCompra()">⚡ USD Tasa</button>
-                    <button class="autofill-btn" onclick="autocompletarVenta()">📈 USDT Tasa</button>
-                    <button class="autofill-btn" onclick="autocompletarAmbos()">🎯 Ambos</button>
-                </div>
-                <div class="input-row">
-                    <span>💰</span>
-                    <input type="number" id="s1_monto" step="0.01" placeholder="Monto Inicial (MI - Bs)" onfocus="this.select()">
-                    <select id="s1_moneda" class="currency-select">
-                        <option value="BS">Bs</option>
-                        <option value="USD">$</option>
-                    </select>
-                </div>
-                <div class="input-row">
-                    <span>💵</span>
-                    <input type="number" id="s1_precioCompra" step="0.01" placeholder="USD Tasa (Bs/$)" onfocus="this.select()">
-                    <span style="font-size:12px;color:var(--text-muted);">Bs/$</span>
-                </div>
-                <div class="input-row">
-                    <span>📈</span>
-                    <input type="number" id="s1_precioVenta" step="0.01" placeholder="USDT Tasa (Bs/USDT)" onfocus="this.select()">
-                    <span style="font-size:12px;color:var(--text-muted);">Bs/USDT</span>
-                </div>
-                <div class="input-row">
-                    <span>📝</span>
-                    <input type="text" id="s1_nota" placeholder="Nota (opcional)">
-                </div>
-                <button class="btn btn-primary" onclick="step1Calcular()">🔄 Calcular Pre-Operación</button>
-                <div class="step-result" id="s1_result" style="display:none;"></div>
+            <div id="loginForm">
+                <div class="form-group"><label>Operador</label><input type="text" id="loginUser"></div>
+                <div class="form-group"><label>Clave</label><input type="password" id="loginPass"></div>
+                <button class="btn btn-primary" onclick="login()" style="width: 100%;">Acceder</button>
             </div>
-        </div>
-
-        <!-- STEP 2: Mermas -->
-        <div class="step-card" id="step2Card">
-            <div class="step-header">
-                <div class="step-number">2</div>
-                <div class="step-title">💳 Deducción de Mermas</div>
+            <div id="registerForm" style="display: none;">
+                <div class="form-group"><label>Nuevo Operador</label><input type="text" id="registerUser"></div>
+                <div class="form-group"><label>Clave Privada</label><input type="password" id="registerPass"></div>
+                <button class="btn btn-success" onclick="register()" style="width: 100%;">Registrar</button>
             </div>
-            <div class="step-body">
-                <p style="font-size:13px;color:var(--text-muted);">Confirma montos reales de compra</p>
-                <div class="input-row">
-                    <span>💵</span>
-                    <input type="number" id="s2_montoBs" step="0.01" placeholder="Bs gastados" onfocus="this.select()"><span>Bs</span>
-                </div>
-                <div class="input-row">
-                    <span>💲</span>
-                    <input type="number" id="s2_usdRecibidos" step="0.01" placeholder="USD Comprado" onfocus="this.select()"><span>$</span>
-                </div>
-                <div class="input-row">
-                    <span>🏦</span>
-                    <input type="number" id="s2_mermaBDV" step="0.01" placeholder="Merma BDV (3%)" value="0" onfocus="this.select()"><span>$</span>
-                </div>
-                <div class="input-row">
-                    <span>💳</span>
-                    <input type="number" id="s2_mermaBPAY" step="0.01" placeholder="Merma BPAY (3.6%)" value="0" onfocus="this.select()"><span>$</span>
-                </div>
-                <button class="btn btn-success" onclick="step2Confirmar()">✅ Confirmar Mermas</button>
-                <div class="step-result success" id="s2_result" style="display:none;"></div>
-            </div>
-        </div>
-
-        <!-- STEP 3: Venta -->
-        <div class="step-card" id="step3Card">
-            <div class="step-header">
-                <div class="step-number">3</div>
-                <div class="step-title">💰 Liquidación / Venta</div>
-            </div>
-            <div class="step-body">
-                <p style="font-size:13px;color:var(--text-muted);">Registra venta P2P</p>
-                <div class="input-row">
-                    <span>💎</span>
-                    <input type="number" id="s3_usdtVendidos" step="0.01" placeholder="USDT Convertido" onfocus="this.select()"><span>USDT</span>
-                </div>
-                <div class="input-row">
-                    <span>📈</span>
-                    <input type="number" id="s3_precioVenta" step="0.01" placeholder="USDT Tasa real" onfocus="this.select()"><span>Bs</span>
-                </div>
-                <div class="input-row">
-                    <span>🏦</span>
-                    <input type="number" id="s3_mermaBanco" step="0.01" placeholder="Merma banco salida" value="0" onfocus="this.select()"><span>Bs</span>
-                </div>
-                <button class="btn btn-warning" onclick="step3Completar()">💰 Registrar y Cerrar</button>
-                <div class="step-result success" id="s3_result" style="display:none;"></div>
-            </div>
+            <button class="btn btn-danger btn-sm" onclick="closeModal()" style="width: 100%; margin-top: 15px;">Cerrar</button>
         </div>
     </div>
 
-    <!-- COMPARATIVA -->
-    <div class="section-title">📊 Rendimiento por Inversor</div>
-    <div class="comparison-grid" id="comparisonGrid">
-        <div class="investor-card">
-            <h4 style="margin-bottom:12px;"><span class="badge badge-MD">💠 MD</span></h4>
-            <div class="investor-stats" id="statsMD"></div>
-        </div>
-        <div class="investor-card">
-            <h4 style="margin-bottom:12px;"><span class="badge badge-CP">💜 CP</span></h4>
-            <div class="investor-stats" id="statsCP"></div>
-        </div>
-        <div class="investor-card">
-            <h4 style="margin-bottom:12px;"><span class="badge badge-JB">💚 JB</span></h4>
-            <div class="investor-stats" id="statsJB"></div>
-        </div>
-    </div>
+    <script>
+        // ============ ESTADO GLOBAL ============
+        let currentUser = "Mauro_Admin"; // Configurado por defecto para cargar el histórico
+        let operaciones = [];
+        let ultimoCalculo = null;
 
-    <!-- GRÁFICOS -->
-    <div class="charts-container">
-        <div class="chart-card">
-            <div class="section-title">📈 Evolución de Ganancias</div>
-            <div class="chart-tabs">
-                <button class="chart-tab active" onclick="cambiarPeriodo('semanal')">Semanal</button>
-                <button class="chart-tab" onclick="cambiarPeriodo('mensual')">Mensual</button>
-                <button class="chart-tab" onclick="cambiarPeriodo('trimestral')">Trimestral</button>
-            </div>
-            <div class="modern-chart" id="mainChart"></div>
-            <div class="chart-legend">
-                <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(to top,#4361ee,#6b83ff);"></div> MD</div>
-                <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(to top,#7c3aed,#a78bfa);"></div> CP</div>
-                <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(to top,#059669,#10b981);"></div> JB</div>
-            </div>
-        </div>
-        <div class="chart-card">
-            <div class="section-title">📊 Resumen General</div>
-            <div id="resumenGeneral" style="display:flex;flex-direction:column;gap:15px;"></div>
-        </div>
-    </div>
+        // ============ SEED DATA: Historial extraído del archivo contable real "MD-CP-1.xlsx" ============
+        const HISTORIAL_EXCEL_SEED = [
+            {
+                id: 1716854400000, fecha: "2026-05-28", inversor: "MD", montoBs: 73931.00, precioCompra: 611.00,
+                montoUsd: 121.00, porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 3.63, mermaBPAY: 4.356,
+                montoNeto: 113.014, precioVenta: 740.70, montoVentaBs: 83709.47, montoCorrer: 83709.47,
+                gananciaBs: 9778.47, gananciaUsd: 16.00
+            },
+            {
+                id: 1716854400001, fecha: "2026-05-28", inversor: "CP", montoBs: 17719.00, precioCompra: 611.00,
+                montoUsd: 29.00, porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 0.87, mermaBPAY: 1.044,
+                montoNeto: 27.086, precioVenta: 740.70, montoVentaBs: 20062.60, montoCorrer: 20062.60,
+                gananciaBs: 2343.60, gananciaUsd: 3.84
+            }
+        ];
 
-    <!-- HISTORIAL -->
-    <div class="table-container">
-        <div class="table-header">
-            <span class="section-title" style="margin:0;">📋 Libro de Operaciones <span class="seed-badge">Datos Históricos</span></span>
-            <div style="display:flex;gap:8px;">
-                <button class="btn btn-sm" onclick="exportarExcel()">📥 Exportar Excel</button>
-                <button class="btn btn-sm btn-danger hidden" id="btnLimpiar" onclick="limpiarTodo()">🗑️ Limpiar</button>
-            </div>
-        </div>
-        <div class="table-scroll">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Operador</th>
-                        <th>Inversor</th>
-                        <th>Paso</th>
-                        <th>MI (Bs)</th>
-                        <th>USD Tasa</th>
-                        <th>USD Comprado</th>
-                        <th>%BDV</th>
-                        <th>%BPAY</th>
-                        <th>Merma BDV</th>
-                        <th>Merma BPAY</th>
-                        <th>USDT Convertido</th>
-                        <th>USDT Tasa</th>
-                        <th>MV (Bs)</th>
-                        <th>Correr (Bs)</th>
-                        <th>Ganancia Bs</th>
-                        <th>Ganancia $</th>
-                        <th>Nota</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="historyBody"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL ADMIN -->
-<div class="modal-overlay" id="adminModal">
-    <div class="modal">
-        <h3 style="margin-bottom:16px;">⚙️ Panel de Administración</h3>
-        <input type="password" id="adminPass" placeholder="Contraseña admin" style="width:100%;margin-bottom:12px;">
-        <button class="btn btn-primary" onclick="verificarAdmin()" style="width:100%;">🔓 Verificar</button>
-        <div id="adminOpts" class="hidden" style="margin-top:16px;">
-            <label style="display:flex;align-items:center;gap:10px;padding:10px 0;cursor:pointer;">
-                <input type="checkbox" id="cfgPublico" checked onchange="guardarConfig()"> 📋 Historial público
-            </label>
-            <label style="display:flex;align-items:center;gap:10px;padding:10px 0;cursor:pointer;">
-                <input type="checkbox" id="cfgGraficos" checked onchange="guardarConfig()"> 📊 Mostrar gráficos
-            </label>
-            <button class="btn btn-warning btn-sm" onclick="document.getElementById('adminModal').classList.remove('active')" style="width:100%;margin-top:10px;">Cerrar</button>
-        </div>
-        <button class="btn btn-sm" onclick="document.getElementById('adminModal').classList.remove('active')" style="width:100%;margin-top:8px;">Cancelar</button>
-    </div>
-</div>
-
-<script>
-// ==================== CONSTANTES ====================
-const ADMIN_PASS = 'admin123';
-const STORAGE_KEY = 'arbitrajePro_v3_ops';
-const CONFIG_KEY = 'arbitrajePro_v3_cfg';
-const THEME_KEY = 'arbitrajePro_v3_theme';
-const SEED_LOADED_KEY = 'arbitrajePro_v3_seed_loaded';
-
-// ==================== DATOS HISTÓRICOS (SEED DATA) ====================
-const SEED_DATA = [
-    {
-        id: 1001, timestamp: '2026-05-28T10:00:00', fecha: '2026-05-28',
-        hora: '10:00 AM', operador: 'MD', inversor: 'MD', paso: 'Histórico',
-        monto_inicial_bs: 73931.00, usd_tasa: 611.00,
-        usd_comprado: 121.00, pct_bdv: 3, pct_bpay: 3.6,
-        merma_bdv: 3.63, merma_bpay: 4.356,
-        usdt_convertido: 113.014, usdt_tasa: 740.70,
-        monto_venta_bs: 83709.47, merma_banco: 0,
-        correr: 83709.47, ganancia_bs: 9778.47, ganancia_usd: 16.00,
-        nota: 'Operación histórica - Mayo 28'
-    },
-    {
-        id: 1002, timestamp: '2026-05-28T11:00:00', fecha: '2026-05-28',
-        hora: '11:00 AM', operador: 'CP', inversor: 'CP', paso: 'Histórico',
-        monto_inicial_bs: 17719.00, usd_tasa: 611.00,
-        usd_comprado: 29.00, pct_bdv: 3, pct_bpay: 3.6,
-        merma_bdv: 0.87, merma_bpay: 1.044,
-        usdt_convertido: 27.086, usdt_tasa: 740.70,
-        monto_venta_bs: 20062.60, merma_banco: 0,
-        correr: 20062.60, ganancia_bs: 2343.60, ganancia_usd: 3.84,
-        nota: 'Operación histórica - Mayo 28'
-    },
-    {
-        id: 1003, timestamp: '2026-06-01T09:00:00', fecha: '2026-06-01',
-        hora: '09:00 AM', operador: 'MD', inversor: 'MD', paso: 'Histórico',
-        monto_inicial_bs: 75000.00, usd_tasa: 616.00,
-        usd_comprado: 121.75, pct_bdv: 3, pct_bpay: 3.6,
-        merma_bdv: 3.65, merma_bpay: 4.38,
-        usdt_convertido: 106.72, usdt_tasa: 723.00,
-        monto_venta_bs: 77361.00, merma_banco: 0,
-        correr: 77361.00, ganancia_bs: 2361.00, ganancia_usd: 3.83,
-        nota: 'Operación histórica - Junio 1'
-    },
-    {
-        id: 1004, timestamp: '2026-06-01T10:00:00', fecha: '2026-06-01',
-        hora: '10:00 AM', operador: 'CP', inversor: 'CP', paso: 'Histórico',
-        monto_inicial_bs: 45000.00, usd_tasa: 616.00,
-        usd_comprado: 73.00, pct_bdv: 2, pct_bpay: 3,
-        merma_bdv: 1.46, merma_bpay: 2.19,
-        usdt_convertido: 68.00, usdt_tasa: 723.00,
-        monto_venta_bs: 49164.00, merma_banco: 0,
-        correr: 49164.00, ganancia_bs: 4164.00, ganancia_usd: 6.76,
-        nota: 'Operación histórica - Junio 1'
-    },
-    {
-        id: 1005, timestamp: '2026-06-01T11:00:00', fecha: '2026-06-01',
-        hora: '11:00 AM', operador: 'JB', inversor: 'JB', paso: 'Histórico',
-        monto_inicial_bs: 308000.00, usd_tasa: 616.00,
-        usd_comprado: 500.00, pct_bdv: 15, pct_bpay: 18,
-        merma_bdv: 75.00, merma_bpay: 90.00,
-        usdt_convertido: 15.00, usdt_tasa: 723.00,
-        monto_venta_bs: 10845.00, merma_banco: 0,
-        correr: 10845.00, ganancia_bs: 10845.00, ganancia_usd: 17.61,
-        nota: 'Operación histórica JB - Junio 1'
-    }
-];
-
-// ==================== ESTADO GLOBAL ====================
-let perfilActivo = null;
-let esAdmin = false;
-let paso1Data = null;
-let paso2Data = null;
-let periodoChart = 'semanal';
-let tickerInterval = null;
-
-// ==================== PERSISTENCIA CON SEED DATA ====================
-function cargarSeedDataSiEsNecesario() {
-    const yaCargado = localStorage.getItem(SEED_LOADED_KEY);
-    if (!yaCargado) {
-        // Primera vez: cargar datos históricos
-        const opsExistentes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        // Evitar duplicados
-        const idsExistentes = new Set(opsExistentes.map(o => o.id));
-        const nuevos = SEED_DATA.filter(s => !idsExistentes.has(s.id));
-        if (nuevos.length > 0) {
-            const todas = [...opsExistentes, ...nuevos];
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(todas));
+        // ============ GESTIÓN DE DATOS ============
+        function getOperaciones() {
+            const localData = localStorage.getItem(`arbitrajeOps_${currentUser}`);
+            if (!localData) {
+                // Si está vacío, inyectamos el histórico del archivo MD-CP-1.xlsx
+                localStorage.setItem(`arbitrajeOps_${currentUser}`, JSON.stringify(HISTORIAL_EXCEL_SEED));
+                return [...HISTORIAL_EXCEL_SEED];
+            }
+            return JSON.parse(localData);
         }
-        localStorage.setItem(SEED_LOADED_KEY, 'true');
-        console.log('✅ Datos históricos precargados:', nuevos.length, 'operaciones');
-    }
-}
 
-function getOps() {
-    cargarSeedDataSiEsNecesario();
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-}
-
-function saveOps(ops) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(ops));
-}
-
-function getConfig() {
-    return JSON.parse(localStorage.getItem(CONFIG_KEY) || '{"publico":true,"graficos":true}');
-}
-
-function saveConfig(cfg) {
-    localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
-}
-
-// ==================== PERFIL ====================
-function cambiarPerfil() {
-    const val = document.getElementById('perfilSelect').value;
-    if (val === 'admin') {
-        const pass = prompt('🔒 Contraseña Admin:');
-        if (pass !== ADMIN_PASS) {
-            alert('❌ Contraseña incorrecta');
-            document.getElementById('perfilSelect').value = '';
-            perfilActivo = null; esAdmin = false;
-            actualizarUI(); return;
+        function saveOperaciones(ops) {
+            localStorage.setItem(`arbitrajeOps_${currentUser}`, JSON.stringify(ops));
+            operaciones = ops;
+            actualizarHistorial();
+            actualizarResumen();
         }
-        esAdmin = true; perfilActivo = 'admin';
-    } else if (val) {
-        perfilActivo = val; esAdmin = false;
-    } else {
-        perfilActivo = null; esAdmin = false;
-    }
-    actualizarUI();
-    refrescarTodo();
-    toast('👤 Perfil: ' + (perfilActivo || 'Ninguno'));
-}
 
-function actualizarUI() {
-    const badge = document.getElementById('badgePerfil');
-    const btnAdmin = document.getElementById('btnAdmin');
-    const btnLimpiar = document.getElementById('btnLimpiar');
-    if (esAdmin) {
-        badge.innerHTML = '<span class="badge badge-admin">👑 ADMIN</span>';
-        btnAdmin.classList.remove('hidden'); btnLimpiar.classList.remove('hidden');
-    } else if (perfilActivo) {
-        badge.innerHTML = `<span class="badge badge-${perfilActivo}">👤 ${perfilActivo}</span>`;
-        btnAdmin.classList.add('hidden'); btnLimpiar.classList.add('hidden');
-    } else {
-        badge.innerHTML = ''; btnAdmin.classList.add('hidden'); btnLimpiar.classList.add('hidden');
-    }
-}
-
-// ==================== TICKERS ====================
-async function cargarTickers() {
-    document.getElementById('bcvIndicator').classList.add('loading');
-    document.getElementById('binanceIndicator').classList.add('loading');
-    await Promise.allSettled([cargarBCV(), cargarBinance()]);
-    document.getElementById('bcvIndicator').classList.remove('loading');
-    document.getElementById('binanceIndicator').classList.remove('loading');
-}
-
-async function cargarBCV() {
-    try {
-        const r = await fetch('https://ve.dolar-api.com/api/v1/dolar/oficial');
-        if (!r.ok) throw new Error('API BCV');
-        const d = await r.json();
-        if (d?.price) {
-            const p = parseFloat(d.price).toFixed(2);
-            document.getElementById('tickerBCV').textContent = `Bs ${p}`;
-            document.getElementById('tickerBCV').title = `BCV — ${d.date || ''}`;
-            localStorage.setItem('bcv_cache', JSON.stringify({ price: p, date: d.date, ts: Date.now() }));
-            calcularSpread();
+        // ============ AUTENTICACIÓN ============
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
         }
-    } catch {
-        const c = JSON.parse(localStorage.getItem('bcv_cache') || 'null');
-        if (c?.price) { document.getElementById('tickerBCV').textContent = `Bs ${c.price}`; calcularSpread(); }
-        else document.getElementById('tickerBCV').textContent = 'No disp.';
-    }
-}
 
-async function cargarBinance() {
-    try {
-        const ctrl = new AbortController();
-        const t = setTimeout(() => ctrl.abort(), 8000);
-        const r = await fetch('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ asset: 'USDT', fiat: 'VES', merchantCheck: false, page: 1, rows: 5, tradeType: 'SELL', transAmount: '100' }),
-            signal: ctrl.signal
-        });
-        clearTimeout(t);
-        if (!r.ok) throw new Error('Binance API');
-        const d = await r.json();
-        if (d?.data?.length > 0) {
-            const precios = d.data.map(i => parseFloat(i.adv.price)).filter(p => p > 0);
-            const mp = Math.min(...precios);
-            document.getElementById('tickerBinance').textContent = `Bs ${mp.toFixed(2)}`;
-            document.getElementById('tickerBinance').title = 'Binance P2P';
-            localStorage.setItem('binance_cache', JSON.stringify({ price: mp.toFixed(2), ts: Date.now() }));
-            calcularSpread();
+        function login() {
+            const username = document.getElementById('loginUser').value.trim();
+            const password = document.getElementById('loginPass').value;
+            
+            if (!username || !password) {
+                mostrarNotificacion('Complete todos los campos', 'error');
+                return;
+            }
+            
+            // Simulación de autenticación (en producción usarías backend)
+            const users = JSON.parse(localStorage.getItem('arbitrajeUsers') || '{}');
+            
+            if (users[username] && users[username].password === password) {
+                currentUser = username;
+                actualizarUI();
+                closeModal();
+                mostrarNotificacion(`Sesión activa: ${username}`, 'success');
+            } else {
+                mostrarNotificacion('Credenciales inválidas', 'error');
+            }
         }
-    } catch {
-        const c = JSON.parse(localStorage.getItem('binance_cache') || 'null');
-        if (c?.price) { document.getElementById('tickerBinance').textContent = `Bs ${c.price}`; calcularSpread(); }
-        else document.getElementById('tickerBinance').textContent = 'No disp.';
-    }
-}
 
-function calcularSpread() {
-    const bcv = parseFloat(document.getElementById('tickerBCV').textContent.replace('Bs ', ''));
-    const bin = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (bcv > 0 && bin > 0) {
-        const s = ((bin - bcv) / bcv * 100).toFixed(1);
-        const el = document.getElementById('tickerSpread');
-        el.textContent = s + '%';
-        el.className = 'ticker-value ' + (parseFloat(s) >= 0 ? 'ticker-up' : 'ticker-down');
-        el.title = `Dif: Bs ${(bin - bcv).toFixed(2)}`;
-    }
-}
+        function register() {
+            const username = document.getElementById('registerUser').value.trim();
+            const password = document.getElementById('registerPass').value;
+            
+            if (!username || !password) {
+                mostrarNotificacion('Complete todos los campos', 'error');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('arbitrajeUsers') || '{}');
+            
+            if (users[username]) {
+                mostrarNotificacion('El operador ya existe', 'error');
+                return;
+            }
+            
+            users[username] = { password, createdAt: new Date().toISOString() };
+            localStorage.setItem('arbitrajeUsers', JSON.stringify(users));
+            
+            currentUser = username;
+            actualizarUI();
+            closeModal();
+            mostrarNotificacion(`Operador ${username} registrado`, 'success');
+        }
 
-function autocompletarCompra() {
-    const p = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (p > 0) { document.getElementById('s1_precioCompra').value = p.toFixed(2); toast('⚡ USD Tasa = Binance'); }
-}
-function autocompletarVenta() {
-    const p = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (p > 0) { document.getElementById('s1_precioVenta').value = (p + 3).toFixed(2); toast('📈 USDT Tasa = Binance +3'); }
-}
-function autocompletarAmbos() {
-    const p = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (p > 0) {
-        document.getElementById('s1_precioCompra').value = p.toFixed(2);
-        document.getElementById('s1_precioVenta').value = (p + 5).toFixed(2);
-        toast('🎯 Ambos precios listos');
-    }
-}
-function usarPrecioBCV() {
-    const p = parseFloat(document.getElementById('tickerBCV').textContent.replace('Bs ', ''));
-    if (p > 0) document.getElementById('s1_precioCompra').value = p.toFixed(2);
-}
-function usarPrecioBinance() {
-    const p = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (p > 0) {
-        const o = prompt('1 = USD Tasa\n2 = USDT Tasa\n3 = Ambos');
-        if (o === '1') document.getElementById('s1_precioCompra').value = p.toFixed(2);
-        else if (o === '2') document.getElementById('s1_precioVenta').value = p.toFixed(2);
-        else { document.getElementById('s1_precioCompra').value = p.toFixed(2); document.getElementById('s1_precioVenta').value = (p + 5).toFixed(2); }
-    }
-}
+        function logout() {
+            currentUser = null;
+            operaciones = [];
+            actualizarUI();
+            mostrarNotificacion('Sesión desconectada', 'success');
+        }
 
-// ==================== STEPS ====================
-function step1Calcular() {
-    let monto = parseFloat(document.getElementById('s1_monto').value) || 0;
-    const moneda = document.getElementById('s1_moneda').value;
-    const usdTasa = parseFloat(document.getElementById('s1_precioCompra').value) || 0;
-    const usdtTasa = parseFloat(document.getElementById('s1_precioVenta').value) || 0;
-    if (monto <= 0 || usdTasa <= 0 || usdtTasa <= 0) { toast('⚠️ Completa todos los campos', 'error'); return; }
-    if (moneda === 'USD') monto = monto * usdTasa;
+        // ============ CÁLCULOS ============
+        function calcularOperacion() {
+            const montoBs = parseFloat(document.getElementById('montoBs').value) || 0;
+            const precioCompra = parseFloat(document.getElementById('precioCompra').value) || 0;
+            const porcentajeBDV = parseFloat(document.getElementById('porcentajeBDV').value) || 0;
+            const porcentajeBPAY = parseFloat(document.getElementById('porcentajeBPAY').value) || 0;
+            const precioVenta = parseFloat(document.getElementById('precioVenta').value) || 0;
 
-    const usdComprado = monto / usdTasa;
-    const mermaBDV = usdComprado * 0.03;
-    const mermaBPAY = usdComprado * 0.036;
-    const usdtConvertido = usdComprado - mermaBDV - mermaBPAY;
-    const montoVenta = usdtConvertido * usdtTasa;
-    const gananciaBs = montoVenta - monto;
-    const gananciaUsd = gananciaBs / usdTasa;
+            if (montoBs <= 0 || precioCompra <= 0 || precioVenta <= 0) {
+                mostrarNotificacion('Complete Monto Bs, Compra y Venta.', 'error');
+                return;
+            }
 
-    paso1Data = {
-        montoBs: monto, usdTasa, usdComprado,
-        mermaBDV, mermaBPAY, usdtConvertido,
-        usdtTasa, montoVenta, gananciaBs, gananciaUsd,
-        nota: document.getElementById('s1_nota').value,
-        fecha: new Date().toISOString().split('T')[0],
-        hora: new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-    };
+            // Cálculos matemáticos
+            const montoUsd = montoBs / precioCompra;
+            const mermaBDV = montoUsd * (porcentajeBDV / 100);
+            const mermaBPAY = montoUsd * (porcentajeBPAY / 100);
+            const montoNeto = montoUsd - mermaBDV - mermaBPAY;
+            const montoVentaBs = montoNeto * precioVenta;
+            const montoCorrer = montoVentaBs;
+            const gananciaBs = montoVentaBs - montoBs;
+            const gananciaUsd = gananciaBs / precioCompra;
 
-    document.getElementById('s1_result').style.display = 'block';
-    document.getElementById('s1_result').innerHTML = `
-        💵 USD Comprado: <strong>$${usdComprado.toFixed(2)}</strong><br>
-        🏦 Merma BDV (3%): <span class="text-danger">-$${mermaBDV.toFixed(2)}</span> |
-        💳 Merma BPAY (3.6%): <span class="text-danger">-$${mermaBPAY.toFixed(2)}</span><br>
-        💎 USDT Convertido: <strong>$${usdtConvertido.toFixed(2)}</strong><br>
-        📈 Monto Venta Est.: <strong>Bs ${montoVenta.toFixed(2)}</strong><br>
-        📊 Ganancia Est.: <strong class="${gananciaUsd >= 0 ? 'text-success' : 'text-danger'}">Bs ${gananciaBs.toFixed(2)} / $${gananciaUsd.toFixed(2)}</strong>
-    `;
-    document.getElementById('s2_montoBs').value = monto.toFixed(2);
-    document.getElementById('s2_usdRecibidos').value = usdComprado.toFixed(2);
-    document.getElementById('s2_mermaBDV').value = mermaBDV.toFixed(2);
-    document.getElementById('s2_mermaBPAY').value = mermaBPAY.toFixed(2);
-    document.getElementById('step1Card').classList.add('completed');
-    document.getElementById('step2Card').classList.add('active');
-    toast('✅ Paso 1 → Continúa');
-}
+            ultimoCalculo = {
+                fecha: document.getElementById('fecha').value || new Date().toISOString().split('T')[0],
+                inversor: document.getElementById('inversor').value,
+                montoBs, precioCompra, montoUsd, porcentajeBDV, porcentajeBPAY,
+                mermaBDV, mermaBPAY, montoNeto, precioVenta, montoVentaBs, montoCorrer,
+                gananciaBs, gananciaUsd
+            };
 
-function step2Confirmar() {
-    const mBs = parseFloat(document.getElementById('s2_montoBs').value) || 0;
-    const uRec = parseFloat(document.getElementById('s2_usdRecibidos').value) || 0;
-    const mBDV = parseFloat(document.getElementById('s2_mermaBDV').value) || 0;
-    const mBP = parseFloat(document.getElementById('s2_mermaBPAY').value) || 0;
-    if (mBs <= 0 || uRec <= 0) { toast('⚠️ Completa campos', 'error'); return; }
-    const uConv = uRec - mBDV - mBP;
-    paso2Data = { ...paso1Data, montoBsReal: mBs, usdRecibidos: uRec, mermaBDVReal: mBDV, mermaBPAYReal: mBP, usdtConvertidoReal: uConv };
-    document.getElementById('s2_result').style.display = 'block';
-    document.getElementById('s2_result').innerHTML = `💎 USDT Convertido: <strong>$${uConv.toFixed(2)}</strong> | 🏦 Merma: <span class="text-danger">$${(mBDV+mBP).toFixed(2)}</span>`;
-    document.getElementById('s3_usdtVendidos').value = uConv.toFixed(2);
-    document.getElementById('s3_precioVenta').value = (paso1Data?.usdtTasa || 0).toFixed(2);
-    document.getElementById('step2Card').classList.add('completed');
-    document.getElementById('step3Card').classList.add('active');
-    toast('✅ Paso 2 → Venta');
-}
+            // Actualizar UI de resultados
+            document.getElementById('rMontoUsd').textContent = `$ ${montoUsd.toFixed(2)}`;
+            document.getElementById('rMermaBDV').textContent = `-$ ${mermaBDV.toFixed(2)}`;
+            document.getElementById('rMermaBPAY').textContent = `-$ ${mermaBPAY.toFixed(2)}`;
+            document.getElementById('rMontoNeto').textContent = `${montoNeto.toFixed(3)} USDT`;
+            document.getElementById('rMontoVentaBs').textContent = `Bs ${montoVentaBs.toFixed(2)}`;
+            document.getElementById('rMontoCorrer').textContent = `Bs ${montoCorrer.toFixed(2)}`;
+            
+            const gananciaBsEl = document.getElementById('rGananciaBs');
+            gananciaBsEl.textContent = `Bs ${gananciaBs.toFixed(2)}`;
+            gananciaBsEl.className = `result-value ${gananciaBs >= 0 ? 'positive' : 'negative'}`;
+            
+            const gananciaUsdEl = document.getElementById('rGananciaUsd');
+            gananciaUsdEl.textContent = `$ ${gananciaUsd.toFixed(2)}`;
+            gananciaUsdEl.className = `result-value ${gananciaUsd >= 0 ? 'positive' : 'negative'}`;
 
-function step3Completar() {
-    if (!perfilActivo) { toast('⚠️ Selecciona perfil', 'error'); return; }
-    const uVend = parseFloat(document.getElementById('s3_usdtVendidos').value) || 0;
-    const pVReal = parseFloat(document.getElementById('s3_precioVenta').value) || 0;
-    const mBanco = parseFloat(document.getElementById('s3_mermaBanco').value) || 0;
-    if (uVend <= 0 || pVReal <= 0) { toast('⚠️ Completa campos', 'error'); return; }
+            mostrarNotificacion('Cálculo estructurado', 'success');
+        }
 
-    const vBruta = uVend * pVReal;
-    const vNeta = vBruta - mBanco;
-    const mBase = paso2Data?.montoBsReal || paso1Data?.montoBs || 0;
-    const gBs = vNeta - mBase;
-    const uTasa = paso1Data?.usdTasa || 1;
-    const gUsd = gBs / uTasa;
+        function guardarOperacion() {
+            if (!ultimoCalculo) {
+                mostrarNotificacion('No hay cálculos pendientes por guardar.', 'error');
+                return;
+            }
+            const ops = getOperaciones();
+            ultimoCalculo.id = Date.now();
+            ops.push(ultimoCalculo);
+            saveOperaciones(ops);
+            ultimoCalculo = null;
+            mostrarNotificacion('Operación fijada en el historial contable.', 'success');
+        }
 
-    const op = {
-        id: Date.now(),
-        timestamp: new Date().toISOString(),
-        fecha: new Date().toISOString().split('T')[0],
-        hora: new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        operador: perfilActivo,
-        inversor: perfilActivo === 'admin' ? 'MD' : perfilActivo,
-        paso: 'Completo',
-        monto_inicial_bs: mBase,
-        usd_tasa: paso1Data?.usdTasa || 0,
-        usd_comprado: paso1Data?.usdComprado || 0,
-        pct_bdv: 3, pct_bpay: 3.6,
-        merma_bdv: paso2Data?.mermaBDVReal || paso1Data?.mermaBDV || 0,
-        merma_bpay: paso2Data?.mermaBPAYReal || paso1Data?.mermaBPAY || 0,
-        usdt_convertido: paso2Data?.usdtConvertidoReal || paso1Data?.usdtConvertido || 0,
-        usdt_tasa: pVReal,
-        monto_venta_bs: vNeta,
-        merma_banco: mBanco,
-        correr: vNeta,
-        ganancia_bs: gBs,
-        ganancia_usd: gUsd,
-        nota: paso1Data?.nota || ''
-    };
+        function correrDeNuevo() {
+            const rCorrer = document.getElementById('rMontoCorrer').textContent.replace('Bs ', '');
+            if (parseFloat(rCorrer) > 0) {
+                document.getElementById('montoBs').value = parseFloat(rCorrer).toFixed(2);
+                mostrarNotificacion('Capital balanceado al paso de entrada.', 'success');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                mostrarNotificacion('Ejecute un cálculo válido primero.', 'error');
+            }
+        }
 
-    const ops = getOps();
-    ops.push(op);
-    saveOps(ops);
+        function eliminarOperacion(id) {
+            const ops = getOperaciones().filter(op => op.id !== id);
+            saveOperaciones(ops);
+            mostrarNotificacion('Registro eliminado', 'success');
+        }
 
-    document.getElementById('s3_result').style.display = 'block';
-    document.getElementById('s3_result').innerHTML = `💰 Venta Neta: <strong>Bs ${vNeta.toFixed(2)}</strong><br>📊 Ganancia: <strong class="${gUsd >= 0 ? 'text-success' : 'text-danger'}">Bs ${gBs.toFixed(2)} / $${gUsd.toFixed(2)}</strong>`;
-    document.getElementById('step3Card').classList.add('completed');
-    setTimeout(resetearSteps, 2500);
-    refrescarTodo();
-    toast('🎉 ¡Operación registrada!');
-}
+        function limpiarHistorial() {
+            if (confirm('¿Purgar base de datos local? Esta acción no se puede deshacer.')) {
+                saveOperaciones([]);
+                mostrarNotificacion('Libro contable purgado', 'success');
+            }
+        }
 
-function resetearSteps() {
-    document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active', 'completed'));
-    document.getElementById('step1Card').classList.add('active');
-    document.querySelectorAll('.step-result').forEach(r => r.style.display = 'none');
-    ['s1_monto','s1_precioCompra','s1_precioVenta','s1_nota','s2_montoBs','s2_usdRecibidos','s3_usdtVendidos','s3_precioVenta'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('s2_mermaBDV').value = '0';
-    document.getElementById('s2_mermaBPAY').value = '0';
-    document.getElementById('s3_mermaBanco').value = '0';
-    paso1Data = null; paso2Data = null;
-}
+        // ============ UI ============
+        function actualizarHistorial() {
+            const tbody = document.getElementById('historyBody');
+            const ops = getOperaciones();
+            
+            if (ops.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="17" style="color:var(--text-secondary); padding:20px;">Sin transacciones registradas</td></tr>';
+                return;
+            }
 
-// ==================== HISTORIAL ====================
-function mostrarHistorial() {
-    const tbody = document.getElementById('historyBody');
-    let ops = getOps();
-    const cfg = getConfig();
-    if (!cfg.publico && !esAdmin && perfilActivo) ops = ops.filter(o => o.operador === perfilActivo);
+            tbody.innerHTML = ops.map((op, i) => `
+                <tr>
+                    <td><strong>${i + 1}</strong></td>
+                    <td>${op.fecha}</td>
+                    <td><span class="badge badge-${op.inversor}">${op.inversor}</span></td>
+                    <td>Bs ${op.montoBs.toFixed(2)}</td>
+                    <td>Bs ${op.precioCompra.toFixed(2)}</td>
+                    <td>$ ${op.montoUsd.toFixed(2)}</td>
+                    <td>${op.porcentajeBDV}%</td>
+                    <td>${op.porcentajeBPAY}%</td>
+                    <td style="color:var(--danger)">-$ ${op.mermaBDV.toFixed(2)}</td>
+                    <td style="color:var(--danger)">-$ ${op.mermaBPAY.toFixed(2)}</td>
+                    <td><strong>${op.montoNeto.toFixed(3)}</strong></td>
+                    <td>Bs ${op.precioVenta.toFixed(2)}</td>
+                    <td>Bs ${op.montoVentaBs.toFixed(2)}</td>
+                    <td><strong>Bs ${op.montoCorrer.toFixed(2)}</strong></td>
+                    <td style="color:${op.gananciaBs >= 0 ? 'var(--success)' : 'var(--danger)'}">Bs ${op.gananciaBs.toFixed(2)}</td>
+                    <td style="color:${op.gananciaUsd >= 0 ? 'var(--success)' : 'var(--danger)'}">$ ${op.gananciaUsd.toFixed(2)}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="eliminarOperacion(${op.id})">✕</button></td>
+                </tr>
+            `).reverse().join('');
+        }
 
-    if (ops.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="21" style="text-align:center;padding:40px;color:var(--text-muted);">📝 Libro vacío</td></tr>';
-        actualizarComparativa([]); actualizarGrafico([]); actualizarResumen([]);
-        return;
-    }
+        function actualizarResumen() {
+            const ops = getOperaciones();
+            document.getElementById('totalOps').textContent = ops.length;
+            const totalInvertido = ops.reduce((sum, op) => sum + op.montoBs, 0);
+            document.getElementById('totalInvertido').textContent = `Bs ${totalInvertido.toFixed(2)}`;
+            const gananciaTotal = ops.reduce((sum, op) => sum + op.gananciaUsd, 0);
+            document.getElementById('gananciaTotal').textContent = `$ ${gananciaTotal.toFixed(2)}`;
+        }
 
-    tbody.innerHTML = ops.map((o, i) => {
-        const esHistorico = o.id < 10000;
-        return `<tr>
-            <td><strong>${i + 1}</strong>${esHistorico ? '<span class="seed-badge">HIST</span>' : ''}</td>
-            <td>${o.fecha}</td>
-            <td>${o.hora || '-'}</td>
-            <td><span class="badge badge-${o.operador === 'admin' ? 'admin' : o.operador}">${o.operador || '-'}</span></td>
-            <td><span class="badge badge-${o.inversor}">${o.inversor || '-'}</span></td>
-            <td>${o.paso || 'Completo'}</td>
-            <td class="currency-bs">Bs ${(o.monto_inicial_bs || 0).toFixed(2)}</td>
-            <td>Bs ${(o.usd_tasa || 0).toFixed(2)}</td>
-            <td class="currency-usd">$ ${(o.usd_comprado || 0).toFixed(2)}</td>
-            <td>${o.pct_bdv || 3}%</td>
-            <td>${o.pct_bpay || 3.6}%</td>
-            <td class="text-danger">$ ${(o.merma_bdv || 0).toFixed(2)}</td>
-            <td class="text-danger">$ ${(o.merma_bpay || 0).toFixed(2)}</td>
-            <td class="currency-usd"><strong>$ ${(o.usdt_convertido || 0).toFixed(2)}</strong></td>
-            <td>Bs ${(o.usdt_tasa || 0).toFixed(2)}</td>
-            <td class="currency-bs">Bs ${(o.monto_venta_bs || 0).toFixed(2)}</td>
-            <td class="currency-bs"><strong>Bs ${(o.correr || 0).toFixed(2)}</strong></td>
-            <td class="${(o.ganancia_bs || 0) >= 0 ? 'text-success' : 'text-danger'}">Bs ${(o.ganancia_bs || 0).toFixed(2)}</td>
-            <td class="${(o.ganancia_usd || 0) >= 0 ? 'text-success' : 'text-danger'}"><strong>$ ${(o.ganancia_usd || 0).toFixed(2)}</strong></td>
-            <td title="${o.nota || ''}">${o.nota ? '📝' : '-'}</td>
-            <td>${esAdmin ? `<button class="btn btn-xs btn-danger" onclick="eliminarOp(${o.id})">✕</button>` : (esHistorico ? '🔒' : '-')}</td>
-        </tr>`;
-    }).reverse().join('');
+        function actualizarUI() {
+            const userSection = document.getElementById('userSection');
+            if (currentUser) {
+                userSection.innerHTML = `
+                    <span class="user-badge">👤 ${currentUser}</span>
+                    <button class="btn btn-danger btn-sm" onclick="logout()">Salir</button>
+                `;
+            } else {
+                userSection.innerHTML = `
+                    <button class="btn btn-info" onclick="showLoginModal()">🔐 Conectar</button>
+                `;
+            }
+            actualizarHistorial();
+            actualizarResumen();
+        }
 
-    const opsStats = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
-    actualizarComparativa(opsStats);
-    actualizarGrafico(opsStats);
-    actualizarResumen(opsStats);
-}
+        // ============ EXPORTACIÓN ============
+        function exportarExcel() {
+            const ops = getOperaciones();
+            if (ops.length === 0) {
+                mostrarNotificacion('No hay datos para exportar', 'error');
+                return;
+            }
+            
+            let csv = 'Fila,Fecha,Inversor,MI Bs,PC $,MI $,%BDV,%BPAY,Merma BDV,Merma BPAY,$ Neto,PV USDT,MV Bs,Correr Bs,Ganancia Bs,Ganancia $\n';
+            ops.forEach((op, i) => {
+                csv += `${i + 1},${op.fecha},${op.inversor},${op.montoBs},${op.precioCompra},${op.montoUsd},${op.porcentajeBDV},${op.porcentajeBPAY},${op.mermaBDV},${op.mermaBPAY},${op.montoNeto},${op.precioVenta},${op.montoVentaBs},${op.montoCorrer},${op.gananciaBs},${op.gananciaUsd}\n`;
+            });
+            
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ArbitrajeContable_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            
+            mostrarNotificacion('Archivo exportado exitosamente', 'success');
+        }
 
-function eliminarOp(id) {
-    if (!esAdmin) return;
-    if (id < 10000) { toast('🔒 Datos históricos protegidos', 'error'); return; }
-    if (!confirm('¿Eliminar?')) return;
-    saveOps(getOps().filter(o => o.id !== id));
-    refrescarTodo();
-    toast('🗑️ Eliminada');
-}
+        // ============ MODAL ============
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
 
-function limpiarTodo() {
-    if (!esAdmin) return;
-    if (!confirm('⚠️ ¿Eliminar TODO? (Datos históricos se perderán)')) return;
-    localStorage.removeItem(SEED_LOADED_KEY);
-    saveOps([]);
-    refrescarTodo();
-    toast('🗑️ Libro limpiado');
-}
+        // ============ NOTIFICACIONES ============
+        function mostrarNotificacion(mensaje, tipo) {
+            const notif = document.createElement('div');
+            notif.className = `notification ${tipo}`;
+            notif.innerHTML = `<span>${tipo === 'success' ? '✅' : '❌'}</span> ${mensaje}`;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => notif.remove(), 300);
+            }, 2500);
+        }
 
-// ==================== COMPARATIVA ====================
-function actualizarComparativa(ops) {
-    ['MD', 'CP', 'JB'].forEach(inv => {
-        const oi = ops.filter(o => (o.inversor === inv) || (o.operador === inv));
-        const tMI = oi.reduce((s, o) => s + (o.monto_inicial_bs || 0), 0);
-        const tMO = oi.reduce((s, o) => s + (o.usdt_convertido || 0), 0);
-        const tMV = oi.reduce((s, o) => s + (o.monto_venta_bs || 0), 0);
-        const tG = oi.reduce((s, o) => s + (o.ganancia_usd || 0), 0);
-        const rend = tMI > 0 ? ((tMV - tMI) / tMI * 100) : 0;
-        const div = document.getElementById('stats' + inv);
-        if (div) div.innerHTML = `
-            <div class="stat-item"><div class="stat-label">Ops</div><div class="stat-value">${oi.length}</div></div>
-            <div class="stat-item"><div class="stat-label">MI Total</div><div class="stat-value">Bs ${tMI.toFixed(2)}</div></div>
-            <div class="stat-item"><div class="stat-label">MO Total</div><div class="stat-value">$ ${tMO.toFixed(2)}</div></div>
-            <div class="stat-item"><div class="stat-label">MV Total</div><div class="stat-value">Bs ${tMV.toFixed(2)}</div></div>
-            <div class="stat-item"><div class="stat-label">Ganancia</div><div class="stat-value ${tG >= 0 ? 'text-success' : 'text-danger'}">$ ${tG.toFixed(2)}</div></div>
-            <div class="stat-item"><div class="stat-label">Rend.</div><div class="stat-value ${rend >= 0 ? 'text-success' : 'text-danger'}">${rend.toFixed(1)}%</div></div>
-        `;
-    });
-}
+        // ============ INICIALIZACIÓN ============
+        function init() {
+            document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+            actualizarUI();
+        }
 
-// ==================== GRÁFICO ====================
-function cambiarPeriodo(p) {
-    periodoChart = p;
-    document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
-    const ops = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
-    actualizarGrafico(ops);
-}
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
 
-function actualizarGrafico(ops) {
-    const c = document.getElementById('mainChart');
-    if (!ops.length) { c.innerHTML = '<div style="width:100%;text-align:center;padding:40px;color:var(--text-muted);">📊 Sin datos</div>'; return; }
-
-    let g = {};
-    ops.forEach(o => {
-        const f = new Date(o.timestamp);
-        let k;
-        if (periodoChart === 'semanal') { const ini = new Date(f); ini.setDate(f.getDate() - f.getDay()); k = ini.toISOString().split('T')[0]; }
-        else if (periodoChart === 'mensual') k = `${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}`;
-        else k = `${f.getFullYear()}-Q${Math.ceil((f.getMonth()+1)/3)}`;
-        if (!g[k]) g[k] = {};
-        const inv = o.inversor || o.operador;
-        g[k][inv] = (g[k][inv] || 0) + (o.ganancia_usd || 0);
-    });
-
-    const ks = Object.keys(g).sort().slice(-12);
-    const mx = Math.max(1, ...ks.flatMap(k => Object.values(g[k]).map(Math.abs)));
-
-    c.innerHTML = ks.map(k => {
-        const d = g[k];
-        const bars = ['MD','CP','JB'].map(inv => {
-            const v = d[inv] || 0;
-            return `<div class="chart-bar ${inv}" style="height:${Math.max(Math.abs(v)/mx*250, 3)}px;"></div>`;
-        }).join('');
-        const tot = ['MD','CP','JB'].reduce((s, inv) => s + (d[inv] || 0), 0);
-        const lbl = periodoChart === 'semanal' ? k.slice(5) : k;
-        return `<div class="chart-group">
-            <div class="chart-tooltip"><strong>${k}</strong><br>${['MD','CP','JB'].map(inv => `${inv}: $${(d[inv]||0).toFixed(2)}`).join('<br>')}<br><strong>Total: $${tot.toFixed(2)}</strong></div>
-            <div class="chart-bars">${bars}</div><div class="chart-label">${lbl}</div>
-        </div>`;
-    }).join('');
-}
-
-// ==================== RESUMEN ====================
-function actualizarResumen(ops) {
-    document.getElementById('resumenGeneral').innerHTML = ['MD','CP','JB'].map(inv => {
-        const oi = ops.filter(o => (o.inversor === inv) || (o.operador === inv));
-        const gan = oi.reduce((s, o) => s + (o.ganancia_usd || 0), 0);
-        const tMI = oi.reduce((s, o) => s + (o.monto_inicial_bs || 0), 0);
-        const ahora = new Date();
-        const gSem = oi.filter(o => (ahora - new Date(o.timestamp)) / 86400000 <= 7).reduce((s, o) => s + (o.ganancia_usd || 0), 0);
-        const rend = tMI > 0 ? (gan / (tMI / (oi[0]?.usd_tasa || 1)) * 100) : 0;
-        return `<div style="background:var(--surface);padding:15px;border-radius:12px;border:1px solid var(--border);">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <strong><span class="badge badge-${inv}">${inv}</span></strong>
-                <span class="${gan >= 0 ? 'text-success' : 'text-danger'}" style="font-weight:700;">$${gan.toFixed(2)}</span>
-            </div>
-            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>Ops:</span><span>${oi.length}</span></div>
-            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>Semana:</span><span class="${gSem >= 0 ? 'text-success' : 'text-danger'}">$${gSem.toFixed(2)}</span></div>
-            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>MI:</span><span>Bs ${tMI.toFixed(2)}</span></div>
-            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>Rend:</span><span>${rend.toFixed(1)}%</span></div>
-        </div>`;
-    }).join('');
-}
-
-// ==================== ADMIN ====================
-function abrirAdmin() { document.getElementById('adminModal').classList.add('active'); document.getElementById('adminPass').value = ''; document.getElementById('adminOpts').classList.add('hidden'); }
-function verificarAdmin() {
-    if (document.getElementById('adminPass').value === ADMIN_PASS) {
-        document.getElementById('adminOpts').classList.remove('hidden');
-        const cfg = getConfig();
-        document.getElementById('cfgPublico').checked = cfg.publico;
-        document.getElementById('cfgGraficos').checked = cfg.graficos;
-    } else alert('❌ Incorrecta');
-}
-function guardarConfig() {
-    saveConfig({ publico: document.getElementById('cfgPublico').checked, graficos: document.getElementById('cfgGraficos').checked });
-    refrescarTodo();
-}
-
-// ==================== UTILIDADES ====================
-function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-    localStorage.setItem(THEME_KEY, document.body.classList.contains('light-mode') ? 'light' : 'dark');
-}
-
-function exportarExcel() {
-    const ops = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
-    if (!ops.length) { toast('⚠️ Sin datos', 'error'); return; }
-    let csv = 'Fila,Fecha,Hora,Operador,Inversor,Paso,MI Bs,USD Tasa,USD Comprado,%BDV,%BPAY,Merma BDV,Merma BPAY,USDT Convertido,USDT Tasa,MV Bs,Correr,Ganancia Bs,Ganancia $,Nota\n';
-    ops.forEach((o, i) => {
-        csv += `${i+1},${o.fecha},${o.hora},${o.operador},${o.inversor},${o.paso},${o.monto_inicial_bs},${o.usd_tasa},${o.usd_comprado},${o.pct_bdv},${o.pct_bpay},${o.merma_bdv},${o.merma_bpay},${o.usdt_convertido},${o.usdt_tasa},${o.monto_venta_bs},${o.correr},${o.ganancia_bs},${o.ganancia_usd},"${o.nota||''}"\n`;
-    });
-    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `libro_operaciones_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    toast('📥 Exportado');
-}
-
-function toast(msg, tipo = 'success') {
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.style.borderLeft = `4px solid ${tipo === 'error' ? 'var(--danger)' : 'var(--success)'}`;
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; t.style.transition = '0.3s'; setTimeout(() => t.remove(), 300); }, 2800);
-}
-
-function refrescarTodo() { mostrarHistorial(); }
-
-// ==================== INIT ====================
-function init() {
-    if (localStorage.getItem(THEME_KEY) === 'light') document.body.classList.add('light-mode');
-    document.querySelectorAll('input[type="number"]').forEach(i => i.addEventListener('focus', () => i.select()));
-    cargarTickers();
-    tickerInterval = setInterval(cargarTickers, 60000);
-    actualizarUI();
-    refrescarTodo();
-}
-
-document.addEventListener('click', e => { if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('active'); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active')); });
-
-init();
-</script>
+        init();
+    </script>
 </body>
 </html>
