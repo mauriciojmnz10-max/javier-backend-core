@@ -48,6 +48,8 @@
             overflow: hidden;
             padding-bottom: 50px;
         }
+
+        /* HEADER MEJORADO */
         .app-header {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
@@ -56,30 +58,63 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
-        .app-header h1 {
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-left h1 {
             font-size: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
             font-weight: 700;
         }
-        .market-row {
+        .user-selector {
             display: flex;
-            gap: 8px;
             align-items: center;
+            gap: 6px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .user-selector span {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .user-selector select {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            outline: none;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             flex-wrap: wrap;
         }
         .market-badge {
             background: var(--bg-main);
             border: 1px solid var(--border-color);
-            padding: 5px 10px;
-            border-radius: 16px;
-            font-size: 10px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+        }
+        .market-badge.bcv {
+            border-left: 3px solid var(--info);
+        }
+        .market-badge.p2p {
+            border-left: 3px solid var(--warning);
         }
         .dot {
             width: 7px;
@@ -593,19 +628,42 @@
             .backup-row {
                 grid-template-columns: 1fr;
             }
+            .header-left {
+                flex-direction: column;
+                gap: 8px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
+        <!-- HEADER MEJORADO: Usuario en el centro, BCV y P2P con ambos precios -->
         <div class="app-header">
-            <h1><span>💱</span> ArbitrajePro v8</h1>
-            <div class="market-row">
-                <div class="market-badge"><span class="dot live" id="dotBCV"></span> BCV: <strong id="hBCV">--</strong></div>
-                <div class="market-badge"><span class="dot live" id="dotBin"></span> P2P: <strong id="hBin">--</strong></div>
+            <div class="header-left">
+                <h1><span>💱</span> ArbitrajePro v8</h1>
+                <div class="user-selector">
+                    <span>👤</span>
+                    <select id="headerUser" onchange="switchUser()">
+                        <option value="Carlos">Carlos</option>
+                        <option value="MD">MD</option>
+                        <option value="CP">CP</option>
+                        <option value="JB">JB</option>
+                    </select>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="market-badge bcv">
+                    <span class="dot live" id="dotBCV"></span>
+                    <span>BCV: <strong id="hBCV">--</strong></span>
+                </div>
+                <div class="market-badge p2p">
+                    <span class="dot live" id="dotBin"></span>
+                    <span>P2P: <strong id="hBinCompra">--</strong> / <strong id="hBinVenta">--</strong></span>
+                </div>
                 <button class="btn btn-outline btn-sm" onclick="syncRates()">🔄 Sync</button>
             </div>
         </div>
+
         <div class="main-content">
             <div class="flow-bar" id="flowBar">
                 <span class="flow-step-mini">💰 MI Bs</span><span class="flow-arrow-mini">→</span>
@@ -622,7 +680,7 @@
                 <div class="stage-col s1" id="sc1">
                     <div class="stage-col-header">🏦 Etapa 1: Entrada <span class="stage-badge-sm">BDV→BPAY</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s1_fecha"></div>
-                    <div class="stage-field"><label>👤 Inversor</label><select id="s1_inv"><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                    <div class="stage-field"><label>👤 Inversor</label><select id="s1_inv"><option value="Carlos">Carlos</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
                     <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s1_mi" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(1)"></div>
                     <div class="stage-field-row">
                         <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s1_tc" step="0.01" onfocus="this.select()" oninput="calcStage(1)"></div>
@@ -649,7 +707,7 @@
                 <div class="stage-col s2" id="sc2">
                     <div class="stage-col-header">💱 Etapa 2: Intermedia <span class="stage-badge-sm">BPAY→P2P</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s2_fecha"></div>
-                    <div class="stage-field"><label>👤 Inversor</label><select id="s2_inv"><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                    <div class="stage-field"><label>👤 Inversor</label><select id="s2_inv"><option value="Carlos">Carlos</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
                     <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s2_mi" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(2)"></div>
                     <div class="stage-field-row">
                         <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s2_tc" step="0.01" onfocus="this.select()" oninput="calcStage(2)"></div>
@@ -676,7 +734,7 @@
                 <div class="stage-col s3" id="sc3">
                     <div class="stage-col-header">💎 Etapa 3: Salida <span class="stage-badge-sm">P2P→Retiro</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s3_fecha"></div>
-                    <div class="stage-field"><label>👤 Inversor</label><select id="s3_inv"><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                    <div class="stage-field"><label>👤 Inversor</label><select id="s3_inv"><option value="Carlos">Carlos</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
                     <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s3_mi" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(3)"></div>
                     <div class="stage-field-row">
                         <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s3_tc" step="0.01" onfocus="this.select()" oninput="calcStage(3)"></div>
@@ -751,19 +809,32 @@
     </div>
 
     <script>
-        let ops = JSON.parse(localStorage.getItem('arbOps') || '[]');
+        let currentUser = 'Carlos';
+        let ops = JSON.parse(localStorage.getItem('arbOps_' + currentUser) || '[]');
         if (!ops.length) {
             ops = [
-                { id: 1, fecha: '2026-05-28', etapa: 1, inv: 'MD', mi: 73931, tc: 611, tv: 740.7, bdv: 3, bpay: 3.6, usd: 121,
-                    mbdv: 3.63, mbpay: 4.36, neto: 113.01, venta: 83709, correr: 83709, gan: 16 },
-                { id: 2, fecha: '2026-05-28', etapa: 1, inv: 'CP', mi: 17719, tc: 611, tv: 740.7, bdv: 3, bpay: 3.6, usd: 29,
+                { id: 1, fecha: '2026-05-28', etapa: 1, inv: 'Carlos', mi: 73931, tc: 611, tv: 740.7, bdv: 3, bpay: 3.6,
+                    usd: 121, mbdv: 3.63, mbpay: 4.36, neto: 113.01, venta: 83709, correr: 83709, gan: 16 },
+                { id: 2, fecha: '2026-05-28', etapa: 1, inv: 'MD', mi: 17719, tc: 611, tv: 740.7, bdv: 3, bpay: 3.6, usd: 29,
                     mbdv: 0.87, mbpay: 1.04, neto: 27.09, venta: 20063, correr: 20063, gan: 3.84 }
             ];
             saveOps();
         }
         let lineChart, doughnutChart;
 
-        function saveOps() { localStorage.setItem('arbOps', JSON.stringify(ops));
+        function switchUser() {
+            currentUser = document.getElementById('headerUser').value;
+            ops = JSON.parse(localStorage.getItem('arbOps_' + currentUser) || '[]');
+            if (!ops.length) {
+                ops = [];
+                saveOps();
+            }
+            renderHist();
+            renderKPIs();
+            updateStageCards();
+        }
+
+        function saveOps() { localStorage.setItem('arbOps_' + currentUser, JSON.stringify(ops));
             renderHist();
             renderKPIs(); }
 
@@ -790,7 +861,7 @@
             const n = u - mb - mp;
             const v = n * tv;
             const c = v;
-            const g = (v - mi) / tc;
+            const g = tc > 0 ? (v - mi) / tc : 0;
             const peq = tc / (1 - (bdv + bpay) / 100);
             const ok = tv > peq;
             document.getElementById(`s${s}_usd`).textContent = '$' + u.toFixed(2);
@@ -837,7 +908,7 @@
             const next = s === 3 ? 1 : s + 1;
             document.getElementById(`s${next}_mi`).value = r.correr.toFixed(2);
             document.getElementById(`s${next}_inv`).value = document.getElementById(`s${s}_inv`).value;
-            document.getElementById(`s${s}_inherit`).classList.add('show');
+            document.getElementById(`s${next}_inherit`).classList.add('show');
             calcStage(next);
             updateStageCards();
             notify('🔄 Capital pasado a Etapa ' + next);
@@ -847,13 +918,7 @@
             for (let s = 1; s <= 3; s++) {
                 const opsS = ops.filter(o => o.etapa === s);
                 const card = document.getElementById('sc' + s);
-                if (opsS.length) {
-                    card.classList.add('has-capital');
-                    const last = opsS[opsS.length - 1];
-                    document.getElementById(`s${s}_inherit`).classList.add('show');
-                } else {
-                    card.classList.remove('has-capital');
-                }
+                if (opsS.length) { card.classList.add('has-capital'); } else { card.classList.remove('has-capital'); }
             }
             updateFlowBar();
         }
@@ -883,7 +948,7 @@
                 <tr>
                     <td>${i+1}</td><td>${o.fecha}</td>
                     <td><span class="badge-inv badge-s${o.etapa}">E${o.etapa}</span></td>
-                    <td><span class="badge-inv badge-${o.inv}">${o.inv}</span></td>
+                    <td><span class="badge-inv badge-${o.inv==='Carlos'?'MD':o.inv}">${o.inv}</span></td>
                     <td>Bs ${o.mi.toFixed(0)}</td><td>$ ${o.usd.toFixed(2)}</td>
                     <td style="color:var(--danger);">-$ ${o.mbdv.toFixed(2)}</td>
                     <td style="color:var(--danger);">-$ ${o.mbpay.toFixed(2)}</td>
@@ -912,7 +977,7 @@
                 cf = 0,
                 gb = 0;
             ops.forEach(o => { if (o.etapa === 1 && !ops.some(x => x.etapa === 3 && x.correr === o.mi)) cf += o.mi; if (o
-                    .gan) gb += o.gan; if (o.etapa === 3) { ce++;
+                    .gan) gb += o.gan; if (o.etapa === 3 && o.tc && o.tv) { ce++;
                     ss += ((o.tv - o.tc) / o.tc) * 100; } });
             document.getElementById('kpiSpread').textContent = (ce ? ss / ce : 0).toFixed(1) + '%';
             document.getElementById('kpiRoi').textContent = (cf ? (gb / cf) * 100 : 0).toFixed(1) + '%';
@@ -957,6 +1022,7 @@
                 data: {
                     labels: fechas,
                     datasets: [
+                        { label: 'Carlos', data: getData('Carlos'), borderColor: '#10b981', tension: 0.3, borderWidth: 2 },
                         { label: 'MD', data: getData('MD'), borderColor: '#2563eb', tension: 0.3, borderWidth: 2 },
                         { label: 'CP', data: getData('CP'), borderColor: '#7c3aed', tension: 0.3, borderWidth: 2 },
                         { label: 'JB', data: getData('JB'), borderColor: '#db2777', tension: 0.3, borderWidth: 2 }
@@ -966,6 +1032,7 @@
                                 font: { size: 10 } } } }, scales: { x: { ticks: { color: '#7a8fa8',
                             font: { size: 9 } } }, y: { ticks: { color: '#7a8fa8', font: { size: 9 } } } } }
             });
+            const tCarlos = data.filter(o => o.inv === 'Carlos').reduce((s, o) => s + o.mi, 0);
             const tMD = data.filter(o => o.inv === 'MD').reduce((s, o) => s + o.mi, 0);
             const tCP = data.filter(o => o.inv === 'CP').reduce((s, o) => s + o.mi, 0);
             const tJB = data.filter(o => o.inv === 'JB').reduce((s, o) => s + o.mi, 0);
@@ -973,9 +1040,8 @@
             const ctx2 = document.getElementById('doughnutChart').getContext('2d');
             doughnutChart = new Chart(ctx2, {
                 type: 'doughnut',
-                data: { labels: ['MD', 'CP', 'JB'], datasets: [{ data: [tMD, tCP, tJB], backgroundColor: ['#2563eb',
-                        '#7c3aed', '#db2777'
-                    ] }] },
+                data: { labels: ['Carlos', 'MD', 'CP', 'JB'], datasets: [{ data: [tCarlos, tMD, tCP, tJB],
+                        backgroundColor: ['#10b981', '#2563eb', '#7c3aed', '#db2777'] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom',
                             labels: { color: '#f0f4f8', font: { size: 10 } } } } }
             });
@@ -985,10 +1051,11 @@
             let csv = 'Fecha,Etapa,Inversor,MI Bs,$ Compra,-BDV,-BPAY,$ Neto,Tasa Out,Bs Venta,Correr,Ganancia$\n';
             ops.forEach(o => { csv +=
                     `${o.fecha},${o.etapa},${o.inv},${o.mi},${o.usd},${o.mbdv},${o.mbpay},${o.neto},${o.tv},${o.venta},${o.correr},${o.gan}\n`; });
-            downloadBlob(csv, 'historial.csv', 'text/csv');
+            downloadBlob(csv, 'historial_' + currentUser + '.csv', 'text/csv');
         }
 
-        function exportJSON() { downloadBlob(JSON.stringify(ops, null, 2), 'backup.json', 'application/json'); }
+        function exportJSON() { downloadBlob(JSON.stringify(ops, null, 2), 'backup_' + currentUser + '.json',
+                'application/json'); }
 
         function importJSON(e) { const f = e.target.files[0]; if (!f) return;
             const r = new FileReader();
@@ -1041,14 +1108,18 @@
                 ]);
                 const d1 = await r1.json();
                 const d2 = await r2.json();
-                if (d1.data?.length) { const t = parseFloat(d1.data[0].adv.price).toFixed(2);
+                let tCompra = null,
+                    tVenta = null;
+                if (d1.data?.length) { tCompra = parseFloat(d1.data[0].adv.price).toFixed(2);
+                    document.getElementById('hBinCompra').textContent = 'Bs ' + tCompra;
                     ['s1_tc', 's2_tc', 's3_tc'].forEach(id => { const el = document.getElementById(id); if (el) el.value =
-                            t; }); }
-                if (d2.data?.length) { const t = parseFloat(d2.data[0].adv.price).toFixed(2);
-                    document.getElementById('hBin').textContent = 'Bs ' + t;
-                    document.getElementById('dotBin').className = 'dot live';
+                            tCompra; }); }
+                if (d2.data?.length) { tVenta = parseFloat(d2.data[0].adv.price).toFixed(2);
+                    document.getElementById('hBinVenta').textContent = 'Bs ' + tVenta;
                     ['s1_tv', 's2_tv', 's3_tv'].forEach(id => { const el = document.getElementById(id); if (el) el.value =
-                            t; }); }
+                            tVenta; }); }
+                if (tCompra || tVenta) { document.getElementById('dotBin').className = 'dot live'; } else { document
+                        .getElementById('dotBin').className = 'dot offline'; }
             } catch (e) { document.getElementById('dotBin').className = 'dot offline'; }
             notify('✅ Tasas actualizadas');
         }
