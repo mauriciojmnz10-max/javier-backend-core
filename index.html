@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v4 - Sistema Cíclico Multi-Etapa | MultiKAP</title>
+    <title>ArbitrajePro v6 - Sistema Profesional MultiKAP</title>
     <style>
         /* ============ TEMA MULTIKAP ============ */
         :root {
@@ -56,49 +56,48 @@
         .app-header {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
-            padding: 20px 30px;
+            padding: 16px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
         }
 
         .app-header h1 {
-            font-size: 24px;
+            font-size: 22px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 700;
         }
 
         .market-indicators {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
         }
 
         .market-badge {
             background: var(--bg-main);
             border: 1px solid var(--border-color);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 11px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .market-badge .dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
 
         .dot.live { background: var(--success); }
         .dot.offline { background: var(--danger); }
-        .dot.warning { background: var(--warning); }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -108,289 +107,430 @@
         .user-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .user-badge {
             background: var(--border-color);
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 16px;
             font-weight: 600;
-            font-size: 13px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             transition: all 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; filter: none; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-warning { background: var(--warning); color: white; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-info { background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); }
         .btn-info:hover { background: var(--border-color); }
-        .btn-sm { padding: 6px 12px; font-size: 11px; border-radius: 6px; }
+        .btn-sm { padding: 5px 10px; font-size: 10px; border-radius: 6px; }
+        .btn-xs { padding: 3px 8px; font-size: 9px; border-radius: 4px; }
         .btn-refresh { background: var(--info); color: white; }
         .btn-refresh:hover { background: #0891b2; }
 
-        .main-content { padding: 25px; }
+        .main-content { padding: 20px; }
 
-        /* ============ TABS DE NAVEGACIÓN ============ */
-        .nav-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 25px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 5px;
-        }
-
-        .nav-tab {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .nav-tab:hover { background: rgba(255, 255, 255, 0.05); }
-        .nav-tab.active { background: var(--primary); color: white; }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        /* ============ RESUMEN GLOBAL ============ */
-        .summary-cards {
+        /* ============ ZONA 1: OPERACIÓN DIRECTA ============ */
+        .operation-zone {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .summary-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 18px;
-            border-radius: 12px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .summary-card .label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-        }
-
-        .summary-card .value {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .summary-card .trend {
-            font-size: 11px;
-            margin-top: 4px;
-        }
-
-        .trend.up { color: var(--success); }
-        .trend.down { color: var(--danger); }
-
-        /* ============ DASHBOARD MULTI-ETAPA ============ */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 350px 1fr;
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .stage-card {
+        /* Panel de Cálculo Rápido (Flotante) */
+        .quick-calc-panel {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
         }
 
-        .stage-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-        }
-
-        .stage-card.stage-1::before { background: var(--stage-1); }
-        .stage-card.stage-2::before { background: var(--stage-2); }
-        .stage-card.stage-3::before { background: var(--stage-3); }
-
-        .stage-card.has-capital {
-            box-shadow: 0 0 20px rgba(67, 97, 238, 0.15);
-        }
-
-        .stage-card.stage-2.has-capital {
-            box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
-        }
-
-        .stage-card.stage-3.has-capital {
-            box-shadow: 0 0 20px rgba(219, 39, 119, 0.15);
-        }
-
-        .stage-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .quick-calc-panel .panel-title {
+            font-size: 15px;
+            font-weight: 700;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             padding-bottom: 10px;
             border-bottom: 1px solid var(--border-color);
         }
 
-        .stage-title {
-            font-size: 16px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .form-group { margin-bottom: 12px; }
 
-        .stage-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+            font-weight: 600;
             font-size: 11px;
-            font-weight: 700;
         }
 
-        .stage-1 .stage-badge { background: rgba(67, 97, 238, 0.2); color: var(--stage-1); }
-        .stage-2 .stage-badge { background: rgba(124, 58, 237, 0.2); color: var(--stage-2); }
-        .stage-3 .stage-badge { background: rgba(219, 39, 119, 0.2); color: var(--stage-3); }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 9px 12px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
 
-        .stage-summary {
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .input-with-icon { position: relative; }
+        .input-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .input-with-icon input { padding-left: 32px; }
+
+        .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 15px;
         }
 
-        .stage-stat {
+        .quick-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .quick-result-item {
             background: var(--bg-main);
             padding: 10px;
             border-radius: 8px;
             text-align: center;
         }
 
-        .stage-stat .label {
-            font-size: 10px;
+        .quick-result-item .qr-label {
+            font-size: 9px;
             color: var(--text-secondary);
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
-        .stage-stat .value {
-            font-size: 16px;
+        .quick-result-item .qr-value {
+            font-size: 15px;
             font-weight: 700;
         }
 
-        .stage-stat .value.positive { color: var(--success); }
-        .stage-stat .value.negative { color: var(--danger); }
-
-        .stage-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .stage-actions .btn { flex: 1; font-size: 11px; padding: 8px 12px; }
-
-        .stage-connection {
-            text-align: center;
-            font-size: 10px;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            padding: 4px;
-            background: var(--bg-main);
-            border-radius: 4px;
-        }
-
-        .stage-connection.active {
-            color: var(--success);
+        .quick-result-item.highlight {
             border: 1px solid var(--success);
+            background: rgba(16, 185, 129, 0.05);
         }
 
-        /* ============ FLUJO VISUAL ============ */
-        .flow-connector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-            padding: 15px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            flex-wrap: wrap;
+        .quick-result-item.danger {
+            border: 1px solid var(--danger);
+            background: rgba(239, 68, 68, 0.05);
         }
 
-        .flow-step {
-            background: var(--bg-main);
-            border: 1px solid var(--border-color);
-            padding: 10px 14px;
+        .alert-inline {
+            padding: 10px;
             border-radius: 8px;
-            font-weight: 600;
             font-size: 11px;
-            color: var(--text-secondary);
+            font-weight: 600;
             text-align: center;
-            min-width: 90px;
-            transition: all 0.5s;
+            margin: 10px 0;
+            display: none;
         }
 
-        .flow-arrow {
-            font-size: 20px;
-            color: var(--border-color);
-            font-weight: bold;
-            transition: all 0.5s;
+        .alert-inline.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
         }
 
-        .flow-step.active {
+        .alert-inline.danger {
+            display: block;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .stage-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .stage-btn {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-main);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .stage-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
-            transform: scale(1.05);
         }
 
-        .flow-step.completed {
-            background: var(--success);
+        .stage-btn.stage-1.active { background: var(--stage-1); border-color: var(--stage-1); }
+        .stage-btn.stage-2.active { background: var(--stage-2); border-color: var(--stage-2); }
+        .stage-btn.stage-3.active { background: var(--stage-3); border-color: var(--stage-3); }
+
+        /* Tabla de Historial Activo */
+        .history-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .history-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-panel .panel-title {
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 500px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+            font-size: 11px;
+        }
+
+        thead { position: sticky; top: 0; z-index: 10; }
+
+        th {
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 8px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 11px;
+        }
+
+        tr:hover td { background: rgba(255, 255, 255, 0.01); }
+        tr.perdida td { background: rgba(239, 68, 68, 0.04); }
+        tr.ganancia td { background: rgba(16, 185, 129, 0.03); }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 10px;
             color: white;
-            border-color: var(--success);
+        }
+        .badge-MD { background: var(--profile-md); }
+        .badge-CP { background: var(--profile-cp); }
+        .badge-JB { background: var(--profile-jb); }
+        .badge-stage-1 { background: var(--stage-1); }
+        .badge-stage-2 { background: var(--stage-2); }
+        .badge-stage-3 { background: var(--stage-3); }
+        .badge-stage-0 { background: var(--info); }
+
+        /* ============ ZONA 2: PANEL ESTRATÉGICO ============ */
+        .strategy-zone {
+            margin-top: 20px;
         }
 
-        .flow-arrow.active {
-            color: var(--primary);
+        .strategy-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 4px;
         }
 
-        .flow-arrow.completed {
-            color: var(--success);
+        .strategy-tab {
+            padding: 10px 18px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.3s;
         }
 
-        /* ============ MODAL DE OPERACIÓN ============ */
+        .strategy-tab:hover { background: rgba(255, 255, 255, 0.05); }
+        .strategy-tab.active { background: var(--primary); color: white; }
+
+        .strategy-content { display: none; }
+        .strategy-content.active { display: block; }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .kpi-card.spread { border-left: 4px solid var(--primary); }
+        .kpi-card.roi { border-left: 4px solid var(--success); }
+        .kpi-card.rotacion { border-left: 4px solid var(--warning); }
+
+        .kpi-card .kpi-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-card .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .kpi-card.spread .kpi-value { color: var(--primary); }
+        .kpi-card.roi .kpi-value { color: var(--success); }
+        .kpi-card.rotacion .kpi-value { color: var(--warning); }
+
+        .kpi-card .kpi-detail {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .backup-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .backup-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .backup-card h4 {
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .backup-card p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .simulator-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .simulator-results {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        /* ============ NOTIFICACIONES ============ */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: slideIn 0.3s ease;
+        }
+        .notification.success { border-left: 4px solid var(--success); }
+        .notification.error { border-left: 4px solid var(--danger); }
+        .notification.info { border-left: 4px solid var(--info); }
+        .notification.warning { border-left: 4px solid var(--warning); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ============ MODAL ============ */
         .modal {
             display: none;
             position: fixed;
@@ -410,209 +550,39 @@
         .modal-content {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            padding: 30px;
-            border-radius: 16px;
+            padding: 25px;
+            border-radius: 14px;
             width: 90%;
-            max-width: 550px;
-            max-height: 80vh;
-            overflow-y: auto;
+            max-width: 420px;
         }
 
-        .modal-content h3 {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .modal-content h3 { margin-bottom: 15px; }
 
-        .form-group { margin-bottom: 16px; }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px 14px;
-            background: var(--bg-main);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 15px;
-            color: var(--text-primary);
-            transition: border-color 0.2s;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .input-with-icon { position: relative; }
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: bold;
-        }
-        .input-with-icon input { padding-left: 38px; }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .result-mini {
-            background: var(--bg-main);
-            padding: 12px;
-            border-radius: 8px;
-            border-left: 3px solid var(--success);
-            margin-top: 15px;
-        }
-
-        .result-mini .label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-
-        .result-mini .value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--success);
-        }
-
-        .capital-source {
-            background: rgba(67, 97, 238, 0.1);
-            border: 1px solid var(--primary);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: var(--primary);
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        /* ============ HISTORIAL ============ */
-        .history-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 25px;
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-            max-height: 400px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1500px;
-        }
-
-        thead { position: sticky; top: 0; z-index: 10; }
-
-        th {
-            background: var(--bg-surface);
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 12px 10px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 12px;
-            color: var(--text-primary);
-        }
-
-        tr:hover td { background: rgba(255, 255, 255, 0.01); }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 11px;
-            color: white;
-        }
-        .badge-MD { background: var(--profile-md); }
-        .badge-CP { background: var(--profile-cp); }
-        .badge-JB { background: var(--profile-jb); }
-        .badge-stage-1 { background: var(--stage-1); }
-        .badge-stage-2 { background: var(--stage-2); }
-        .badge-stage-3 { background: var(--stage-3); }
-        .badge-stage-0 { background: var(--info); }
-
-        /* ============ NOTIFICACIONES ============ */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 14px 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: slideIn 0.3s ease;
-        }
-        .notification.success { border-left: 4px solid var(--success); }
-        .notification.error { border-left: 4px solid var(--danger); }
-        .notification.info { border-left: 4px solid var(--info); }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @media (max-width: 1200px) {
-            .dashboard-grid { grid-template-columns: 1fr 1fr; }
-            .summary-cards { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .summary-cards { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
-            .app-header { flex-direction: column; text-align: center; }
-            .market-indicators { flex-wrap: wrap; justify-content: center; }
+        @media (max-width: 1024px) {
+            .operation-zone {
+                grid-template-columns: 1fr;
+            }
+            .quick-calc-panel {
+                position: static;
+                max-height: none;
+            }
+            .kpi-cards {
+                grid-template-columns: 1fr;
+            }
+            .simulator-inputs {
+                grid-template-columns: 1fr;
+            }
+            .backup-actions {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- ============ HEADER CON INDICADORES DE MERCADO ============ -->
+        <!-- ============ HEADER ============ -->
         <div class="app-header">
-            <h1><span>💱</span> ArbitrajePro v4</h1>
-            
+            <h1><span>💱</span> ArbitrajePro v6</h1>
             <div class="market-indicators">
                 <div class="market-badge">
                     <span class="dot live" id="dotBCV"></span>
@@ -622,324 +592,127 @@
                     <span class="dot live" id="dotBinance"></span>
                     <span>P2P: <strong id="headerBinance">--</strong></span>
                 </div>
-                <button class="btn btn-refresh btn-sm" onclick="sincronizarMercadoContable()" title="Actualizar tasas en tiempo real">
-                    🔄 Sincronizar
-                </button>
+                <button class="btn btn-refresh btn-sm" onclick="sincronizarMercadoContable()">🔄</button>
             </div>
-
             <div class="user-section" id="userSection">
-                <button class="btn btn-info" onclick="showLoginModal()">🔐 Iniciar Sesión</button>
+                <button class="btn btn-info btn-sm" onclick="showLoginModal()">🔐 Iniciar Sesión</button>
             </div>
         </div>
 
         <div class="main-content">
-            <!-- ============ RESUMEN GLOBAL ============ -->
-            <div class="summary-cards">
-                <div class="summary-card">
-                    <div class="label">📊 Total Vueltas</div>
-                    <div class="value" id="totalOps">0</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">💰 Volumen Total (Bs)</div>
-                    <div class="value" id="totalInvertido">Bs 0.00</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">📈 Ganancia Total ($)</div>
-                    <div class="value" id="gananciaTotal" style="color: var(--success);">$ 0.00</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">🔄 Capital Circulante</div>
-                    <div class="value" id="capitalCirculante" style="color: var(--warning);">Bs 0.00</div>
-                </div>
-            </div>
+            <!-- ============ ZONA 1: OPERACIÓN DIRECTA ============ -->
+            <div class="operation-zone">
+                <!-- Panel de Cálculo Rápido -->
+                <div class="quick-calc-panel" id="quickCalcPanel">
+                    <div class="panel-title">⚡ Operación Relámpago</div>
+                    
+                    <!-- Selector de Etapa -->
+                    <div class="stage-selector">
+                        <button class="stage-btn stage-1 active" onclick="setQuickStage(1)">Etapa 1<br>Entrada</button>
+                        <button class="stage-btn stage-2" onclick="setQuickStage(2)">Etapa 2<br>Intermedia</button>
+                        <button class="stage-btn stage-3" onclick="setQuickStage(3)">Etapa 3<br>Salida</button>
+                    </div>
 
-            <!-- ============ TABS DE NAVEGACIÓN ============ -->
-            <div class="nav-tabs">
-                <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard Multi-Etapa</button>
-                <button class="nav-tab" onclick="switchTab('calculadora')">🧮 Calculadora Rápida</button>
-                <button class="nav-tab" onclick="switchTab('historial')">📋 Libro Contable</button>
-            </div>
-
-            <!-- ============ TAB: DASHBOARD MULTI-ETAPA ============ -->
-            <div class="tab-content active" id="tab-dashboard">
-                <!-- Flujo Visual -->
-                <div class="flow-connector" id="flowConnector">
-                    <div class="flow-step" data-step="0">💰<br>MI Bs</div>
-                    <div class="flow-arrow" data-arrow="0">→</div>
-                    <div class="flow-step" data-step="1">💵<br>Tasa Compra</div>
-                    <div class="flow-arrow" data-arrow="1">→</div>
-                    <div class="flow-step" data-step="2">🏦<br>Merma BDV</div>
-                    <div class="flow-arrow" data-arrow="2">→</div>
-                    <div class="flow-step" data-step="3">💳<br>Merma BPAY</div>
-                    <div class="flow-arrow" data-arrow="3">→</div>
-                    <div class="flow-step" data-step="4">💎<br>$ Netos</div>
-                    <div class="flow-arrow" data-arrow="4">→</div>
-                    <div class="flow-step" data-step="5">📈<br>Tasa Venta</div>
-                    <div class="flow-arrow" data-arrow="5">→</div>
-                    <div class="flow-step" data-step="6">🔄<br>Retorno Bs</div>
-                </div>
-
-                <!-- 3 Etapas de Arbitraje -->
-                <div class="dashboard-grid">
-                    <!-- ETAPA 1: Entrada -->
-                    <div class="stage-card stage-1" id="stage1Card">
-                        <div class="stage-header">
-                            <div class="stage-title">🏦 Etapa 1: Entrada</div>
-                            <span class="stage-badge">BDV → BPAY</span>
-                        </div>
-                        <div class="stage-summary">
-                            <div class="stage-stat">
-                                <div class="label">MI Bs</div>
-                                <div class="value" id="s1_miBs">Bs 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">$ Netos</div>
-                                <div class="value" id="s1_neto">$ 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">Retorno Bs</div>
-                                <div class="value" id="s1_retorno">Bs 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">Ganancia $</div>
-                                <div class="value" id="s1_ganancia" style="color: var(--success);">$ 0</div>
-                            </div>
-                        </div>
-                        <div class="stage-connection" id="s1_connection">
-                            ⬇️ Alimenta a Etapa 2
-                        </div>
-                        <div class="stage-actions">
-                            <button class="btn btn-primary btn-sm" onclick="openStageModal(1)">📝 Nueva Op</button>
-                            <button class="btn btn-success btn-sm" onclick="runStage(1)">🔄 Correr</button>
+                    <div class="form-group">
+                        <label>💰 Monto en Bs</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">Bs</span>
+                            <input type="number" id="quickMontoBs" step="0.01" placeholder="0.00" onfocus="this.select()">
                         </div>
                     </div>
 
-                    <!-- ETAPA 2: Intermedia -->
-                    <div class="stage-card stage-2" id="stage2Card">
-                        <div class="stage-header">
-                            <div class="stage-title">💱 Etapa 2: Intermedia</div>
-                            <span class="stage-badge">BPAY → P2P</span>
-                        </div>
-                        <div class="stage-summary">
-                            <div class="stage-stat">
-                                <div class="label">MI Bs</div>
-                                <div class="value" id="s2_miBs">Bs 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">$ Netos</div>
-                                <div class="value" id="s2_neto">$ 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">Retorno Bs</div>
-                                <div class="value" id="s2_retorno">Bs 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">Ganancia $</div>
-                                <div class="value" id="s2_ganancia" style="color: var(--success);">$ 0</div>
-                            </div>
-                        </div>
-                        <div class="stage-connection" id="s2_connection">
-                            ⬇️ Alimenta a Etapa 3
-                        </div>
-                        <div class="stage-actions">
-                            <button class="btn btn-primary btn-sm" onclick="openStageModal(2)">📝 Nueva Op</button>
-                            <button class="btn btn-success btn-sm" onclick="runStage(2)">🔄 Correr</button>
-                        </div>
-                    </div>
-
-                    <!-- ETAPA 3: Salida -->
-                    <div class="stage-card stage-3" id="stage3Card">
-                        <div class="stage-header">
-                            <div class="stage-title">💎 Etapa 3: Salida</div>
-                            <span class="stage-badge">P2P → Retiro</span>
-                        </div>
-                        <div class="stage-summary">
-                            <div class="stage-stat">
-                                <div class="label">MI Bs</div>
-                                <div class="value" id="s3_miBs">Bs 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">$ Netos</div>
-                                <div class="value" id="s3_neto">$ 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">Retorno Bs</div>
-                                <div class="value" id="s3_retorno">Bs 0</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">Ganancia $</div>
-                                <div class="value" id="s3_ganancia" style="color: var(--success);">$ 0</div>
-                            </div>
-                        </div>
-                        <div class="stage-connection" id="s3_connection">
-                            🔄 Retorna a Etapa 1
-                        </div>
-                        <div class="stage-actions">
-                            <button class="btn btn-primary btn-sm" onclick="openStageModal(3)">📝 Nueva Op</button>
-                            <button class="btn btn-success btn-sm" onclick="runStage(3)">🔄 Correr</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ============ TAB: CALCULADORA RÁPIDA ============ -->
-            <div class="tab-content" id="tab-calculadora">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
-                    <div class="stage-card" style="border-left: 4px solid var(--primary);">
-                        <div class="stage-header">
-                            <div class="stage-title">📝 Datos de Operación</div>
-                        </div>
-                        
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>📅 Fecha</label>
-                            <input type="date" id="calcFecha">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>👤 Perfil de Inversión</label>
-                            <select id="calcInversor">
-                                <option value="MD">MD (Fondo Principal)</option>
-                                <option value="CP">CP (Fondo Secundario)</option>
-                                <option value="JB">JB (Fondo Externo)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>💰 Monto Inicial (MI - Bs)</label>
+                            <label>💱 Tasa Compra</label>
                             <div class="input-with-icon">
                                 <span class="input-icon">Bs</span>
-                                <input type="number" id="calcMontoBs" step="0.01" placeholder="0.00" onfocus="this.select()">
+                                <input type="number" id="quickTasaCompra" step="0.01" onfocus="this.select()" oninput="calcularQuick()">
                             </div>
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>💵 Tasa BCV (Oficial)</label>
-                                <div class="input-with-icon">
-                                    <span class="input-icon">Bs</span>
-                                    <input type="number" id="calcPrecioCompra" step="0.01" placeholder="0.00" onfocus="this.select()">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>💱 Tasa Binance Compra</label>
-                                <div class="input-with-icon">
-                                    <span class="input-icon">Bs</span>
-                                    <input type="number" id="calcTasaBinanceCompra" step="0.01" placeholder="0.00" onfocus="this.select()">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>🏦 % BDV</label>
-                                <div class="input-with-icon">
-                                    <span class="input-icon">%</span>
-                                    <input type="number" id="calcBdv" step="0.01" value="3.0" onfocus="this.select()">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>💳 % BPAY</label>
-                                <div class="input-with-icon">
-                                    <span class="input-icon">%</span>
-                                    <input type="number" id="calcBpay" step="0.01" value="3.6" onfocus="this.select()">
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group">
-                            <label>📈 Tasa de Venta P2P</label>
+                            <label>📈 Tasa Venta</label>
                             <div class="input-with-icon">
                                 <span class="input-icon">Bs</span>
-                                <input type="number" id="calcPrecioVenta" step="0.01" placeholder="0.00" onfocus="this.select()">
+                                <input type="number" id="quickTasaVenta" step="0.01" onfocus="this.select()" oninput="calcularQuick()">
                             </div>
                         </div>
+                    </div>
 
-                        <button class="btn btn-primary" onclick="calcularOperacionRapida()" style="width: 100%; margin-top: 10px;">
-                            📊 Calcular Vuelta
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>🏦 % BDV</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">%</span>
+                                <input type="number" id="quickBdv" step="0.01" value="3.0" onfocus="this.select()" oninput="calcularQuick()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>💳 % BPAY</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">%</span>
+                                <input type="number" id="quickBpay" step="0.01" value="3.6" onfocus="this.select()" oninput="calcularQuick()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resultados rápidos -->
+                    <div class="quick-results">
+                        <div class="quick-result-item">
+                            <div class="qr-label">💵 USDT Brutos</div>
+                            <div class="qr-value" id="quickUsdBruto">$ 0.00</div>
+                        </div>
+                        <div class="quick-result-item">
+                            <div class="qr-label">💎 USDT Netos</div>
+                            <div class="qr-value" id="quickUsdNeto" style="color: var(--info);">$ 0.00</div>
+                        </div>
+                        <div class="quick-result-item">
+                            <div class="qr-label">🔄 Retorno Bs</div>
+                            <div class="qr-value" id="quickRetorno">Bs 0.00</div>
+                        </div>
+                        <div class="quick-result-item highlight" id="quickGananciaBox">
+                            <div class="qr-label">📊 Ganancia $</div>
+                            <div class="qr-value" id="quickGanancia">$ 0.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Alerta de Rentabilidad -->
+                    <div class="alert-inline" id="quickAlerta"></div>
+
+                    <!-- Botones de Acción -->
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-success" id="quickGuardarBtn" onclick="guardarOperacionQuick()" style="flex: 2;" disabled>
+                            💾 Asentar en Libro
+                        </button>
+                        <button class="btn btn-warning" onclick="ciclarCapitalQuick()" style="flex: 1;" title="Usar retorno como nuevo monto inicial">
+                            🔄 Ciclar
                         </button>
                     </div>
 
-                    <div class="stage-card" style="border-left: 4px solid var(--success);">
-                        <div class="stage-header">
-                            <div class="stage-title">📊 Desglose de Resultados</div>
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                            <div class="stage-stat">
-                                <div class="label">💵 Volumen Bruto</div>
-                                <div class="value" id="calcR_MontoUsd">$ 0.00</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">🏦 Merma BDV</div>
-                                <div class="value" id="calcR_MermaBDV" style="color: var(--danger);">-$ 0.00</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">💳 Merma BPAY</div>
-                                <div class="value" id="calcR_MermaBPAY" style="color: var(--danger);">-$ 0.00</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">💎 Activo Neto</div>
-                                <div class="value" id="calcR_MontoNeto" style="color: var(--info);">0.00 USDT</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">📈 Retorno Bruto</div>
-                                <div class="value" id="calcR_MontoVentaBs">Bs 0.00</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">🔄 Para Correr</div>
-                                <div class="value" id="calcR_MontoCorrer" style="color: var(--warning);">Bs 0.00</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">📊 Ganancia Bs</div>
-                                <div class="value" id="calcR_GananciaBs">Bs 0.00</div>
-                            </div>
-                            <div class="stage-stat">
-                                <div class="label">💎 Ganancia $</div>
-                                <div class="value" id="calcR_GananciaUsd">$ 0.00</div>
-                            </div>
-                        </div>
-
-                        <div style="display: flex; gap: 10px; margin-top: 20px;">
-                            <button class="btn btn-success" onclick="guardarOperacionRapida()" style="flex: 1;">💾 Guardar</button>
-                            <button class="btn btn-warning" onclick="correrCalculoRapido()" style="flex: 1;">🔄 Ciclar</button>
-                        </div>
+                    <div style="margin-top: 8px;">
+                        <button class="btn btn-info btn-sm" onclick="abrirModalCompleto()" style="width: 100%;">
+                            📝 Abrir Formulario Completo
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- ============ TAB: HISTORIAL ============ -->
-            <div class="tab-content" id="tab-historial">
-                <div class="history-section">
-                    <div class="history-header">
-                        <h3>📋 Historial del Libro Contable</h3>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn btn-success btn-sm" onclick="exportarExcel()">📥 Exportar CSV</button>
-                            <button class="btn btn-danger btn-sm" onclick="limpiarHistorial()">🗑️ Purgar Todo</button>
+                <!-- Tabla de Historial Activo -->
+                <div class="history-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">📋 Libro Contable Activo</div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn btn-success btn-xs" onclick="exportarExcel()">📥 CSV</button>
+                            <button class="btn btn-danger btn-xs" onclick="limpiarHistorial()">🗑️</button>
                         </div>
                     </div>
                     <div class="table-wrapper">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>N°</th>
-                                    <th>Fecha</th>
-                                    <th>Etapa</th>
-                                    <th>Perfil</th>
-                                    <th>MI Bs</th>
-                                    <th>Tasa BCV</th>
-                                    <th>Tasa Binance</th>
-                                    <th>USD Bruto</th>
-                                    <th>%BDV</th>
-                                    <th>%BPAY</th>
-                                    <th>Merma BDV</th>
-                                    <th>Merma BPAY</th>
-                                    <th>USDT Net</th>
-                                    <th>Tasa Out</th>
-                                    <th>MV Bs</th>
-                                    <th>Correr Bs</th>
-                                    <th>Ganancia Bs</th>
-                                    <th>Ganancia $</th>
-                                    <th>Acción</th>
+                                    <th>#</th><th>Fecha</th><th>Etapa</th><th>Perfil</th>
+                                    <th>MI Bs</th><th>Tasa In</th><th>USD Bruto</th>
+                                    <th>Mermas</th><th>USDT Net</th>
+                                    <th>Tasa Out</th><th>Retorno Bs</th>
+                                    <th>Ganancia $</th><th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody id="historyBody"></tbody>
@@ -947,112 +720,129 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ============ ZONA 2: PANEL ESTRATÉGICO ============ -->
+            <div class="strategy-zone">
+                <div class="strategy-tabs">
+                    <button class="strategy-tab active" onclick="switchStrategyTab('kpis')">📊 KPIs & Métricas</button>
+                    <button class="strategy-tab" onclick="switchStrategyTab('simulador')">🔮 Simulador</button>
+                    <button class="strategy-tab" onclick="switchStrategyTab('backup')">💾 Backup & Restauración</button>
+                </div>
+
+                <!-- KPIs -->
+                <div class="strategy-content active" id="strategy-kpis">
+                    <div class="kpi-cards">
+                        <div class="kpi-card spread">
+                            <div class="kpi-label">📊 Spread Promedio Real</div>
+                            <div class="kpi-value" id="kpiSpread">0.00%</div>
+                            <div class="kpi-detail">Diferencia neta de tasas</div>
+                        </div>
+                        <div class="kpi-card roi">
+                            <div class="kpi-label">💎 ROI Acumulado</div>
+                            <div class="kpi-value" id="kpiRoi">0.00%</div>
+                            <div class="kpi-detail">Retorno sobre inversión</div>
+                        </div>
+                        <div class="kpi-card rotacion">
+                            <div class="kpi-label">🔄 Rotación de Capital</div>
+                            <div class="kpi-value" id="kpiRotacion">0</div>
+                            <div class="kpi-detail">Ciclos completos (3 etapas)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulador -->
+                <div class="strategy-content" id="strategy-simulador">
+                    <div class="simulator-inputs">
+                        <div class="form-group">
+                            <label>💰 Capital Inicial (Bs)</label>
+                            <input type="number" id="simCapital" step="0.01" value="10000" onfocus="this.select()">
+                        </div>
+                        <div class="form-group">
+                            <label>💱 Tasa Compra</label>
+                            <input type="number" id="simTasaCompra" step="0.01" value="740" onfocus="this.select()">
+                        </div>
+                        <div class="form-group">
+                            <label>📈 Tasa Venta</label>
+                            <input type="number" id="simTasaVenta" step="0.01" value="800" onfocus="this.select()">
+                        </div>
+                        <div class="form-group">
+                            <label>🔄 N° de Ciclos</label>
+                            <input type="number" id="simCiclos" step="1" value="5" onfocus="this.select()">
+                        </div>
+                        <div class="form-group">
+                            <label>🏦 % BDV</label>
+                            <input type="number" id="simBdv" step="0.01" value="3.0" onfocus="this.select()">
+                        </div>
+                        <div class="form-group">
+                            <label>💳 % BPAY</label>
+                            <input type="number" id="simBpay" step="0.01" value="3.6" onfocus="this.select()">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="ejecutarSimulacion()">🔮 Calcular Proyección</button>
+                    <div class="simulator-results" id="simResultados" style="display: none;"></div>
+                </div>
+
+                <!-- Backup -->
+                <div class="strategy-content" id="strategy-backup">
+                    <div class="backup-actions">
+                        <div class="backup-card">
+                            <h4>📥 Exportar Backup</h4>
+                            <p>Descarga todo tu historial contable en formato JSON</p>
+                            <button class="btn btn-primary" onclick="exportarBackupJSON()">📥 Descargar JSON</button>
+                        </div>
+                        <div class="backup-card">
+                            <h4>📤 Importar Backup</h4>
+                            <p>Restaura tu historial desde un archivo JSON previamente guardado</p>
+                            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importarBackupJSON(event)">
+                            <button class="btn btn-warning" onclick="document.getElementById('importFile').click()">📤 Cargar Archivo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ============ MODAL DE OPERACIÓN POR ETAPA ============ -->
-    <div class="modal" id="stageModal">
-        <div class="modal-content">
-            <h3 id="modalTitle">📝 Nueva Operación</h3>
-            
-            <div class="capital-source" id="capitalSource" style="display: none;"></div>
-            
+    <!-- ============ MODAL COMPLETO ============ -->
+    <div class="modal" id="fullModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <h3 id="fullModalTitle">📝 Operación Detallada</h3>
+            <div class="form-group"><label>📅 Fecha</label><input type="date" id="fullFecha"></div>
             <div class="form-group">
-                <label>📅 Fecha</label>
-                <input type="date" id="modalFecha">
-            </div>
-            
-            <div class="form-group">
-                <label>👤 Perfil de Inversión</label>
-                <select id="modalInversor">
-                    <option value="MD">MD (Fondo Principal)</option>
-                    <option value="CP">CP (Fondo Secundario)</option>
-                    <option value="JB">JB (Fondo Externo)</option>
+                <label>👤 Perfil</label>
+                <select id="fullInversor">
+                    <option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option>
                 </select>
             </div>
-
             <div class="form-group">
-                <label>💰 Monto Inicial (MI - Bs)</label>
-                <div class="input-with-icon">
-                    <span class="input-icon">Bs</span>
-                    <input type="number" id="modalMontoBs" step="0.01" placeholder="0.00" onfocus="this.select()">
-                </div>
+                <label>💰 Monto Inicial (Bs)</label>
+                <div class="input-with-icon"><span class="input-icon">Bs</span><input type="number" id="fullMontoBs" step="0.01" onfocus="this.select()"></div>
             </div>
-
             <div class="form-row">
-                <div class="form-group">
-                    <label>💵 Tasa BCV</label>
-                    <div class="input-with-icon">
-                        <span class="input-icon">Bs</span>
-                        <input type="number" id="modalPrecioCompra" step="0.01" placeholder="0.00" onfocus="this.select()">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>💱 Tasa Binance</label>
-                    <div class="input-with-icon">
-                        <span class="input-icon">Bs</span>
-                        <input type="number" id="modalTasaBinance" step="0.01" placeholder="0.00" onfocus="this.select()">
-                    </div>
-                </div>
+                <div class="form-group"><label>💵 Tasa BCV</label><div class="input-with-icon"><span class="input-icon">Bs</span><input type="number" id="fullPrecioCompra" step="0.01" onfocus="this.select()"></div></div>
+                <div class="form-group"><label>💱 Tasa Binance</label><div class="input-with-icon"><span class="input-icon">Bs</span><input type="number" id="fullTasaBinance" step="0.01" onfocus="this.select()"></div></div>
             </div>
-
             <div class="form-row">
-                <div class="form-group">
-                    <label>🏦 % BDV</label>
-                    <div class="input-with-icon">
-                        <span class="input-icon">%</span>
-                        <input type="number" id="modalBdv" step="0.01" value="3.0" onfocus="this.select()">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>💳 % BPAY</label>
-                    <div class="input-with-icon">
-                        <span class="input-icon">%</span>
-                        <input type="number" id="modalBpay" step="0.01" value="3.6" onfocus="this.select()">
-                    </div>
-                </div>
+                <div class="form-group"><label>🏦 % BDV</label><input type="number" id="fullBdv" step="0.01" value="3.0" onfocus="this.select()"></div>
+                <div class="form-group"><label>💳 % BPAY</label><input type="number" id="fullBpay" step="0.01" value="3.6" onfocus="this.select()"></div>
             </div>
-
-            <div class="form-group">
-                <label>📈 Tasa de Venta P2P</label>
-                <div class="input-with-icon">
-                    <span class="input-icon">Bs</span>
-                    <input type="number" id="modalPrecioVenta" step="0.01" placeholder="0.00" onfocus="this.select()">
-                </div>
+            <div class="form-group"><label>📈 Tasa Venta</label><div class="input-with-icon"><span class="input-icon">Bs</span><input type="number" id="fullPrecioVenta" step="0.01" onfocus="this.select()"></div></div>
+            <div style="display: flex; gap: 8px; margin-top: 15px;">
+                <button class="btn btn-primary" onclick="calcularFullModal()" style="flex: 2;">📊 Calcular</button>
+                <button class="btn btn-success" id="fullGuardarBtn" onclick="guardarFullModal()" style="flex: 1;" disabled>💾 Guardar</button>
             </div>
-
-            <div class="result-mini" id="modalResult" style="display: none;">
-                <div class="label">💰 Retorno Estimado para Correr</div>
-                <div class="value" id="modalRetorno">Bs 0.00</div>
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn btn-primary" onclick="calcularEnModal()" style="flex: 2;">📊 Calcular</button>
-                <button class="btn btn-success" id="modalGuardarBtn" onclick="guardarDesdeModal()" style="flex: 1;" disabled>💾 Guardar</button>
-            </div>
-            <button class="btn btn-danger btn-sm" onclick="closeStageModal()" style="width: 100%; margin-top: 10px;">Cancelar</button>
+            <button class="btn btn-danger btn-sm" onclick="closeModal('fullModal')" style="width: 100%; margin-top: 8px;">Cancelar</button>
         </div>
     </div>
 
     <!-- ============ MODAL LOGIN ============ -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <h3 style="margin-bottom: 15px;">🔐 Autenticación Operador</h3>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button class="tab-btn-login active" onclick="switchAuthTab('login')" style="flex:1; padding:10px; border:1px solid var(--border-color); background:var(--bg-main); color:var(--text-secondary); border-radius:6px; cursor:pointer; font-weight:600;">Ingresar</button>
-                <button class="tab-btn-login" onclick="switchAuthTab('register')" style="flex:1; padding:10px; border:1px solid var(--border-color); background:var(--bg-main); color:var(--text-secondary); border-radius:6px; cursor:pointer; font-weight:600;">Nuevo Perfil</button>
-            </div>
-            <div id="loginForm">
-                <div class="form-group"><label>Operador</label><input type="text" id="loginUser"></div>
-                <div class="form-group"><label>Clave</label><input type="password" id="loginPass"></div>
-                <button class="btn btn-primary" onclick="login()" style="width: 100%;">Acceder</button>
-            </div>
-            <div id="registerForm" style="display: none;">
-                <div class="form-group"><label>Nuevo Operador</label><input type="text" id="registerUser"></div>
-                <div class="form-group"><label>Clave Privada</label><input type="password" id="registerPass"></div>
-                <button class="btn btn-success" onclick="register()" style="width: 100%;">Registrar</button>
-            </div>
-            <button class="btn btn-danger btn-sm" onclick="closeModal('loginModal')" style="width: 100%; margin-top: 15px;">Cerrar</button>
+            <h3>🔐 Autenticación</h3>
+            <div class="form-group"><label>Operador</label><input type="text" id="loginUser"></div>
+            <div class="form-group"><label>Clave</label><input type="password" id="loginPass"></div>
+            <button class="btn btn-primary" onclick="login()" style="width: 100%;">Acceder</button>
+            <button class="btn btn-info btn-sm" onclick="register()" style="width: 100%; margin-top: 8px;">Registrarse</button>
+            <button class="btn btn-danger btn-sm" onclick="closeModal('loginModal')" style="width: 100%; margin-top: 8px;">Cerrar</button>
         </div>
     </div>
 
@@ -1060,713 +850,479 @@
         // ============ ESTADO GLOBAL ============
         let currentUser = "Mauro_Admin";
         let operaciones = [];
-        let currentStage = 1;
-        let modalCalculo = null;
-        let calculoRapidoActual = null;
+        let quickStage = 1;
+        let quickCalcData = null;
+        let fullCalcData = null;
 
-        // ============ SEED DATA: Historial extraído del archivo contable real "MD-CP-1.xlsx" ============
-        const HISTORIAL_EXCEL_SEED = [
-            {
-                id: 1716854400000, fecha: "2026-05-28", etapa: 1, inversor: "MD", montoBs: 73931.00, 
-                precioCompra: 611.00, tasaBinanceCompra: 738.50, montoUsd: 100.11, 
-                porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 3.00, mermaBPAY: 3.60,
-                montoNeto: 93.51, precioVenta: 740.70, montoVentaBs: 69262.86, montoCorrer: 69262.86,
-                gananciaBs: -4668.14, gananciaUsd: -7.64
-            },
-            {
-                id: 1716854400001, fecha: "2026-05-28", etapa: 1, inversor: "CP", montoBs: 17719.00, 
-                precioCompra: 611.00, tasaBinanceCompra: 738.50, montoUsd: 23.99, 
-                porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 0.72, mermaBPAY: 0.86,
-                montoNeto: 22.41, precioVenta: 740.70, montoVentaBs: 16599.09, montoCorrer: 16599.09,
-                gananciaBs: -1119.91, gananciaUsd: -1.83
-            }
+        const HISTORIAL_SEED = [
+            { id: 1, fecha: "2026-05-28", etapa: 1, inversor: "MD", montoBs: 73931, precioCompra: 611, tasaBinanceCompra: 738.5, montoUsd: 100.11, porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 3.0, mermaBPAY: 3.6, montoNeto: 93.51, precioVenta: 740.7, montoVentaBs: 69262.86, montoCorrer: 69262.86, gananciaBs: -4668.14, gananciaUsd: -7.64, esCapitalFresco: true }
         ];
 
-        // ==================== AGENTE DE TASAS EN TIEMPO REAL ====================
-        
+        // ============ TASAS EN TIEMPO REAL ============
         async function consultarTasaBCV() {
             try {
-                const respuesta = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
-                if (!respuesta.ok) throw new Error('Error en servidor BCV');
-                const datos = await respuesta.json();
-                
-                if (datos && datos.promedio) {
-                    const tasaBCV = parseFloat(datos.promedio).toFixed(2);
-                    
-                    const calcPrecioCompra = document.getElementById('calcPrecioCompra');
-                    if (calcPrecioCompra) calcPrecioCompra.value = tasaBCV;
-                    
-                    const modalPrecioCompra = document.getElementById('modalPrecioCompra');
-                    if (modalPrecioCompra) modalPrecioCompra.value = tasaBCV;
-                    
-                    document.getElementById('headerBCV').textContent = `Bs ${tasaBCV}`;
+                const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+                const d = await r.json();
+                if (d?.promedio) {
+                    const t = parseFloat(d.promedio).toFixed(2);
+                    document.getElementById('quickTasaCompra').value = t;
+                    document.getElementById('fullPrecioCompra').value = t;
+                    document.getElementById('headerBCV').textContent = `Bs ${t}`;
                     document.getElementById('dotBCV').className = 'dot live';
-                    
-                    return tasaBCV;
                 }
-            } catch (error) {
-                console.error("Fallo al sincronizar BCV:", error);
+            } catch(e) {
                 document.getElementById('dotBCV').className = 'dot offline';
-                
-                const fallbackBCV = "558.64";
-                const calcPrecioCompra = document.getElementById('calcPrecioCompra');
-                if (calcPrecioCompra && !calcPrecioCompra.value) calcPrecioCompra.value = fallbackBCV;
-                
-                const modalPrecioCompra = document.getElementById('modalPrecioCompra');
-                if (modalPrecioCompra && !modalPrecioCompra.value) modalPrecioCompra.value = fallbackBCV;
-                
-                document.getElementById('headerBCV').textContent = `Bs ${fallbackBCV} ⚠️`;
-                return fallbackBCV;
+                if(!document.getElementById('quickTasaCompra').value) document.getElementById('quickTasaCompra').value = "558.64";
             }
         }
 
         async function consultarBinanceP2P() {
             try {
-                const urlBinance = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';
-                const proxyCORS = 'https://corsproxy.io/?';
-                
-                const basePayload = {
-                    asset: "USDT",
-                    fiat: "VES",
-                    merchantCheck: false,
-                    page: 1,
-                    rows: 5,
-                    tradeType: "BUY"
-                };
+                const url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';
+                const proxy = 'https://corsproxy.io/?';
+                const base = { asset: "USDT", fiat: "VES", merchantCheck: false, page: 1, rows: 3 };
 
-                let tasaBinanceCompra = null;
                 try {
-                    const reqCompra = await fetch(proxyCORS + encodeURIComponent(urlBinance), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...basePayload, tradeType: "SELL" })
+                    const r1 = await fetch(proxy + encodeURIComponent(url), {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...base, tradeType: "SELL" })
                     });
-                    const resCompra = await reqCompra.json();
-                    
-                    if (resCompra.data && resCompra.data.length > 0) {
-                        tasaBinanceCompra = parseFloat(resCompra.data[0].adv.price).toFixed(2);
-                        
-                        const calcTasaBinance = document.getElementById('calcTasaBinanceCompra');
-                        if (calcTasaBinance) calcTasaBinance.value = tasaBinanceCompra;
-                        
-                        const modalTasaBinance = document.getElementById('modalTasaBinance');
-                        if (modalTasaBinance) modalTasaBinance.value = tasaBinanceCompra;
+                    const d1 = await r1.json();
+                    if (d1.data?.length) {
+                        const t = parseFloat(d1.data[0].adv.price).toFixed(2);
+                        document.getElementById('quickTasaCompra').value = t;
+                        document.getElementById('fullTasaBinance').value = t;
                     }
-                } catch (e) {
-                    console.error("Fallo al obtener tasa de compra Binance:", e);
-                }
-                
-                let tasaVenta = null;
+                } catch(e) {}
+
                 try {
-                    const reqVenta = await fetch(proxyCORS + encodeURIComponent(urlBinance), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...basePayload, tradeType: "BUY" })
+                    const r2 = await fetch(proxy + encodeURIComponent(url), {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...base, tradeType: "BUY" })
                     });
-                    const resVenta = await reqVenta.json();
-                    
-                    if (resVenta.data && resVenta.data.length > 0) {
-                        tasaVenta = parseFloat(resVenta.data[0].adv.price).toFixed(2);
-                        
-                        const calcPrecioVenta = document.getElementById('calcPrecioVenta');
-                        if (calcPrecioVenta) calcPrecioVenta.value = tasaVenta;
-                        
-                        const modalPrecioVenta = document.getElementById('modalPrecioVenta');
-                        if (modalPrecioVenta) modalPrecioVenta.value = tasaVenta;
+                    const d2 = await r2.json();
+                    if (d2.data?.length) {
+                        const t = parseFloat(d2.data[0].adv.price).toFixed(2);
+                        document.getElementById('quickTasaVenta').value = t;
+                        document.getElementById('fullPrecioVenta').value = t;
+                        document.getElementById('headerBinance').textContent = `${document.getElementById('quickTasaCompra').value || '--'} / ${t}`;
+                        document.getElementById('dotBinance').className = 'dot live';
                     }
-                } catch (e) {
-                    console.error("Fallo al obtener tasa de venta Binance:", e);
-                }
-
-                if (tasaBinanceCompra && tasaVenta) {
-                    document.getElementById('headerBinance').textContent = `${tasaBinanceCompra} / ${tasaVenta}`;
-                    document.getElementById('dotBinance').className = 'dot live';
-                } else {
-                    document.getElementById('dotBinance').className = 'dot warning';
-                }
-
-                if (!tasaBinanceCompra) {
-                    const fallback = "738.50";
-                    const calcTasaBinance = document.getElementById('calcTasaBinanceCompra');
-                    if (calcTasaBinance && !calcTasaBinance.value) calcTasaBinance.value = fallback;
-                    const modalTasaBinance = document.getElementById('modalTasaBinance');
-                    if (modalTasaBinance && !modalTasaBinance.value) modalTasaBinance.value = fallback;
-                }
-                
-                if (!tasaVenta) {
-                    const fallback = "739.17";
-                    const calcPrecioVenta = document.getElementById('calcPrecioVenta');
-                    if (calcPrecioVenta && !calcPrecioVenta.value) calcPrecioVenta.value = fallback;
-                    const modalPrecioVenta = document.getElementById('modalPrecioVenta');
-                    if (modalPrecioVenta && !modalPrecioVenta.value) modalPrecioVenta.value = fallback;
-                }
-
-            } catch (error) {
-                console.error("Fallo al conectar con Binance P2P:", error);
+                } catch(e) {}
+            } catch(e) {
                 document.getElementById('dotBinance').className = 'dot offline';
             }
         }
 
         async function sincronizarMercadoContable() {
-            mostrarNotificacion('🔄 Conectando con terminales financieras...', 'info');
+            mostrarNotificacion('🔄 Sincronizando...', 'info');
             await consultarTasaBCV();
             await consultarBinanceP2P();
-            mostrarNotificacion('✅ Tasas de mercado actualizadas en tiempo real', 'success');
+            mostrarNotificacion('✅ Tasas actualizadas', 'success');
         }
 
-        // ========================================================================
+        // ============ CÁLCULO RÁPIDO ============
+        function calcularPuntoEquilibrio(tasaCompra, bdv, bpay) {
+            const mermas = (parseFloat(bdv) + parseFloat(bpay)) / 100;
+            return mermas >= 1 ? Infinity : tasaCompra / (1 - mermas);
+        }
+
+        function calcularQuick() {
+            const montoBs = parseFloat(document.getElementById('quickMontoBs').value) || 0;
+            const tasaCompra = parseFloat(document.getElementById('quickTasaCompra').value) || 0;
+            const tasaVenta = parseFloat(document.getElementById('quickTasaVenta').value) || 0;
+            const bdv = parseFloat(document.getElementById('quickBdv').value) || 0;
+            const bpay = parseFloat(document.getElementById('quickBpay').value) || 0;
+
+            if (!montoBs || !tasaCompra || !tasaVenta) {
+                document.getElementById('quickAlerta').style.display = 'none';
+                document.getElementById('quickGuardarBtn').disabled = true;
+                return;
+            }
+
+            const montoUsd = montoBs / tasaCompra;
+            const mermaBDV = montoUsd * (bdv / 100);
+            const mermaBPAY = montoUsd * (bpay / 100);
+            const montoNeto = montoUsd - mermaBDV - mermaBPAY;
+            const retornoBs = montoNeto * tasaVenta;
+            const gananciaBs = retornoBs - montoBs;
+            const gananciaUsd = gananciaBs / tasaCompra;
+            const precioEq = calcularPuntoEquilibrio(tasaCompra, bdv, bpay);
+            const esRentable = tasaVenta > precioEq;
+
+            document.getElementById('quickUsdBruto').textContent = `$ ${montoUsd.toFixed(2)}`;
+            document.getElementById('quickUsdNeto').textContent = `$ ${montoNeto.toFixed(3)}`;
+            document.getElementById('quickRetorno').textContent = `Bs ${retornoBs.toFixed(2)}`;
+            
+            const gEl = document.getElementById('quickGanancia');
+            gEl.textContent = `$ ${gananciaUsd.toFixed(2)}`;
+            gEl.style.color = gananciaUsd >= 0 ? 'var(--success)' : 'var(--danger)';
+            
+            const gBox = document.getElementById('quickGananciaBox');
+            gBox.className = gananciaUsd >= 0 ? 'quick-result-item highlight' : 'quick-result-item danger';
+
+            const alerta = document.getElementById('quickAlerta');
+            const guardarBtn = document.getElementById('quickGuardarBtn');
+
+            if (esRentable) {
+                alerta.className = 'alert-inline success';
+                alerta.innerHTML = `✅ Rentable | P.Eq: Bs ${precioEq.toFixed(2)} | +Bs ${(tasaVenta - precioEq).toFixed(2)}/USDT`;
+                guardarBtn.disabled = false;
+                guardarBtn.className = 'btn btn-success';
+            } else {
+                alerta.className = 'alert-inline danger';
+                alerta.innerHTML = `⚠️ PÉRDIDA | Mínimo: Bs ${precioEq.toFixed(2)} | -Bs ${(precioEq - tasaVenta).toFixed(2)}/USDT`;
+                guardarBtn.disabled = true;
+                guardarBtn.className = 'btn btn-danger';
+            }
+
+            quickCalcData = {
+                fecha: new Date().toISOString().split('T')[0],
+                etapa: quickStage,
+                inversor: 'MD',
+                montoBs, precioCompra: tasaCompra, tasaBinanceCompra: tasaCompra,
+                montoUsd, porcentajeBDV: bdv, porcentajeBPAY: bpay,
+                mermaBDV, mermaBPAY, montoNeto, precioVenta: tasaVenta,
+                montoVentaBs: retornoBs, montoCorrer: retornoBs,
+                gananciaBs, gananciaUsd,
+                esCapitalFresco: quickStage === 1
+            };
+        }
+
+        function setQuickStage(stage) {
+            quickStage = stage;
+            document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.stage-btn.stage-${stage}`).classList.add('active');
+            calcularQuick();
+        }
+
+        function guardarOperacionQuick() {
+            if (!quickCalcData) { mostrarNotificacion('Calcule primero', 'error'); return; }
+            const ops = getOperaciones();
+            quickCalcData.id = Date.now();
+            ops.push(quickCalcData);
+            saveOperaciones(ops);
+            quickCalcData = null;
+            document.getElementById('quickAlerta').style.display = 'none';
+            document.getElementById('quickGuardarBtn').disabled = true;
+            mostrarNotificacion('💾 Asentado en libro contable', 'success');
+        }
+
+        function ciclarCapitalQuick() {
+            const retorno = document.getElementById('quickRetorno').textContent.replace('Bs ', '');
+            if (parseFloat(retorno) > 0) {
+                document.getElementById('quickMontoBs').value = parseFloat(retorno).toFixed(2);
+                calcularQuick();
+                mostrarNotificacion('🔄 Capital ciclado', 'success');
+            }
+        }
+
+        function abrirModalCompleto() {
+            document.getElementById('fullFecha').value = new Date().toISOString().split('T')[0];
+            document.getElementById('fullMontoBs').value = document.getElementById('quickMontoBs').value;
+            document.getElementById('fullPrecioCompra').value = document.getElementById('quickTasaCompra').value;
+            document.getElementById('fullTasaBinance').value = document.getElementById('quickTasaCompra').value;
+            document.getElementById('fullPrecioVenta').value = document.getElementById('quickTasaVenta').value;
+            document.getElementById('fullBdv').value = document.getElementById('quickBdv').value;
+            document.getElementById('fullBpay').value = document.getElementById('quickBpay').value;
+            document.getElementById('fullModal').classList.add('active');
+        }
+
+        function calcularFullModal() {
+            const montoBs = parseFloat(document.getElementById('fullMontoBs').value) || 0;
+            const precioCompra = parseFloat(document.getElementById('fullPrecioCompra').value) || 0;
+            const tasaBinance = parseFloat(document.getElementById('fullTasaBinance').value) || 0;
+            const precioVenta = parseFloat(document.getElementById('fullPrecioVenta').value) || 0;
+            const bdv = parseFloat(document.getElementById('fullBdv').value) || 0;
+            const bpay = parseFloat(document.getElementById('fullBpay').value) || 0;
+
+            if (!montoBs || !tasaBinance || !precioVenta) { mostrarNotificacion('Complete campos', 'error'); return; }
+
+            const montoUsd = montoBs / tasaBinance;
+            const mermaBDV = montoUsd * (bdv / 100);
+            const mermaBPAY = montoUsd * (bpay / 100);
+            const montoNeto = montoUsd - mermaBDV - mermaBPAY;
+            const retornoBs = montoNeto * precioVenta;
+            const gananciaBs = retornoBs - montoBs;
+            const gananciaUsd = precioCompra > 0 ? gananciaBs / precioCompra : 0;
+
+            fullCalcData = {
+                fecha: document.getElementById('fullFecha').value,
+                etapa: quickStage,
+                inversor: document.getElementById('fullInversor').value,
+                montoBs, precioCompra, tasaBinanceCompra: tasaBinance,
+                montoUsd, porcentajeBDV: bdv, porcentajeBPAY: bpay,
+                mermaBDV, mermaBPAY, montoNeto, precioVenta,
+                montoVentaBs: retornoBs, montoCorrer: retornoBs,
+                gananciaBs, gananciaUsd,
+                esCapitalFresco: quickStage === 1
+            };
+
+            document.getElementById('fullGuardarBtn').disabled = false;
+            mostrarNotificacion('✅ Cálculo completado', 'success');
+        }
+
+        function guardarFullModal() {
+            if (!fullCalcData) return;
+            const ops = getOperaciones();
+            fullCalcData.id = Date.now();
+            ops.push(fullCalcData);
+            saveOperaciones(ops);
+            fullCalcData = null;
+            document.getElementById('fullGuardarBtn').disabled = true;
+            closeModal('fullModal');
+            mostrarNotificacion('💾 Operación guardada', 'success');
+        }
+
+        // ============ SIMULADOR ============
+        function ejecutarSimulacion() {
+            const capital = parseFloat(document.getElementById('simCapital').value) || 0;
+            const tasaCompra = parseFloat(document.getElementById('simTasaCompra').value) || 0;
+            const tasaVenta = parseFloat(document.getElementById('simTasaVenta').value) || 0;
+            const ciclos = parseInt(document.getElementById('simCiclos').value) || 0;
+            const bdv = parseFloat(document.getElementById('simBdv').value) || 0;
+            const bpay = parseFloat(document.getElementById('simBpay').value) || 0;
+
+            if (!capital || !tasaCompra || !tasaVenta || !ciclos) return;
+
+            let capitalActual = capital;
+            let gananciaTotal = 0;
+            const detalles = [];
+
+            for (let i = 0; i < ciclos; i++) {
+                const usdBruto = capitalActual / tasaCompra;
+                const mermaBDV = usdBruto * (bdv / 100);
+                const mermaBPAY = usdBruto * (bpay / 100);
+                const usdNeto = usdBruto - mermaBDV - mermaBPAY;
+                const retorno = usdNeto * tasaVenta;
+                const ganancia = retorno - capitalActual;
+                gananciaTotal += ganancia;
+                
+                detalles.push({ ciclo: i + 1, capitalInicial: capitalActual, usdNeto, retorno, ganancia });
+                capitalActual = retorno;
+            }
+
+            const roi = ((capitalActual - capital) / capital) * 100;
+            
+            document.getElementById('simResultados').style.display = 'block';
+            document.getElementById('simResultados').innerHTML = `
+                <h4 style="margin-bottom: 15px; color: var(--success);">📊 Resultados de Simulación</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                    <div class="quick-result-item"><div class="qr-label">Capital Final</div><div class="qr-value">Bs ${capitalActual.toFixed(2)}</div></div>
+                    <div class="quick-result-item"><div class="qr-label">Ganancia Total</div><div class="qr-value" style="color: ${gananciaTotal >= 0 ? 'var(--success)' : 'var(--danger)'};">Bs ${gananciaTotal.toFixed(2)}</div></div>
+                    <div class="quick-result-item"><div class="qr-label">ROI</div><div class="qr-value" style="color: ${roi >= 0 ? 'var(--success)' : 'var(--danger)'};">${roi.toFixed(2)}%</div></div>
+                </div>
+                <table style="font-size: 11px; margin-top: 10px;">
+                    <thead><tr><th>Ciclo</th><th>Capital Inicial</th><th>USDT Netos</th><th>Retorno</th><th>Ganancia</th></tr></thead>
+                    <tbody>${detalles.map(d => `
+                        <tr>
+                            <td>${d.ciclo}</td>
+                            <td>Bs ${d.capitalInicial.toFixed(2)}</td>
+                            <td>$ ${d.usdNeto.toFixed(3)}</td>
+                            <td>Bs ${d.retorno.toFixed(2)}</td>
+                            <td style="color: ${d.ganancia >= 0 ? 'var(--success)' : 'var(--danger)'};">Bs ${d.ganancia.toFixed(2)}</td>
+                        </tr>
+                    `).join('')}</tbody>
+                </table>
+            `;
+        }
+
+        // ============ KPIs ============
+        function calcularKPIs() {
+            const ops = getOperaciones();
+            if (!ops.length) {
+                document.getElementById('kpiSpread').textContent = '0.00%';
+                document.getElementById('kpiRoi').textContent = '0.00%';
+                document.getElementById('kpiRotacion').textContent = '0';
+                return;
+            }
+
+            let capitalFresco = 0, gananciasBs = 0, sumaSpreads = 0, conteoE3 = 0;
+
+            ops.forEach(op => {
+                if (op.etapa === 1 && op.esCapitalFresco) capitalFresco += op.montoBs;
+                if (op.gananciaBs) gananciasBs += op.gananciaBs;
+                if (op.etapa === 3 && op.tasaBinanceCompra && op.precioVenta) {
+                    conteoE3++;
+                    sumaSpreads += ((op.precioVenta - op.tasaBinanceCompra) / op.tasaBinanceCompra) * 100;
+                }
+            });
+
+            document.getElementById('kpiSpread').textContent = `${(conteoE3 > 0 ? sumaSpreads / conteoE3 : 0).toFixed(2)}%`;
+            document.getElementById('kpiRoi').textContent = `${(capitalFresco > 0 ? (gananciasBs / capitalFresco) * 100 : 0).toFixed(2)}%`;
+            document.getElementById('kpiRotacion').textContent = conteoE3;
+        }
+
+        // ============ BACKUP ============
+        function exportarBackupJSON() {
+            const data = {
+                version: "ArbitrajePro v6",
+                fecha: new Date().toISOString(),
+                usuario: currentUser,
+                operaciones: getOperaciones()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `backup_arbitraje_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            mostrarNotificacion('📥 Backup descargado', 'success');
+        }
+
+        function importarBackupJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.operaciones && Array.isArray(data.operaciones)) {
+                        if (confirm(`Se encontraron ${data.operaciones.length} operaciones del backup. ¿Desea reemplazar el historial actual?`)) {
+                            saveOperaciones(data.operaciones);
+                            mostrarNotificacion('📤 Backup restaurado exitosamente', 'success');
+                        }
+                    } else {
+                        mostrarNotificacion('Archivo de backup inválido', 'error');
+                    }
+                } catch(err) {
+                    mostrarNotificacion('Error al leer el archivo', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
 
         // ============ GESTIÓN DE DATOS ============
         function getOperaciones() {
-            const localData = localStorage.getItem(`arbitrajeOps_${currentUser}`);
-            if (!localData) {
-                localStorage.setItem(`arbitrajeOps_${currentUser}`, JSON.stringify(HISTORIAL_EXCEL_SEED));
-                return [...HISTORIAL_EXCEL_SEED];
-            }
-            return JSON.parse(localData);
+            const d = localStorage.getItem(`arbitrajeOps_${currentUser}`);
+            return d ? JSON.parse(d) : [...HISTORIAL_SEED];
         }
 
         function saveOperaciones(ops) {
             localStorage.setItem(`arbitrajeOps_${currentUser}`, JSON.stringify(ops));
             operaciones = ops;
-            actualizarDashboard();
             actualizarHistorial();
-            actualizarResumen();
-        }
-
-        // ============ CÁLCULOS ============
-        function calcularOperacionCompleta(montoBs, precioCompra, tasaBinanceCompra, precioVenta, bdv, bpay) {
-            const montoUsd = montoBs / tasaBinanceCompra;
-            const mermaBDV = montoUsd * (bdv / 100);
-            const mermaBPAY = montoUsd * (bpay / 100);
-            const montoNeto = montoUsd - mermaBDV - mermaBPAY;
-            const montoVentaBs = montoNeto * precioVenta;
-            const gananciaBs = montoVentaBs - montoBs;
-            const gananciaUsd = precioCompra > 0 ? gananciaBs / precioCompra : 0;
-
-            return {
-                montoUsd, mermaBDV, mermaBPAY, montoNeto,
-                montoVentaBs, montoCorrer: montoVentaBs,
-                gananciaBs, gananciaUsd
-            };
-        }
-
-        // ============ CALCULADORA RÁPIDA ============
-        function calcularOperacionRapida() {
-            const montoBs = parseFloat(document.getElementById('calcMontoBs').value) || 0;
-            const precioCompra = parseFloat(document.getElementById('calcPrecioCompra').value) || 0;
-            const tasaBinanceCompra = parseFloat(document.getElementById('calcTasaBinanceCompra').value) || 0;
-            const precioVenta = parseFloat(document.getElementById('calcPrecioVenta').value) || 0;
-            const bdv = parseFloat(document.getElementById('calcBdv').value) || 0;
-            const bpay = parseFloat(document.getElementById('calcBpay').value) || 0;
-
-            if (montoBs <= 0 || tasaBinanceCompra <= 0 || precioVenta <= 0) {
-                mostrarNotificacion('Complete Monto Bs, Tasa Binance y Tasa de Venta', 'error');
-                return;
-            }
-
-            const resultado = calcularOperacionCompleta(montoBs, precioCompra, tasaBinanceCompra, precioVenta, bdv, bpay);
-
-            calculoRapidoActual = {
-                fecha: document.getElementById('calcFecha').value || new Date().toISOString().split('T')[0],
-                etapa: 0,
-                inversor: document.getElementById('calcInversor').value,
-                montoBs, precioCompra, tasaBinanceCompra,
-                porcentajeBDV: bdv, porcentajeBPAY: bpay,
-                ...resultado
-            };
-
-            document.getElementById('calcR_MontoUsd').textContent = `$ ${resultado.montoUsd.toFixed(2)}`;
-            document.getElementById('calcR_MermaBDV').textContent = `-$ ${resultado.mermaBDV.toFixed(2)}`;
-            document.getElementById('calcR_MermaBPAY').textContent = `-$ ${resultado.mermaBPAY.toFixed(2)}`;
-            document.getElementById('calcR_MontoNeto').textContent = `${resultado.montoNeto.toFixed(3)} USDT`;
-            document.getElementById('calcR_MontoVentaBs').textContent = `Bs ${resultado.montoVentaBs.toFixed(2)}`;
-            document.getElementById('calcR_MontoCorrer').textContent = `Bs ${resultado.montoCorrer.toFixed(2)}`;
-            
-            const gananciaBsEl = document.getElementById('calcR_GananciaBs');
-            gananciaBsEl.textContent = `Bs ${resultado.gananciaBs.toFixed(2)}`;
-            gananciaBsEl.style.color = resultado.gananciaBs >= 0 ? 'var(--success)' : 'var(--danger)';
-            
-            const gananciaUsdEl = document.getElementById('calcR_GananciaUsd');
-            gananciaUsdEl.textContent = `$ ${resultado.gananciaUsd.toFixed(2)}`;
-            gananciaUsdEl.style.color = resultado.gananciaUsd >= 0 ? 'var(--success)' : 'var(--danger)';
-
-            mostrarNotificacion('✅ Cálculo completado con spread real', 'success');
-        }
-
-        function guardarOperacionRapida() {
-            if (!calculoRapidoActual) {
-                mostrarNotificacion('Primero realice un cálculo', 'error');
-                return;
-            }
-            const ops = getOperaciones();
-            calculoRapidoActual.id = Date.now();
-            ops.push(calculoRapidoActual);
-            saveOperaciones(ops);
-            calculoRapidoActual = null;
-            mostrarNotificacion('💾 Operación guardada en el libro contable', 'success');
-        }
-
-        function correrCalculoRapido() {
-            const correr = document.getElementById('calcR_MontoCorrer').textContent.replace('Bs ', '');
-            if (parseFloat(correr) > 0) {
-                document.getElementById('calcMontoBs').value = parseFloat(correr).toFixed(2);
-                mostrarNotificacion('🔄 Capital cargado para nueva vuelta', 'success');
-            }
-        }
-
-        // ============ DASHBOARD Y ETAPAS ============
-        
-        /**
-         * Obtiene los datos agregados de una etapa específica
-         */
-        function getStageData(stage) {
-            const ops = getOperaciones();
-            const stageOps = ops.filter(op => op.etapa === stage);
-            
-            if (stageOps.length === 0) {
-                return { montoBs: 0, montoNeto: 0, montoCorrer: 0, gananciaUsd: 0 };
-            }
-
-            const lastOp = stageOps[stageOps.length - 1];
-            return {
-                montoBs: stageOps.reduce((sum, op) => sum + op.montoBs, 0),
-                montoNeto: lastOp.montoNeto,
-                montoCorrer: lastOp.montoCorrer,
-                gananciaUsd: stageOps.reduce((sum, op) => sum + op.gananciaUsd, 0)
-            };
-        }
-
-        /**
-         * CORRECCIÓN CLAVE: Función runStage con continuidad de capital entre etapas
-         * Etapa 1: Puede iniciar con capital fresco o con el retorno de Etapa 3 (cierra el ciclo)
-         * Etapa 2: Se alimenta del retorno (montoCorrer) de Etapa 1
-         * Etapa 3: Se alimenta del retorno (montoCorrer) de Etapa 2
-         */
-        function runStage(stage) {
-            let montoInicialParaModal = 0;
-            let origenCapital = '';
-
-            if (stage === 1) {
-                // La Etapa 1 puede tomar capital fresco o el retorno de la Etapa 3 (cerrar el ciclo)
-                const dataEtapa3 = getStageData(3);
-                if (dataEtapa3.montoCorrer > 0) {
-                    montoInicialParaModal = dataEtapa3.montoCorrer;
-                    origenCapital = 'Etapa 3 (Cierre de Ciclo)';
-                } else {
-                    montoInicialParaModal = 0;
-                    origenCapital = 'Capital Fresco (Manual)';
-                }
-            } else {
-                // Las etapas 2 y 3 se alimentan estrictamente del retorno de la etapa anterior inmediata
-                const dataEtapaAnterior = getStageData(stage - 1);
-                montoInicialParaModal = dataEtapaAnterior.montoCorrer;
-                origenCapital = `Etapa ${stage - 1} (Automático)`;
-            }
-
-            // Sincronizar tasas actuales al modal
-            const calcPrecioCompra = document.getElementById('calcPrecioCompra');
-            const calcTasaBinance = document.getElementById('calcTasaBinanceCompra');
-            const calcPrecioVenta = document.getElementById('calcPrecioVenta');
-            
-            if (calcPrecioCompra && calcPrecioCompra.value) {
-                document.getElementById('modalPrecioCompra').value = calcPrecioCompra.value;
-            }
-            if (calcTasaBinance && calcTasaBinance.value) {
-                document.getElementById('modalTasaBinance').value = calcTasaBinance.value;
-            }
-            if (calcPrecioVenta && calcPrecioVenta.value) {
-                document.getElementById('modalPrecioVenta').value = calcPrecioVenta.value;
-            }
-
-            // Configurar modal
-            document.getElementById('modalMontoBs').value = montoInicialParaModal > 0 ? montoInicialParaModal.toFixed(2) : '';
-            
-            // Mostrar origen del capital
-            const capitalSource = document.getElementById('capitalSource');
-            if (montoInicialParaModal > 0) {
-                capitalSource.style.display = 'block';
-                capitalSource.innerHTML = `🔄 Capital heredado de <strong>${origenCapital}</strong>: <strong>Bs ${montoInicialParaModal.toFixed(2)}</strong>`;
-            } else {
-                capitalSource.style.display = 'block';
-                capitalSource.innerHTML = `⚠️ Iniciando con <strong>${origenCapital}</strong> - Ingrese el monto manualmente`;
-            }
-
-            openStageModal(stage);
-
-            if (montoInicialParaModal > 0) {
-                mostrarNotificacion(`🔄 Capital de ${origenCapital} traspasado a Etapa ${stage}`, 'success');
-            } else {
-                mostrarNotificacion(`⚠️ Iniciando Etapa ${stage} con saldo manual`, 'info');
-            }
-        }
-
-        function openStageModal(stage) {
-            currentStage = stage;
-            
-            const stageNames = ['', 'Entrada (BDV → BPAY)', 'Intermedia (BPAY → P2P)', 'Salida (P2P → Retiro)'];
-            document.getElementById('modalTitle').innerHTML = `📝 Nueva Operación - Etapa ${stage}: ${stageNames[stage]}`;
-            document.getElementById('modalFecha').value = new Date().toISOString().split('T')[0];
-            document.getElementById('modalResult').style.display = 'none';
-            document.getElementById('modalGuardarBtn').disabled = true;
-            modalCalculo = null;
-            
-            document.getElementById('stageModal').classList.add('active');
-        }
-
-        function closeStageModal() {
-            document.getElementById('stageModal').classList.remove('active');
-            document.getElementById('capitalSource').style.display = 'none';
-            modalCalculo = null;
-        }
-
-        function calcularEnModal() {
-            const montoBs = parseFloat(document.getElementById('modalMontoBs').value) || 0;
-            const precioCompra = parseFloat(document.getElementById('modalPrecioCompra').value) || 0;
-            const tasaBinance = parseFloat(document.getElementById('modalTasaBinance').value) || 0;
-            const precioVenta = parseFloat(document.getElementById('modalPrecioVenta').value) || 0;
-            const bdv = parseFloat(document.getElementById('modalBdv').value) || 0;
-            const bpay = parseFloat(document.getElementById('modalBpay').value) || 0;
-
-            if (montoBs <= 0 || tasaBinance <= 0 || precioVenta <= 0) {
-                mostrarNotificacion('Complete todos los campos requeridos', 'error');
-                return;
-            }
-
-            const resultado = calcularOperacionCompleta(montoBs, precioCompra, tasaBinance, precioVenta, bdv, bpay);
-
-            modalCalculo = {
-                fecha: document.getElementById('modalFecha').value,
-                etapa: currentStage,
-                inversor: document.getElementById('modalInversor').value,
-                montoBs, precioCompra, tasaBinanceCompra: tasaBinance,
-                porcentajeBDV: bdv, porcentajeBPAY: bpay,
-                ...resultado
-            };
-
-            document.getElementById('modalRetorno').textContent = `Bs ${resultado.montoCorrer.toFixed(2)}`;
-            document.getElementById('modalResult').style.display = 'block';
-            document.getElementById('modalGuardarBtn').disabled = false;
-
-            mostrarNotificacion('Cálculo completado. Puede guardar la operación.', 'success');
-        }
-
-        function guardarDesdeModal() {
-            if (!modalCalculo) {
-                mostrarNotificacion('Primero realice el cálculo', 'error');
-                return;
-            }
-
-            const ops = getOperaciones();
-            modalCalculo.id = Date.now();
-            ops.push(modalCalculo);
-            saveOperaciones(ops);
-            
-            closeStageModal();
-            mostrarNotificacion(`✅ Operación guardada en Etapa ${currentStage}. Capital disponible para siguiente etapa.`, 'success');
-        }
-
-        // ============ ACTUALIZACIÓN DE UI ============
-        
-        /**
-         * Actualiza el flujo visual para mostrar el progreso del ciclo
-         */
-        function actualizarFlujoVisual() {
-            const steps = document.querySelectorAll('#flowConnector .flow-step');
-            const arrows = document.querySelectorAll('#flowConnector .flow-arrow');
-            
-            if (!steps.length) return;
-
-            // Limpiar clases de estado
-            steps.forEach(st => { st.classList.remove('active', 'completed'); });
-            arrows.forEach(ar => { ar.classList.remove('active', 'completed'); });
-
-            const op1 = getStageData(1);
-            const op2 = getStageData(2);
-            const op3 = getStageData(3);
-
-            // Lógica de iluminación secuencial:
-            // Si hay capital en Etapa 1 → Pasos 0-1 completados (MI Bs, Tasa Compra)
-            if (op1.montoCorrer > 0) {
-                if (steps[0]) steps[0].classList.add('completed');
-                if (arrows[0]) arrows[0].classList.add('completed');
-                if (steps[1]) steps[1].classList.add('completed');
-                if (arrows[1]) arrows[1].classList.add('completed');
-                if (steps[2]) steps[2].classList.add('active'); // Merma BDV es donde está ahora
-            }
-            
-            // Si hay capital en Etapa 2 → Pasos 2-3 completados (Merma BDV, Merma BPAY)
-            if (op2.montoCorrer > 0) {
-                if (steps[2]) steps[2].classList.add('completed');
-                if (arrows[2]) arrows[2].classList.add('completed');
-                if (steps[3]) steps[3].classList.add('completed');
-                if (arrows[3]) arrows[3].classList.add('completed');
-                if (steps[4]) steps[4].classList.add('active'); // $ Netos
-            }
-            
-            // Si hay capital en Etapa 3 → Todo completado, ciclo cerrado
-            if (op3.montoCorrer > 0) {
-                if (steps[4]) steps[4].classList.add('completed');
-                if (arrows[4]) arrows[4].classList.add('completed');
-                if (steps[5]) steps[5].classList.add('completed');
-                if (arrows[5]) arrows[5].classList.add('completed');
-                if (steps[6]) steps[6].classList.add('completed'); // Retorno Bs completado
-            }
-        }
-
-        function actualizarDashboard() {
-            // Actualizar métricas de cada etapa
-            for (let stage = 1; stage <= 3; stage++) {
-                const data = getStageData(stage);
-                document.getElementById(`s${stage}_miBs`).textContent = `Bs ${data.montoBs.toFixed(2)}`;
-                document.getElementById(`s${stage}_neto`).textContent = `$ ${data.montoNeto.toFixed(2)}`;
-                document.getElementById(`s${stage}_retorno`).textContent = `Bs ${data.montoCorrer.toFixed(2)}`;
-                
-                const gananciaEl = document.getElementById(`s${stage}_ganancia`);
-                gananciaEl.textContent = `$ ${data.gananciaUsd.toFixed(2)}`;
-                gananciaEl.style.color = data.gananciaUsd >= 0 ? 'var(--success)' : 'var(--danger)';
-                
-                // Iluminar tarjeta si tiene capital
-                const card = document.getElementById(`stage${stage}Card`);
-                if (card) {
-                    if (data.montoCorrer > 0) {
-                        card.classList.add('has-capital');
-                    } else {
-                        card.classList.remove('has-capital');
-                    }
-                }
-                
-                // Actualizar conexiones entre etapas
-                const connection = document.getElementById(`s${stage}_connection`);
-                if (connection) {
-                    if (data.montoCorrer > 0) {
-                        connection.classList.add('active');
-                        if (stage === 1) connection.innerHTML = '✅ Capital listo → Alimenta Etapa 2';
-                        if (stage === 2) connection.innerHTML = '✅ Capital listo → Alimenta Etapa 3';
-                        if (stage === 3) connection.innerHTML = '✅ Ciclo completo → Retorna a Etapa 1';
-                    } else {
-                        connection.classList.remove('active');
-                        if (stage === 1) connection.innerHTML = '⬇️ Alimenta a Etapa 2';
-                        if (stage === 2) connection.innerHTML = '⬇️ Alimenta a Etapa 3';
-                        if (stage === 3) connection.innerHTML = '🔄 Retorna a Etapa 1';
-                    }
-                }
-            }
-            
-            // Actualizar flujo visual
-            actualizarFlujoVisual();
-        }
-
-        function actualizarResumen() {
-            const ops = getOperaciones();
-            document.getElementById('totalOps').textContent = ops.length;
-            
-            const totalInvertido = ops.reduce((sum, op) => sum + op.montoBs, 0);
-            document.getElementById('totalInvertido').textContent = `Bs ${totalInvertido.toFixed(2)}`;
-            
-            const gananciaTotal = ops.reduce((sum, op) => sum + op.gananciaUsd, 0);
-            const gananciaEl = document.getElementById('gananciaTotal');
-            gananciaEl.textContent = `$ ${gananciaTotal.toFixed(2)}`;
-            gananciaEl.style.color = gananciaTotal >= 0 ? 'var(--success)' : 'var(--danger)';
-            
-            let capitalCirculante = 0;
-            for (let stage = 1; stage <= 3; stage++) {
-                capitalCirculante += getStageData(stage).montoCorrer;
-            }
-            document.getElementById('capitalCirculante').textContent = `Bs ${capitalCirculante.toFixed(2)}`;
+            calcularKPIs();
         }
 
         // ============ HISTORIAL ============
         function actualizarHistorial() {
             const tbody = document.getElementById('historyBody');
             const ops = getOperaciones();
-            
-            if (ops.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="19" style="color:var(--text-secondary); padding:20px;">Sin transacciones registradas</td></tr>';
+            if (!ops.length) {
+                tbody.innerHTML = '<tr><td colspan="13" style="padding:20px; color:var(--text-secondary);">Sin transacciones</td></tr>';
                 return;
             }
-
             tbody.innerHTML = ops.map((op, i) => `
-                <tr>
-                    <td><strong>${i + 1}</strong></td>
+                <tr class="${op.gananciaUsd >= 0 ? 'ganancia' : 'perdida'}">
+                    <td>${i+1}</td>
                     <td>${op.fecha}</td>
-                    <td><span class="badge badge-stage-${op.etapa || 0}">${op.etapa ? 'Etapa ' + op.etapa : 'Rápida'}</span></td>
+                    <td><span class="badge badge-stage-${op.etapa||0}">E${op.etapa||0}</span></td>
                     <td><span class="badge badge-${op.inversor}">${op.inversor}</span></td>
-                    <td>Bs ${op.montoBs.toFixed(2)}</td>
-                    <td>Bs ${(op.precioCompra || 0).toFixed(2)}</td>
-                    <td>Bs ${(op.tasaBinanceCompra || 0).toFixed(2)}</td>
+                    <td>Bs ${op.montoBs.toFixed(0)}</td>
+                    <td>Bs ${(op.tasaBinanceCompra||op.precioCompra||0).toFixed(1)}</td>
                     <td>$ ${op.montoUsd.toFixed(2)}</td>
-                    <td>${op.porcentajeBDV}%</td>
-                    <td>${op.porcentajeBPAY}%</td>
-                    <td style="color:var(--danger)">-$ ${op.mermaBDV.toFixed(2)}</td>
-                    <td style="color:var(--danger)">-$ ${op.mermaBPAY.toFixed(2)}</td>
-                    <td><strong>${op.montoNeto.toFixed(3)}</strong></td>
-                    <td>Bs ${op.precioVenta.toFixed(2)}</td>
-                    <td>Bs ${op.montoVentaBs.toFixed(2)}</td>
-                    <td><strong>Bs ${op.montoCorrer.toFixed(2)}</strong></td>
-                    <td style="color:${op.gananciaBs >= 0 ? 'var(--success)' : 'var(--danger)'}">Bs ${op.gananciaBs.toFixed(2)}</td>
-                    <td style="color:${op.gananciaUsd >= 0 ? 'var(--success)' : 'var(--danger)'}">$ ${op.gananciaUsd.toFixed(2)}</td>
-                    <td><button class="btn btn-danger btn-sm" onclick="eliminarOperacion(${op.id})">✕</button></td>
+                    <td style="font-size:10px;">-${op.porcentajeBDV}% / -${op.porcentajeBPAY}%</td>
+                    <td><strong>$ ${op.montoNeto.toFixed(2)}</strong></td>
+                    <td>Bs ${op.precioVenta.toFixed(1)}</td>
+                    <td>Bs ${op.montoCorrer.toFixed(0)}</td>
+                    <td style="color:${op.gananciaUsd>=0?'var(--success)':'var(--danger)'}; font-weight:700;">$ ${op.gananciaUsd.toFixed(2)}</td>
+                    <td><button class="btn btn-danger btn-xs" onclick="eliminarOperacion(${op.id})">✕</button></td>
                 </tr>
             `).reverse().join('');
         }
 
         function eliminarOperacion(id) {
-            if (!confirm('¿Eliminar esta operación? Esto puede romper la continuidad del ciclo.')) return;
-            const ops = getOperaciones().filter(op => op.id !== id);
-            saveOperaciones(ops);
-            mostrarNotificacion('Registro eliminado. Verifique la continuidad de las etapas.', 'warning');
+            if (!confirm('¿Eliminar?')) return;
+            saveOperaciones(getOperaciones().filter(o => o.id !== id));
         }
 
         function limpiarHistorial() {
-            if (!confirm('¿Purgar todo el libro contable? Esta acción no se puede deshacer.')) return;
+            if (!confirm('¿Purgar todo?')) return;
             saveOperaciones([]);
-            mostrarNotificacion('Libro contable purgado', 'success');
         }
 
-        // ============ EXPORTACIÓN ============
         function exportarExcel() {
             const ops = getOperaciones();
-            if (ops.length === 0) {
-                mostrarNotificacion('No hay datos para exportar', 'error');
-                return;
-            }
-            
-            let csv = 'Fila,Fecha,Etapa,Inversor,MI Bs,Tasa BCV,Tasa Binance,USD Bruto,%BDV,%BPAY,Merma BDV,Merma BPAY,USDT Net,Tasa Out,MV Bs,Correr Bs,Ganancia Bs,Ganancia $\n';
+            if (!ops.length) return;
+            let csv = 'Fila,Fecha,Etapa,Inversor,MI Bs,Tasa In,USD Bruto,%BDV,%BPAY,USDT Net,Tasa Out,Retorno Bs,Ganancia $\n';
             ops.forEach((op, i) => {
-                csv += `${i + 1},${op.fecha},${op.etapa || 0},${op.inversor},${op.montoBs},${op.precioCompra || 0},${op.tasaBinanceCompra || 0},${op.montoUsd},${op.porcentajeBDV},${op.porcentajeBPAY},${op.mermaBDV},${op.mermaBPAY},${op.montoNeto},${op.precioVenta},${op.montoVentaBs},${op.montoCorrer},${op.gananciaBs},${op.gananciaUsd}\n`;
+                csv += `${i+1},${op.fecha},${op.etapa||0},${op.inversor},${op.montoBs},${op.tasaBinanceCompra||op.precioCompra},${op.montoUsd},${op.porcentajeBDV},${op.porcentajeBPAY},${op.montoNeto},${op.precioVenta},${op.montoCorrer},${op.gananciaUsd}\n`;
             });
-            
-            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-            const url = window.URL.createObjectURL(blob);
+            const blob = new Blob(['\ufeff'+csv], {type:'text/csv'});
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `ArbitrajePro_Ciclico_${new Date().toISOString().split('T')[0]}.csv`;
+            a.href = URL.createObjectURL(blob);
+            a.download = `libro_contable_${new Date().toISOString().split('T')[0]}.csv`;
             a.click();
-            
-            mostrarNotificacion('📥 Archivo exportado exitosamente', 'success');
         }
 
         // ============ UI ============
-        function switchTab(tab) {
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
+        function switchStrategyTab(tab) {
+            document.querySelectorAll('.strategy-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.strategy-content').forEach(c => c.classList.remove('active'));
             event.target.classList.add('active');
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            
-            if (tab === 'dashboard') {
-                actualizarDashboard();
-            }
-        }
-
-        function switchAuthTab(tab) {
-            document.querySelectorAll('#loginModal .tab-btn-login').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById(`strategy-${tab}`).classList.add('active');
+            if (tab === 'kpis') calcularKPIs();
         }
 
         function actualizarUI() {
-            const userSection = document.getElementById('userSection');
-            if (currentUser) {
-                userSection.innerHTML = `
-                    <span class="user-badge">👤 ${currentUser}</span>
-                    <button class="btn btn-danger btn-sm" onclick="logout()">Salir</button>
-                `;
-            } else {
-                userSection.innerHTML = `
-                    <button class="btn btn-info" onclick="showLoginModal()">🔐 Conectar</button>
-                `;
-            }
-            actualizarDashboard();
+            const us = document.getElementById('userSection');
+            us.innerHTML = currentUser 
+                ? `<span class="user-badge">👤 ${currentUser}</span><button class="btn btn-danger btn-sm" onclick="logout()">Salir</button>`
+                : `<button class="btn btn-info btn-sm" onclick="showLoginModal()">🔐 Conectar</button>`;
             actualizarHistorial();
-            actualizarResumen();
+            calcularKPIs();
         }
 
-        // ============ AUTENTICACIÓN ============
         function login() {
-            const username = document.getElementById('loginUser').value.trim();
-            const password = document.getElementById('loginPass').value;
-            if (!username || !password) {
-                mostrarNotificacion('Complete todos los campos', 'error');
-                return;
-            }
+            const u = document.getElementById('loginUser').value.trim();
+            const p = document.getElementById('loginPass').value;
+            if (!u || !p) return;
             const users = JSON.parse(localStorage.getItem('arbitrajeUsers') || '{}');
-            if (users[username] && users[username].password === password) {
-                currentUser = username;
+            if (users[u]?.password === p) {
+                currentUser = u;
                 actualizarUI();
                 closeModal('loginModal');
-                mostrarNotificacion(`Sesión activa: ${username}`, 'success');
-            } else {
-                mostrarNotificacion('Credenciales inválidas', 'error');
-            }
+                mostrarNotificacion(`Sesión: ${u}`, 'success');
+            } else mostrarNotificacion('Credenciales inválidas', 'error');
         }
 
         function register() {
-            const username = document.getElementById('registerUser').value.trim();
-            const password = document.getElementById('registerPass').value;
-            if (!username || !password) {
-                mostrarNotificacion('Complete todos los campos', 'error');
-                return;
-            }
+            const u = document.getElementById('loginUser').value.trim();
+            const p = document.getElementById('loginPass').value;
+            if (!u || !p) return;
             const users = JSON.parse(localStorage.getItem('arbitrajeUsers') || '{}');
-            if (users[username]) {
-                mostrarNotificacion('El operador ya existe', 'error');
-                return;
-            }
-            users[username] = { password, createdAt: new Date().toISOString() };
+            if (users[u]) { mostrarNotificacion('Ya existe', 'error'); return; }
+            users[u] = { password: p, createdAt: new Date().toISOString() };
             localStorage.setItem('arbitrajeUsers', JSON.stringify(users));
-            currentUser = username;
+            currentUser = u;
             actualizarUI();
             closeModal('loginModal');
-            mostrarNotificacion(`Operador ${username} registrado`, 'success');
+            mostrarNotificacion(`Registrado: ${u}`, 'success');
         }
 
-        function logout() {
-            currentUser = null;
-            operaciones = [];
-            actualizarUI();
-            mostrarNotificacion('Sesión desconectada', 'success');
-        }
+        function logout() { currentUser = null; actualizarUI(); mostrarNotificacion('Sesión cerrada', 'success'); }
 
-        // ============ MODALES ============
         function showLoginModal() { document.getElementById('loginModal').classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // ============ NOTIFICACIONES ============
         function mostrarNotificacion(mensaje, tipo) {
-            const notif = document.createElement('div');
-            notif.className = `notification ${tipo}`;
-            const iconos = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
-            notif.innerHTML = `<span>${iconos[tipo] || 'ℹ️'}</span> ${mensaje}`;
-            document.body.appendChild(notif);
-            setTimeout(() => {
-                notif.style.animation = 'slideIn 0.3s ease reverse';
-                setTimeout(() => notif.remove(), 300);
-            }, 3500);
+            const n = document.createElement('div');
+            n.className = `notification ${tipo}`;
+            n.innerHTML = `<span>${tipo==='success'?'✅':tipo==='error'?'❌':tipo==='warning'?'⚠️':'ℹ️'}</span> ${mensaje}`;
+            document.body.appendChild(n);
+            setTimeout(() => { n.style.animation = 'slideIn 0.3s ease reverse'; setTimeout(() => n.remove(), 300); }, 3000);
         }
 
-        // ============ INICIALIZACIÓN ============
+        // ============ INIT ============
         async function init() {
-            document.getElementById('calcFecha').value = new Date().toISOString().split('T')[0];
-            
-            // Renderizar UI primero
+            document.getElementById('fullFecha').value = new Date().toISOString().split('T')[0];
             actualizarUI();
-            
-            // Sincronizar tasas en tiempo real
             await sincronizarMercadoContable();
-            
-            // Auto-refresco cada 5 minutos
             setInterval(sincronizarMercadoContable, 300000);
         }
 
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.classList.remove('active');
-            }
-        }
-
+        window.onclick = function(e) { if (e.target.classList.contains('modal')) e.target.classList.remove('active'); };
         init();
     </script>
 </body>
