@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v3 - Dashboard Multi-Etapa con Tasas Reales | MultiKAP</title>
+    <title>ArbitrajePro v4 - Sistema Cíclico Multi-Etapa | MultiKAP</title>
     <style>
         /* ============ TEMA MULTIKAP ============ */
         :root {
@@ -98,6 +98,7 @@
 
         .dot.live { background: var(--success); }
         .dot.offline { background: var(--danger); }
+        .dot.warning { background: var(--warning); }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -139,6 +140,8 @@
         .btn-info { background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); }
         .btn-info:hover { background: var(--border-color); }
         .btn-sm { padding: 6px 12px; font-size: 11px; border-radius: 6px; }
+        .btn-refresh { background: var(--info); color: white; }
+        .btn-refresh:hover { background: #0891b2; }
 
         .main-content { padding: 25px; }
 
@@ -187,6 +190,8 @@
             padding: 18px;
             border-radius: 12px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .summary-card .label {
@@ -199,6 +204,14 @@
             font-size: 20px;
             font-weight: 700;
         }
+
+        .summary-card .trend {
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .trend.up { color: var(--success); }
+        .trend.down { color: var(--danger); }
 
         /* ============ DASHBOARD MULTI-ETAPA ============ */
         .dashboard-grid {
@@ -215,6 +228,7 @@
             padding: 20px;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s;
         }
 
         .stage-card::before {
@@ -229,6 +243,18 @@
         .stage-card.stage-1::before { background: var(--stage-1); }
         .stage-card.stage-2::before { background: var(--stage-2); }
         .stage-card.stage-3::before { background: var(--stage-3); }
+
+        .stage-card.has-capital {
+            box-shadow: 0 0 20px rgba(67, 97, 238, 0.15);
+        }
+
+        .stage-card.stage-2.has-capital {
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
+        }
+
+        .stage-card.stage-3.has-capital {
+            box-shadow: 0 0 20px rgba(219, 39, 119, 0.15);
+        }
 
         .stage-header {
             display: flex;
@@ -284,12 +310,30 @@
             font-weight: 700;
         }
 
+        .stage-stat .value.positive { color: var(--success); }
+        .stage-stat .value.negative { color: var(--danger); }
+
         .stage-actions {
             display: flex;
             gap: 8px;
         }
 
         .stage-actions .btn { flex: 1; font-size: 11px; padding: 8px 12px; }
+
+        .stage-connection {
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            padding: 4px;
+            background: var(--bg-main);
+            border-radius: 4px;
+        }
+
+        .stage-connection.active {
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
 
         /* ============ FLUJO VISUAL ============ */
         .flow-connector {
@@ -315,24 +359,35 @@
             color: var(--text-secondary);
             text-align: center;
             min-width: 90px;
+            transition: all 0.5s;
         }
 
         .flow-arrow {
             font-size: 20px;
-            color: var(--primary);
+            color: var(--border-color);
             font-weight: bold;
+            transition: all 0.5s;
         }
 
         .flow-step.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            transform: scale(1.05);
         }
 
         .flow-step.completed {
             background: var(--success);
             color: white;
             border-color: var(--success);
+        }
+
+        .flow-arrow.active {
+            color: var(--primary);
+        }
+
+        .flow-arrow.completed {
+            color: var(--success);
         }
 
         /* ============ MODAL DE OPERACIÓN ============ */
@@ -434,6 +489,17 @@
             color: var(--success);
         }
 
+        .capital-source {
+            background: rgba(67, 97, 238, 0.1);
+            border: 1px solid var(--primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
         /* ============ HISTORIAL ============ */
         .history-section {
             background: var(--bg-card);
@@ -460,7 +526,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1400px;
+            min-width: 1500px;
         }
 
         thead { position: sticky; top: 0; z-index: 10; }
@@ -498,6 +564,7 @@
         .badge-stage-1 { background: var(--stage-1); }
         .badge-stage-2 { background: var(--stage-2); }
         .badge-stage-3 { background: var(--stage-3); }
+        .badge-stage-0 { background: var(--info); }
 
         /* ============ NOTIFICACIONES ============ */
         .notification {
@@ -526,16 +593,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        .btn-refresh {
-            background: var(--info);
-            color: white;
-            animation: none;
-        }
-
-        .btn-refresh:hover {
-            background: #0891b2;
-        }
-
         @media (max-width: 1200px) {
             .dashboard-grid { grid-template-columns: 1fr 1fr; }
             .summary-cards { grid-template-columns: 1fr 1fr; }
@@ -554,7 +611,7 @@
     <div class="app-container">
         <!-- ============ HEADER CON INDICADORES DE MERCADO ============ -->
         <div class="app-header">
-            <h1><span>💱</span> ArbitrajePro v3</h1>
+            <h1><span>💱</span> ArbitrajePro v4</h1>
             
             <div class="market-indicators">
                 <div class="market-badge">
@@ -606,25 +663,25 @@
             <!-- ============ TAB: DASHBOARD MULTI-ETAPA ============ -->
             <div class="tab-content active" id="tab-dashboard">
                 <!-- Flujo Visual -->
-                <div class="flow-connector">
-                    <div class="flow-step active">💰<br>MI Bs</div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">💵<br>Tasa Compra</div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">🏦<br>Merma BDV</div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">💳<br>Merma BPAY</div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">💎<br>$ Netos</div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">📈<br>Tasa Venta</div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">🔄<br>Retorno Bs</div>
+                <div class="flow-connector" id="flowConnector">
+                    <div class="flow-step" data-step="0">💰<br>MI Bs</div>
+                    <div class="flow-arrow" data-arrow="0">→</div>
+                    <div class="flow-step" data-step="1">💵<br>Tasa Compra</div>
+                    <div class="flow-arrow" data-arrow="1">→</div>
+                    <div class="flow-step" data-step="2">🏦<br>Merma BDV</div>
+                    <div class="flow-arrow" data-arrow="2">→</div>
+                    <div class="flow-step" data-step="3">💳<br>Merma BPAY</div>
+                    <div class="flow-arrow" data-arrow="3">→</div>
+                    <div class="flow-step" data-step="4">💎<br>$ Netos</div>
+                    <div class="flow-arrow" data-arrow="4">→</div>
+                    <div class="flow-step" data-step="5">📈<br>Tasa Venta</div>
+                    <div class="flow-arrow" data-arrow="5">→</div>
+                    <div class="flow-step" data-step="6">🔄<br>Retorno Bs</div>
                 </div>
 
                 <!-- 3 Etapas de Arbitraje -->
                 <div class="dashboard-grid">
-                    <!-- ETAPA 1 -->
+                    <!-- ETAPA 1: Entrada -->
                     <div class="stage-card stage-1" id="stage1Card">
                         <div class="stage-header">
                             <div class="stage-title">🏦 Etapa 1: Entrada</div>
@@ -648,13 +705,16 @@
                                 <div class="value" id="s1_ganancia" style="color: var(--success);">$ 0</div>
                             </div>
                         </div>
+                        <div class="stage-connection" id="s1_connection">
+                            ⬇️ Alimenta a Etapa 2
+                        </div>
                         <div class="stage-actions">
                             <button class="btn btn-primary btn-sm" onclick="openStageModal(1)">📝 Nueva Op</button>
                             <button class="btn btn-success btn-sm" onclick="runStage(1)">🔄 Correr</button>
                         </div>
                     </div>
 
-                    <!-- ETAPA 2 -->
+                    <!-- ETAPA 2: Intermedia -->
                     <div class="stage-card stage-2" id="stage2Card">
                         <div class="stage-header">
                             <div class="stage-title">💱 Etapa 2: Intermedia</div>
@@ -678,13 +738,16 @@
                                 <div class="value" id="s2_ganancia" style="color: var(--success);">$ 0</div>
                             </div>
                         </div>
+                        <div class="stage-connection" id="s2_connection">
+                            ⬇️ Alimenta a Etapa 3
+                        </div>
                         <div class="stage-actions">
                             <button class="btn btn-primary btn-sm" onclick="openStageModal(2)">📝 Nueva Op</button>
                             <button class="btn btn-success btn-sm" onclick="runStage(2)">🔄 Correr</button>
                         </div>
                     </div>
 
-                    <!-- ETAPA 3 -->
+                    <!-- ETAPA 3: Salida -->
                     <div class="stage-card stage-3" id="stage3Card">
                         <div class="stage-header">
                             <div class="stage-title">💎 Etapa 3: Salida</div>
@@ -708,6 +771,9 @@
                                 <div class="value" id="s3_ganancia" style="color: var(--success);">$ 0</div>
                             </div>
                         </div>
+                        <div class="stage-connection" id="s3_connection">
+                            🔄 Retorna a Etapa 1
+                        </div>
                         <div class="stage-actions">
                             <button class="btn btn-primary btn-sm" onclick="openStageModal(3)">📝 Nueva Op</button>
                             <button class="btn btn-success btn-sm" onclick="runStage(3)">🔄 Correr</button>
@@ -719,7 +785,6 @@
             <!-- ============ TAB: CALCULADORA RÁPIDA ============ -->
             <div class="tab-content" id="tab-calculadora">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
-                    <!-- Entradas -->
                     <div class="stage-card" style="border-left: 4px solid var(--primary);">
                         <div class="stage-header">
                             <div class="stage-title">📝 Datos de Operación</div>
@@ -794,7 +859,6 @@
                         </button>
                     </div>
 
-                    <!-- Resultados -->
                     <div class="stage-card" style="border-left: 4px solid var(--success);">
                         <div class="stage-header">
                             <div class="stage-title">📊 Desglose de Resultados</div>
@@ -891,6 +955,8 @@
         <div class="modal-content">
             <h3 id="modalTitle">📝 Nueva Operación</h3>
             
+            <div class="capital-source" id="capitalSource" style="display: none;"></div>
+            
             <div class="form-group">
                 <label>📅 Fecha</label>
                 <input type="date" id="modalFecha">
@@ -972,7 +1038,7 @@
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <h3 style="margin-bottom: 15px;">🔐 Autenticación Operador</h3>
-            <div class="tabs" style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <button class="tab-btn-login active" onclick="switchAuthTab('login')" style="flex:1; padding:10px; border:1px solid var(--border-color); background:var(--bg-main); color:var(--text-secondary); border-radius:6px; cursor:pointer; font-weight:600;">Ingresar</button>
                 <button class="tab-btn-login" onclick="switchAuthTab('register')" style="flex:1; padding:10px; border:1px solid var(--border-color); background:var(--bg-main); color:var(--text-secondary); border-radius:6px; cursor:pointer; font-weight:600;">Nuevo Perfil</button>
             </div>
@@ -1002,23 +1068,22 @@
         const HISTORIAL_EXCEL_SEED = [
             {
                 id: 1716854400000, fecha: "2026-05-28", etapa: 1, inversor: "MD", montoBs: 73931.00, 
-                precioCompra: 611.00, tasaBinanceCompra: 738.50, montoUsd: 121.00, 
-                porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 3.63, mermaBPAY: 4.356,
-                montoNeto: 113.014, precioVenta: 740.70, montoVentaBs: 83709.47, montoCorrer: 83709.47,
-                gananciaBs: 9778.47, gananciaUsd: 16.00
+                precioCompra: 611.00, tasaBinanceCompra: 738.50, montoUsd: 100.11, 
+                porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 3.00, mermaBPAY: 3.60,
+                montoNeto: 93.51, precioVenta: 740.70, montoVentaBs: 69262.86, montoCorrer: 69262.86,
+                gananciaBs: -4668.14, gananciaUsd: -7.64
             },
             {
                 id: 1716854400001, fecha: "2026-05-28", etapa: 1, inversor: "CP", montoBs: 17719.00, 
-                precioCompra: 611.00, tasaBinanceCompra: 738.50, montoUsd: 29.00, 
-                porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 0.87, mermaBPAY: 1.044,
-                montoNeto: 27.086, precioVenta: 740.70, montoVentaBs: 20062.60, montoCorrer: 20062.60,
-                gananciaBs: 2343.60, gananciaUsd: 3.84
+                precioCompra: 611.00, tasaBinanceCompra: 738.50, montoUsd: 23.99, 
+                porcentajeBDV: 3.0, porcentajeBPAY: 3.6, mermaBDV: 0.72, mermaBPAY: 0.86,
+                montoNeto: 22.41, precioVenta: 740.70, montoVentaBs: 16599.09, montoCorrer: 16599.09,
+                gananciaBs: -1119.91, gananciaUsd: -1.83
             }
         ];
 
         // ==================== AGENTE DE TASAS EN TIEMPO REAL ====================
         
-        // 1. Obtener Dólar Oficial BCV
         async function consultarTasaBCV() {
             try {
                 const respuesta = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
@@ -1028,15 +1093,12 @@
                 if (datos && datos.promedio) {
                     const tasaBCV = parseFloat(datos.promedio).toFixed(2);
                     
-                    // Actualizar campos de la calculadora rápida
                     const calcPrecioCompra = document.getElementById('calcPrecioCompra');
                     if (calcPrecioCompra) calcPrecioCompra.value = tasaBCV;
                     
-                    // Actualizar campos del modal
                     const modalPrecioCompra = document.getElementById('modalPrecioCompra');
                     if (modalPrecioCompra) modalPrecioCompra.value = tasaBCV;
                     
-                    // Actualizar header
                     document.getElementById('headerBCV').textContent = `Bs ${tasaBCV}`;
                     document.getElementById('dotBCV').className = 'dot live';
                     
@@ -1046,7 +1108,6 @@
                 console.error("Fallo al sincronizar BCV:", error);
                 document.getElementById('dotBCV').className = 'dot offline';
                 
-                // Resguardo
                 const fallbackBCV = "558.64";
                 const calcPrecioCompra = document.getElementById('calcPrecioCompra');
                 if (calcPrecioCompra && !calcPrecioCompra.value) calcPrecioCompra.value = fallbackBCV;
@@ -1059,7 +1120,6 @@
             }
         }
 
-        // 2. Obtener Puntas de Compra y Venta del P2P de Binance
         async function consultarBinanceP2P() {
             try {
                 const urlBinance = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';
@@ -1074,7 +1134,6 @@
                     tradeType: "BUY"
                 };
 
-                // Petición A: Tasa para COMPRAR USDT (Entrada - usamos SELL porque vemos anuncios de venta)
                 let tasaBinanceCompra = null;
                 try {
                     const reqCompra = await fetch(proxyCORS + encodeURIComponent(urlBinance), {
@@ -1097,7 +1156,6 @@
                     console.error("Fallo al obtener tasa de compra Binance:", e);
                 }
                 
-                // Petición B: Tasa para VENDER USDT (Salida)
                 let tasaVenta = null;
                 try {
                     const reqVenta = await fetch(proxyCORS + encodeURIComponent(urlBinance), {
@@ -1120,31 +1178,25 @@
                     console.error("Fallo al obtener tasa de venta Binance:", e);
                 }
 
-                // Actualizar header
                 if (tasaBinanceCompra && tasaVenta) {
                     document.getElementById('headerBinance').textContent = `${tasaBinanceCompra} / ${tasaVenta}`;
                     document.getElementById('dotBinance').className = 'dot live';
                 } else {
-                    document.getElementById('dotBinance').className = 'dot offline';
+                    document.getElementById('dotBinance').className = 'dot warning';
                 }
 
-                // Resguardos
                 if (!tasaBinanceCompra) {
                     const fallback = "738.50";
                     const calcTasaBinance = document.getElementById('calcTasaBinanceCompra');
                     if (calcTasaBinance && !calcTasaBinance.value) calcTasaBinance.value = fallback;
-                    
                     const modalTasaBinance = document.getElementById('modalTasaBinance');
                     if (modalTasaBinance && !modalTasaBinance.value) modalTasaBinance.value = fallback;
-                    
-                    document.getElementById('headerBinance').textContent = `${fallback} / -- ⚠️`;
                 }
                 
                 if (!tasaVenta) {
                     const fallback = "739.17";
                     const calcPrecioVenta = document.getElementById('calcPrecioVenta');
                     if (calcPrecioVenta && !calcPrecioVenta.value) calcPrecioVenta.value = fallback;
-                    
                     const modalPrecioVenta = document.getElementById('modalPrecioVenta');
                     if (modalPrecioVenta && !modalPrecioVenta.value) modalPrecioVenta.value = fallback;
                 }
@@ -1155,7 +1207,6 @@
             }
         }
 
-        // Función unificada de refresco automático
         async function sincronizarMercadoContable() {
             mostrarNotificacion('🔄 Conectando con terminales financieras...', 'info');
             await consultarTasaBCV();
@@ -1185,14 +1236,13 @@
 
         // ============ CÁLCULOS ============
         function calcularOperacionCompleta(montoBs, precioCompra, tasaBinanceCompra, precioVenta, bdv, bpay) {
-            // Usamos la tasa Binance de compra para calcular cuántos USDT obtenemos
             const montoUsd = montoBs / tasaBinanceCompra;
             const mermaBDV = montoUsd * (bdv / 100);
             const mermaBPAY = montoUsd * (bpay / 100);
             const montoNeto = montoUsd - mermaBDV - mermaBPAY;
             const montoVentaBs = montoNeto * precioVenta;
             const gananciaBs = montoVentaBs - montoBs;
-            const gananciaUsd = gananciaBs / precioCompra; // Usamos BCV como referencia para ganancia en $
+            const gananciaUsd = precioCompra > 0 ? gananciaBs / precioCompra : 0;
 
             return {
                 montoUsd, mermaBDV, mermaBPAY, montoNeto,
@@ -1219,14 +1269,13 @@
 
             calculoRapidoActual = {
                 fecha: document.getElementById('calcFecha').value || new Date().toISOString().split('T')[0],
-                etapa: 0, // 0 = calculadora rápida
+                etapa: 0,
                 inversor: document.getElementById('calcInversor').value,
                 montoBs, precioCompra, tasaBinanceCompra,
                 porcentajeBDV: bdv, porcentajeBPAY: bpay,
                 ...resultado
             };
 
-            // Actualizar UI
             document.getElementById('calcR_MontoUsd').textContent = `$ ${resultado.montoUsd.toFixed(2)}`;
             document.getElementById('calcR_MermaBDV').textContent = `-$ ${resultado.mermaBDV.toFixed(2)}`;
             document.getElementById('calcR_MermaBPAY').textContent = `-$ ${resultado.mermaBPAY.toFixed(2)}`;
@@ -1266,15 +1315,55 @@
             }
         }
 
-        // ============ MODAL DE OPERACIÓN POR ETAPA ============
-        function openStageModal(stage) {
-            currentStage = stage;
-            document.getElementById('modalTitle').innerHTML = `📝 Nueva Operación - Etapa ${stage}`;
-            document.getElementById('modalFecha').value = new Date().toISOString().split('T')[0];
-            document.getElementById('modalResult').style.display = 'none';
-            document.getElementById('modalGuardarBtn').disabled = true;
-            modalCalculo = null;
+        // ============ DASHBOARD Y ETAPAS ============
+        
+        /**
+         * Obtiene los datos agregados de una etapa específica
+         */
+        function getStageData(stage) {
+            const ops = getOperaciones();
+            const stageOps = ops.filter(op => op.etapa === stage);
             
+            if (stageOps.length === 0) {
+                return { montoBs: 0, montoNeto: 0, montoCorrer: 0, gananciaUsd: 0 };
+            }
+
+            const lastOp = stageOps[stageOps.length - 1];
+            return {
+                montoBs: stageOps.reduce((sum, op) => sum + op.montoBs, 0),
+                montoNeto: lastOp.montoNeto,
+                montoCorrer: lastOp.montoCorrer,
+                gananciaUsd: stageOps.reduce((sum, op) => sum + op.gananciaUsd, 0)
+            };
+        }
+
+        /**
+         * CORRECCIÓN CLAVE: Función runStage con continuidad de capital entre etapas
+         * Etapa 1: Puede iniciar con capital fresco o con el retorno de Etapa 3 (cierra el ciclo)
+         * Etapa 2: Se alimenta del retorno (montoCorrer) de Etapa 1
+         * Etapa 3: Se alimenta del retorno (montoCorrer) de Etapa 2
+         */
+        function runStage(stage) {
+            let montoInicialParaModal = 0;
+            let origenCapital = '';
+
+            if (stage === 1) {
+                // La Etapa 1 puede tomar capital fresco o el retorno de la Etapa 3 (cerrar el ciclo)
+                const dataEtapa3 = getStageData(3);
+                if (dataEtapa3.montoCorrer > 0) {
+                    montoInicialParaModal = dataEtapa3.montoCorrer;
+                    origenCapital = 'Etapa 3 (Cierre de Ciclo)';
+                } else {
+                    montoInicialParaModal = 0;
+                    origenCapital = 'Capital Fresco (Manual)';
+                }
+            } else {
+                // Las etapas 2 y 3 se alimentan estrictamente del retorno de la etapa anterior inmediata
+                const dataEtapaAnterior = getStageData(stage - 1);
+                montoInicialParaModal = dataEtapaAnterior.montoCorrer;
+                origenCapital = `Etapa ${stage - 1} (Automático)`;
+            }
+
             // Sincronizar tasas actuales al modal
             const calcPrecioCompra = document.getElementById('calcPrecioCompra');
             const calcTasaBinance = document.getElementById('calcTasaBinanceCompra');
@@ -1289,12 +1378,45 @@
             if (calcPrecioVenta && calcPrecioVenta.value) {
                 document.getElementById('modalPrecioVenta').value = calcPrecioVenta.value;
             }
+
+            // Configurar modal
+            document.getElementById('modalMontoBs').value = montoInicialParaModal > 0 ? montoInicialParaModal.toFixed(2) : '';
+            
+            // Mostrar origen del capital
+            const capitalSource = document.getElementById('capitalSource');
+            if (montoInicialParaModal > 0) {
+                capitalSource.style.display = 'block';
+                capitalSource.innerHTML = `🔄 Capital heredado de <strong>${origenCapital}</strong>: <strong>Bs ${montoInicialParaModal.toFixed(2)}</strong>`;
+            } else {
+                capitalSource.style.display = 'block';
+                capitalSource.innerHTML = `⚠️ Iniciando con <strong>${origenCapital}</strong> - Ingrese el monto manualmente`;
+            }
+
+            openStageModal(stage);
+
+            if (montoInicialParaModal > 0) {
+                mostrarNotificacion(`🔄 Capital de ${origenCapital} traspasado a Etapa ${stage}`, 'success');
+            } else {
+                mostrarNotificacion(`⚠️ Iniciando Etapa ${stage} con saldo manual`, 'info');
+            }
+        }
+
+        function openStageModal(stage) {
+            currentStage = stage;
+            
+            const stageNames = ['', 'Entrada (BDV → BPAY)', 'Intermedia (BPAY → P2P)', 'Salida (P2P → Retiro)'];
+            document.getElementById('modalTitle').innerHTML = `📝 Nueva Operación - Etapa ${stage}: ${stageNames[stage]}`;
+            document.getElementById('modalFecha').value = new Date().toISOString().split('T')[0];
+            document.getElementById('modalResult').style.display = 'none';
+            document.getElementById('modalGuardarBtn').disabled = true;
+            modalCalculo = null;
             
             document.getElementById('stageModal').classList.add('active');
         }
 
         function closeStageModal() {
             document.getElementById('stageModal').classList.remove('active');
+            document.getElementById('capitalSource').style.display = 'none';
             modalCalculo = null;
         }
 
@@ -1341,55 +1463,111 @@
             saveOperaciones(ops);
             
             closeStageModal();
-            mostrarNotificacion(`Operación guardada en Etapa ${currentStage}`, 'success');
+            mostrarNotificacion(`✅ Operación guardada en Etapa ${currentStage}. Capital disponible para siguiente etapa.`, 'success');
         }
 
-        function runStage(stage) {
-            const stageData = getStageData(stage);
-            if (stageData.montoCorrer > 0) {
-                document.getElementById('modalMontoBs').value = stageData.montoCorrer.toFixed(2);
-                openStageModal(stage);
-                mostrarNotificacion(`Capital de Etapa ${stage} cargado para nueva vuelta`, 'success');
-            } else {
-                mostrarNotificacion(`No hay capital disponible en Etapa ${stage}`, 'error');
-            }
-        }
-
-        function getStageData(stage) {
-            const ops = getOperaciones();
-            const stageOps = ops.filter(op => op.etapa === stage);
+        // ============ ACTUALIZACIÓN DE UI ============
+        
+        /**
+         * Actualiza el flujo visual para mostrar el progreso del ciclo
+         */
+        function actualizarFlujoVisual() {
+            const steps = document.querySelectorAll('#flowConnector .flow-step');
+            const arrows = document.querySelectorAll('#flowConnector .flow-arrow');
             
-            if (stageOps.length === 0) {
-                return { montoBs: 0, montoNeto: 0, montoCorrer: 0, gananciaUsd: 0 };
-            }
+            if (!steps.length) return;
 
-            const lastOp = stageOps[stageOps.length - 1];
-            return {
-                montoBs: stageOps.reduce((sum, op) => sum + op.montoBs, 0),
-                montoNeto: lastOp.montoNeto,
-                montoCorrer: lastOp.montoCorrer,
-                gananciaUsd: stageOps.reduce((sum, op) => sum + op.gananciaUsd, 0)
-            };
+            // Limpiar clases de estado
+            steps.forEach(st => { st.classList.remove('active', 'completed'); });
+            arrows.forEach(ar => { ar.classList.remove('active', 'completed'); });
+
+            const op1 = getStageData(1);
+            const op2 = getStageData(2);
+            const op3 = getStageData(3);
+
+            // Lógica de iluminación secuencial:
+            // Si hay capital en Etapa 1 → Pasos 0-1 completados (MI Bs, Tasa Compra)
+            if (op1.montoCorrer > 0) {
+                if (steps[0]) steps[0].classList.add('completed');
+                if (arrows[0]) arrows[0].classList.add('completed');
+                if (steps[1]) steps[1].classList.add('completed');
+                if (arrows[1]) arrows[1].classList.add('completed');
+                if (steps[2]) steps[2].classList.add('active'); // Merma BDV es donde está ahora
+            }
+            
+            // Si hay capital en Etapa 2 → Pasos 2-3 completados (Merma BDV, Merma BPAY)
+            if (op2.montoCorrer > 0) {
+                if (steps[2]) steps[2].classList.add('completed');
+                if (arrows[2]) arrows[2].classList.add('completed');
+                if (steps[3]) steps[3].classList.add('completed');
+                if (arrows[3]) arrows[3].classList.add('completed');
+                if (steps[4]) steps[4].classList.add('active'); // $ Netos
+            }
+            
+            // Si hay capital en Etapa 3 → Todo completado, ciclo cerrado
+            if (op3.montoCorrer > 0) {
+                if (steps[4]) steps[4].classList.add('completed');
+                if (arrows[4]) arrows[4].classList.add('completed');
+                if (steps[5]) steps[5].classList.add('completed');
+                if (arrows[5]) arrows[5].classList.add('completed');
+                if (steps[6]) steps[6].classList.add('completed'); // Retorno Bs completado
+            }
         }
 
-        // ============ DASHBOARD ============
         function actualizarDashboard() {
+            // Actualizar métricas de cada etapa
             for (let stage = 1; stage <= 3; stage++) {
                 const data = getStageData(stage);
                 document.getElementById(`s${stage}_miBs`).textContent = `Bs ${data.montoBs.toFixed(2)}`;
                 document.getElementById(`s${stage}_neto`).textContent = `$ ${data.montoNeto.toFixed(2)}`;
                 document.getElementById(`s${stage}_retorno`).textContent = `Bs ${data.montoCorrer.toFixed(2)}`;
-                document.getElementById(`s${stage}_ganancia`).textContent = `$ ${data.gananciaUsd.toFixed(2)}`;
+                
+                const gananciaEl = document.getElementById(`s${stage}_ganancia`);
+                gananciaEl.textContent = `$ ${data.gananciaUsd.toFixed(2)}`;
+                gananciaEl.style.color = data.gananciaUsd >= 0 ? 'var(--success)' : 'var(--danger)';
+                
+                // Iluminar tarjeta si tiene capital
+                const card = document.getElementById(`stage${stage}Card`);
+                if (card) {
+                    if (data.montoCorrer > 0) {
+                        card.classList.add('has-capital');
+                    } else {
+                        card.classList.remove('has-capital');
+                    }
+                }
+                
+                // Actualizar conexiones entre etapas
+                const connection = document.getElementById(`s${stage}_connection`);
+                if (connection) {
+                    if (data.montoCorrer > 0) {
+                        connection.classList.add('active');
+                        if (stage === 1) connection.innerHTML = '✅ Capital listo → Alimenta Etapa 2';
+                        if (stage === 2) connection.innerHTML = '✅ Capital listo → Alimenta Etapa 3';
+                        if (stage === 3) connection.innerHTML = '✅ Ciclo completo → Retorna a Etapa 1';
+                    } else {
+                        connection.classList.remove('active');
+                        if (stage === 1) connection.innerHTML = '⬇️ Alimenta a Etapa 2';
+                        if (stage === 2) connection.innerHTML = '⬇️ Alimenta a Etapa 3';
+                        if (stage === 3) connection.innerHTML = '🔄 Retorna a Etapa 1';
+                    }
+                }
             }
+            
+            // Actualizar flujo visual
+            actualizarFlujoVisual();
         }
 
         function actualizarResumen() {
             const ops = getOperaciones();
             document.getElementById('totalOps').textContent = ops.length;
+            
             const totalInvertido = ops.reduce((sum, op) => sum + op.montoBs, 0);
             document.getElementById('totalInvertido').textContent = `Bs ${totalInvertido.toFixed(2)}`;
+            
             const gananciaTotal = ops.reduce((sum, op) => sum + op.gananciaUsd, 0);
-            document.getElementById('gananciaTotal').textContent = `$ ${gananciaTotal.toFixed(2)}`;
+            const gananciaEl = document.getElementById('gananciaTotal');
+            gananciaEl.textContent = `$ ${gananciaTotal.toFixed(2)}`;
+            gananciaEl.style.color = gananciaTotal >= 0 ? 'var(--success)' : 'var(--danger)';
             
             let capitalCirculante = 0;
             for (let stage = 1; stage <= 3; stage++) {
@@ -1434,10 +1612,10 @@
         }
 
         function eliminarOperacion(id) {
-            if (!confirm('¿Eliminar esta operación?')) return;
+            if (!confirm('¿Eliminar esta operación? Esto puede romper la continuidad del ciclo.')) return;
             const ops = getOperaciones().filter(op => op.id !== id);
             saveOperaciones(ops);
-            mostrarNotificacion('Registro eliminado', 'success');
+            mostrarNotificacion('Registro eliminado. Verifique la continuidad de las etapas.', 'warning');
         }
 
         function limpiarHistorial() {
@@ -1463,7 +1641,7 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `ArbitrajePro_TasasReales_${new Date().toISOString().split('T')[0]}.csv`;
+            a.download = `ArbitrajePro_Ciclico_${new Date().toISOString().split('T')[0]}.csv`;
             a.click();
             
             mostrarNotificacion('📥 Archivo exportado exitosamente', 'success');
@@ -1476,10 +1654,14 @@
             
             event.target.classList.add('active');
             document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            if (tab === 'dashboard') {
+                actualizarDashboard();
+            }
         }
 
         function switchAuthTab(tab) {
-            document.querySelectorAll('.tab-btn-login').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#loginModal .tab-btn-login').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
             document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
@@ -1556,17 +1738,17 @@
         function mostrarNotificacion(mensaje, tipo) {
             const notif = document.createElement('div');
             notif.className = `notification ${tipo}`;
-            notif.innerHTML = `<span>${tipo === 'success' ? '✅' : tipo === 'error' ? '❌' : 'ℹ️'}</span> ${mensaje}`;
+            const iconos = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+            notif.innerHTML = `<span>${iconos[tipo] || 'ℹ️'}</span> ${mensaje}`;
             document.body.appendChild(notif);
             setTimeout(() => {
                 notif.style.animation = 'slideIn 0.3s ease reverse';
                 setTimeout(() => notif.remove(), 300);
-            }, 3000);
+            }, 3500);
         }
 
         // ============ INICIALIZACIÓN ============
         async function init() {
-            // Fecha por defecto
             document.getElementById('calcFecha').value = new Date().toISOString().split('T')[0];
             
             // Renderizar UI primero
