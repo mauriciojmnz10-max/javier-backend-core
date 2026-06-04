@@ -3,1143 +3,1315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Arbitraje USDT - Deep</title>
+    <title>ArbitrajePro - Calculadora de Operaciones USDT</title>
     <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --text: #1a1a1a;
+            --text-secondary: #666;
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --success: #11998e;
+            --danger: #eb3349;
+            --warning: #f2994a;
+            --border: #e0e0e0;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --card-bg: #ffffff;
+            --hover: #f0f0f0;
+        }
+
+        .dark-mode {
+            --bg: #1a1a2e;
+            --surface: #16213e;
+            --text: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --primary: #7c8cf8;
+            --primary-dark: #667eea;
+            --success: #38ef7d;
+            --danger: #f45c43;
+            --warning: #f2c94c;
+            --border: #2a2a4a;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+            --card-bg: #1f2b47;
+            --hover: #253553;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            padding: 20px;
+            transition: all 0.3s;
         }
 
         .app-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
+            padding: 15px;
         }
 
-        .app-header {
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            color: white;
-            padding: 20px 30px;
+        /* Top Bar */
+        .top-bar {
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .app-header h1 {
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .app-header h1 .icon {
-            font-size: 32px;
-        }
-
-        .user-section {
-            display: flex;
-            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
             gap: 15px;
         }
 
-        .user-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
+        .app-title {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        select, button, input {
+            font-family: inherit;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 10px 18px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 13px;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .btn:active {
+            transform: translateY(0);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            color: white;
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: #1a1a1a; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+        .btn-sm { padding: 6px 12px; font-size: 11px; border-radius: 6px; }
+
+        .theme-toggle {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
         }
 
-        .btn-warning {
-            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
-            color: white;
-        }
-
-        .btn-info {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-info:hover {
-            background: white;
-            color: #203a43;
-        }
-
-        .main-content {
-            padding: 30px;
-        }
-
-        /* Flow Visualization */
-        .process-flow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            border-radius: 15px;
-            flex-wrap: wrap;
-        }
-
-        .flow-step {
-            background: white;
-            padding: 12px 18px;
+        /* Profile Selector */
+        .profile-select {
+            padding: 8px 15px;
             border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
             font-weight: 600;
-            font-size: 13px;
-            color: #333;
-            text-align: center;
-            min-width: 100px;
+            font-size: 14px;
+            cursor: pointer;
         }
 
-        .flow-arrow {
-            font-size: 24px;
-            color: #667eea;
-            font-weight: bold;
+        .admin-badge {
+            background: linear-gradient(135deg, #f2994a, #f2c94c);
+            color: #1a1a1a;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
         }
 
-        .flow-step.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        /* Calculator */
-        .calculator-section {
+        /* Main Grid */
+        .main-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
+        @media (max-width: 1100px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Calculator Card */
         .card {
-            background: #f8f9fa;
+            background: var(--surface);
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--shadow);
         }
 
         .card-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
-            color: #203a43;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
-            color: #555;
+            font-size: 12px;
             font-weight: 600;
-            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .form-group input,
-        .form-group select {
+        .form-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
+            padding: 11px 14px;
+            border: 2px solid var(--border);
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
+            background: var(--card-bg);
+            color: var(--text);
             transition: all 0.3s;
-            background: white;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
         }
 
-        .input-with-icon {
-            position: relative;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-weight: bold;
-        }
-
-        .input-with-icon input {
-            padding-left: 35px;
-        }
-
+        /* Results */
         .results-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .result-box {
-            background: white;
-            padding: 15px;
+        .result-item {
+            background: var(--card-bg);
+            padding: 14px;
             border-radius: 10px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid var(--primary);
         }
 
-        .result-box.highlight {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            border-left-color: #38ef7d;
+        .result-item.highlight {
+            border-left-color: var(--success);
+            background: var(--hover);
         }
 
-        .result-label {
-            font-size: 11px;
-            color: #888;
+        .result-item .label {
+            font-size: 10px;
             text-transform: uppercase;
+            color: var(--text-secondary);
             font-weight: 600;
-            margin-bottom: 5px;
+            letter-spacing: 0.5px;
         }
 
-        .result-value {
-            font-size: 22px;
+        .result-item .value {
+            font-size: 20px;
             font-weight: 700;
-            color: #203a43;
+            margin-top: 3px;
         }
 
-        .result-value.positive {
-            color: #11998e;
-        }
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
 
-        .result-value.negative {
-            color: #eb3349;
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         /* History Table */
-        .history-section {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
         .table-wrapper {
             overflow-x: auto;
             max-height: 500px;
             overflow-y: auto;
+            border-radius: 10px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1200px;
+            min-width: 1000px;
+            font-size: 12px;
         }
 
         thead {
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 5;
         }
 
         th {
-            background: #203a43;
+            background: var(--primary-dark);
             color: white;
-            padding: 12px 10px;
-            font-size: 12px;
-            text-align: center;
+            padding: 10px 8px;
+            font-size: 11px;
             font-weight: 600;
+            text-align: center;
             white-space: nowrap;
         }
 
         td {
-            padding: 10px;
+            padding: 8px;
             text-align: center;
-            border-bottom: 1px solid #eee;
-            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
         }
 
         tr:hover td {
-            background: #f8f9fa;
+            background: var(--hover);
         }
 
         .badge {
-            padding: 4px 10px;
-            border-radius: 15px;
+            padding: 3px 10px;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
         }
 
-        .badge-MD {
-            background: #e3f2fd;
-            color: #1976d2;
+        .badge-admin { background: #fff3cd; color: #856404; }
+        .badge-MD { background: #d1ecf1; color: #0c5460; }
+        .badge-CP { background: #e8daef; color: #6c3483; }
+        .badge-JB { background: #d4edda; color: #155724; }
+
+        .note-indicator {
+            cursor: pointer;
+            font-size: 14px;
         }
 
-        .badge-CP {
-            background: #f3e5f5;
-            color: #7b1fa2;
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .badge-JB {
-            background: #e8f5e8;
-            color: #388e3c;
+        .quick-calc {
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .quick-calc input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 24px;
+            text-align: right;
+            background: var(--card-bg);
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .quick-btns {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .quick-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            background: var(--hover);
+        }
+
+        .quick-btn.op {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .quick-btn.eq {
+            background: var(--success);
+            color: white;
+            border: none;
+        }
+
+        /* Charts */
+        .chart-container {
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: 250px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .chart-bar {
+            flex: 1;
+            min-width: 30px;
+            background: linear-gradient(to top, var(--primary), var(--primary-dark));
+            border-radius: 5px 5px 0 0;
+            transition: height 0.5s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            white-space: nowrap;
+        }
+
+        .chart-value {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: 700;
         }
 
         /* Modal */
-        .modal {
+        .modal-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0,0,0,0.6);
+            z-index: 100;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(4px);
         }
 
-        .modal.active {
+        .modal-overlay.active {
             display: flex;
         }
 
-        .modal-content {
-            background: white;
-            padding: 35px;
+        .modal {
+            background: var(--surface);
             border-radius: 20px;
+            padding: 30px;
             width: 90%;
-            max-width: 420px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        .modal-content h2 {
-            color: #203a43;
-            margin-bottom: 10px;
-            font-size: 24px;
+        .modal h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
         }
 
-        .modal-content p {
-            color: #888;
-            margin-bottom: 25px;
-        }
-
-        .tabs {
+        .toggle-switch {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: #f0f0f0;
-            border-radius: 8px;
+        .switch {
+            width: 50px;
+            height: 28px;
+            background: #ccc;
+            border-radius: 25px;
+            position: relative;
             cursor: pointer;
-            font-weight: 600;
             transition: all 0.3s;
         }
 
-        .tab-btn.active {
-            background: #667eea;
-            color: white;
+        .switch.active {
+            background: var(--success);
         }
 
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .summary-card {
+        .switch::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
         }
 
-        .summary-card .label {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 8px;
-        }
-
-        .summary-card .value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #203a43;
+        .switch.active::after {
+            left: 24px;
         }
 
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 16px 24px;
-            background: white;
+            bottom: 25px;
+            right: 25px;
+            padding: 14px 22px;
+            background: var(--surface);
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 200;
             font-weight: 600;
+            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
-            animation: slideIn 0.3s ease;
-        }
-
-        .notification.success {
-            border-left: 4px solid #11998e;
+            animation: slideUp 0.3s ease;
+            border-left: 4px solid var(--success);
         }
 
         .notification.error {
-            border-left: 4px solid #eb3349;
+            border-left-color: var(--danger);
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .btn-sm {
-            padding: 5px 12px;
-            font-size: 11px;
-            border-radius: 6px;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-20 {
-            margin-top: 20px;
-        }
-
-        .mb-20 {
+        .summary-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
             margin-bottom: 20px;
         }
 
-        @media (max-width: 968px) {
-            .calculator-section {
-                grid-template-columns: 1fr;
+        @media (max-width: 800px) {
+            .summary-row {
+                grid-template-columns: repeat(2, 1fr);
             }
+        }
 
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
+        .summary-card {
+            background: var(--surface);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
 
-            .summary-cards {
-                grid-template-columns: 1fr;
-            }
+        .summary-card .num {
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .admin-only {
+            display: none;
+        }
+
+        .admin-only.visible {
+            display: flex;
         }
     </style>
 </head>
-<body>
-    <div class="app-container">
-        <!-- Header -->
-        <div class="app-header">
-            <h1>
-                <span class="icon">💱</span>
-                Calculadora de Arbitraje USDT
-            </h1>
-            <div class="user-section" id="userSection">
-                <button class="btn btn-info" onclick="showLoginModal()">🔐 Iniciar Sesión</button>
+<body class="light-mode">
+
+<div class="app-container">
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="app-title">
+            <span>💱</span> ArbitrajePro
+        </div>
+        <div class="controls-group">
+            <select id="profileSelect" class="profile-select" onchange="cambiarPerfil()">
+                <option value="">👤 Seleccionar perfil...</option>
+                <option value="admin">👑 Admin</option>
+                <option value="MD">💠 MD</option>
+                <option value="CP">💜 CP</option>
+                <option value="JB">💚 JB</option>
+            </select>
+            <span id="currentUserBadge" style="font-weight:600; font-size:13px;"></span>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema">🌓</button>
+            <button class="btn btn-outline btn-sm admin-only" id="adminPanelBtn" onclick="abrirPanelAdmin()">⚙️ Panel</button>
+        </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-row">
+        <div class="summary-card">
+            <div style="font-size:12px; color:var(--text-secondary);">📊 Total Ops</div>
+            <div class="num" id="sumTotal">0</div>
+        </div>
+        <div class="summary-card">
+            <div style="font-size:12px; color:var(--text-secondary);">💰 Total Invertido</div>
+            <div class="num" id="sumInvertido">Bs 0</div>
+        </div>
+        <div class="summary-card">
+            <div style="font-size:12px; color:var(--text-secondary);">📈 Ganancia Total</div>
+            <div class="num positive" id="sumGanancia">$ 0</div>
+        </div>
+        <div class="summary-card">
+            <div style="font-size:12px; color:var(--text-secondary);">👤 Perfil Activo</div>
+            <div class="num" id="sumPerfil" style="font-size:18px;">-</div>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+        <!-- CALCULATOR -->
+        <div class="card">
+            <div class="card-title">🧮 Calculadora de Operación</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📅 Fecha</label>
+                    <input type="date" id="fecha">
+                </div>
+                <div class="form-group">
+                    <label>👤 Inversor</label>
+                    <select id="inversor" style="width:100%; padding:11px 14px; border:2px solid var(--border); border-radius:10px; font-size:15px; background:var(--card-bg); color:var(--text);">
+                        <option value="MD">MD</option>
+                        <option value="CP">CP</option>
+                        <option value="JB">JB</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>💰 Monto Inicial (Bs)</label>
+                    <input type="number" id="montoBs" step="0.01" placeholder="0,00">
+                </div>
+                <div class="form-group">
+                    <label>💵 Precio Compra $ (Bs)</label>
+                    <input type="number" id="precioCompra" step="0.01" placeholder="0,00">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>🏦 % Merma BDV</label>
+                    <input type="number" id="pctBDV" step="0.01" value="3">
+                </div>
+                <div class="form-group">
+                    <label>💳 % Merma BPAY</label>
+                    <input type="number" id="pctBPAY" step="0.01" value="3.6">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📈 Precio Venta USDT (Bs)</label>
+                    <input type="number" id="precioVenta" step="0.01" placeholder="0,00">
+                </div>
+                <div class="form-group">
+                    <label>📝 Nota (opcional)</label>
+                    <input type="text" id="nota" placeholder="Comentario...">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="calcular()" style="width:100%; padding:14px; font-size:15px;">
+                🔄 Calcular Operación
+            </button>
+
+            <!-- Results -->
+            <div class="results-grid" style="margin-top:20px;">
+                <div class="result-item">
+                    <div class="label">💵 $ Comprados</div>
+                    <div class="value" id="rUsd">-</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">🏦 Merma BDV</div>
+                    <div class="value negative" id="rMermaBDV">-</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">💳 Merma BPAY</div>
+                    <div class="value negative" id="rMermaBPAY">-</div>
+                </div>
+                <div class="result-item highlight">
+                    <div class="label">💎 $ Netos</div>
+                    <div class="value" id="rNeto">-</div>
+                </div>
+                <div class="result-item highlight">
+                    <div class="label">📈 Venta Bs</div>
+                    <div class="value" id="rVentaBs">-</div>
+                </div>
+                <div class="result-item highlight">
+                    <div class="label">🔄 Para Correr</div>
+                    <div class="value positive" id="rCorrer">-</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">📊 Ganancia Bs</div>
+                    <div class="value" id="rGanBs">-</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">💎 Ganancia $</div>
+                    <div class="value" id="rGanUsd">-</div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="guardar()">💾 Guardar</button>
+                <button class="btn btn-warning" onclick="correrDeNuevo()">🔄 Correr de Nuevo</button>
+                <button class="btn btn-outline" onclick="limpiarFormulario()">🗑️ Limpiar</button>
             </div>
         </div>
 
-        <!-- Flow -->
-        <div class="main-content">
-            <div class="process-flow">
-                <div class="flow-step active">💰<br>Monto Bs</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">💵<br>Compra $</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">🏦<br>Merma BDV</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">💳<br>Merma BPAY</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">💎<br>$ Netos</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">📈<br>Venta USDT</div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">🔄<br>Correr</div>
-            </div>
-
-            <!-- Calculator -->
-            <div class="calculator-section">
-                <!-- Inputs -->
-                <div class="card">
-                    <div class="card-title">
-                        📝 Datos de la Operación
-                    </div>
-
-                    <div class="form-group">
-                        <label>📅 Fecha</label>
-                        <input type="date" id="fecha" value="">
-                    </div>
-
-                    <div class="form-group">
-                        <label>👤 Inversor</label>
-                        <select id="inversor">
-                            <option value="MD">MD</option>
-                            <option value="CP">CP</option>
-                            <option value="JB">JB</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>💰 Monto Inicial en Bs</label>
-                        <div class="input-with-icon">
-                            <span class="input-icon">Bs</span>
-                            <input type="number" id="montoBs" step="0.01" placeholder="0,00">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>💵 Precio de Compra del $</label>
-                        <div class="input-with-icon">
-                            <span class="input-icon">Bs</span>
-                            <input type="number" id="precioCompra" step="0.01" placeholder="0,00">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>🏦 Porcentaje Merma BDV (%)</label>
-                        <div class="input-with-icon">
-                            <span class="input-icon">%</span>
-                            <input type="number" id="porcentajeBDV" step="0.01" value="3" placeholder="3%">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>💳 Porcentaje Merma BPAY (%)</label>
-                        <div class="input-with-icon">
-                            <span class="input-icon">%</span>
-                            <input type="number" id="porcentajeBPAY" step="0.01" value="3.6" placeholder="3.6%">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>📈 Precio de Venta USDT</label>
-                        <div class="input-with-icon">
-                            <span class="input-icon">Bs</span>
-                            <input type="number" id="precioVenta" step="0.01" placeholder="0,00">
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary" onclick="calcularOperacion()" style="width: 100%; margin-top: 10px;">
-                        🔄 Calcular Operación
-                    </button>
-                </div>
-
-                <!-- Results -->
-                <div class="card">
-                    <div class="card-title">
-                        📊 Resultados del Cálculo
-                    </div>
-
-                    <div class="results-grid">
-                        <div class="result-box">
-                            <div class="result-label">💵 Monto Compra en $</div>
-                            <div class="result-value" id="rMontoUsd">0,00</div>
-                        </div>
-
-                        <div class="result-box">
-                            <div class="result-label">🏦 Merma BDV ($)</div>
-                            <div class="result-value negative" id="rMermaBDV">0,00</div>
-                        </div>
-
-                        <div class="result-box">
-                            <div class="result-label">💳 Merma BPAY ($)</div>
-                            <div class="result-value negative" id="rMermaBPAY">0,00</div>
-                        </div>
-
-                        <div class="result-box highlight">
-                            <div class="result-label">💎 Monto Neto en $</div>
-                            <div class="result-value" id="rMontoNeto">0,00</div>
-                        </div>
-
-                        <div class="result-box">
-                            <div class="result-label">📈 Monto Venta en Bs</div>
-                            <div class="result-value" id="rMontoVentaBs">0,00</div>
-                        </div>
-
-                        <div class="result-box highlight">
-                            <div class="result-label">🔄 Monto para Correr</div>
-                            <div class="result-value positive" id="rMontoCorrer">0,00</div>
-                        </div>
-
-                        <div class="result-box">
-                            <div class="result-label">📊 Ganancia Neta Bs</div>
-                            <div class="result-value" id="rGananciaBs">0,00</div>
-                        </div>
-
-                        <div class="result-box">
-                            <div class="result-label">💎 Ganancia Neta $</div>
-                            <div class="result-value" id="rGananciaUsd">0,00</div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 10px; margin-top: 20px;">
-                        <button class="btn btn-success" onclick="guardarOperacion()" style="flex: 1;">
-                            💾 Guardar
-                        </button>
-                        <button class="btn btn-warning" onclick="correrDeNuevo()" style="flex: 1;">
-                            🔄 Correr de Nuevo
-                        </button>
-                    </div>
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <!-- Quick Calc -->
+            <div class="quick-calc" id="quickCalcSection">
+                <div class="card-title">🔢 Calculadora Rápida</div>
+                <input type="text" id="quickDisplay" readonly placeholder="0" style="font-size:28px;">
+                <div class="quick-btns">
+                    <button class="quick-btn" onclick="quickInput('7')">7</button>
+                    <button class="quick-btn" onclick="quickInput('8')">8</button>
+                    <button class="quick-btn" onclick="quickInput('9')">9</button>
+                    <button class="quick-btn op" onclick="quickOp('/')">÷</button>
+                    <button class="quick-btn" onclick="quickInput('4')">4</button>
+                    <button class="quick-btn" onclick="quickInput('5')">5</button>
+                    <button class="quick-btn" onclick="quickInput('6')">6</button>
+                    <button class="quick-btn op" onclick="quickOp('*')">×</button>
+                    <button class="quick-btn" onclick="quickInput('1')">1</button>
+                    <button class="quick-btn" onclick="quickInput('2')">2</button>
+                    <button class="quick-btn" onclick="quickInput('3')">3</button>
+                    <button class="quick-btn op" onclick="quickOp('-')">−</button>
+                    <button class="quick-btn" onclick="quickInput('0')">0</button>
+                    <button class="quick-btn" onclick="quickInput('.')">.</button>
+                    <button class="quick-btn" onclick="quickClear()">C</button>
+                    <button class="quick-btn op" onclick="quickOp('+')">+</button>
+                    <button class="quick-btn eq" onclick="quickCalc()" style="grid-column: span 2;">=</button>
+                    <button class="quick-btn" onclick="quickPercent()">%</button>
                 </div>
             </div>
 
-            <!-- Summary Cards -->
-            <div class="summary-cards">
-                <div class="summary-card">
-                    <div class="label">📊 Total Operaciones</div>
-                    <div class="value" id="totalOps">0</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">💰 Total Invertido Bs</div>
-                    <div class="value" id="totalInvertido">0</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">📈 Ganancia Total $</div>
-                    <div class="value" id="gananciaTotal">0</div>
-                </div>
-            </div>
-
-            <!-- History -->
-            <div class="history-section">
-                <div class="history-header">
-                    <h3 style="color: #203a43;">📋 Historial de Operaciones</h3>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-success btn-sm" onclick="exportarExcel()">📥 Excel</button>
-                        <button class="btn btn-danger btn-sm" onclick="limpiarHistorial()">🗑️ Limpiar</button>
-                    </div>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Fecha</th>
-                                <th>Inversor</th>
-                                <th>MI Bs</th>
-                                <th>PC $</th>
-                                <th>MI $</th>
-                                <th>%BDV</th>
-                                <th>%BPAY</th>
-                                <th>Merma BDV</th>
-                                <th>Merma BPAY</th>
-                                <th>$ Neto</th>
-                                <th>PV USDT</th>
-                                <th>MV Bs</th>
-                                <th>Correr Bs</th>
-                                <th>Ganancia Bs</th>
-                                <th>Ganancia $</th>
-                                <th>Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyBody">
-                            <tr>
-                                <td colspan="17" style="text-align: center; padding: 30px; color: #999;">
-                                    📝 No hay operaciones registradas
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Chart -->
+            <div class="card" id="chartSection">
+                <div class="card-title">📊 Rendimiento por Inversor</div>
+                <div class="chart-container" id="chartContainer">
+                    <div style="text-align:center; width:100%; color:var(--text-secondary);">Sin datos</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <h2>🔐 Bienvenido</h2>
-            <p>Inicia sesión o regístrate para guardar tus operaciones</p>
-            
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchAuthTab('login')">Iniciar Sesión</button>
-                <button class="tab-btn" onclick="switchAuthTab('register')">Registrarse</button>
+    <!-- HISTORY -->
+    <div class="card">
+        <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>📋 Historial de Operaciones</span>
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-outline btn-sm" onclick="exportarExcel()">📥 Excel</button>
+                <button class="btn btn-danger btn-sm admin-only" id="btnLimpiarHistorial" onclick="limpiarHistorial()">🗑️ Limpiar Todo</button>
             </div>
-
-            <div id="loginForm">
-                <div class="form-group">
-                    <label>👤 Usuario</label>
-                    <input type="text" id="loginUser" placeholder="Tu usuario">
-                </div>
-                <div class="form-group">
-                    <label>🔒 Contraseña</label>
-                    <input type="password" id="loginPass" placeholder="Tu contraseña">
-                </div>
-                <button class="btn btn-primary" onclick="login()" style="width: 100%;">Ingresar</button>
-            </div>
-
-            <div id="registerForm" style="display: none;">
-                <div class="form-group">
-                    <label>👤 Usuario</label>
-                    <input type="text" id="registerUser" placeholder="Elige un usuario">
-                </div>
-                <div class="form-group">
-                    <label>🔒 Contraseña</label>
-                    <input type="password" id="registerPass" placeholder="Crea una contraseña">
-                </div>
-                <button class="btn btn-success" onclick="register()" style="width: 100%;">Crear Cuenta</button>
-            </div>
-
-            <button class="btn btn-danger" onclick="closeModal()" style="width: 100%; margin-top: 10px;">Cancelar</button>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Operador</th>
+                        <th>Inversor</th>
+                        <th>MI Bs</th>
+                        <th>PC $</th>
+                        <th>$ Compra</th>
+                        <th>%BDV</th>
+                        <th>%BPAY</th>
+                        <th>Merma BDV</th>
+                        <th>Merma BPAY</th>
+                        <th>$ Neto</th>
+                        <th>PV USDT</th>
+                        <th>Venta Bs</th>
+                        <th>Correr</th>
+                        <th>Gan Bs</th>
+                        <th>Gan $</th>
+                        <th>Nota</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                    <tr><td colspan="19" style="text-align:center; padding:30px;">📝 Sin operaciones</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 
-    <script>
-        // ============ ESTADO DE LA APP ============
-        let currentUser = null;
-        let operaciones = [];
-        let ultimoCalculo = null;
+<!-- ADMIN PANEL MODAL -->
+<div class="modal-overlay" id="adminModal">
+    <div class="modal">
+        <h3>⚙️ Panel de Administración</h3>
+        <div style="margin-bottom:15px;">
+            <label style="font-weight:600;">🔒 Contraseña Admin</label>
+            <input type="password" id="adminPass" placeholder="Contraseña" style="width:100%; padding:10px; border:2px solid var(--border); border-radius:8px; margin-top:5px; background:var(--card-bg); color:var(--text);">
+            <button class="btn btn-primary btn-sm" onclick="verificarAdmin()" style="margin-top:8px;">Verificar</button>
+        </div>
+        <div id="adminOptions" class="hidden">
+            <div class="toggle-switch">
+                <span>📋 Historial público (todos ven todo)</span>
+                <div class="switch active" id="togglePublico" onclick="toggleConfig('historialPublico')"></div>
+            </div>
+            <div class="toggle-switch">
+                <span>📊 Mostrar gráficos</span>
+                <div class="switch active" id="toggleGraficos" onclick="toggleConfig('mostrarGraficos')"></div>
+            </div>
+            <div class="toggle-switch">
+                <span>🔢 Calculadora rápida</span>
+                <div class="switch active" id="toggleCalcRapida" onclick="toggleConfig('calcRapida')"></div>
+            </div>
+            <button class="btn btn-warning" onclick="cerrarPanelAdmin()" style="width:100%; margin-top:15px;">Cerrar Panel</button>
+        </div>
+        <button class="btn btn-outline" onclick="document.getElementById('adminModal').classList.remove('active')" style="width:100%; margin-top:10px;">Cancelar</button>
+    </div>
+</div>
 
-        // ============ BASE DE DATOS LOCAL ============
-        function getUsers() {
-            return JSON.parse(localStorage.getItem('arbitrajeUsers') || '{}');
-        }
+<!-- NOTE MODAL -->
+<div class="modal-overlay" id="noteModal">
+    <div class="modal">
+        <h3>📝 Nota de Operación</h3>
+        <p id="noteContent" style="padding:15px; background:var(--card-bg); border-radius:10px; margin-bottom:15px;"></p>
+        <button class="btn btn-outline" onclick="document.getElementById('noteModal').classList.remove('active')" style="width:100%;">Cerrar</button>
+    </div>
+</div>
 
-        function saveUsers(users) {
-            localStorage.setItem('arbitrajeUsers', JSON.stringify(users));
-        }
+<script>
+// ==================== APP STATE ====================
+let perfilActivo = null; // 'admin', 'MD', 'CP', 'JB'
+let esAdmin = false;
+let ultimoCalculo = null;
+let quickExpression = '';
 
-        function getOperaciones() {
-            if (!currentUser) return [];
-            return JSON.parse(localStorage.getItem(`arbitrajeOps_${currentUser}`) || '[]');
-        }
+// Configuración por defecto
+let config = {
+    historialPublico: true,
+    mostrarGraficos: true,
+    calcRapida: true
+};
 
-        function saveOperaciones(ops) {
-            if (!currentUser) return;
-            localStorage.setItem(`arbitrajeOps_${currentUser}`, JSON.stringify(ops));
-            operaciones = ops;
-            actualizarHistorial();
-            actualizarResumen();
-        }
+// ==================== PERSISTENCIA ====================
+const STORAGE_KEY = 'arbitrajePro_data';
+const CONFIG_KEY = 'arbitrajePro_config';
+const ADMIN_PASS = 'admin123';
 
-        // ============ AUTENTICACIÓN ============
-        function switchAuthTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
-        }
+function cargarDatos() {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+}
 
-        function login() {
-            const username = document.getElementById('loginUser').value.trim();
-            const password = document.getElementById('loginPass').value;
-            const users = getUsers();
+function guardarDatos(ops) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(ops));
+}
 
-            if (!username || !password) {
-                mostrarNotificacion('Completa todos los campos', 'error');
-                return;
-            }
+function cargarConfig() {
+    const cfg = localStorage.getItem(CONFIG_KEY);
+    if (cfg) config = JSON.parse(cfg);
+}
 
-            if (users[username] && users[username].password === password) {
-                currentUser = username;
-                actualizarUI();
-                closeModal();
-                cargarDatos();
-                mostrarNotificacion('¡Bienvenido ' + username + '! 🎉', 'success');
-            } else {
-                mostrarNotificacion('Usuario o contraseña incorrectos', 'error');
-            }
-        }
+function guardarConfig() {
+    localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+}
 
-        function register() {
-            const username = document.getElementById('registerUser').value.trim();
-            const password = document.getElementById('registerPass').value;
-            
-            if (!username || !password) {
-                mostrarNotificacion('Completa todos los campos', 'error');
-                return;
-            }
-
-            const users = getUsers();
-            if (users[username]) {
-                mostrarNotificacion('El usuario ya existe', 'error');
-                return;
-            }
-
-            users[username] = { 
-                password, 
-                createdAt: new Date().toISOString() 
-            };
-            saveUsers(users);
-            
-            currentUser = username;
+// ==================== PERFIL ====================
+function cambiarPerfil() {
+    const select = document.getElementById('profileSelect');
+    perfilActivo = select.value;
+    esAdmin = (perfilActivo === 'admin');
+    
+    if (esAdmin) {
+        // Pedir contraseña
+        const pass = prompt('🔒 Ingresa la contraseña de Admin:');
+        if (pass !== ADMIN_PASS) {
+            alert('❌ Contraseña incorrecta');
+            perfilActivo = null;
+            esAdmin = false;
+            select.value = '';
             actualizarUI();
-            closeModal();
-            mostrarNotificacion('¡Cuenta creada exitosamente! 🚀', 'success');
+            return;
         }
+    }
+    
+    actualizarUI();
+    mostrarHistorial();
+    actualizarGraficos();
+    mostrarNotificacion(`👤 Perfil: ${perfilActivo || 'Ninguno'}`);
+}
 
-        function logout() {
-            if (confirm('¿Cerrar sesión?')) {
-                currentUser = null;
-                operaciones = [];
-                actualizarUI();
-                limpiarPantalla();
-                mostrarNotificacion('Sesión cerrada', 'success');
-            }
+function actualizarUI() {
+    const badge = document.getElementById('currentUserBadge');
+    const adminBtns = document.querySelectorAll('.admin-only');
+    const adminPanelBtn = document.getElementById('adminPanelBtn');
+    const btnLimpiar = document.getElementById('btnLimpiarHistorial');
+    
+    if (perfilActivo) {
+        if (esAdmin) {
+            badge.innerHTML = '<span class="admin-badge">👑 ADMIN</span>';
+            adminBtns.forEach(b => b.classList.add('visible'));
+        } else {
+            badge.innerHTML = `<span class="badge badge-${perfilActivo}">👤 ${perfilActivo}</span>`;
+            adminBtns.forEach(b => b.classList.remove('visible'));
         }
+        document.getElementById('sumPerfil').textContent = perfilActivo;
+    } else {
+        badge.innerHTML = '';
+        adminBtns.forEach(b => b.classList.remove('visible'));
+        document.getElementById('sumPerfil').textContent = '-';
+    }
+    
+    // Aplicar configuraciones de visibilidad
+    document.getElementById('chartSection').style.display = config.mostrarGraficos ? 'block' : 'none';
+    document.getElementById('quickCalcSection').style.display = config.calcRapida ? 'block' : 'none';
+}
 
-        // ============ CÁLCULOS PRINCIPALES ============
-        function calcularOperacion() {
-            // Obtener valores
-            const montoBs = parseFloat(document.getElementById('montoBs').value) || 0;
-            const precioCompra = parseFloat(document.getElementById('precioCompra').value) || 0;
-            const porcentajeBDV = parseFloat(document.getElementById('porcentajeBDV').value) || 0;
-            const porcentajeBPAY = parseFloat(document.getElementById('porcentajeBPAY').value) || 0;
-            const precioVenta = parseFloat(document.getElementById('precioVenta').value) || 0;
+// ==================== CÁLCULOS ====================
+function calcular() {
+    const montoBs = parseFloat(document.getElementById('montoBs').value) || 0;
+    const precioCompra = parseFloat(document.getElementById('precioCompra').value) || 0;
+    const pctBDV = parseFloat(document.getElementById('pctBDV').value) || 0;
+    const pctBPAY = parseFloat(document.getElementById('pctBPAY').value) || 0;
+    const precioVenta = parseFloat(document.getElementById('precioVenta').value) || 0;
+    
+    if (montoBs <= 0 || precioCompra <= 0) {
+        mostrarNotificacion('⚠️ Ingresa Monto Bs y Precio Compra', 'error');
+        return;
+    }
+    
+    const usdComprados = montoBs / precioCompra;
+    const mermaBDV = usdComprados * (pctBDV / 100);
+    const mermaBPAY = usdComprados * (pctBPAY / 100);
+    const usdNeto = usdComprados - mermaBDV - mermaBPAY;
+    const ventaBs = usdNeto * precioVenta;
+    const gananciaBs = ventaBs - montoBs;
+    const gananciaUsd = gananciaBs / precioCompra;
+    
+    ultimoCalculo = {
+        fecha: document.getElementById('fecha').value,
+        inversor: document.getElementById('inversor').value,
+        operador: perfilActivo,
+        montoBs,
+        precioCompra,
+        usdComprados,
+        pctBDV,
+        pctBPAY,
+        mermaBDV,
+        mermaBPAY,
+        usdNeto,
+        precioVenta,
+        ventaBs,
+        correr: ventaBs,
+        gananciaBs,
+        gananciaUsd,
+        nota: document.getElementById('nota').value,
+        id: Date.now(),
+        timestamp: new Date().toISOString()
+    };
+    
+    // Mostrar resultados
+    document.getElementById('rUsd').textContent = '$ ' + usdComprados.toFixed(2);
+    document.getElementById('rMermaBDV').textContent = '-$ ' + mermaBDV.toFixed(2);
+    document.getElementById('rMermaBPAY').textContent = '-$ ' + mermaBPAY.toFixed(2);
+    document.getElementById('rNeto').textContent = '$ ' + usdNeto.toFixed(2);
+    document.getElementById('rVentaBs').textContent = 'Bs ' + ventaBs.toFixed(2);
+    document.getElementById('rCorrer').textContent = 'Bs ' + ventaBs.toFixed(2);
+    
+    const ganBsEl = document.getElementById('rGanBs');
+    ganBsEl.textContent = 'Bs ' + gananciaBs.toFixed(2);
+    ganBsEl.className = 'value ' + (gananciaBs >= 0 ? 'positive' : 'negative');
+    
+    const ganUsdEl = document.getElementById('rGanUsd');
+    ganUsdEl.textContent = '$ ' + gananciaUsd.toFixed(2);
+    ganUsdEl.className = 'value ' + (gananciaUsd >= 0 ? 'positive' : 'negative');
+    
+    mostrarNotificacion('✅ Cálculo completado');
+}
 
-            // Validaciones
-            if (montoBs <= 0 || precioCompra <= 0) {
-                mostrarNotificacion('Ingresa Monto Bs y Precio de Compra', 'error');
-                return;
-            }
+function correrDeNuevo() {
+    if (!ultimoCalculo) {
+        mostrarNotificacion('⚠️ Calcula primero', 'error');
+        return;
+    }
+    document.getElementById('montoBs').value = ultimoCalculo.correr.toFixed(2);
+    document.getElementById('nota').value = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    mostrarNotificacion('🔄 Monto para correr establecido');
+}
 
-            // CÁLCULOS:
-            // 1. Monto Compra en $ = Monto Bs / Precio Compra
-            const montoUsd = montoBs / precioCompra;
-            
-            // 2. Merma BDV = Monto $ * (%BDV / 100)
-            const mermaBDV = montoUsd * (porcentajeBDV / 100);
-            
-            // 3. Merma BPAY = Monto $ * (%BPAY / 100)
-            const mermaBPAY = montoUsd * (porcentajeBPAY / 100);
-            
-            // 4. Monto Neto $ = Monto $ - Merma BDV - Merma BPAY
-            const montoNeto = montoUsd - mermaBDV - mermaBPAY;
-            
-            // 5. Monto Venta Bs = Monto Neto $ * Precio Venta
-            const montoVentaBs = montoNeto * precioVenta;
-            
-            // 6. Monto para Correr = Monto Venta Bs
-            const montoCorrer = montoVentaBs;
-            
-            // 7. Ganancia Bs = Monto Venta Bs - Monto Inicial Bs
-            const gananciaBs = montoVentaBs - montoBs;
-            
-            // 8. Ganancia $ = Ganancia Bs / Precio Compra
-            const gananciaUsd = gananciaBs / precioCompra;
+function limpiarFormulario() {
+    document.getElementById('montoBs').value = '';
+    document.getElementById('precioCompra').value = '';
+    document.getElementById('precioVenta').value = '';
+    document.getElementById('nota').value = '';
+    // Mantener fecha y porcentajes
+    document.querySelectorAll('.value').forEach(el => el.textContent = '-');
+    ultimoCalculo = null;
+}
 
-            // Guardar cálculo actual
-            ultimoCalculo = {
-                fecha: document.getElementById('fecha').value || new Date().toISOString().split('T')[0],
-                inversor: document.getElementById('inversor').value,
-                montoBs,
-                precioCompra,
-                montoUsd,
-                porcentajeBDV,
-                porcentajeBPAY,
-                mermaBDV,
-                mermaBPAY,
-                montoNeto,
-                precioVenta,
-                montoVentaBs,
-                montoCorrer,
-                gananciaBs,
-                gananciaUsd
-            };
+// ==================== GUARDAR ====================
+function guardar() {
+    if (!perfilActivo) {
+        mostrarNotificacion('⚠️ Selecciona un perfil primero', 'error');
+        return;
+    }
+    if (!ultimoCalculo) {
+        mostrarNotificacion('⚠️ Realiza un cálculo primero', 'error');
+        return;
+    }
+    
+    ultimoCalculo.operador = perfilActivo;
+    const ops = cargarDatos();
+    ops.push(ultimoCalculo);
+    guardarDatos(ops);
+    mostrarHistorial();
+    actualizarGraficos();
+    actualizarResumen();
+    mostrarNotificacion('💾 Operación guardada');
+}
 
-            // Mostrar resultados
-            actualizarResultados(ultimoCalculo);
-            mostrarNotificacion('✅ Cálculo completado', 'success');
-        }
+function eliminarOperacion(id) {
+    if (!esAdmin) {
+        mostrarNotificacion('❌ Solo el Admin puede eliminar', 'error');
+        return;
+    }
+    if (!confirm('¿Eliminar esta operación?')) return;
+    let ops = cargarDatos();
+    ops = ops.filter(o => o.id !== id);
+    guardarDatos(ops);
+    mostrarHistorial();
+    actualizarGraficos();
+    actualizarResumen();
+    mostrarNotificacion('🗑️ Operación eliminada');
+}
 
-        function actualizarResultados(calc) {
-            document.getElementById('rMontoUsd').textContent = '$ ' + calc.montoUsd.toFixed(2);
-            document.getElementById('rMermaBDV').textContent = '-$ ' + calc.mermaBDV.toFixed(2);
-            document.getElementById('rMermaBPAY').textContent = '-$ ' + calc.mermaBPAY.toFixed(2);
-            document.getElementById('rMontoNeto').textContent = '$ ' + calc.montoNeto.toFixed(2);
-            document.getElementById('rMontoVentaBs').textContent = 'Bs ' + calc.montoVentaBs.toFixed(2);
-            document.getElementById('rMontoCorrer').textContent = 'Bs ' + calc.montoCorrer.toFixed(2);
-            
-            const gananciaBsEl = document.getElementById('rGananciaBs');
-            gananciaBsEl.textContent = 'Bs ' + calc.gananciaBs.toFixed(2);
-            gananciaBsEl.className = 'result-value ' + (calc.gananciaBs >= 0 ? 'positive' : 'negative');
-            
-            const gananciaUsdEl = document.getElementById('rGananciaUsd');
-            gananciaUsdEl.textContent = '$ ' + calc.gananciaUsd.toFixed(2);
-            gananciaUsdEl.className = 'result-value ' + (calc.gananciaUsd >= 0 ? 'positive' : 'negative');
-        }
+function duplicarOperacion(id) {
+    if (!esAdmin) {
+        mostrarNotificacion('❌ Solo el Admin puede duplicar', 'error');
+        return;
+    }
+    const ops = cargarDatos();
+    const original = ops.find(o => o.id === id);
+    if (!original) return;
+    
+    const copia = { ...original, id: Date.now(), timestamp: new Date().toISOString() };
+    ops.push(copia);
+    guardarDatos(ops);
+    mostrarHistorial();
+    actualizarResumen();
+    mostrarNotificacion('📋 Operación duplicada');
+}
 
-        function correrDeNuevo() {
-            if (!ultimoCalculo) {
-                mostrarNotificacion('Primero realiza un cálculo', 'error');
-                return;
-            }
+function limpiarHistorial() {
+    if (!esAdmin) return;
+    if (!confirm('⚠️ ¿Eliminar TODO el historial?')) return;
+    guardarDatos([]);
+    mostrarHistorial();
+    actualizarGraficos();
+    actualizarResumen();
+    mostrarNotificacion('🗑️ Historial limpiado');
+}
 
-            // Usar el Monto para Correr como nuevo Monto Inicial
-            document.getElementById('montoBs').value = ultimoCalculo.montoCorrer.toFixed(2);
-            
-            // Mantener los otros valores
-            mostrarNotificacion('🔄 Monto para correr establecido como nuevo inicial', 'success');
-            
-            // Hacer scroll al inicio
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+function verNota(nota) {
+    document.getElementById('noteContent').textContent = nota || 'Sin nota';
+    document.getElementById('noteModal').classList.add('active');
+}
 
-        // ============ GESTIÓN DE OPERACIONES ============
-        function guardarOperacion() {
-            if (!currentUser) {
-                mostrarNotificacion('Debes iniciar sesión para guardar', 'error');
-                showLoginModal();
-                return;
-            }
+// ==================== HISTORIAL ====================
+function mostrarHistorial() {
+    const tbody = document.getElementById('historyBody');
+    let ops = cargarDatos();
+    
+    // Filtrar según configuración
+    if (!config.historialPublico && !esAdmin && perfilActivo) {
+        ops = ops.filter(o => o.operador === perfilActivo);
+    }
+    
+    if (ops.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="19" style="text-align:center; padding:30px;">📝 Sin operaciones</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = ops.map((op, i) => `
+        <tr>
+            <td><strong>${i + 1}</strong></td>
+            <td>${op.fecha || '-'}</td>
+            <td><span class="badge badge-${op.operador === 'admin' ? 'admin' : op.operador}">${op.operador || '-'}</span></td>
+            <td><span class="badge badge-${op.inversor}">${op.inversor}</span></td>
+            <td>Bs ${op.montoBs?.toFixed(2)}</td>
+            <td>Bs ${op.precioCompra?.toFixed(2)}</td>
+            <td>$ ${op.usdComprados?.toFixed(2)}</td>
+            <td>${op.pctBDV}%</td>
+            <td>${op.pctBPAY}%</td>
+            <td style="color:var(--danger);">-$ ${op.mermaBDV?.toFixed(2)}</td>
+            <td style="color:var(--danger);">-$ ${op.mermaBPAY?.toFixed(2)}</td>
+            <td><strong>$ ${op.usdNeto?.toFixed(2)}</strong></td>
+            <td>Bs ${op.precioVenta?.toFixed(2)}</td>
+            <td>Bs ${op.ventaBs?.toFixed(2)}</td>
+            <td><strong>Bs ${op.correr?.toFixed(2)}</strong></td>
+            <td style="color:${op.gananciaBs >= 0 ? 'var(--success)' : 'var(--danger)'};">Bs ${op.gananciaBs?.toFixed(2)}</td>
+            <td style="color:${op.gananciaUsd >= 0 ? 'var(--success)' : 'var(--danger)'};">$ ${op.gananciaUsd?.toFixed(2)}</td>
+            <td>${op.nota ? `<span class="note-indicator" onclick="verNota('${op.nota.replace(/'/g, "\\'")}')" title="${op.nota}">📝</span>` : '-'}</td>
+            <td>
+                ${esAdmin ? `
+                    <button class="btn btn-outline btn-sm" onclick="duplicarOperacion(${op.id})" title="Duplicar">📋</button>
+                    <button class="btn btn-danger btn-sm" onclick="eliminarOperacion(${op.id})" title="Eliminar">✕</button>
+                ` : '<span style="font-size:11px; color:var(--text-secondary);">-</span>'}
+            </td>
+        </tr>
+    `).reverse().join('');
+    
+    actualizarResumen();
+}
 
-            if (!ultimoCalculo) {
-                mostrarNotificacion('Primero realiza un cálculo', 'error');
-                return;
-            }
+function actualizarResumen() {
+    let ops = cargarDatos();
+    if (!config.historialPublico && !esAdmin && perfilActivo) {
+        ops = ops.filter(o => o.operador === perfilActivo);
+    }
+    
+    document.getElementById('sumTotal').textContent = ops.length;
+    const totalInv = ops.reduce((s, o) => s + (o.montoBs || 0), 0);
+    document.getElementById('sumInvertido').textContent = 'Bs ' + totalInv.toFixed(2);
+    const totalGan = ops.reduce((s, o) => s + (o.gananciaUsd || 0), 0);
+    document.getElementById('sumGanancia').textContent = '$ ' + totalGan.toFixed(2);
+}
 
-            const ops = getOperaciones();
-            ultimoCalculo.id = Date.now();
-            ultimoCalculo.timestamp = new Date().toISOString();
-            ops.push(ultimoCalculo);
-            saveOperaciones(ops);
-            
-            mostrarNotificacion('💾 Operación guardada exitosamente', 'success');
-        }
+// ==================== GRÁFICOS ====================
+function actualizarGraficos() {
+    if (!config.mostrarGraficos) return;
+    
+    const container = document.getElementById('chartContainer');
+    const ops = cargarDatos();
+    
+    if (ops.length === 0) {
+        container.innerHTML = '<div style="text-align:center; width:100%; color:var(--text-secondary);">Sin datos</div>';
+        return;
+    }
+    
+    // Agrupar por inversor
+    const grupos = {};
+    ops.forEach(o => {
+        if (!grupos[o.inversor]) grupos[o.inversor] = 0;
+        grupos[o.inversor] += (o.gananciaUsd || 0);
+    });
+    
+    const valores = Object.values(grupos);
+    const maxVal = Math.max(...valores.map(Math.abs), 1);
+    
+    container.innerHTML = Object.entries(grupos).map(([inv, gan]) => {
+        const altura = Math.abs(gan) / maxVal * 180;
+        const color = gan >= 0 ? 'var(--success)' : 'var(--danger)';
+        return `
+            <div class="chart-bar" style="height:${Math.max(altura, 10)}px; background:${color};" title="${inv}: $${gan.toFixed(2)}">
+                <span class="chart-value">$${gan.toFixed(0)}</span>
+                <span class="chart-label">${inv}</span>
+            </div>
+        `;
+    }).join('');
+}
 
-        function eliminarOperacion(id) {
-            if (!confirm('¿Eliminar esta operación?')) return;
-            
-            const ops = getOperaciones().filter(op => op.id !== id);
-            saveOperaciones(ops);
-            mostrarNotificacion('Operación eliminada', 'success');
-        }
+// ==================== CALCULADORA RÁPIDA ====================
+function quickInput(val) {
+    quickExpression += val;
+    document.getElementById('quickDisplay').value = quickExpression;
+}
 
-        function limpiarHistorial() {
-            if (!confirm('¿Eliminar TODO el historial? Esta acción no se puede deshacer.')) return;
-            saveOperaciones([]);
-            mostrarNotificacion('Historial limpiado', 'success');
-        }
+function quickOp(op) {
+    quickExpression += ' ' + op + ' ';
+    document.getElementById('quickDisplay').value = quickExpression;
+}
 
-        // ============ UI ============
-        function actualizarHistorial() {
-            const tbody = document.getElementById('historyBody');
-            const ops = getOperaciones();
-            
-            if (ops.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="17" style="text-align: center; padding: 30px;">📝 No hay operaciones</td></tr>';
-                return;
-            }
+function quickClear() {
+    quickExpression = '';
+    document.getElementById('quickDisplay').value = '0';
+}
 
-            tbody.innerHTML = ops.map((op, index) => `
-                <tr>
-                    <td><strong>${index + 1}</strong></td>
-                    <td>${op.fecha}</td>
-                    <td><span class="badge badge-${op.inversor}">${op.inversor}</span></td>
-                    <td>Bs ${op.montoBs.toFixed(2)}</td>
-                    <td>Bs ${op.precioCompra.toFixed(2)}</td>
-                    <td>$ ${op.montoUsd.toFixed(2)}</td>
-                    <td>${op.porcentajeBDV}%</td>
-                    <td>${op.porcentajeBPAY}%</td>
-                    <td style="color: #eb3349;">-$ ${op.mermaBDV.toFixed(2)}</td>
-                    <td style="color: #eb3349;">-$ ${op.mermaBPAY.toFixed(2)}</td>
-                    <td><strong>$ ${op.montoNeto.toFixed(2)}</strong></td>
-                    <td>Bs ${op.precioVenta.toFixed(2)}</td>
-                    <td>Bs ${op.montoVentaBs.toFixed(2)}</td>
-                    <td><strong>Bs ${op.montoCorrer.toFixed(2)}</strong></td>
-                    <td style="color: ${op.gananciaBs >= 0 ? '#11998e' : '#eb3349'};">
-                        Bs ${op.gananciaBs.toFixed(2)}
-                    </td>
-                    <td style="color: ${op.gananciaUsd >= 0 ? '#11998e' : '#eb3349'};">
-                        $ ${op.gananciaUsd.toFixed(2)}
-                    </td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="eliminarOperacion(${op.id})">✕</button>
-                    </td>
-                </tr>
-            `).reverse().join('');
-        }
+function quickCalc() {
+    try {
+        const result = eval(quickExpression);
+        document.getElementById('quickDisplay').value = result;
+        quickExpression = result.toString();
+    } catch {
+        document.getElementById('quickDisplay').value = 'Error';
+        quickExpression = '';
+    }
+}
 
-        function actualizarResumen() {
-            const ops = getOperaciones();
-            
-            document.getElementById('totalOps').textContent = ops.length;
-            
-            const totalInvertido = ops.reduce((sum, op) => sum + op.montoBs, 0);
-            document.getElementById('totalInvertido').textContent = 'Bs ' + totalInvertido.toFixed(2);
-            
-            const gananciaTotal = ops.reduce((sum, op) => sum + op.gananciaUsd, 0);
-            document.getElementById('gananciaTotal').textContent = '$ ' + gananciaTotal.toFixed(2);
-        }
+function quickPercent() {
+    try {
+        const result = eval(quickExpression) / 100;
+        document.getElementById('quickDisplay').value = result;
+        quickExpression = result.toString();
+    } catch {
+        document.getElementById('quickDisplay').value = 'Error';
+    }
+}
 
-        function actualizarUI() {
-            const userSection = document.getElementById('userSection');
-            if (currentUser) {
-                userSection.innerHTML = `
-                    <span class="user-badge">👤 ${currentUser}</span>
-                    <button class="btn btn-danger" onclick="logout()">Cerrar Sesión</button>
-                `;
-            } else {
-                userSection.innerHTML = `
-                    <button class="btn btn-info" onclick="showLoginModal()">🔐 Iniciar Sesión</button>
-                `;
-            }
-            actualizarHistorial();
-            actualizarResumen();
-        }
+// ==================== ADMIN PANEL ====================
+function abrirPanelAdmin() {
+    document.getElementById('adminModal').classList.add('active');
+    document.getElementById('adminOptions').classList.add('hidden');
+    document.getElementById('adminPass').value = '';
+}
 
-        function limpiarPantalla() {
-            document.querySelectorAll('.result-value').forEach(el => el.textContent = '0,00');
-            document.getElementById('historyBody').innerHTML = '<tr><td colspan="17" style="text-align: center;">📝 No hay operaciones</td></tr>';
-            document.getElementById('totalOps').textContent = '0';
-            document.getElementById('totalInvertido').textContent = '0';
-            document.getElementById('gananciaTotal').textContent = '0';
-        }
+function verificarAdmin() {
+    const pass = document.getElementById('adminPass').value;
+    if (pass === ADMIN_PASS) {
+        document.getElementById('adminOptions').classList.remove('hidden');
+        // Sincronizar switches
+        document.getElementById('togglePublico').classList.toggle('active', config.historialPublico);
+        document.getElementById('toggleGraficos').classList.toggle('active', config.mostrarGraficos);
+        document.getElementById('toggleCalcRapida').classList.toggle('active', config.calcRapida);
+    } else {
+        alert('❌ Contraseña incorrecta');
+    }
+}
 
-        function cargarDatos() {
-            operaciones = getOperaciones();
-            actualizarHistorial();
-            actualizarResumen();
-        }
+function toggleConfig(key) {
+    config[key] = !config[key];
+    guardarConfig();
+    actualizarUI();
+    mostrarHistorial();
+    actualizarGraficos();
+    
+    // Actualizar switches visuales
+    const switchMap = {
+        historialPublico: 'togglePublico',
+        mostrarGraficos: 'toggleGraficos',
+        calcRapida: 'toggleCalcRapida'
+    };
+    document.getElementById(switchMap[key]).classList.toggle('active', config[key]);
+}
 
-        // ============ MODAL ============
-        function showLoginModal() {
-            document.getElementById('loginModal').classList.add('active');
-        }
+function cerrarPanelAdmin() {
+    document.getElementById('adminModal').classList.remove('active');
+}
 
-        function closeModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+// ==================== TEMA ====================
+function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('arbitrajeTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+}
 
-        // ============ EXPORTACIÓN ============
-        function exportarExcel() {
-            const ops = getOperaciones();
-            if (ops.length === 0) {
-                mostrarNotificacion('No hay datos para exportar', 'error');
-                return;
-            }
+function cargarTema() {
+    if (localStorage.getItem('arbitrajeTheme') === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+}
 
-            let csv = 'Fila,Fecha,Inversor,MI Bs,PC $,MI $,%BDV,%BPAY,Merma BDV,Merma BPAY,$ Neto,PV USDT,MV Bs,Correr Bs,Ganancia Bs,Ganancia $\n';
-            
-            ops.forEach((op, i) => {
-                csv += `${i + 1},${op.fecha},${op.inversor},${op.montoBs},${op.precioCompra},`;
-                csv += `${op.montoUsd},${op.porcentajeBDV},${op.porcentajeBPAY},${op.mermaBDV},`;
-                csv += `${op.mermaBPAY},${op.montoNeto},${op.precioVenta},${op.montoVentaBs},`;
-                csv += `${op.montoCorrer},${op.gananciaBs},${op.gananciaUsd}\n`;
-            });
+// ==================== EXPORTAR ====================
+function exportarExcel() {
+    const ops = cargarDatos();
+    if (ops.length === 0) {
+        mostrarNotificacion('⚠️ Sin datos', 'error');
+        return;
+    }
+    
+    let csv = 'Fila,Fecha,Operador,Inversor,MI Bs,PC $,$ Compra,%BDV,%BPAY,Merma BDV,Merma BPAY,$ Neto,PV USDT,Venta Bs,Correr,Gan Bs,Gan $,Nota\n';
+    ops.forEach((o, i) => {
+        csv += `${i+1},${o.fecha},${o.operador},${o.inversor},${o.montoBs},${o.precioCompra},${o.usdComprados},`;
+        csv += `${o.pctBDV},${o.pctBPAY},${o.mermaBDV},${o.mermaBPAY},${o.usdNeto},${o.precioVenta},`;
+        csv += `${o.ventaBs},${o.correr},${o.gananciaBs},${o.gananciaUsd},"${o.nota||''}"\n`;
+    });
+    
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `arbitraje_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    mostrarNotificacion('📥 Exportado exitosamente');
+}
 
-            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `arbitraje_${new Date().toISOString().split('T')[0]}.csv`;
-            a.click();
-            
-            mostrarNotificacion('📥 Archivo exportado exitosamente', 'success');
-        }
+// ==================== NOTIFICACIONES ====================
+function mostrarNotificacion(msg, tipo = 'success') {
+    const notif = document.createElement('div');
+    notif.className = `notification ${tipo}`;
+    notif.textContent = msg;
+    document.body.appendChild(notif);
+    setTimeout(() => {
+        notif.style.opacity = '0';
+        notif.style.transition = 'opacity 0.3s';
+        setTimeout(() => notif.remove(), 300);
+    }, 2800);
+}
 
-        // ============ NOTIFICACIONES ============
-        function mostrarNotificacion(mensaje, tipo) {
-            const notification = document.createElement('div');
-            notification.className = `notification ${tipo}`;
-            notification.innerHTML = `
-                <span>${tipo === 'success' ? '✅' : '❌'}</span>
-                ${mensaje}
-            `;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideIn 0.3s ease reverse';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
+// ==================== CERRAR MODALES ====================
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('active');
+    }
+});
 
-        // ============ INICIALIZACIÓN ============
-        function init() {
-            // Fecha por defecto: hoy
-            document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
-            
-            // Valores por defecto de porcentajes
-            document.getElementById('porcentajeBDV').value = '3';
-            document.getElementById('porcentajeBPAY').value = '3.6';
-            
-            actualizarUI();
-        }
+// ==================== INICIALIZAR ====================
+function init() {
+    document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+    cargarTema();
+    cargarConfig();
+    actualizarUI();
+    mostrarHistorial();
+    actualizarGraficos();
+    actualizarResumen();
+}
 
-        // Cerrar modal al hacer clic fuera
-        window.onclick = function(event) {
-            const modal = document.getElementById('loginModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-
-        // Iniciar app
-        init();
-    </script>
+init();
+</script>
 </body>
 </html>
