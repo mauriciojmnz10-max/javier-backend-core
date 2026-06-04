@@ -3,101 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v3 | MultiKAP</title>
+    <title>ArbitrajePro v3 | Mau • Gestión Profesional USDT/VES</title>
     <style>
-        /* ============ TEMA MULTIKAP ============ */
+        /* ============================================================
+           TEMA MULTIKAP - Identidad Visual Corporativa Completa
+           ============================================================ */
         :root {
-            --bg: #0b0f19;
-            --surface: #121824;
+            /* Fondos */
+            --bg: #0a0e17;
+            --surface: #111827;
             --card: #1a2336;
+            --card-hover: #1f2b42;
             --border: #26354a;
+            --border-light: #334155;
+
+            /* Texto */
             --text: #f0f4f8;
-            --text2: #7a8fa8;
+            --text-secondary: #8b9db5;
+            --text-muted: #5f7188;
+
+            /* Paleta Principal MultiKAP */
             --primary: #4361ee;
-            --primary2: #3a0ca3;
-            --primary-glow: rgba(67, 97, 238, 0.3);
+            --primary-dark: #3a56d4;
+            --primary-light: #6b83ff;
+            --primary-glow: rgba(67, 97, 238, 0.25);
+            --primary-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+
+            /* Semánticos */
             --success: #10b981;
-            --success-glow: rgba(16, 185, 129, 0.3);
-            --danger: #ef4444;
-            --danger-glow: rgba(239, 68, 68, 0.3);
+            --success-dark: #059669;
+            --success-glow: rgba(16, 185, 129, 0.25);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+
             --warning: #f59e0b;
-            --warning-glow: rgba(245, 158, 11, 0.3);
-            --purple: #7c3aed;
-            --orange: #f97316;
-            --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            --gradient-card: linear-gradient(145deg, #1a2336 0%, #121824 100%);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --warning-dark: #d97706;
+            --warning-glow: rgba(245, 158, 11, 0.25);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+
+            --danger: #ef4444;
+            --danger-dark: #dc2626;
+            --danger-glow: rgba(239, 68, 68, 0.25);
+            --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+
+            /* Perfiles de Inversión */
+            --profile-MD: #4361ee;
+            --profile-MD-glow: rgba(67, 97, 238, 0.3);
+            --profile-CP: #7c3aed;
+            --profile-CP-glow: rgba(124, 58, 237, 0.3);
+            --profile-JB: #10b981;
+            --profile-JB-glow: rgba(16, 185, 129, 0.3);
+
+            /* Sombras */
+            --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.4);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.7);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.8);
+
+            /* Bordes */
+            --radius-xs: 4px;
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-xl: 20px;
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-2xl: 24px;
+
+            /* Transiciones */
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+            --transition-fast: 0.15s var(--ease-out);
+            --transition-base: 0.25s var(--ease-out);
+            --transition-slow: 0.4s var(--ease-in-out);
+
+            /* Tipografía */
+            --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
         }
 
+        /* Modo Claro */
         .light-mode {
             --bg: #f1f5f9;
             --surface: #ffffff;
             --card: #ffffff;
+            --card-hover: #f8fafc;
             --border: #e2e8f0;
-            --text: #1e293b;
-            --text2: #64748b;
-            --primary: #4361ee;
-            --primary2: #3a0ca3;
-            --primary-glow: rgba(67, 97, 238, 0.15);
-            --success: #10b981;
-            --success-glow: rgba(16, 185, 129, 0.15);
-            --danger: #ef4444;
-            --danger-glow: rgba(239, 68, 68, 0.15);
-            --warning: #f59e0b;
-            --warning-glow: rgba(245, 158, 11, 0.15);
-            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --border-light: #cbd5e1;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.10);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+            font-family: var(--font-sans);
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            transition: var(--transition);
+            transition: background var(--transition-slow), color var(--transition-slow);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            padding-bottom: 50px;
         }
 
-        /* ============ SCROLLBAR ESTILIZADA ============ */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* ============ HEADER MULTIKAP ============ */
+        /* Header */
         .header {
-            background: var(--gradient-card);
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
             padding: 14px 28px;
             display: flex;
@@ -108,41 +132,48 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             box-shadow: var(--shadow-md);
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             display: flex;
             align-items: center;
             gap: 12px;
-            background: var(--gradient-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .logo-text {
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .logo-icon {
-            width: 38px;
-            height: 38px;
-            background: var(--gradient-primary);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            -webkit-text-fill-color: white;
-            box-shadow: 0 0 20px var(--primary-glow);
+        .logo-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            -webkit-text-fill-color: var(--text-muted);
         }
 
-        .ticker-bar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+        .ticker-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
         .ticker-item {
             background: var(--card);
@@ -155,32 +186,20 @@
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--transition-fast);
             position: relative;
             overflow: hidden;
         }
 
-        .ticker-item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--primary-glow);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
         .ticker-item:hover {
             border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px var(--primary-glow);
-        }
-        .ticker-item:hover::before {
-            opacity: 0.05;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
         .ticker-label {
             font-size: 10px;
-            color: var(--text2);
+            color: var(--text-muted);
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 0.8px;
@@ -189,34 +208,35 @@
         .ticker-value {
             font-size: 15px;
             font-weight: 700;
+            font-family: var(--font-mono);
             font-variant-numeric: tabular-nums;
         }
+
         .ticker-up { color: var(--success); }
         .ticker-down { color: var(--danger); }
 
         .update-indicator {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: var(--success);
-            box-shadow: 0 0 8px var(--success-glow);
+            box-shadow: 0 0 6px var(--success-glow);
+            flex-shrink: 0;
         }
+
         .update-indicator.loading {
             background: var(--warning);
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 0.3; transform: scale(0.7); }
         }
 
-        .user-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        .user-controls { display: flex; gap: 8px; align-items: center; }
 
+        /* Botones */
         .btn {
             padding: 9px 18px;
             border: 1px solid var(--border);
@@ -224,71 +244,58 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
-            transition: var(--transition);
+            transition: var(--transition-fast);
             background: var(--card);
             color: var(--text);
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-family: inherit;
-            letter-spacing: 0.3px;
+            font-family: var(--font-sans);
+            letter-spacing: 0.2px;
             position: relative;
             overflow: hidden;
         }
-        .btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: white;
-            opacity: 0;
-            transition: var(--transition);
-        }
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-        .btn:hover::after {
-            opacity: 0.03;
-        }
-        .btn:active {
-            transform: translateY(0);
-            box-shadow: var(--shadow-sm);
-        }
+
+        .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .btn:active { transform: translateY(0); box-shadow: var(--shadow-xs); }
+
         .btn-primary {
-            background: var(--gradient-primary);
+            background: var(--primary-gradient);
             color: white;
             border: none;
             font-weight: 700;
             box-shadow: 0 4px 16px var(--primary-glow);
         }
-        .btn-primary:hover {
-            box-shadow: 0 6px 24px var(--primary-glow);
-        }
+        .btn-primary:hover { box-shadow: 0 6px 24px var(--primary-glow); }
+
         .btn-success {
-            background: var(--gradient-success);
+            background: var(--success-gradient);
             color: white;
             border: none;
             font-weight: 700;
             box-shadow: 0 4px 16px var(--success-glow);
         }
-        .btn-success:hover {
-            box-shadow: 0 6px 24px var(--success-glow);
-        }
+        .btn-success:hover { box-shadow: 0 6px 24px var(--success-glow); }
+
         .btn-warning {
-            background: var(--gradient-warning);
-            color: #000;
+            background: var(--warning-gradient);
+            color: #1a1a1a;
             border: none;
             font-weight: 700;
             box-shadow: 0 4px 16px var(--warning-glow);
         }
+        .btn-warning:hover { box-shadow: 0 6px 24px var(--warning-glow); }
+
         .btn-danger {
-            background: var(--gradient-danger);
+            background: var(--danger-gradient);
             color: white;
             border: none;
             font-weight: 700;
             box-shadow: 0 4px 16px var(--danger-glow);
         }
+        .btn-danger:hover { box-shadow: 0 6px 24px var(--danger-glow); }
+
         .btn-sm { padding: 6px 12px; font-size: 11px; border-radius: 6px; }
         .btn-xs { padding: 4px 9px; font-size: 10px; border-radius: 5px; }
         .btn-icon {
@@ -308,13 +315,19 @@
             font-size: 14px;
             background: var(--card);
             color: var(--text);
-            font-family: inherit;
-            transition: var(--transition);
+            font-family: var(--font-sans);
+            transition: var(--transition-fast);
         }
+
         select:focus, input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        input[type="number"] {
+            font-family: var(--font-mono);
+            font-variant-numeric: tabular-nums;
         }
 
         .badge {
@@ -325,60 +338,68 @@
             display: inline-block;
             letter-spacing: 0.3px;
         }
-        .badge-MD {
-            background: rgba(67, 97, 238, 0.15);
-            color: var(--primary);
-            border: 1px solid rgba(67, 97, 238, 0.3);
-        }
-        .badge-CP {
-            background: rgba(124, 58, 237, 0.15);
-            color: var(--purple);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-        }
-        .badge-JB {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        .badge-admin {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warning);
-            border: 1px solid rgba(245, 158, 11, 0.3);
+
+        .badge-MD { background: rgba(67, 97, 238, 0.15); color: var(--profile-MD); border: 1px solid rgba(67, 97, 238, 0.3); }
+        .badge-CP { background: rgba(124, 58, 237, 0.15); color: var(--profile-CP); border: 1px solid rgba(124, 58, 237, 0.3); }
+        .badge-JB { background: rgba(16, 185, 129, 0.15); color: var(--profile-JB); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-admin { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        .app-container { max-width: 1500px; margin: 0 auto; padding: 24px; }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .app-container {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 24px;
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
         }
 
-        /* ============ STEPS ============ */
+        /* Steps */
         .steps-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 28px;
         }
-        @media (max-width: 1100px) {
-            .steps-container { grid-template-columns: 1fr; }
-        }
+
+        @media (max-width: 1100px) { .steps-container { grid-template-columns: 1fr; } }
 
         .step-card {
-            background: var(--gradient-card);
+            background: var(--card);
             border: 2px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 22px;
-            transition: var(--transition);
+            transition: var(--transition-base);
             position: relative;
         }
+
+        .step-card:hover { border-color: var(--border-light); }
+
         .step-card.active {
             border-color: var(--primary);
             box-shadow: 0 0 32px var(--primary-glow);
+            animation: glowPulse 3s ease-in-out infinite;
         }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 32px var(--primary-glow); }
+            50% { box-shadow: 0 0 48px var(--primary-glow); }
+        }
+
         .step-card.completed {
             border-color: var(--success);
             box-shadow: 0 0 24px var(--success-glow);
         }
+
         .step-card.completed::after {
             content: '✓';
             position: absolute;
@@ -386,7 +407,7 @@
             right: -12px;
             width: 28px;
             height: 28px;
-            background: var(--gradient-success);
+            background: var(--success-gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -395,14 +416,11 @@
             font-size: 14px;
             color: white;
             box-shadow: 0 4px 12px var(--success-glow);
+            z-index: 2;
         }
 
-        .step-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
+        .step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+
         .step-number {
             width: 36px;
             height: 36px;
@@ -413,42 +431,30 @@
             font-weight: 800;
             font-size: 15px;
             background: var(--border);
-            color: var(--text2);
-            transition: var(--transition);
+            color: var(--text-muted);
+            transition: var(--transition-base);
+            flex-shrink: 0;
         }
+
         .step-card.active .step-number {
-            background: var(--gradient-primary);
+            background: var(--primary-gradient);
             color: white;
             box-shadow: 0 0 16px var(--primary-glow);
         }
+
         .step-card.completed .step-number {
-            background: var(--gradient-success);
+            background: var(--success-gradient);
             color: white;
         }
-        .step-title {
-            font-weight: 700;
-            font-size: 15px;
-        }
-        .step-body {
-            display: flex;
-            flex-direction: column;
-            gap: 11px;
-        }
-        .input-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .input-row input {
-            flex: 1;
-        }
-        .currency-select {
-            width: 72px;
-            padding: 9px 6px;
-            font-weight: 600;
-        }
+
+        .step-title { font-weight: 700; font-size: 15px; }
+        .step-body { display: flex; flex-direction: column; gap: 11px; }
+        .input-row { display: flex; gap: 8px; align-items: center; }
+        .input-row input { flex: 1; }
+        .currency-select { width: 72px; padding: 9px 6px; font-weight: 600; }
+
         .step-result {
-            background: var(--card);
+            background: var(--surface);
             border-radius: var(--radius-md);
             padding: 14px;
             margin-top: 8px;
@@ -459,113 +465,94 @@
             word-break: break-word;
             line-height: 1.6;
         }
-        .step-result.success {
-            border-left-color: var(--success);
-        }
 
-        /* ============ AUTOCOMPLETAR ============ */
+        .step-result.success { border-left-color: var(--success); }
+
         .autofill-btn {
             background: transparent;
             border: 1px dashed var(--border);
-            color: var(--text2);
+            color: var(--text-secondary);
             padding: 6px 12px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 11px;
             font-weight: 600;
-            transition: var(--transition);
+            transition: var(--transition-fast);
             white-space: nowrap;
+            font-family: var(--font-sans);
         }
+
         .autofill-btn:hover {
             border-color: var(--primary);
-            color: var(--primary);
+            color: var(--primary-light);
             background: var(--primary-glow);
         }
 
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: var(--gradient-primary);
-            border-radius: 2px;
-        }
-
-        /* ============ COMPARISON ============ */
+        /* Comparativa */
         .comparison-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             margin-bottom: 28px;
         }
+
         .investor-card {
-            background: var(--gradient-card);
+            background: var(--card);
             border-radius: var(--radius-lg);
             padding: 20px;
             border: 1px solid var(--border);
-            transition: var(--transition);
+            transition: var(--transition-base);
         }
-        .investor-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-        .investor-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+
+        .investor-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+
+        .investor-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
         .stat-item {
-            background: var(--card);
+            background: var(--surface);
             padding: 14px;
             border-radius: var(--radius-md);
             text-align: center;
-            transition: var(--transition);
+            transition: var(--transition-fast);
         }
-        .stat-item:hover {
-            background: var(--border);
-        }
+
+        .stat-item:hover { background: var(--card-hover); }
+
         .stat-label {
             font-size: 10px;
-            color: var(--text2);
+            color: var(--text-muted);
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 0.5px;
             margin-bottom: 5px;
         }
+
         .stat-value {
             font-size: 20px;
             font-weight: 700;
+            font-family: var(--font-mono);
             font-variant-numeric: tabular-nums;
         }
 
-        /* ============ CHARTS ============ */
+        /* Gráficos */
         .charts-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 20px;
             margin-bottom: 28px;
         }
-        @media (max-width: 1000px) {
-            .charts-container { grid-template-columns: 1fr; }
-        }
+
+        @media (max-width: 1000px) { .charts-container { grid-template-columns: 1fr; } }
+
         .chart-card {
-            background: var(--gradient-card);
+            background: var(--card);
             border-radius: var(--radius-lg);
             padding: 22px;
             border: 1px solid var(--border);
         }
-        .chart-tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 16px;
-        }
+
+        .chart-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+
         .chart-tab {
             padding: 7px 16px;
             border-radius: 20px;
@@ -574,16 +561,18 @@
             font-weight: 600;
             border: 1px solid var(--border);
             background: transparent;
-            color: var(--text2);
-            transition: var(--transition);
-            font-family: inherit;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+            font-family: var(--font-sans);
         }
+
         .chart-tab.active {
-            background: var(--gradient-primary);
+            background: var(--primary-gradient);
             color: white;
             border-color: transparent;
             box-shadow: 0 4px 12px var(--primary-glow);
         }
+
         .modern-chart {
             height: 300px;
             display: flex;
@@ -593,6 +582,7 @@
             position: relative;
             overflow-x: auto;
         }
+
         .chart-group {
             display: flex;
             flex-direction: column;
@@ -602,6 +592,7 @@
             cursor: pointer;
             position: relative;
         }
+
         .chart-bars {
             display: flex;
             gap: 3px;
@@ -610,28 +601,27 @@
             width: 100%;
             justify-content: center;
         }
+
         .chart-bar {
             width: 100%;
             max-width: 28px;
             border-radius: 6px 6px 0 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s var(--ease-in-out);
             cursor: pointer;
             min-height: 4px;
         }
-        .chart-bar:hover {
-            filter: brightness(1.3);
-            transform: scaleY(1.08);
-            transform-origin: bottom;
-        }
-        .chart-bar.MD { background: var(--gradient-primary); }
+
+        .chart-bar:hover { filter: brightness(1.3); transform: scaleY(1.08); transform-origin: bottom; }
+        .chart-bar.MD { background: linear-gradient(to top, #4361ee, #6b83ff); }
         .chart-bar.CP { background: linear-gradient(to top, #7c3aed, #a78bfa); }
-        .chart-bar.JB { background: var(--gradient-success); }
+        .chart-bar.JB { background: linear-gradient(to top, #059669, #10b981); }
+
         .chart-tooltip {
             position: absolute;
             bottom: 100%;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--card);
+            background: var(--surface);
             border: 1px solid var(--border);
             padding: 10px 14px;
             border-radius: var(--radius-md);
@@ -643,42 +633,23 @@
             box-shadow: var(--shadow-lg);
             margin-bottom: 6px;
         }
-        .chart-group:hover .chart-tooltip {
-            display: block;
-        }
-        .chart-label {
-            font-size: 9px;
-            color: var(--text2);
-            margin-top: 6px;
-            text-align: center;
-        }
-        .chart-legend {
-            display: flex;
-            gap: 16px;
-            margin-top: 16px;
-            flex-wrap: wrap;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
-        }
 
-        /* ============ TABLE ============ */
+        .chart-group:hover .chart-tooltip { display: block; }
+        .chart-label { font-size: 9px; color: var(--text-muted); margin-top: 6px; text-align: center; }
+
+        .chart-legend { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+        /* Tabla */
         .table-container {
-            background: var(--gradient-card);
+            background: var(--card);
             border-radius: var(--radius-lg);
             border: 1px solid var(--border);
             overflow: hidden;
             margin-bottom: 28px;
         }
+
         .table-header {
             padding: 16px 22px;
             display: flex;
@@ -688,48 +659,49 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .table-scroll {
-            overflow-x: auto;
-            max-height: 480px;
-            overflow-y: auto;
-        }
+
+        .table-scroll { overflow-x: auto; max-height: 480px; overflow-y: auto; }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1500px;
+            min-width: 1600px;
             font-size: 12px;
         }
-        thead {
-            position: sticky;
-            top: 0;
-            z-index: 5;
-        }
+
+        thead { position: sticky; top: 0; z-index: 5; }
+
         th {
-            background: var(--card);
+            background: var(--surface);
             padding: 11px 8px;
             font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.6px;
-            color: var(--text2);
+            color: var(--text-muted);
             border-bottom: 2px solid var(--border);
             white-space: nowrap;
             text-align: center;
         }
+
         td {
             padding: 10px 7px;
             text-align: center;
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
+            font-family: var(--font-mono);
             font-variant-numeric: tabular-nums;
         }
-        tr:hover td {
-            background: rgba(67, 97, 238, 0.03);
-        }
+
+        tr:hover td { background: rgba(67, 97, 238, 0.03); }
         .currency-bs { color: var(--warning); font-weight: 600; }
         .currency-usd { color: var(--success); font-weight: 600; }
+        .text-success { color: var(--success); }
+        .text-danger { color: var(--danger); }
+        .text-warning { color: var(--warning); }
+        .hidden { display: none !important; }
 
-        /* ============ MODAL & TOAST ============ */
+        /* Modal & Toast */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -740,7 +712,9 @@
             align-items: center;
             backdrop-filter: blur(6px);
         }
+
         .modal-overlay.active { display: flex; }
+
         .modal {
             background: var(--surface);
             border-radius: var(--radius-xl);
@@ -750,8 +724,9 @@
             max-height: 85vh;
             overflow-y: auto;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-xl);
         }
+
         .toast {
             position: fixed;
             bottom: 28px;
@@ -766,34 +741,46 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideUp 0.35s var(--ease-out);
             box-shadow: var(--shadow-lg);
         }
+
         @keyframes slideUp {
             from { transform: translateY(120px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        .hidden { display: none !important; }
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
-        .text-warning { color: var(--warning); }
+
+        /* Indicador de datos precargados */
+        .seed-badge {
+            background: var(--primary-glow);
+            color: var(--primary-light);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 700;
+            margin-left: 6px;
+        }
     </style>
 </head>
 <body>
 
+<!-- HEADER MULTIKAP -->
 <header class="header">
     <div class="logo">
         <div class="logo-icon">💱</div>
-        <span>ArbitrajePro <span style="font-size:14px; color:var(--text2);">| MultiKAP</span></span>
+        <div>
+            <div class="logo-text">ArbitrajePro</div>
+            <div class="logo-subtitle">MultiKAP • Libro de Operaciones USDT/VES</div>
+        </div>
     </div>
-    
+
     <div class="ticker-bar">
         <div class="ticker-item" onclick="usarPrecioBCV()" title="Click para usar tasa BCV">
             <span class="ticker-label">🏦 BCV</span>
             <span class="ticker-value" id="tickerBCV">Cargando...</span>
             <span class="update-indicator" id="bcvIndicator"></span>
         </div>
-        <div class="ticker-item" onclick="usarPrecioBinance()" title="Click para usar tasa Binance">
+        <div class="ticker-item" onclick="usarPrecioBinance()" title="Click para usar tasa Binance P2P">
             <span class="ticker-label">🟡 Binance P2P</span>
             <span class="ticker-value" id="tickerBinance">Cargando...</span>
             <span class="update-indicator" id="binanceIndicator"></span>
@@ -808,38 +795,38 @@
     <div class="user-controls">
         <select id="perfilSelect" onchange="cambiarPerfil()">
             <option value="">👤 Perfil...</option>
-            <option value="MD">MD</option>
-            <option value="CP">CP</option>
-            <option value="JB">JB</option>
+            <option value="MD">💠 MD</option>
+            <option value="CP">💜 CP</option>
+            <option value="JB">💚 JB</option>
             <option value="admin">👑 Admin</option>
         </select>
         <span id="badgePerfil"></span>
         <button class="btn btn-sm" onclick="toggleTheme()" title="Tema Claro/Oscuro">🌓</button>
-        <button class="btn btn-sm hidden" id="btnAdmin" onclick="abrirAdmin()">⚙️ Panel</button>
+        <button class="btn btn-sm hidden" id="btnAdmin" onclick="abrirAdmin()">⚙️</button>
     </div>
 </header>
 
 <div class="app-container">
-    
-    <!-- ============ 3 STEPS ============ -->
-    <div class="section-title">📋 Proceso de Operación</div>
+
+    <!-- 3 STEPS -->
+    <div class="section-title">📋 Flujo de Arbitraje — 3 Etapas</div>
     <div class="steps-container">
-        
-        <!-- STEP 1 -->
+
+        <!-- STEP 1: Pre-Cálculo -->
         <div class="step-card active" id="step1Card">
             <div class="step-header">
                 <div class="step-number">1</div>
-                <div class="step-title">💡 Pre-Cálculo</div>
+                <div class="step-title">💡 Pre-Cálculo / Fondeo</div>
             </div>
             <div class="step-body">
                 <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
-                    <button class="autofill-btn" onclick="autocompletarCompra()" title="Usar mejor precio disponible">⚡ Auto Precio Compra</button>
-                    <button class="autofill-btn" onclick="autocompletarVenta()" title="Estimar precio de venta">📈 Auto Precio Venta</button>
-                    <button class="autofill-btn" onclick="autocompletarAmbos()" title="Llenar ambos precios">🎯 Auto Ambos</button>
+                    <button class="autofill-btn" onclick="autocompletarCompra()">⚡ USD Tasa</button>
+                    <button class="autofill-btn" onclick="autocompletarVenta()">📈 USDT Tasa</button>
+                    <button class="autofill-btn" onclick="autocompletarAmbos()">🎯 Ambos</button>
                 </div>
                 <div class="input-row">
                     <span>💰</span>
-                    <input type="number" id="s1_monto" step="0.01" placeholder="Monto Inicial" onfocus="this.select()">
+                    <input type="number" id="s1_monto" step="0.01" placeholder="Monto Inicial (MI - Bs)" onfocus="this.select()">
                     <select id="s1_moneda" class="currency-select">
                         <option value="BS">Bs</option>
                         <option value="USD">$</option>
@@ -847,101 +834,96 @@
                 </div>
                 <div class="input-row">
                     <span>💵</span>
-                    <input type="number" id="s1_precioCompra" step="0.01" placeholder="Precio Compra $" onfocus="this.select()">
-                    <span style="font-size:12px;color:var(--text2);">Bs/$</span>
+                    <input type="number" id="s1_precioCompra" step="0.01" placeholder="USD Tasa (Bs/$)" onfocus="this.select()">
+                    <span style="font-size:12px;color:var(--text-muted);">Bs/$</span>
                 </div>
                 <div class="input-row">
                     <span>📈</span>
-                    <input type="number" id="s1_precioVenta" step="0.01" placeholder="Precio Venta USDT" onfocus="this.select()">
-                    <span style="font-size:12px;color:var(--text2);">Bs/USDT</span>
+                    <input type="number" id="s1_precioVenta" step="0.01" placeholder="USDT Tasa (Bs/USDT)" onfocus="this.select()">
+                    <span style="font-size:12px;color:var(--text-muted);">Bs/USDT</span>
                 </div>
                 <div class="input-row">
                     <span>📝</span>
                     <input type="text" id="s1_nota" placeholder="Nota (opcional)">
                 </div>
-                <button class="btn btn-primary" onclick="step1Calcular()">🔄 Pre-Calcular</button>
+                <button class="btn btn-primary" onclick="step1Calcular()">🔄 Calcular Pre-Operación</button>
                 <div class="step-result" id="s1_result" style="display:none;"></div>
             </div>
         </div>
 
-        <!-- STEP 2 -->
+        <!-- STEP 2: Mermas -->
         <div class="step-card" id="step2Card">
             <div class="step-header">
                 <div class="step-number">2</div>
-                <div class="step-title">💳 Compra Realizada</div>
+                <div class="step-title">💳 Deducción de Mermas</div>
             </div>
             <div class="step-body">
+                <p style="font-size:13px;color:var(--text-muted);">Confirma montos reales de compra</p>
                 <div class="input-row">
                     <span>💵</span>
-                    <input type="number" id="s2_montoBs" step="0.01" placeholder="Bs gastados realmente" onfocus="this.select()">
-                    <span>Bs</span>
+                    <input type="number" id="s2_montoBs" step="0.01" placeholder="Bs gastados" onfocus="this.select()"><span>Bs</span>
                 </div>
                 <div class="input-row">
                     <span>💲</span>
-                    <input type="number" id="s2_usdRecibidos" step="0.01" placeholder="$ recibidos" onfocus="this.select()">
-                    <span>$</span>
+                    <input type="number" id="s2_usdRecibidos" step="0.01" placeholder="USD Comprado" onfocus="this.select()"><span>$</span>
                 </div>
                 <div class="input-row">
                     <span>🏦</span>
-                    <input type="number" id="s2_mermaBDV" step="0.01" placeholder="Merma BDV" value="0" onfocus="this.select()">
-                    <span>$</span>
+                    <input type="number" id="s2_mermaBDV" step="0.01" placeholder="Merma BDV (3%)" value="0" onfocus="this.select()"><span>$</span>
                 </div>
                 <div class="input-row">
                     <span>💳</span>
-                    <input type="number" id="s2_mermaBPAY" step="0.01" placeholder="Merma BPAY" value="0" onfocus="this.select()">
-                    <span>$</span>
+                    <input type="number" id="s2_mermaBPAY" step="0.01" placeholder="Merma BPAY (3.6%)" value="0" onfocus="this.select()"><span>$</span>
                 </div>
-                <button class="btn btn-success" onclick="step2Confirmar()">✅ Confirmar Compra</button>
+                <button class="btn btn-success" onclick="step2Confirmar()">✅ Confirmar Mermas</button>
                 <div class="step-result success" id="s2_result" style="display:none;"></div>
             </div>
         </div>
 
-        <!-- STEP 3 -->
+        <!-- STEP 3: Venta -->
         <div class="step-card" id="step3Card">
             <div class="step-header">
                 <div class="step-number">3</div>
-                <div class="step-title">💰 Venta USDT</div>
+                <div class="step-title">💰 Liquidación / Venta</div>
             </div>
             <div class="step-body">
+                <p style="font-size:13px;color:var(--text-muted);">Registra venta P2P</p>
                 <div class="input-row">
                     <span>💎</span>
-                    <input type="number" id="s3_usdtVendidos" step="0.01" placeholder="USDT vendidos" onfocus="this.select()">
-                    <span>USDT</span>
+                    <input type="number" id="s3_usdtVendidos" step="0.01" placeholder="USDT Convertido" onfocus="this.select()"><span>USDT</span>
                 </div>
                 <div class="input-row">
                     <span>📈</span>
-                    <input type="number" id="s3_precioVenta" step="0.01" placeholder="Precio venta real" onfocus="this.select()">
-                    <span>Bs</span>
+                    <input type="number" id="s3_precioVenta" step="0.01" placeholder="USDT Tasa real" onfocus="this.select()"><span>Bs</span>
                 </div>
                 <div class="input-row">
                     <span>🏦</span>
-                    <input type="number" id="s3_mermaBanco" step="0.01" placeholder="Merma banco" value="0" onfocus="this.select()">
-                    <span>Bs</span>
+                    <input type="number" id="s3_mermaBanco" step="0.01" placeholder="Merma banco salida" value="0" onfocus="this.select()"><span>Bs</span>
                 </div>
-                <button class="btn btn-warning" onclick="step3Completar()">💰 Registrar Venta</button>
+                <button class="btn btn-warning" onclick="step3Completar()">💰 Registrar y Cerrar</button>
                 <div class="step-result success" id="s3_result" style="display:none;"></div>
             </div>
         </div>
     </div>
 
-    <!-- ============ COMPARISON ============ -->
-    <div class="section-title">📊 Comparativa entre Inversores</div>
+    <!-- COMPARATIVA -->
+    <div class="section-title">📊 Rendimiento por Inversor</div>
     <div class="comparison-grid" id="comparisonGrid">
         <div class="investor-card">
-            <h4><span class="badge badge-MD">MD</span></h4>
+            <h4 style="margin-bottom:12px;"><span class="badge badge-MD">💠 MD</span></h4>
             <div class="investor-stats" id="statsMD"></div>
         </div>
         <div class="investor-card">
-            <h4><span class="badge badge-CP">CP</span></h4>
+            <h4 style="margin-bottom:12px;"><span class="badge badge-CP">💜 CP</span></h4>
             <div class="investor-stats" id="statsCP"></div>
         </div>
         <div class="investor-card">
-            <h4><span class="badge badge-JB">JB</span></h4>
+            <h4 style="margin-bottom:12px;"><span class="badge badge-JB">💚 JB</span></h4>
             <div class="investor-stats" id="statsJB"></div>
         </div>
     </div>
 
-    <!-- ============ CHARTS ============ -->
+    <!-- GRÁFICOS -->
     <div class="charts-container">
         <div class="chart-card">
             <div class="section-title">📈 Evolución de Ganancias</div>
@@ -952,49 +934,60 @@
             </div>
             <div class="modern-chart" id="mainChart"></div>
             <div class="chart-legend">
-                <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(to top,#4361ee,#3a0ca3);"></div> MD</div>
+                <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(to top,#4361ee,#6b83ff);"></div> MD</div>
                 <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(to top,#7c3aed,#a78bfa);"></div> CP</div>
-                <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(to top,#10b981,#059669);"></div> JB</div>
+                <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(to top,#059669,#10b981);"></div> JB</div>
             </div>
         </div>
-        
         <div class="chart-card">
             <div class="section-title">📊 Resumen General</div>
-            <div id="resumenGeneral" style="display:flex; flex-direction:column; gap:15px;">
-                <p style="color:var(--text2);">Cargando datos...</p>
-            </div>
+            <div id="resumenGeneral" style="display:flex;flex-direction:column;gap:15px;"></div>
         </div>
     </div>
 
-    <!-- ============ HISTORY ============ -->
+    <!-- HISTORIAL -->
     <div class="table-container">
         <div class="table-header">
-            <span class="section-title" style="margin:0;">📋 Historial Completo</span>
-            <div style="display:flex; gap:8px;">
+            <span class="section-title" style="margin:0;">📋 Libro de Operaciones <span class="seed-badge">Datos Históricos</span></span>
+            <div style="display:flex;gap:8px;">
                 <button class="btn btn-sm" onclick="exportarExcel()">📥 Exportar Excel</button>
-                <button class="btn btn-sm btn-danger hidden" id="btnLimpiar" onclick="limpiarTodo()">🗑️ Limpiar Todo</button>
+                <button class="btn btn-sm btn-danger hidden" id="btnLimpiar" onclick="limpiarTodo()">🗑️ Limpiar</button>
             </div>
         </div>
         <div class="table-scroll">
             <table>
                 <thead>
                     <tr>
-                        <th>#</th><th>Fecha</th><th>Hora</th><th>Operador</th><th>Inversor</th>
-                        <th>Paso</th><th>MI (Bs)</th><th>MI ($)</th><th>PC ($)</th>
-                        <th>%BDV</th><th>%BPAY</th><th>MO ($)</th><th>Merma</th>
-                        <th>$ Neto</th><th>PV (Bs)</th><th>MV (Bs)</th><th>Correr</th>
-                        <th>Gan. Bs</th><th>Gan. $</th><th>Nota</th><th>Acción</th>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Operador</th>
+                        <th>Inversor</th>
+                        <th>Paso</th>
+                        <th>MI (Bs)</th>
+                        <th>USD Tasa</th>
+                        <th>USD Comprado</th>
+                        <th>%BDV</th>
+                        <th>%BPAY</th>
+                        <th>Merma BDV</th>
+                        <th>Merma BPAY</th>
+                        <th>USDT Convertido</th>
+                        <th>USDT Tasa</th>
+                        <th>MV (Bs)</th>
+                        <th>Correr (Bs)</th>
+                        <th>Ganancia Bs</th>
+                        <th>Ganancia $</th>
+                        <th>Nota</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
-                <tbody id="historyBody">
-                    <tr><td colspan="21" style="text-align:center;padding:40px;color:var(--text2);">📝 Sin operaciones registradas</td></tr>
-                </tbody>
+                <tbody id="historyBody"></tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- ADMIN MODAL -->
+<!-- MODAL ADMIN -->
 <div class="modal-overlay" id="adminModal">
     <div class="modal">
         <h3 style="margin-bottom:16px;">⚙️ Panel de Administración</h3>
@@ -1005,7 +998,7 @@
                 <input type="checkbox" id="cfgPublico" checked onchange="guardarConfig()"> 📋 Historial público
             </label>
             <label style="display:flex;align-items:center;gap:10px;padding:10px 0;cursor:pointer;">
-                <input type="checkbox" id="cfgGraficos" checked onchange="guardarConfig()"> 📊 Gráficos y estadísticas
+                <input type="checkbox" id="cfgGraficos" checked onchange="guardarConfig()"> 📊 Mostrar gráficos
             </label>
             <button class="btn btn-warning btn-sm" onclick="document.getElementById('adminModal').classList.remove('active')" style="width:100%;margin-top:10px;">Cerrar</button>
         </div>
@@ -1016,9 +1009,69 @@
 <script>
 // ==================== CONSTANTES ====================
 const ADMIN_PASS = 'admin123';
-const STORAGE_KEY = 'arbitrajeV3_multikap_ops';
-const CONFIG_KEY = 'arbitrajeV3_multikap_cfg';
-const THEME_KEY = 'arbitrajeV3_multikap_theme';
+const STORAGE_KEY = 'arbitrajePro_v3_ops';
+const CONFIG_KEY = 'arbitrajePro_v3_cfg';
+const THEME_KEY = 'arbitrajePro_v3_theme';
+const SEED_LOADED_KEY = 'arbitrajePro_v3_seed_loaded';
+
+// ==================== DATOS HISTÓRICOS (SEED DATA) ====================
+const SEED_DATA = [
+    {
+        id: 1001, timestamp: '2026-05-28T10:00:00', fecha: '2026-05-28',
+        hora: '10:00 AM', operador: 'MD', inversor: 'MD', paso: 'Histórico',
+        monto_inicial_bs: 73931.00, usd_tasa: 611.00,
+        usd_comprado: 121.00, pct_bdv: 3, pct_bpay: 3.6,
+        merma_bdv: 3.63, merma_bpay: 4.356,
+        usdt_convertido: 113.014, usdt_tasa: 740.70,
+        monto_venta_bs: 83709.47, merma_banco: 0,
+        correr: 83709.47, ganancia_bs: 9778.47, ganancia_usd: 16.00,
+        nota: 'Operación histórica - Mayo 28'
+    },
+    {
+        id: 1002, timestamp: '2026-05-28T11:00:00', fecha: '2026-05-28',
+        hora: '11:00 AM', operador: 'CP', inversor: 'CP', paso: 'Histórico',
+        monto_inicial_bs: 17719.00, usd_tasa: 611.00,
+        usd_comprado: 29.00, pct_bdv: 3, pct_bpay: 3.6,
+        merma_bdv: 0.87, merma_bpay: 1.044,
+        usdt_convertido: 27.086, usdt_tasa: 740.70,
+        monto_venta_bs: 20062.60, merma_banco: 0,
+        correr: 20062.60, ganancia_bs: 2343.60, ganancia_usd: 3.84,
+        nota: 'Operación histórica - Mayo 28'
+    },
+    {
+        id: 1003, timestamp: '2026-06-01T09:00:00', fecha: '2026-06-01',
+        hora: '09:00 AM', operador: 'MD', inversor: 'MD', paso: 'Histórico',
+        monto_inicial_bs: 75000.00, usd_tasa: 616.00,
+        usd_comprado: 121.75, pct_bdv: 3, pct_bpay: 3.6,
+        merma_bdv: 3.65, merma_bpay: 4.38,
+        usdt_convertido: 106.72, usdt_tasa: 723.00,
+        monto_venta_bs: 77361.00, merma_banco: 0,
+        correr: 77361.00, ganancia_bs: 2361.00, ganancia_usd: 3.83,
+        nota: 'Operación histórica - Junio 1'
+    },
+    {
+        id: 1004, timestamp: '2026-06-01T10:00:00', fecha: '2026-06-01',
+        hora: '10:00 AM', operador: 'CP', inversor: 'CP', paso: 'Histórico',
+        monto_inicial_bs: 45000.00, usd_tasa: 616.00,
+        usd_comprado: 73.00, pct_bdv: 2, pct_bpay: 3,
+        merma_bdv: 1.46, merma_bpay: 2.19,
+        usdt_convertido: 68.00, usdt_tasa: 723.00,
+        monto_venta_bs: 49164.00, merma_banco: 0,
+        correr: 49164.00, ganancia_bs: 4164.00, ganancia_usd: 6.76,
+        nota: 'Operación histórica - Junio 1'
+    },
+    {
+        id: 1005, timestamp: '2026-06-01T11:00:00', fecha: '2026-06-01',
+        hora: '11:00 AM', operador: 'JB', inversor: 'JB', paso: 'Histórico',
+        monto_inicial_bs: 308000.00, usd_tasa: 616.00,
+        usd_comprado: 500.00, pct_bdv: 15, pct_bpay: 18,
+        merma_bdv: 75.00, merma_bpay: 90.00,
+        usdt_convertido: 15.00, usdt_tasa: 723.00,
+        monto_venta_bs: 10845.00, merma_banco: 0,
+        correr: 10845.00, ganancia_bs: 10845.00, ganancia_usd: 17.61,
+        nota: 'Operación histórica JB - Junio 1'
+    }
+];
 
 // ==================== ESTADO GLOBAL ====================
 let perfilActivo = null;
@@ -1028,23 +1081,51 @@ let paso2Data = null;
 let periodoChart = 'semanal';
 let tickerInterval = null;
 
-// ==================== PERSISTENCIA LOCAL (PREPARADA PARA BACKEND) ====================
-// Estructura lista para migrar a SQLite/PostgreSQL
-function getOps() { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-function saveOps(ops) { localStorage.setItem(STORAGE_KEY, JSON.stringify(ops)); }
-function getConfig() { return JSON.parse(localStorage.getItem(CONFIG_KEY) || '{"publico":true,"graficos":true}'); }
-function saveConfig(cfg) { localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg)); }
+// ==================== PERSISTENCIA CON SEED DATA ====================
+function cargarSeedDataSiEsNecesario() {
+    const yaCargado = localStorage.getItem(SEED_LOADED_KEY);
+    if (!yaCargado) {
+        // Primera vez: cargar datos históricos
+        const opsExistentes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        // Evitar duplicados
+        const idsExistentes = new Set(opsExistentes.map(o => o.id));
+        const nuevos = SEED_DATA.filter(s => !idsExistentes.has(s.id));
+        if (nuevos.length > 0) {
+            const todas = [...opsExistentes, ...nuevos];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(todas));
+        }
+        localStorage.setItem(SEED_LOADED_KEY, 'true');
+        console.log('✅ Datos históricos precargados:', nuevos.length, 'operaciones');
+    }
+}
+
+function getOps() {
+    cargarSeedDataSiEsNecesario();
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+}
+
+function saveOps(ops) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(ops));
+}
+
+function getConfig() {
+    return JSON.parse(localStorage.getItem(CONFIG_KEY) || '{"publico":true,"graficos":true}');
+}
+
+function saveConfig(cfg) {
+    localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
+}
 
 // ==================== PERFIL ====================
 function cambiarPerfil() {
     const val = document.getElementById('perfilSelect').value;
     if (val === 'admin') {
         const pass = prompt('🔒 Contraseña Admin:');
-        if (pass !== ADMIN_PASS) { 
-            alert('❌ Contraseña incorrecta'); 
-            document.getElementById('perfilSelect').value = ''; 
+        if (pass !== ADMIN_PASS) {
+            alert('❌ Contraseña incorrecta');
+            document.getElementById('perfilSelect').value = '';
             perfilActivo = null; esAdmin = false;
-            actualizarUI(); return; 
+            actualizarUI(); return;
         }
         esAdmin = true; perfilActivo = 'admin';
     } else if (val) {
@@ -1061,299 +1142,230 @@ function actualizarUI() {
     const badge = document.getElementById('badgePerfil');
     const btnAdmin = document.getElementById('btnAdmin');
     const btnLimpiar = document.getElementById('btnLimpiar');
-    
     if (esAdmin) {
         badge.innerHTML = '<span class="badge badge-admin">👑 ADMIN</span>';
-        btnAdmin.classList.remove('hidden');
-        btnLimpiar.classList.remove('hidden');
+        btnAdmin.classList.remove('hidden'); btnLimpiar.classList.remove('hidden');
     } else if (perfilActivo) {
         badge.innerHTML = `<span class="badge badge-${perfilActivo}">👤 ${perfilActivo}</span>`;
-        btnAdmin.classList.add('hidden');
-        btnLimpiar.classList.add('hidden');
+        btnAdmin.classList.add('hidden'); btnLimpiar.classList.add('hidden');
     } else {
         badge.innerHTML = ''; btnAdmin.classList.add('hidden'); btnLimpiar.classList.add('hidden');
     }
 }
 
-// ==================== TICKERS - API CORREGIDA ====================
+// ==================== TICKERS ====================
 async function cargarTickers() {
     document.getElementById('bcvIndicator').classList.add('loading');
     document.getElementById('binanceIndicator').classList.add('loading');
-    
     await Promise.allSettled([cargarBCV(), cargarBinance()]);
-    
     document.getElementById('bcvIndicator').classList.remove('loading');
     document.getElementById('binanceIndicator').classList.remove('loading');
 }
 
 async function cargarBCV() {
     try {
-        const response = await fetch('https://ve.dolar-api.com/api/v1/dolar/oficial');
-        if (!response.ok) throw new Error('API BCV no disponible');
-        const data = await response.json();
-        
-        if (data?.price) {
-            const precio = parseFloat(data.price).toFixed(2);
-            document.getElementById('tickerBCV').textContent = `Bs ${precio}`;
-            document.getElementById('tickerBCV').title = `BCV Oficial - ${data.date || 'Hoy'}`;
-            localStorage.setItem('bcv_cache', JSON.stringify({ price: precio, date: data.date, ts: Date.now() }));
+        const r = await fetch('https://ve.dolar-api.com/api/v1/dolar/oficial');
+        if (!r.ok) throw new Error('API BCV');
+        const d = await r.json();
+        if (d?.price) {
+            const p = parseFloat(d.price).toFixed(2);
+            document.getElementById('tickerBCV').textContent = `Bs ${p}`;
+            document.getElementById('tickerBCV').title = `BCV — ${d.date || ''}`;
+            localStorage.setItem('bcv_cache', JSON.stringify({ price: p, date: d.date, ts: Date.now() }));
             calcularSpread();
         }
-    } catch (error) {
-        console.warn('BCV API falló:', error.message);
-        cargarDesdeCache('bcv_cache', 'tickerBCV', 'BCV (cache)');
+    } catch {
+        const c = JSON.parse(localStorage.getItem('bcv_cache') || 'null');
+        if (c?.price) { document.getElementById('tickerBCV').textContent = `Bs ${c.price}`; calcularSpread(); }
+        else document.getElementById('tickerBCV').textContent = 'No disp.';
     }
 }
 
 async function cargarBinance() {
-    // Estrategia: Intentar API directa, si falla usar cache local
     try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 8000);
-        
-        const response = await fetch('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                asset: 'USDT', fiat: 'VES', merchantCheck: false,
-                page: 1, rows: 5, tradeType: 'SELL', transAmount: '100'
-            }),
-            signal: controller.signal
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 8000);
+        const r = await fetch('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ asset: 'USDT', fiat: 'VES', merchantCheck: false, page: 1, rows: 5, tradeType: 'SELL', transAmount: '100' }),
+            signal: ctrl.signal
         });
-        clearTimeout(timeout);
-        
-        if (!response.ok) throw new Error('Binance API error');
-        const data = await response.json();
-        
-        if (data?.data?.length > 0) {
-            const precios = data.data.map(item => parseFloat(item.adv.price)).filter(p => p > 0);
-            const mejorPrecio = Math.min(...precios);
-            
-            document.getElementById('tickerBinance').textContent = `Bs ${mejorPrecio.toFixed(2)}`;
-            document.getElementById('tickerBinance').title = 'Binance P2P - Mejor precio compra';
-            localStorage.setItem('binance_cache', JSON.stringify({ price: mejorPrecio.toFixed(2), ts: Date.now() }));
+        clearTimeout(t);
+        if (!r.ok) throw new Error('Binance API');
+        const d = await r.json();
+        if (d?.data?.length > 0) {
+            const precios = d.data.map(i => parseFloat(i.adv.price)).filter(p => p > 0);
+            const mp = Math.min(...precios);
+            document.getElementById('tickerBinance').textContent = `Bs ${mp.toFixed(2)}`;
+            document.getElementById('tickerBinance').title = 'Binance P2P';
+            localStorage.setItem('binance_cache', JSON.stringify({ price: mp.toFixed(2), ts: Date.now() }));
             calcularSpread();
         }
-    } catch (error) {
-        console.warn('Binance API falló:', error.message);
-        cargarDesdeCache('binance_cache', 'tickerBinance', 'Binance (cache)');
-    }
-}
-
-function cargarDesdeCache(cacheKey, elementId, label) {
-    const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (cached?.price) {
-        document.getElementById(elementId).textContent = `Bs ${cached.price}`;
-        document.getElementById(elementId).title = label;
-        calcularSpread();
-    } else {
-        document.getElementById(elementId).textContent = 'No disp.';
+    } catch {
+        const c = JSON.parse(localStorage.getItem('binance_cache') || 'null');
+        if (c?.price) { document.getElementById('tickerBinance').textContent = `Bs ${c.price}`; calcularSpread(); }
+        else document.getElementById('tickerBinance').textContent = 'No disp.';
     }
 }
 
 function calcularSpread() {
     const bcv = parseFloat(document.getElementById('tickerBCV').textContent.replace('Bs ', ''));
-    const binance = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (bcv > 0 && binance > 0) {
-        const spread = ((binance - bcv) / bcv * 100).toFixed(1);
+    const bin = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
+    if (bcv > 0 && bin > 0) {
+        const s = ((bin - bcv) / bcv * 100).toFixed(1);
         const el = document.getElementById('tickerSpread');
-        el.textContent = spread + '%';
-        el.className = 'ticker-value ' + (parseFloat(spread) >= 0 ? 'ticker-up' : 'ticker-down');
-        el.title = `Diferencia: Bs ${(binance - bcv).toFixed(2)}`;
+        el.textContent = s + '%';
+        el.className = 'ticker-value ' + (parseFloat(s) >= 0 ? 'ticker-up' : 'ticker-down');
+        el.title = `Dif: Bs ${(bin - bcv).toFixed(2)}`;
     }
 }
 
-// ==================== AUTOCOMPLETAR PRECIOS ====================
 function autocompletarCompra() {
-    const binance = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (binance > 0) {
-        document.getElementById('s1_precioCompra').value = binance.toFixed(2);
-        toast('⚡ Precio compra = Binance');
-    } else {
-        toast('⚠️ Precio no disponible', 'error');
-    }
+    const p = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
+    if (p > 0) { document.getElementById('s1_precioCompra').value = p.toFixed(2); toast('⚡ USD Tasa = Binance'); }
 }
-
 function autocompletarVenta() {
-    const binance = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (binance > 0) {
-        document.getElementById('s1_precioVenta').value = (binance + 3).toFixed(2);
-        toast('📈 Precio venta = Binance + 3 Bs');
-    } else {
-        toast('⚠️ Precio no disponible', 'error');
-    }
+    const p = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
+    if (p > 0) { document.getElementById('s1_precioVenta').value = (p + 3).toFixed(2); toast('📈 USDT Tasa = Binance +3'); }
 }
-
 function autocompletarAmbos() {
-    const binance = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (binance > 0) {
-        document.getElementById('s1_precioCompra').value = binance.toFixed(2);
-        document.getElementById('s1_precioVenta').value = (binance + 5).toFixed(2);
-        toast('🎯 Ambos precios autocompletados');
-    } else {
-        toast('⚠️ Precio no disponible', 'error');
+    const p = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
+    if (p > 0) {
+        document.getElementById('s1_precioCompra').value = p.toFixed(2);
+        document.getElementById('s1_precioVenta').value = (p + 5).toFixed(2);
+        toast('🎯 Ambos precios listos');
     }
 }
-
 function usarPrecioBCV() {
-    const bcv = parseFloat(document.getElementById('tickerBCV').textContent.replace('Bs ', ''));
-    if (bcv > 0) {
-        document.getElementById('s1_precioCompra').value = bcv.toFixed(2);
-        toast('✅ Precio compra = BCV');
-    }
+    const p = parseFloat(document.getElementById('tickerBCV').textContent.replace('Bs ', ''));
+    if (p > 0) document.getElementById('s1_precioCompra').value = p.toFixed(2);
 }
-
 function usarPrecioBinance() {
-    const binance = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
-    if (binance > 0) {
-        const paso = prompt('¿Qué precio llenar?\n\n1 = Precio de Compra\n2 = Precio de Venta\n3 = Ambos');
-        if (paso === '1') document.getElementById('s1_precioCompra').value = binance.toFixed(2);
-        else if (paso === '2') document.getElementById('s1_precioVenta').value = binance.toFixed(2);
-        else if (paso === '3') {
-            document.getElementById('s1_precioCompra').value = binance.toFixed(2);
-            document.getElementById('s1_precioVenta').value = (binance + 5).toFixed(2);
-        }
-        toast('✅ Precios actualizados');
+    const p = parseFloat(document.getElementById('tickerBinance').textContent.replace('Bs ', ''));
+    if (p > 0) {
+        const o = prompt('1 = USD Tasa\n2 = USDT Tasa\n3 = Ambos');
+        if (o === '1') document.getElementById('s1_precioCompra').value = p.toFixed(2);
+        else if (o === '2') document.getElementById('s1_precioVenta').value = p.toFixed(2);
+        else { document.getElementById('s1_precioCompra').value = p.toFixed(2); document.getElementById('s1_precioVenta').value = (p + 5).toFixed(2); }
     }
 }
 
-// ==================== STEP 1 ====================
+// ==================== STEPS ====================
 function step1Calcular() {
     let monto = parseFloat(document.getElementById('s1_monto').value) || 0;
     const moneda = document.getElementById('s1_moneda').value;
-    const precioCompra = parseFloat(document.getElementById('s1_precioCompra').value) || 0;
-    const precioVenta = parseFloat(document.getElementById('s1_precioVenta').value) || 0;
-    
-    if (monto <= 0 || precioCompra <= 0 || precioVenta <= 0) {
-        toast('⚠️ Completa todos los campos', 'error'); return;
-    }
-    if (moneda === 'USD') monto = monto * precioCompra;
-    
-    const usdComprados = monto / precioCompra;
-    const mermaBDV = usdComprados * 0.03;
-    const mermaBPAY = usdComprados * 0.036;
-    const usdNeto = usdComprados - mermaBDV - mermaBPAY;
-    const ventaBs = usdNeto * precioVenta;
-    const gananciaBs = ventaBs - monto;
-    const gananciaUsd = gananciaBs / precioCompra;
-    
+    const usdTasa = parseFloat(document.getElementById('s1_precioCompra').value) || 0;
+    const usdtTasa = parseFloat(document.getElementById('s1_precioVenta').value) || 0;
+    if (monto <= 0 || usdTasa <= 0 || usdtTasa <= 0) { toast('⚠️ Completa todos los campos', 'error'); return; }
+    if (moneda === 'USD') monto = monto * usdTasa;
+
+    const usdComprado = monto / usdTasa;
+    const mermaBDV = usdComprado * 0.03;
+    const mermaBPAY = usdComprado * 0.036;
+    const usdtConvertido = usdComprado - mermaBDV - mermaBPAY;
+    const montoVenta = usdtConvertido * usdtTasa;
+    const gananciaBs = montoVenta - monto;
+    const gananciaUsd = gananciaBs / usdTasa;
+
     paso1Data = {
-        montoBs: monto, montoUsd: usdComprados, precioCompra, precioVenta,
-        mermaBDV, mermaBPAY, usdNeto, ventaBs, gananciaBs, gananciaUsd,
+        montoBs: monto, usdTasa, usdComprado,
+        mermaBDV, mermaBPAY, usdtConvertido,
+        usdtTasa, montoVenta, gananciaBs, gananciaUsd,
         nota: document.getElementById('s1_nota').value,
         fecha: new Date().toISOString().split('T')[0],
-        hora: new Date().toLocaleTimeString()
+        hora: new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
     };
-    
+
     document.getElementById('s1_result').style.display = 'block';
     document.getElementById('s1_result').innerHTML = `
-        💵 $ Compra: <strong>$${usdComprados.toFixed(2)}</strong> | 
-        💎 $ Neto: <strong>$${usdNeto.toFixed(2)}</strong> | 
-        📈 Est. Venta: <strong>Bs ${ventaBs.toFixed(2)}</strong> | 
-        📊 Est. Ganancia: <strong class="${gananciaUsd >= 0 ? 'text-success' : 'text-danger'}">$${gananciaUsd.toFixed(2)}</strong>
+        💵 USD Comprado: <strong>$${usdComprado.toFixed(2)}</strong><br>
+        🏦 Merma BDV (3%): <span class="text-danger">-$${mermaBDV.toFixed(2)}</span> |
+        💳 Merma BPAY (3.6%): <span class="text-danger">-$${mermaBPAY.toFixed(2)}</span><br>
+        💎 USDT Convertido: <strong>$${usdtConvertido.toFixed(2)}</strong><br>
+        📈 Monto Venta Est.: <strong>Bs ${montoVenta.toFixed(2)}</strong><br>
+        📊 Ganancia Est.: <strong class="${gananciaUsd >= 0 ? 'text-success' : 'text-danger'}">Bs ${gananciaBs.toFixed(2)} / $${gananciaUsd.toFixed(2)}</strong>
     `;
-    
     document.getElementById('s2_montoBs').value = monto.toFixed(2);
-    document.getElementById('s2_usdRecibidos').value = usdComprados.toFixed(2);
+    document.getElementById('s2_usdRecibidos').value = usdComprado.toFixed(2);
     document.getElementById('s2_mermaBDV').value = mermaBDV.toFixed(2);
     document.getElementById('s2_mermaBPAY').value = mermaBPAY.toFixed(2);
-    
     document.getElementById('step1Card').classList.add('completed');
     document.getElementById('step2Card').classList.add('active');
-    toast('✅ Paso 1 completado → Continúa con Paso 2');
+    toast('✅ Paso 1 → Continúa');
 }
 
-// ==================== STEP 2 ====================
 function step2Confirmar() {
-    const montoBs = parseFloat(document.getElementById('s2_montoBs').value) || 0;
-    const usdRecibidos = parseFloat(document.getElementById('s2_usdRecibidos').value) || 0;
-    const mermaBDV = parseFloat(document.getElementById('s2_mermaBDV').value) || 0;
-    const mermaBPAY = parseFloat(document.getElementById('s2_mermaBPAY').value) || 0;
-    
-    if (montoBs <= 0 || usdRecibidos <= 0) {
-        toast('⚠️ Completa los campos de compra', 'error'); return;
-    }
-    
-    const usdNeto = usdRecibidos - mermaBDV - mermaBPAY;
-    paso2Data = {
-        ...paso1Data, montoBsReal: montoBs, usdRecibidos,
-        mermaBDVReal: mermaBDV, mermaBPAYReal: mermaBPAY, usdNetoReal: usdNeto
-    };
-    
+    const mBs = parseFloat(document.getElementById('s2_montoBs').value) || 0;
+    const uRec = parseFloat(document.getElementById('s2_usdRecibidos').value) || 0;
+    const mBDV = parseFloat(document.getElementById('s2_mermaBDV').value) || 0;
+    const mBP = parseFloat(document.getElementById('s2_mermaBPAY').value) || 0;
+    if (mBs <= 0 || uRec <= 0) { toast('⚠️ Completa campos', 'error'); return; }
+    const uConv = uRec - mBDV - mBP;
+    paso2Data = { ...paso1Data, montoBsReal: mBs, usdRecibidos: uRec, mermaBDVReal: mBDV, mermaBPAYReal: mBP, usdtConvertidoReal: uConv };
     document.getElementById('s2_result').style.display = 'block';
-    document.getElementById('s2_result').innerHTML = `
-        💎 $ Neto Real: <strong>$${usdNeto.toFixed(2)}</strong> | 
-        🏦 Merma Total: <strong>$${(mermaBDV + mermaBPAY).toFixed(2)}</strong>
-    `;
-    
-    document.getElementById('s3_usdtVendidos').value = usdNeto.toFixed(2);
-    document.getElementById('s3_precioVenta').value = (paso1Data?.precioVenta || 0).toFixed(2);
-    
+    document.getElementById('s2_result').innerHTML = `💎 USDT Convertido: <strong>$${uConv.toFixed(2)}</strong> | 🏦 Merma: <span class="text-danger">$${(mBDV+mBP).toFixed(2)}</span>`;
+    document.getElementById('s3_usdtVendidos').value = uConv.toFixed(2);
+    document.getElementById('s3_precioVenta').value = (paso1Data?.usdtTasa || 0).toFixed(2);
     document.getElementById('step2Card').classList.add('completed');
     document.getElementById('step3Card').classList.add('active');
-    toast('✅ Paso 2 confirmado → Registra la venta');
+    toast('✅ Paso 2 → Venta');
 }
 
-// ==================== STEP 3 ====================
 function step3Completar() {
-    if (!perfilActivo) { toast('⚠️ Selecciona un perfil', 'error'); return; }
-    
-    const usdtVendidos = parseFloat(document.getElementById('s3_usdtVendidos').value) || 0;
-    const precioVentaReal = parseFloat(document.getElementById('s3_precioVenta').value) || 0;
-    const mermaBanco = parseFloat(document.getElementById('s3_mermaBanco').value) || 0;
-    
-    if (usdtVendidos <= 0 || precioVentaReal <= 0) {
-        toast('⚠️ Completa los campos de venta', 'error'); return;
-    }
-    
-    const ventaBsReal = usdtVendidos * precioVentaReal;
-    const ventaBsNeta = ventaBsReal - mermaBanco;
-    const montoBase = paso2Data?.montoBsReal || paso1Data?.montoBs || 0;
-    const gananciaBs = ventaBsNeta - montoBase;
-    const gananciaUsd = (paso1Data?.precioCompra || 1) > 0 ? gananciaBs / paso1Data.precioCompra : 0;
-    
-    const operacion = {
+    if (!perfilActivo) { toast('⚠️ Selecciona perfil', 'error'); return; }
+    const uVend = parseFloat(document.getElementById('s3_usdtVendidos').value) || 0;
+    const pVReal = parseFloat(document.getElementById('s3_precioVenta').value) || 0;
+    const mBanco = parseFloat(document.getElementById('s3_mermaBanco').value) || 0;
+    if (uVend <= 0 || pVReal <= 0) { toast('⚠️ Completa campos', 'error'); return; }
+
+    const vBruta = uVend * pVReal;
+    const vNeta = vBruta - mBanco;
+    const mBase = paso2Data?.montoBsReal || paso1Data?.montoBs || 0;
+    const gBs = vNeta - mBase;
+    const uTasa = paso1Data?.usdTasa || 1;
+    const gUsd = gBs / uTasa;
+
+    const op = {
         id: Date.now(),
         timestamp: new Date().toISOString(),
         fecha: new Date().toISOString().split('T')[0],
-        hora: new Date().toLocaleTimeString(),
+        hora: new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
         operador: perfilActivo,
         inversor: perfilActivo === 'admin' ? 'MD' : perfilActivo,
         paso: 'Completo',
-        miBs: montoBase, miUsd: paso1Data?.montoUsd || 0,
-        pcBs: paso1Data?.precioCompra || 0,
-        pctBDV: 3, pctBPAY: 3.6,
-        mo: paso2Data?.usdRecibidos || paso1Data?.montoUsd || 0,
-        mermaBDV: paso2Data?.mermaBDVReal || paso1Data?.mermaBDV || 0,
-        mermaBPAY: paso2Data?.mermaBPAYReal || paso1Data?.mermaBPAY || 0,
-        usdNeto: paso2Data?.usdNetoReal || paso1Data?.usdNeto || 0,
-        pvBs: precioVentaReal, mvBs: ventaBsNeta, mermaBanco,
-        correr: ventaBsNeta, gananciaBs, gananciaUsd,
+        monto_inicial_bs: mBase,
+        usd_tasa: paso1Data?.usdTasa || 0,
+        usd_comprado: paso1Data?.usdComprado || 0,
+        pct_bdv: 3, pct_bpay: 3.6,
+        merma_bdv: paso2Data?.mermaBDVReal || paso1Data?.mermaBDV || 0,
+        merma_bpay: paso2Data?.mermaBPAYReal || paso1Data?.mermaBPAY || 0,
+        usdt_convertido: paso2Data?.usdtConvertidoReal || paso1Data?.usdtConvertido || 0,
+        usdt_tasa: pVReal,
+        monto_venta_bs: vNeta,
+        merma_banco: mBanco,
+        correr: vNeta,
+        ganancia_bs: gBs,
+        ganancia_usd: gUsd,
         nota: paso1Data?.nota || ''
     };
-    
+
     const ops = getOps();
-    ops.push(operacion);
+    ops.push(op);
     saveOps(ops);
-    
+
     document.getElementById('s3_result').style.display = 'block';
-    document.getElementById('s3_result').innerHTML = `
-        💰 Venta Neta: <strong>Bs ${ventaBsNeta.toFixed(2)}</strong> | 
-        📊 Ganancia: <strong class="${gananciaUsd >= 0 ? 'text-success' : 'text-danger'}">$${gananciaUsd.toFixed(2)}</strong>
-    `;
+    document.getElementById('s3_result').innerHTML = `💰 Venta Neta: <strong>Bs ${vNeta.toFixed(2)}</strong><br>📊 Ganancia: <strong class="${gUsd >= 0 ? 'text-success' : 'text-danger'}">Bs ${gBs.toFixed(2)} / $${gUsd.toFixed(2)}</strong>`;
     document.getElementById('step3Card').classList.add('completed');
-    
-    setTimeout(() => resetearSteps(), 2000);
+    setTimeout(resetearSteps, 2500);
     refrescarTodo();
-    toast('🎉 ¡Operación completada y guardada!');
+    toast('🎉 ¡Operación registrada!');
 }
 
 function resetearSteps() {
     document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active', 'completed'));
     document.getElementById('step1Card').classList.add('active');
     document.querySelectorAll('.step-result').forEach(r => r.style.display = 'none');
-    ['s1_monto','s1_precioCompra','s1_precioVenta','s1_nota','s2_montoBs','s2_usdRecibidos',
-     's3_usdtVendidos','s3_precioVenta'].forEach(id => document.getElementById(id).value = '');
+    ['s1_monto','s1_precioCompra','s1_precioVenta','s1_nota','s2_montoBs','s2_usdRecibidos','s3_usdtVendidos','s3_precioVenta'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('s2_mermaBDV').value = '0';
     document.getElementById('s2_mermaBPAY').value = '0';
     document.getElementById('s3_mermaBanco').value = '0';
@@ -1366,37 +1378,40 @@ function mostrarHistorial() {
     let ops = getOps();
     const cfg = getConfig();
     if (!cfg.publico && !esAdmin && perfilActivo) ops = ops.filter(o => o.operador === perfilActivo);
-    
+
     if (ops.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="21" style="text-align:center;padding:40px;color:var(--text2);">📝 Sin operaciones</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="21" style="text-align:center;padding:40px;color:var(--text-muted);">📝 Libro vacío</td></tr>';
         actualizarComparativa([]); actualizarGrafico([]); actualizarResumen([]);
         return;
     }
-    
+
     tbody.innerHTML = ops.map((o, i) => {
-        const mermaTotal = (o.mermaBDV || 0) + (o.mermaBPAY || 0);
+        const esHistorico = o.id < 10000;
         return `<tr>
-            <td>${i + 1}</td><td>${o.fecha}</td><td>${o.hora || '-'}</td>
+            <td><strong>${i + 1}</strong>${esHistorico ? '<span class="seed-badge">HIST</span>' : ''}</td>
+            <td>${o.fecha}</td>
+            <td>${o.hora || '-'}</td>
             <td><span class="badge badge-${o.operador === 'admin' ? 'admin' : o.operador}">${o.operador || '-'}</span></td>
             <td><span class="badge badge-${o.inversor}">${o.inversor || '-'}</span></td>
             <td>${o.paso || 'Completo'}</td>
-            <td class="currency-bs">Bs ${(o.miBs || 0).toFixed(2)}</td>
-            <td class="currency-usd">$ ${(o.miUsd || 0).toFixed(2)}</td>
-            <td>Bs ${(o.pcBs || 0).toFixed(2)}</td>
-            <td>${o.pctBDV || 3}%</td><td>${o.pctBPAY || 3.6}%</td>
-            <td class="currency-usd">$ ${(o.mo || 0).toFixed(2)}</td>
-            <td class="currency-usd">$ ${mermaTotal.toFixed(2)}</td>
-            <td class="currency-usd"><strong>$ ${(o.usdNeto || 0).toFixed(2)}</strong></td>
-            <td>Bs ${(o.pvBs || 0).toFixed(2)}</td>
-            <td class="currency-bs">Bs ${(o.mvBs || 0).toFixed(2)}</td>
+            <td class="currency-bs">Bs ${(o.monto_inicial_bs || 0).toFixed(2)}</td>
+            <td>Bs ${(o.usd_tasa || 0).toFixed(2)}</td>
+            <td class="currency-usd">$ ${(o.usd_comprado || 0).toFixed(2)}</td>
+            <td>${o.pct_bdv || 3}%</td>
+            <td>${o.pct_bpay || 3.6}%</td>
+            <td class="text-danger">$ ${(o.merma_bdv || 0).toFixed(2)}</td>
+            <td class="text-danger">$ ${(o.merma_bpay || 0).toFixed(2)}</td>
+            <td class="currency-usd"><strong>$ ${(o.usdt_convertido || 0).toFixed(2)}</strong></td>
+            <td>Bs ${(o.usdt_tasa || 0).toFixed(2)}</td>
+            <td class="currency-bs">Bs ${(o.monto_venta_bs || 0).toFixed(2)}</td>
             <td class="currency-bs"><strong>Bs ${(o.correr || 0).toFixed(2)}</strong></td>
-            <td class="${(o.gananciaBs || 0) >= 0 ? 'text-success' : 'text-danger'}">Bs ${(o.gananciaBs || 0).toFixed(2)}</td>
-            <td class="${(o.gananciaUsd || 0) >= 0 ? 'text-success' : 'text-danger'}"><strong>$ ${(o.gananciaUsd || 0).toFixed(2)}</strong></td>
+            <td class="${(o.ganancia_bs || 0) >= 0 ? 'text-success' : 'text-danger'}">Bs ${(o.ganancia_bs || 0).toFixed(2)}</td>
+            <td class="${(o.ganancia_usd || 0) >= 0 ? 'text-success' : 'text-danger'}"><strong>$ ${(o.ganancia_usd || 0).toFixed(2)}</strong></td>
             <td title="${o.nota || ''}">${o.nota ? '📝' : '-'}</td>
-            <td>${esAdmin ? `<button class="btn btn-xs btn-danger" onclick="eliminarOp(${o.id})">✕</button>` : '-'}</td>
+            <td>${esAdmin ? `<button class="btn btn-xs btn-danger" onclick="eliminarOp(${o.id})">✕</button>` : (esHistorico ? '🔒' : '-')}</td>
         </tr>`;
     }).reverse().join('');
-    
+
     const opsStats = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
     actualizarComparativa(opsStats);
     actualizarGrafico(opsStats);
@@ -1405,38 +1420,39 @@ function mostrarHistorial() {
 
 function eliminarOp(id) {
     if (!esAdmin) return;
-    if (!confirm('¿Eliminar esta operación?')) return;
+    if (id < 10000) { toast('🔒 Datos históricos protegidos', 'error'); return; }
+    if (!confirm('¿Eliminar?')) return;
     saveOps(getOps().filter(o => o.id !== id));
     refrescarTodo();
-    toast('🗑️ Operación eliminada');
+    toast('🗑️ Eliminada');
 }
 
 function limpiarTodo() {
     if (!esAdmin) return;
-    if (!confirm('⚠️ ¿Eliminar TODO el historial?')) return;
+    if (!confirm('⚠️ ¿Eliminar TODO? (Datos históricos se perderán)')) return;
+    localStorage.removeItem(SEED_LOADED_KEY);
     saveOps([]);
     refrescarTodo();
-    toast('🗑️ Historial limpiado');
+    toast('🗑️ Libro limpiado');
 }
 
 // ==================== COMPARATIVA ====================
 function actualizarComparativa(ops) {
     ['MD', 'CP', 'JB'].forEach(inv => {
-        const opsInv = ops.filter(o => (o.inversor === inv) || (o.operador === inv));
-        const totalMI = opsInv.reduce((s, o) => s + (o.miBs || 0), 0);
-        const totalMO = opsInv.reduce((s, o) => s + (o.usdNeto || 0), 0);
-        const totalMV = opsInv.reduce((s, o) => s + (o.mvBs || 0), 0);
-        const totalGan = opsInv.reduce((s, o) => s + (o.gananciaUsd || 0), 0);
-        const rendimiento = totalMI > 0 ? ((totalMV - totalMI) / totalMI * 100) : 0;
-        
+        const oi = ops.filter(o => (o.inversor === inv) || (o.operador === inv));
+        const tMI = oi.reduce((s, o) => s + (o.monto_inicial_bs || 0), 0);
+        const tMO = oi.reduce((s, o) => s + (o.usdt_convertido || 0), 0);
+        const tMV = oi.reduce((s, o) => s + (o.monto_venta_bs || 0), 0);
+        const tG = oi.reduce((s, o) => s + (o.ganancia_usd || 0), 0);
+        const rend = tMI > 0 ? ((tMV - tMI) / tMI * 100) : 0;
         const div = document.getElementById('stats' + inv);
         if (div) div.innerHTML = `
-            <div class="stat-item"><div class="stat-label">Ops</div><div class="stat-value">${opsInv.length}</div></div>
-            <div class="stat-item"><div class="stat-label">MI Total</div><div class="stat-value">Bs ${totalMI.toFixed(2)}</div></div>
-            <div class="stat-item"><div class="stat-label">MO Total</div><div class="stat-value">$ ${totalMO.toFixed(2)}</div></div>
-            <div class="stat-item"><div class="stat-label">MV Total</div><div class="stat-value">Bs ${totalMV.toFixed(2)}</div></div>
-            <div class="stat-item"><div class="stat-label">Ganancia</div><div class="stat-value ${totalGan >= 0 ? 'text-success' : 'text-danger'}">$ ${totalGan.toFixed(2)}</div></div>
-            <div class="stat-item"><div class="stat-label">Rend.</div><div class="stat-value ${rendimiento >= 0 ? 'text-success' : 'text-danger'}">${rendimiento.toFixed(1)}%</div></div>
+            <div class="stat-item"><div class="stat-label">Ops</div><div class="stat-value">${oi.length}</div></div>
+            <div class="stat-item"><div class="stat-label">MI Total</div><div class="stat-value">Bs ${tMI.toFixed(2)}</div></div>
+            <div class="stat-item"><div class="stat-label">MO Total</div><div class="stat-value">$ ${tMO.toFixed(2)}</div></div>
+            <div class="stat-item"><div class="stat-label">MV Total</div><div class="stat-value">Bs ${tMV.toFixed(2)}</div></div>
+            <div class="stat-item"><div class="stat-label">Ganancia</div><div class="stat-value ${tG >= 0 ? 'text-success' : 'text-danger'}">$ ${tG.toFixed(2)}</div></div>
+            <div class="stat-item"><div class="stat-label">Rend.</div><div class="stat-value ${rend >= 0 ? 'text-success' : 'text-danger'}">${rend.toFixed(1)}%</div></div>
         `;
     });
 }
@@ -1446,65 +1462,62 @@ function cambiarPeriodo(p) {
     periodoChart = p;
     document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
-    actualizarGrafico(getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo));
+    const ops = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
+    actualizarGrafico(ops);
 }
 
 function actualizarGrafico(ops) {
-    const container = document.getElementById('mainChart');
-    if (!ops.length) { container.innerHTML = '<div style="width:100%;text-align:center;padding:40px;color:var(--text2);">📊 Sin datos</div>'; return; }
-    
-    let grupos = {};
+    const c = document.getElementById('mainChart');
+    if (!ops.length) { c.innerHTML = '<div style="width:100%;text-align:center;padding:40px;color:var(--text-muted);">📊 Sin datos</div>'; return; }
+
+    let g = {};
     ops.forEach(o => {
-        const fecha = new Date(o.timestamp);
-        let clave;
-        if (periodoChart === 'semanal') {
-            const ini = new Date(fecha); ini.setDate(fecha.getDate() - fecha.getDay());
-            clave = ini.toISOString().split('T')[0];
-        } else if (periodoChart === 'mensual') {
-            clave = `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}`;
-        } else {
-            clave = `${fecha.getFullYear()}-Q${Math.ceil((fecha.getMonth()+1)/3)}`;
-        }
-        if (!grupos[clave]) grupos[clave] = {};
+        const f = new Date(o.timestamp);
+        let k;
+        if (periodoChart === 'semanal') { const ini = new Date(f); ini.setDate(f.getDate() - f.getDay()); k = ini.toISOString().split('T')[0]; }
+        else if (periodoChart === 'mensual') k = `${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,'0')}`;
+        else k = `${f.getFullYear()}-Q${Math.ceil((f.getMonth()+1)/3)}`;
+        if (!g[k]) g[k] = {};
         const inv = o.inversor || o.operador;
-        grupos[clave][inv] = (grupos[clave][inv] || 0) + (o.gananciaUsd || 0);
+        g[k][inv] = (g[k][inv] || 0) + (o.ganancia_usd || 0);
     });
-    
-    const claves = Object.keys(grupos).sort().slice(-12);
-    const maxVal = Math.max(1, ...claves.flatMap(k => Object.values(grupos[k]).map(Math.abs)));
-    
-    container.innerHTML = claves.map(clave => {
-        const datos = grupos[clave];
+
+    const ks = Object.keys(g).sort().slice(-12);
+    const mx = Math.max(1, ...ks.flatMap(k => Object.values(g[k]).map(Math.abs)));
+
+    c.innerHTML = ks.map(k => {
+        const d = g[k];
         const bars = ['MD','CP','JB'].map(inv => {
-            const val = datos[inv] || 0;
-            return `<div class="chart-bar ${inv}" style="height:${Math.max(Math.abs(val)/maxVal*250, 3)}px;"></div>`;
+            const v = d[inv] || 0;
+            return `<div class="chart-bar ${inv}" style="height:${Math.max(Math.abs(v)/mx*250, 3)}px;"></div>`;
         }).join('');
-        const total = ['MD','CP','JB'].reduce((s, inv) => s + (datos[inv] || 0), 0);
-        const label = periodoChart === 'semanal' ? clave.slice(5) : clave;
+        const tot = ['MD','CP','JB'].reduce((s, inv) => s + (d[inv] || 0), 0);
+        const lbl = periodoChart === 'semanal' ? k.slice(5) : k;
         return `<div class="chart-group">
-            <div class="chart-tooltip"><strong>${clave}</strong><br>${['MD','CP','JB'].map(inv => `${inv}: $${(datos[inv]||0).toFixed(2)}`).join('<br>')}<br><strong>Total: $${total.toFixed(2)}</strong></div>
-            <div class="chart-bars">${bars}</div><div class="chart-label">${label}</div>
+            <div class="chart-tooltip"><strong>${k}</strong><br>${['MD','CP','JB'].map(inv => `${inv}: $${(d[inv]||0).toFixed(2)}`).join('<br>')}<br><strong>Total: $${tot.toFixed(2)}</strong></div>
+            <div class="chart-bars">${bars}</div><div class="chart-label">${lbl}</div>
         </div>`;
     }).join('');
 }
 
 // ==================== RESUMEN ====================
 function actualizarResumen(ops) {
-    const container = document.getElementById('resumenGeneral');
-    container.innerHTML = ['MD','CP','JB'].map(inv => {
-        const opsInv = ops.filter(o => (o.inversor === inv) || (o.operador === inv));
-        const ganancia = opsInv.reduce((s, o) => s + (o.gananciaUsd || 0), 0);
-        const totalMI = opsInv.reduce((s, o) => s + (o.miBs || 0), 0);
+    document.getElementById('resumenGeneral').innerHTML = ['MD','CP','JB'].map(inv => {
+        const oi = ops.filter(o => (o.inversor === inv) || (o.operador === inv));
+        const gan = oi.reduce((s, o) => s + (o.ganancia_usd || 0), 0);
+        const tMI = oi.reduce((s, o) => s + (o.monto_inicial_bs || 0), 0);
         const ahora = new Date();
-        const ganSemana = opsInv.filter(o => (ahora - new Date(o.timestamp)) / 86400000 <= 7).reduce((s, o) => s + (o.gananciaUsd || 0), 0);
-        return `<div style="background:var(--card);padding:15px;border-radius:12px;border:1px solid var(--border);">
+        const gSem = oi.filter(o => (ahora - new Date(o.timestamp)) / 86400000 <= 7).reduce((s, o) => s + (o.ganancia_usd || 0), 0);
+        const rend = tMI > 0 ? (gan / (tMI / (oi[0]?.usd_tasa || 1)) * 100) : 0;
+        return `<div style="background:var(--surface);padding:15px;border-radius:12px;border:1px solid var(--border);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                 <strong><span class="badge badge-${inv}">${inv}</span></strong>
-                <span class="${ganancia >= 0 ? 'text-success' : 'text-danger'}" style="font-weight:700;">$${ganancia.toFixed(2)}</span>
+                <span class="${gan >= 0 ? 'text-success' : 'text-danger'}" style="font-weight:700;">$${gan.toFixed(2)}</span>
             </div>
-            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>Ops:</span><span>${opsInv.length}</span></div>
-            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>Semana:</span><span class="${ganSemana >= 0 ? 'text-success' : 'text-danger'}">$${ganSemana.toFixed(2)}</span></div>
-            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>MI Total:</span><span>Bs ${totalMI.toFixed(2)}</span></div>
+            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>Ops:</span><span>${oi.length}</span></div>
+            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>Semana:</span><span class="${gSem >= 0 ? 'text-success' : 'text-danger'}">$${gSem.toFixed(2)}</span></div>
+            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>MI:</span><span>Bs ${tMI.toFixed(2)}</span></div>
+            <div style="font-size:13px;display:flex;justify-content:space-between;padding:3px 0;"><span>Rend:</span><span>${rend.toFixed(1)}%</span></div>
         </div>`;
     }).join('');
 }
@@ -1517,12 +1530,11 @@ function verificarAdmin() {
         const cfg = getConfig();
         document.getElementById('cfgPublico').checked = cfg.publico;
         document.getElementById('cfgGraficos').checked = cfg.graficos;
-    } else { alert('❌ Contraseña incorrecta'); }
+    } else alert('❌ Incorrecta');
 }
 function guardarConfig() {
     saveConfig({ publico: document.getElementById('cfgPublico').checked, graficos: document.getElementById('cfgGraficos').checked });
     refrescarTodo();
-    toast('⚙️ Configuración guardada');
 }
 
 // ==================== UTILIDADES ====================
@@ -1534,18 +1546,16 @@ function toggleTheme() {
 function exportarExcel() {
     const ops = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
     if (!ops.length) { toast('⚠️ Sin datos', 'error'); return; }
-    
-    let csv = 'Fila,Fecha,Hora,Operador,Inversor,Paso,MI Bs,MI $,PC Bs,%BDV,%BPAY,MO $,Merma,$ Neto,PV Bs,MV Bs,Correr,Gan Bs,Gan $,Nota\n';
+    let csv = 'Fila,Fecha,Hora,Operador,Inversor,Paso,MI Bs,USD Tasa,USD Comprado,%BDV,%BPAY,Merma BDV,Merma BPAY,USDT Convertido,USDT Tasa,MV Bs,Correr,Ganancia Bs,Ganancia $,Nota\n';
     ops.forEach((o, i) => {
-        csv += `${i+1},${o.fecha},${o.hora},${o.operador},${o.inversor},${o.paso},${o.miBs},${o.miUsd},${o.pcBs},${o.pctBDV},${o.pctBPAY},${o.mo},${(o.mermaBDV||0)+(o.mermaBPAY||0)},${o.usdNeto},${o.pvBs},${o.mvBs},${o.correr},${o.gananciaBs},${o.gananciaUsd},"${o.nota||''}"\n`;
+        csv += `${i+1},${o.fecha},${o.hora},${o.operador},${o.inversor},${o.paso},${o.monto_inicial_bs},${o.usd_tasa},${o.usd_comprado},${o.pct_bdv},${o.pct_bpay},${o.merma_bdv},${o.merma_bpay},${o.usdt_convertido},${o.usdt_tasa},${o.monto_venta_bs},${o.correr},${o.ganancia_bs},${o.ganancia_usd},"${o.nota||''}"\n`;
     });
-    
     const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `arbitraje_multikap_${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `libro_operaciones_${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
-    toast('📥 Excel exportado');
+    toast('📥 Exportado');
 }
 
 function toast(msg, tipo = 'success') {
@@ -1554,7 +1564,7 @@ function toast(msg, tipo = 'success') {
     t.style.borderLeft = `4px solid ${tipo === 'error' ? 'var(--danger)' : 'var(--success)'}`;
     t.textContent = msg;
     document.body.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 2500);
+    setTimeout(() => { t.style.opacity = '0'; t.style.transition = '0.3s'; setTimeout(() => t.remove(), 300); }, 2800);
 }
 
 function refrescarTodo() { mostrarHistorial(); }
@@ -1562,12 +1572,7 @@ function refrescarTodo() { mostrarHistorial(); }
 // ==================== INIT ====================
 function init() {
     if (localStorage.getItem(THEME_KEY) === 'light') document.body.classList.add('light-mode');
-    
-    // Inputs inteligentes
-    document.querySelectorAll('input[type="number"]').forEach(input => {
-        input.addEventListener('focus', () => input.select());
-    });
-    
+    document.querySelectorAll('input[type="number"]').forEach(i => i.addEventListener('focus', () => i.select()));
     cargarTickers();
     tickerInterval = setInterval(cargarTickers, 60000);
     actualizarUI();
