@@ -558,7 +558,7 @@
                 <div class="user-selector">
                     <span>👤</span>
                     <select id="headerUser" onchange="switchUser()">
-                        <option value="Carlos">Carlos</option>
+                        <option value="MJ">MAU</option>
                         <option value="MD">MD</option>
                         <option value="CP">CP</option>
                         <option value="JB">JB</option>
@@ -589,7 +589,7 @@
                 <div class="stage-col s1" id="sc1">
                     <div class="stage-col-header">🏦 Etapa 1: Entrada <span class="stage-badge-sm">BDV→BPAY</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s1_fecha"></div>
-                    <div class="stage-field"><label>👤 Inv</label><select id="s1_inv"><option value="Carlos">Carlos</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                    <div class="stage-field"><label>👤 Inv</label><select id="s1_inv"><option value="MJ">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
                     <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s1_mi" step="0.01" onfocus="this.select()" oninput="calcStage(1)"></div>
                     <div class="stage-field-row">
                         <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s1_tc" step="0.01" onfocus="this.select()" oninput="calcStage(1)"></div>
@@ -615,7 +615,7 @@
                 <div class="stage-col s2" id="sc2">
                     <div class="stage-col-header">💱 Etapa 2: Intermedia <span class="stage-badge-sm">BPAY→P2P</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s2_fecha"></div>
-                    <div class="stage-field"><label>👤 Inv</label><select id="s2_inv"><option value="Carlos">Carlos</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                    <div class="stage-field"><label>👤 Inv</label><select id="s2_inv"><option value="MJ">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
                     <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s2_mi" step="0.01" onfocus="this.select()" oninput="calcStage(2)"></div>
                     <div class="stage-field-row">
                         <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s2_tc" step="0.01" onfocus="this.select()" oninput="calcStage(2)"></div>
@@ -641,7 +641,7 @@
                 <div class="stage-col s3" id="sc3">
                     <div class="stage-col-header">💎 Etapa 3: Salida <span class="stage-badge-sm">P2P→Retiro</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s3_fecha"></div>
-                    <div class="stage-field"><label>👤 Inv</label><select id="s3_inv"><option value="Carlos">Carlos</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                    <div class="stage-field"><label>👤 Inv</label><select id="s3_inv"><option value="MJ">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
                     <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s3_mi" step="0.01" onfocus="this.select()" oninput="calcStage(3)"></div>
                     <div class="stage-field-row">
                         <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s3_tc" step="0.01" onfocus="this.select()" oninput="calcStage(3)"></div>
@@ -721,8 +721,8 @@
         </div>
     </div>
     <script>
-        const ADMIN_PASS = "MultiKAP2026";
-        let currentUser = "Carlos",
+        const ADMIN_PASS = "Mau10";
+        let currentUser = "MAU",
             isAdmin = false,
             ops = [];
         let renderUrl = localStorage.getItem('renderUrl') || '';
