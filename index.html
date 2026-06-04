@@ -43,7 +43,6 @@
             line-height: 1.5;
         }
 
-        /* ========== HEADER ========== */
         .header {
             background: var(--surface);
             border-bottom: 1px solid var(--border);
@@ -69,7 +68,7 @@
 
         .ticker-bar {
             display: flex;
-            gap: 20px;
+            gap: 12px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -84,6 +83,14 @@
             gap: 8px;
             font-weight: 600;
             font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ticker-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(88, 166, 255, 0.2);
+            transform: translateY(-1px);
         }
 
         .ticker-label {
@@ -118,9 +125,10 @@
             background: var(--card);
             color: var(--text);
             white-space: nowrap;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
+            font-family: inherit;
         }
 
         .btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
@@ -159,14 +167,12 @@
         .badge-JB { background: #3fb95022; color: var(--success); border: 1px solid var(--success); }
         .badge-admin { background: #d2991d22; color: var(--warning); border: 1px solid var(--warning); }
 
-        /* ========== MAIN LAYOUT ========== */
         .app-container {
             max-width: 1500px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* ========== 3 STEPS ========== */
         .steps-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -258,16 +264,16 @@
             padding: 12px;
             margin-top: 8px;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
             border-left: 4px solid var(--primary);
+            word-break: break-word;
         }
 
         .step-result.success {
             border-left-color: var(--success);
         }
 
-        /* ========== COMPARISON TABLE ========== */
         .section-title {
             font-size: 18px;
             font-weight: 700;
@@ -325,7 +331,6 @@
             font-weight: 700;
         }
 
-        /* ========== CHARTS ========== */
         .charts-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -375,15 +380,26 @@
             gap: 4px;
             padding: 10px 0;
             position: relative;
+            overflow-x: auto;
         }
 
         .chart-group {
             display: flex;
-            gap: 3px;
-            align-items: flex-end;
+            flex-direction: column;
+            align-items: center;
             flex: 1;
+            min-width: 40px;
             cursor: pointer;
             position: relative;
+        }
+
+        .chart-bars {
+            display: flex;
+            gap: 2px;
+            align-items: flex-end;
+            height: 100%;
+            width: 100%;
+            justify-content: center;
         }
 
         .chart-bar-wrap {
@@ -391,12 +407,11 @@
             flex-direction: column;
             align-items: center;
             flex: 1;
-            gap: 2px;
         }
 
         .chart-bar {
             width: 100%;
-            max-width: 40px;
+            max-width: 30px;
             border-radius: 6px 6px 0 0;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -429,10 +444,19 @@
             display: none;
             z-index: 10;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            margin-bottom: 5px;
         }
 
         .chart-group:hover .chart-tooltip {
             display: block;
+        }
+
+        .chart-label {
+            font-size: 9px;
+            color: var(--text2);
+            margin-top: 5px;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .chart-legend {
@@ -456,7 +480,6 @@
             border-radius: 3px;
         }
 
-        /* ========== HISTORY TABLE ========== */
         .table-container {
             background: var(--surface);
             border-radius: 16px;
@@ -521,7 +544,6 @@
         .currency-bs { color: var(--warning); }
         .currency-usd { color: var(--success); }
 
-        /* ========== MODALS ========== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -571,41 +593,54 @@
 
         .hidden { display: none !important; }
 
-        .pulse {
+        .text-success { color: var(--success); }
+        .text-danger { color: var(--danger); }
+        .text-warning { color: var(--warning); }
+
+        .update-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            display: inline-block;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+            50% { opacity: 0.4; }
         }
 
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
-        .text-warning { color: var(--warning); }
+        .ticker-hint {
+            font-size: 10px;
+            color: var(--text2);
+            margin-left: 4px;
+        }
     </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header">
     <div class="logo">
         <span>💱</span> ArbitrajePro
     </div>
     
     <div class="ticker-bar">
-        <div class="ticker-item">
+        <div class="ticker-item" onclick="usarPrecioBCV()" title="Click para usar precio BCV">
             <span class="ticker-label">🏦 BCV</span>
             <span class="ticker-value" id="tickerBCV">Cargando...</span>
+            <span class="update-indicator" id="bcvIndicator"></span>
         </div>
-        <div class="ticker-item">
+        <div class="ticker-item" onclick="usarPrecioBinance()" title="Click para usar precio Binance">
             <span class="ticker-label">🟡 Binance</span>
             <span class="ticker-value" id="tickerBinance">Cargando...</span>
+            <span class="update-indicator" id="binanceIndicator"></span>
         </div>
         <div class="ticker-item">
             <span class="ticker-label">📊 Spread</span>
             <span class="ticker-value" id="tickerSpread">-</span>
         </div>
+        <button class="btn btn-xs" onclick="cargarTickers()" title="Actualizar precios ahora">🔄</button>
     </div>
 
     <div class="user-controls">
@@ -617,7 +652,7 @@
             <option value="admin">👑 Admin</option>
         </select>
         <span id="badgePerfil"></span>
-        <button class="btn" onclick="toggleTheme()" title="Tema">🌓</button>
+        <button class="btn" onclick="toggleTheme()" title="Cambiar tema">🌓</button>
         <button class="btn btn-sm hidden" id="btnAdmin" onclick="abrirAdmin()">⚙️</button>
     </div>
 </header>
@@ -628,7 +663,7 @@
     <div class="section-title">📋 Proceso de Operación (3 Pasos)</div>
     <div class="steps-container">
         
-        <!-- STEP 1: Pre-Cálculo -->
+        <!-- STEP 1 -->
         <div class="step-card active" id="step1Card">
             <div class="step-header">
                 <div class="step-number">1</div>
@@ -662,17 +697,17 @@
             </div>
         </div>
 
-        <!-- STEP 2: Compra -->
+        <!-- STEP 2 -->
         <div class="step-card" id="step2Card">
             <div class="step-header">
                 <div class="step-number">2</div>
                 <div class="step-title">💳 Compra Realizada</div>
             </div>
             <div class="step-body">
-                <p style="font-size:13px; color:var(--text2);">Confirma los datos de la compra ejecutada</p>
+                <p style="font-size:13px; color:var(--text2);">Confirma los datos de la compra</p>
                 <div class="input-row">
                     <span>💵</span>
-                    <input type="number" id="s2_montoBs" step="0.01" placeholder="Bs gastados realmente">
+                    <input type="number" id="s2_montoBs" step="0.01" placeholder="Bs gastados">
                     <span>Bs</span>
                 </div>
                 <div class="input-row">
@@ -695,7 +730,7 @@
             </div>
         </div>
 
-        <!-- STEP 3: Venta -->
+        <!-- STEP 3 -->
         <div class="step-card" id="step3Card">
             <div class="step-header">
                 <div class="step-number">3</div>
@@ -710,12 +745,12 @@
                 </div>
                 <div class="input-row">
                     <span>📈</span>
-                    <input type="number" id="s3_precioVenta" step="0.01" placeholder="Precio de venta">
+                    <input type="number" id="s3_precioVenta" step="0.01" placeholder="Precio de venta real">
                     <span>Bs</span>
                 </div>
                 <div class="input-row">
                     <span>🏦</span>
-                    <input type="number" id="s3_mermaBanco" step="0.01" placeholder="Merma banco (opcional)" value="0">
+                    <input type="number" id="s3_mermaBanco" step="0.01" placeholder="Merma banco" value="0">
                     <span>Bs</span>
                 </div>
                 <button class="btn btn-warning" onclick="step3Completar()">💰 Registrar Venta</button>
@@ -724,7 +759,7 @@
         </div>
     </div>
 
-    <!-- ============ COMPARISON TABLE ============ -->
+    <!-- ============ COMPARISON ============ -->
     <div class="section-title">📊 Comparativa entre Inversores</div>
     <div class="comparison-grid" id="comparisonGrid">
         <div class="investor-card">
@@ -793,7 +828,7 @@
             <span class="section-title" style="margin:0;">📋 Historial Completo</span>
             <div style="display:flex; gap:8px;">
                 <button class="btn btn-sm" onclick="exportarExcel()">📥 Excel</button>
-                <button class="btn btn-sm btn-danger hidden" id="btnLimpiar" onclick="limpiarTodo()">🗑️</button>
+                <button class="btn btn-sm btn-danger hidden" id="btnLimpiar" onclick="limpiarTodo()">🗑️ Limpiar</button>
             </div>
         </div>
         <div class="table-scroll">
@@ -812,19 +847,19 @@
                         <th>%BDV</th>
                         <th>%BPAY</th>
                         <th>MO ($)</th>
-                        <th>Merma B.</th>
+                        <th>Merma</th>
                         <th>$ Neto</th>
                         <th>PV (Bs)</th>
                         <th>MV (Bs)</th>
-                        <th>Correr (Bs)</th>
-                        <th>Gan. (Bs)</th>
-                        <th>Gan. ($)</th>
+                        <th>Correr</th>
+                        <th>Gan. Bs</th>
+                        <th>Gan. $</th>
                         <th>Nota</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody id="historyBody">
-                    <tr><td colspan="21" style="text-align:center; padding:30px;">📝 Sin operaciones</td></tr>
+                    <tr><td colspan="21" style="text-align:center; padding:30px;">📝 Sin operaciones registradas</td></tr>
                 </tbody>
             </table>
         </div>
@@ -834,18 +869,19 @@
 <!-- ADMIN MODAL -->
 <div class="modal-overlay" id="adminModal">
     <div class="modal">
-        <h3 style="margin-bottom:15px;">⚙️ Panel Admin</h3>
-        <input type="password" id="adminPass" placeholder="Contraseña" style="width:100%; margin-bottom:10px;">
-        <button class="btn btn-primary" onclick="verificarAdmin()" style="width:100%;">Verificar</button>
+        <h3 style="margin-bottom:15px;">⚙️ Panel de Administración</h3>
+        <input type="password" id="adminPass" placeholder="Contraseña admin" style="width:100%; margin-bottom:10px;">
+        <button class="btn btn-primary" onclick="verificarAdmin()" style="width:100%;">🔓 Verificar</button>
         <div id="adminOpts" class="hidden" style="margin-top:15px;">
-            <label style="display:flex; align-items:center; gap:10px; padding:8px 0;">
-                <input type="checkbox" id="cfgPublico" checked onchange="guardarConfig()"> Historial público
+            <label style="display:flex; align-items:center; gap:10px; padding:10px 0; cursor:pointer;">
+                <input type="checkbox" id="cfgPublico" checked onchange="guardarConfig()"> 📋 Historial público (todos ven todo)
             </label>
-            <label style="display:flex; align-items:center; gap:10px; padding:8px 0;">
-                <input type="checkbox" id="cfgGraficos" checked onchange="guardarConfig()"> Mostrar gráficos
+            <label style="display:flex; align-items:center; gap:10px; padding:10px 0; cursor:pointer;">
+                <input type="checkbox" id="cfgGraficos" checked onchange="guardarConfig()"> 📊 Mostrar gráficos y estadísticas
             </label>
-            <button class="btn btn-warning btn-sm" onclick="document.getElementById('adminModal').classList.remove('active')" style="width:100%; margin-top:10px;">Cerrar</button>
+            <button class="btn btn-warning btn-sm" onclick="document.getElementById('adminModal').classList.remove('active')" style="width:100%; margin-top:10px;">Cerrar Panel</button>
         </div>
+        <button class="btn btn-sm" onclick="document.getElementById('adminModal').classList.remove('active')" style="width:100%; margin-top:8px;">Cancelar</button>
     </div>
 </div>
 
@@ -857,6 +893,7 @@ let esAdmin = false;
 let paso1Data = null;
 let paso2Data = null;
 let periodoChart = 'semanal';
+let tickerInterval = null;
 
 // ==================== STORAGE ====================
 function getOps() { return JSON.parse(localStorage.getItem('arbitrajeV2_ops') || '[]'); }
@@ -869,7 +906,14 @@ function cambiarPerfil() {
     const val = document.getElementById('perfilSelect').value;
     if (val === 'admin') {
         const pass = prompt('🔒 Contraseña Admin:');
-        if (pass !== ADMIN_PASS) { alert('Incorrecta'); document.getElementById('perfilSelect').value = ''; return; }
+        if (pass !== ADMIN_PASS) { 
+            alert('❌ Contraseña incorrecta'); 
+            document.getElementById('perfilSelect').value = ''; 
+            perfilActivo = null;
+            esAdmin = false;
+            actualizarUI();
+            return; 
+        }
         esAdmin = true;
         perfilActivo = 'admin';
     } else if (val) {
@@ -880,7 +924,8 @@ function cambiarPerfil() {
         esAdmin = false;
     }
     actualizarUI();
-    toast('Perfil: ' + (perfilActivo || 'Ninguno'));
+    refrescarTodo();
+    toast('👤 Perfil: ' + (perfilActivo || 'Ninguno'));
 }
 
 function actualizarUI() {
@@ -903,24 +948,144 @@ function actualizarUI() {
     }
 }
 
-// ==================== TICKERS ====================
+// ==================== TICKERS - APIs REALES ====================
 async function cargarTickers() {
+    document.getElementById('bcvIndicator').style.opacity = '0.5';
+    document.getElementById('binanceIndicator').style.opacity = '0.5';
+    
+    await Promise.all([
+        cargarBCV(),
+        cargarBinance()
+    ]);
+    
+    document.getElementById('bcvIndicator').style.opacity = '1';
+    document.getElementById('binanceIndicator').style.opacity = '1';
+}
+
+async function cargarBCV() {
     try {
-        // BCV (simulado - en producción usar API real)
-        const bcv = (Math.random() * 10 + 55).toFixed(2);
-        document.getElementById('tickerBCV').textContent = 'Bs ' + bcv;
+        const response = await fetch('https://ve.dolar-api.com/api/v1/dolar/oficial');
+        const data = await response.json();
         
-        // Binance P2P USDT/VES (simulado)
-        const binance = (Math.random() * 15 + 60).toFixed(2);
-        document.getElementById('tickerBinance').textContent = 'Bs ' + binance;
+        if (data && data.price) {
+            const precio = parseFloat(data.price).toFixed(2);
+            document.getElementById('tickerBCV').textContent = `Bs ${precio}`;
+            document.getElementById('tickerBCV').title = `BCV Oficial - ${data.date || 'Hoy'}`;
+            
+            localStorage.setItem('bcv_price', JSON.stringify({
+                price: precio,
+                date: data.date,
+                timestamp: Date.now()
+            }));
+            
+            calcularSpread();
+        }
+    } catch (error) {
+        console.log('BCV API falló, usando caché');
+        const cached = JSON.parse(localStorage.getItem('bcv_price') || 'null');
+        if (cached) {
+            document.getElementById('tickerBCV').textContent = `Bs ${cached.price}`;
+            document.getElementById('tickerBCV').title = `BCV (cache) - ${cached.date}`;
+            calcularSpread();
+        } else {
+            document.getElementById('tickerBCV').textContent = 'No disp.';
+        }
+    }
+}
+
+async function cargarBinance() {
+    try {
+        const response = await fetch('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "asset": "USDT",
+                "fiat": "VES",
+                "merchantCheck": false,
+                "page": 1,
+                "rows": 10,
+                "tradeType": "SELL",
+                "transAmount": "100"
+            })
+        });
         
+        const data = await response.json();
+        
+        if (data && data.data && data.data.length > 0) {
+            const precios = data.data.map(item => parseFloat(item.adv.price));
+            const mejorPrecio = Math.min(...precios);
+            
+            document.getElementById('tickerBinance').textContent = `Bs ${mejorPrecio.toFixed(2)}`;
+            document.getElementById('tickerBinance').title = 'Binance P2P - Mejor precio';
+            
+            localStorage.setItem('binance_price', JSON.stringify({
+                price: mejorPrecio.toFixed(2),
+                timestamp: Date.now()
+            }));
+            
+            calcularSpread();
+        }
+    } catch (error) {
+        console.log('Binance API falló, usando caché');
+        const cached = JSON.parse(localStorage.getItem('binance_price') || 'null');
+        if (cached) {
+            document.getElementById('tickerBinance').textContent = `Bs ${cached.price}`;
+            document.getElementById('tickerBinance').title = 'Binance (cache)';
+            calcularSpread();
+        } else {
+            document.getElementById('tickerBinance').textContent = 'No disp.';
+        }
+    }
+}
+
+function calcularSpread() {
+    const bcvText = document.getElementById('tickerBCV').textContent.replace('Bs ', '');
+    const binanceText = document.getElementById('tickerBinance').textContent.replace('Bs ', '');
+    
+    const bcv = parseFloat(bcvText);
+    const binance = parseFloat(binanceText);
+    
+    if (bcv > 0 && binance > 0) {
         const spread = ((binance - bcv) / bcv * 100).toFixed(1);
         const spreadEl = document.getElementById('tickerSpread');
         spreadEl.textContent = spread + '%';
-        spreadEl.className = 'ticker-value ' + (spread > 0 ? 'ticker-up' : 'ticker-down');
-    } catch (e) {
-        document.getElementById('tickerBCV').textContent = 'No disp.';
-        document.getElementById('tickerBinance').textContent = 'No disp.';
+        spreadEl.className = 'ticker-value ' + (parseFloat(spread) >= 0 ? 'ticker-up' : 'ticker-down');
+        spreadEl.title = `Diferencia: Bs ${(binance - bcv).toFixed(2)}`;
+    }
+}
+
+function usarPrecioBinance() {
+    const binanceText = document.getElementById('tickerBinance').textContent.replace('Bs ', '');
+    const precio = parseFloat(binanceText);
+    
+    if (precio > 0) {
+        const paso = prompt('¿Qué precio llenar?\n\n1 = Precio de Compra\n2 = Precio de Venta\n3 = Ambos (compra + venta con +5 Bs)');
+        
+        if (paso === '1') {
+            document.getElementById('s1_precioCompra').value = precio.toFixed(2);
+            toast('✅ Precio de compra = Binance');
+        } else if (paso === '2') {
+            document.getElementById('s1_precioVenta').value = precio.toFixed(2);
+            toast('✅ Precio de venta = Binance');
+        } else if (paso === '3') {
+            document.getElementById('s1_precioCompra').value = precio.toFixed(2);
+            document.getElementById('s1_precioVenta').value = (precio + 5).toFixed(2);
+            toast('✅ Compra y Venta actualizados');
+        }
+    } else {
+        toast('⚠️ Precio Binance no disponible', 'error');
+    }
+}
+
+function usarPrecioBCV() {
+    const bcvText = document.getElementById('tickerBCV').textContent.replace('Bs ', '');
+    const precio = parseFloat(bcvText);
+    
+    if (precio > 0) {
+        document.getElementById('s1_precioCompra').value = precio.toFixed(2);
+        toast('✅ Precio de compra = BCV');
+    } else {
+        toast('⚠️ Precio BCV no disponible', 'error');
     }
 }
 
@@ -932,11 +1097,10 @@ function step1Calcular() {
     const precioVenta = parseFloat(document.getElementById('s1_precioVenta').value) || 0;
     
     if (monto <= 0 || precioCompra <= 0 || precioVenta <= 0) {
-        toast('Completa todos los campos', 'error');
+        toast('⚠️ Completa todos los campos', 'error');
         return;
     }
     
-    // Si el monto está en USD, convertir a Bs
     if (moneda === 'USD') {
         monto = monto * precioCompra;
     }
@@ -974,7 +1138,6 @@ function step1Calcular() {
         📊 Est. Ganancia: <strong class="${gananciaUsd >= 0 ? 'text-success' : 'text-danger'}">$${gananciaUsd.toFixed(2)}</strong>
     `;
     
-    // Llenar Step 2 automáticamente
     document.getElementById('s2_montoBs').value = monto.toFixed(2);
     document.getElementById('s2_usdRecibidos').value = usdComprados.toFixed(2);
     document.getElementById('s2_mermaBDV').value = mermaBDV.toFixed(2);
@@ -983,7 +1146,7 @@ function step1Calcular() {
     document.getElementById('step1Card').classList.add('completed');
     document.getElementById('step2Card').classList.add('active');
     
-    toast('✅ Pre-cálculo listo. Continúa con la compra.');
+    toast('✅ Pre-cálculo listo. Paso 2 habilitado.');
 }
 
 // ==================== STEP 2: CONFIRMAR COMPRA ====================
@@ -992,6 +1155,11 @@ function step2Confirmar() {
     const usdRecibidos = parseFloat(document.getElementById('s2_usdRecibidos').value) || 0;
     const mermaBDV = parseFloat(document.getElementById('s2_mermaBDV').value) || 0;
     const mermaBPAY = parseFloat(document.getElementById('s2_mermaBPAY').value) || 0;
+    
+    if (montoBs <= 0 || usdRecibidos <= 0) {
+        toast('⚠️ Completa los campos de compra', 'error');
+        return;
+    }
     
     const usdNeto = usdRecibidos - mermaBDV - mermaBPAY;
     
@@ -1011,27 +1179,35 @@ function step2Confirmar() {
         🏦 Merma Total: <strong>$${(mermaBDV + mermaBPAY).toFixed(2)}</strong>
     `;
     
-    // Llenar Step 3
     document.getElementById('s3_usdtVendidos').value = usdNeto.toFixed(2);
-    document.getElementById('s3_precioVenta').value = paso1Data?.precioVenta || '';
+    document.getElementById('s3_precioVenta').value = (paso1Data?.precioVenta || 0).toFixed(2);
     
     document.getElementById('step2Card').classList.add('completed');
     document.getElementById('step3Card').classList.add('active');
     
-    toast('✅ Compra confirmada. Registra la venta.');
+    toast('✅ Compra confirmada. Paso 3 habilitado.');
 }
 
-// ==================== STEP 3: VENTA ====================
+// ==================== STEP 3: COMPLETAR ====================
 function step3Completar() {
-    if (!perfilActivo) { toast('Selecciona un perfil', 'error'); return; }
+    if (!perfilActivo) { 
+        toast('⚠️ Selecciona un perfil primero', 'error'); 
+        return; 
+    }
     
     const usdtVendidos = parseFloat(document.getElementById('s3_usdtVendidos').value) || 0;
     const precioVentaReal = parseFloat(document.getElementById('s3_precioVenta').value) || 0;
     const mermaBanco = parseFloat(document.getElementById('s3_mermaBanco').value) || 0;
     
+    if (usdtVendidos <= 0 || precioVentaReal <= 0) {
+        toast('⚠️ Completa los campos de venta', 'error');
+        return;
+    }
+    
     const ventaBsReal = usdtVendidos * precioVentaReal;
     const ventaBsNeta = ventaBsReal - mermaBanco;
-    const gananciaBs = ventaBsNeta - (paso2Data?.montoBsReal || paso1Data?.montoBs || 0);
+    const montoBase = paso2Data?.montoBsReal || paso1Data?.montoBs || 0;
+    const gananciaBs = ventaBsNeta - montoBase;
     const gananciaUsd = (paso1Data?.precioCompra || 1) > 0 ? gananciaBs / paso1Data.precioCompra : 0;
     
     const operacion = {
@@ -1040,9 +1216,9 @@ function step3Completar() {
         fecha: new Date().toISOString().split('T')[0],
         hora: new Date().toLocaleTimeString(),
         operador: perfilActivo,
-        inversor: paso1Data?.inversor || perfilActivo,
+        inversor: perfilActivo === 'admin' ? (paso1Data?.inversor || 'MD') : perfilActivo,
         paso: 'Completo',
-        miBs: paso2Data?.montoBsReal || paso1Data?.montoBs || 0,
+        miBs: montoBase,
         miUsd: paso1Data?.montoUsd || 0,
         pcBs: paso1Data?.precioCompra || 0,
         pctBDV: 3,
@@ -1067,19 +1243,18 @@ function step3Completar() {
     const resultEl = document.getElementById('s3_result');
     resultEl.style.display = 'block';
     resultEl.innerHTML = `
-        💰 Venta: <strong>Bs ${ventaBsNeta.toFixed(2)}</strong> | 
+        💰 Venta Neta: <strong>Bs ${ventaBsNeta.toFixed(2)}</strong> | 
         📊 Ganancia: <strong class="${gananciaUsd >= 0 ? 'text-success' : 'text-danger'}">$${gananciaUsd.toFixed(2)}</strong>
     `;
     
     document.getElementById('step3Card').classList.add('completed');
     
-    // Limpiar para nueva operación
     setTimeout(() => {
         resetearSteps();
-    }, 1500);
+    }, 2000);
     
     refrescarTodo();
-    toast('🎉 Operación completada y guardada');
+    toast('🎉 ¡Operación completada y guardada!');
 }
 
 function resetearSteps() {
@@ -1114,11 +1289,13 @@ function mostrarHistorial() {
     }
     
     if (ops.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="21" style="text-align:center; padding:30px;">📝 Sin operaciones</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="21" style="text-align:center; padding:30px;">📝 Sin operaciones registradas</td></tr>';
         return;
     }
     
-    tbody.innerHTML = ops.map((o, i) => `
+    tbody.innerHTML = ops.map((o, i) => {
+        const mermaTotal = (o.mermaBDV || 0) + (o.mermaBPAY || 0);
+        return `
         <tr>
             <td>${i + 1}</td>
             <td>${o.fecha}</td>
@@ -1132,38 +1309,40 @@ function mostrarHistorial() {
             <td>${o.pctBDV || 3}%</td>
             <td>${o.pctBPAY || 3.6}%</td>
             <td class="currency-usd">$ ${(o.mo || 0).toFixed(2)}</td>
-            <td class="currency-usd">$ ${((o.mermaBDV || 0) + (o.mermaBPAY || 0)).toFixed(2)}</td>
+            <td class="currency-usd">$ ${mermaTotal.toFixed(2)}</td>
             <td class="currency-usd"><strong>$ ${(o.usdNeto || 0).toFixed(2)}</strong></td>
             <td>Bs ${(o.pvBs || 0).toFixed(2)}</td>
             <td class="currency-bs">Bs ${(o.mvBs || 0).toFixed(2)}</td>
             <td class="currency-bs"><strong>Bs ${(o.correr || 0).toFixed(2)}</strong></td>
             <td class="${(o.gananciaBs || 0) >= 0 ? 'text-success' : 'text-danger'}">Bs ${(o.gananciaBs || 0).toFixed(2)}</td>
             <td class="${(o.gananciaUsd || 0) >= 0 ? 'text-success' : 'text-danger'}"><strong>$ ${(o.gananciaUsd || 0).toFixed(2)}</strong></td>
-            <td>${o.nota || '-'}</td>
+            <td title="${o.nota || ''}">${o.nota ? '📝' : '-'}</td>
             <td>${esAdmin ? `<button class="btn btn-xs btn-danger" onclick="eliminarOp(${o.id})">✕</button>` : '-'}</td>
         </tr>
-    `).reverse().join('');
+        `;
+    }).reverse().join('');
     
-    actualizarComparativa(ops);
-    actualizarGrafico(ops);
-    actualizarResumen(ops);
+    const opsParaStats = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
+    actualizarComparativa(opsParaStats);
+    actualizarGrafico(opsParaStats);
+    actualizarResumen(opsParaStats);
 }
 
 function eliminarOp(id) {
     if (!esAdmin) return;
-    if (!confirm('Eliminar?')) return;
+    if (!confirm('¿Eliminar esta operación?')) return;
     const ops = getOps().filter(o => o.id !== id);
     saveOps(ops);
     refrescarTodo();
-    toast('Eliminado');
+    toast('🗑️ Operación eliminada');
 }
 
 function limpiarTodo() {
     if (!esAdmin) return;
-    if (!confirm('⚠️ ¿Eliminar TODO?')) return;
+    if (!confirm('⚠️ ¿Eliminar TODO el historial? Esta acción no se puede deshacer.')) return;
     saveOps([]);
     refrescarTodo();
-    toast('Historial limpio');
+    toast('🗑️ Historial limpiado completamente');
 }
 
 // ==================== COMPARATIVA ====================
@@ -1171,7 +1350,7 @@ function actualizarComparativa(ops) {
     const inversores = ['MD', 'CP', 'JB'];
     
     inversores.forEach(inv => {
-        const opsInv = ops.filter(o => o.inversor === inv || o.operador === inv);
+        const opsInv = ops.filter(o => (o.inversor === inv) || (o.operador === inv));
         const totalMI = opsInv.reduce((s, o) => s + (o.miBs || 0), 0);
         const totalMO = opsInv.reduce((s, o) => s + (o.usdNeto || 0), 0);
         const totalMV = opsInv.reduce((s, o) => s + (o.mvBs || 0), 0);
@@ -1181,7 +1360,7 @@ function actualizarComparativa(ops) {
         const statsDiv = document.getElementById('stats' + inv);
         if (statsDiv) {
             statsDiv.innerHTML = `
-                <div class="stat-item"><div class="stat-label">Ops</div><div class="stat-value">${opsInv.length}</div></div>
+                <div class="stat-item"><div class="stat-label">Operaciones</div><div class="stat-value">${opsInv.length}</div></div>
                 <div class="stat-item"><div class="stat-label">MI Total</div><div class="stat-value">Bs ${totalMI.toFixed(2)}</div></div>
                 <div class="stat-item"><div class="stat-label">MO Total</div><div class="stat-value">$ ${totalMO.toFixed(2)}</div></div>
                 <div class="stat-item"><div class="stat-label">MV Total</div><div class="stat-value">Bs ${totalMV.toFixed(2)}</div></div>
@@ -1197,18 +1376,17 @@ function cambiarPeriodo(periodo) {
     periodoChart = periodo;
     document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
-    actualizarGrafico(getOps());
+    const ops = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
+    actualizarGrafico(ops);
 }
 
 function actualizarGrafico(ops) {
     const container = document.getElementById('mainChart');
     if (!container || ops.length === 0) {
-        container.innerHTML = '<div style="width:100%; text-align:center; color:var(--text2);">Sin datos</div>';
+        container.innerHTML = '<div style="width:100%; text-align:center; color:var(--text2); padding:40px;">📊 Sin datos para mostrar</div>';
         return;
     }
     
-    // Agrupar según período
-    const ahora = new Date();
     let grupos = {};
     const inversores = ['MD', 'CP', 'JB'];
     
@@ -1223,47 +1401,47 @@ function actualizarGrafico(ops) {
         } else if (periodoChart === 'mensual') {
             clave = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
         } else {
-            clave = `${fecha.getFullYear()}-Q${Math.ceil((fecha.getMonth() + 1) / 3)}`;
+            const trimestre = Math.ceil((fecha.getMonth() + 1) / 3);
+            clave = `${fecha.getFullYear()}-Q${trimestre}`;
         }
         
         if (!grupos[clave]) grupos[clave] = {};
-        if (!grupos[clave][o.inversor || o.operador]) grupos[clave][o.inversor || o.operador] = 0;
-        grupos[clave][o.inversor || o.operador] += (o.gananciaUsd || 0);
+        const inv = o.inversor || o.operador;
+        if (!grupos[clave][inv]) grupos[clave][inv] = 0;
+        grupos[clave][inv] += (o.gananciaUsd || 0);
     });
     
     const claves = Object.keys(grupos).sort().slice(-12);
-    const maxVal = Math.max(1, ...claves.flatMap(k => Object.values(grupos[k]).map(Math.abs)));
+    const todosValores = claves.flatMap(k => Object.values(grupos[k]));
+    const maxVal = Math.max(1, ...todosValores.map(Math.abs));
     
     container.innerHTML = claves.map(clave => {
         const datos = grupos[clave];
-        let bars = '';
         let total = 0;
         
-        inversores.forEach(inv => {
+        const bars = inversores.map(inv => {
             const val = datos[inv] || 0;
             total += val;
             const altura = Math.abs(val) / maxVal * 250;
-            bars += `
-                <div class="chart-bar-wrap">
-                    <div class="chart-bar ${inv}" style="height:${Math.max(altura, 3)}px;"></div>
-                </div>
-            `;
-        });
+            return `<div class="chart-bar ${inv}" style="height:${Math.max(altura, 3)}px;"></div>`;
+        }).join('');
         
         const fechaLabel = periodoChart === 'semanal' ? clave.slice(5) : 
                           periodoChart === 'mensual' ? clave : clave;
         
+        const tooltipContent = inversores.map(inv => 
+            `${inv}: $${(datos[inv] || 0).toFixed(2)}`
+        ).join('<br>');
+        
         return `
             <div class="chart-group">
                 <div class="chart-tooltip">
-                    ${clave}<br>
-                    ${inversores.map(inv => `${inv}: $${(datos[inv] || 0).toFixed(2)}`).join('<br>')}
+                    <strong>${clave}</strong><br>
+                    ${tooltipContent}
                     <br><strong>Total: $${total.toFixed(2)}</strong>
                 </div>
-                <div style="display:flex; gap:2px; align-items:flex-end; height:100%;">
-                    ${bars}
-                </div>
-                <span style="font-size:9px; color:var(--text2); margin-top:5px;">${fechaLabel}</span>
+                <div class="chart-bars">${bars}</div>
+                <div class="chart-label">${fechaLabel}</div>
             </div>
         `;
     }).join('');
@@ -1276,29 +1454,39 @@ function actualizarResumen(ops) {
     
     let html = '';
     inversores.forEach(inv => {
-        const opsInv = ops.filter(o => o.inversor === inv || o.operador === inv);
+        const opsInv = ops.filter(o => (o.inversor === inv) || (o.operador === inv));
         const ganancia = opsInv.reduce((s, o) => s + (o.gananciaUsd || 0), 0);
+        const totalMI = opsInv.reduce((s, o) => s + (o.miBs || 0), 0);
+        const rendimiento = totalMI > 0 ? (ganancia / (totalMI / (opsInv[0]?.pcBs || 1)) * 100) : 0;
+        
+        const ahora = new Date();
         const opsSemana = opsInv.filter(o => {
-            const d = new Date(o.timestamp);
-            const ahora = new Date();
-            const diff = (ahora - d) / (1000 * 60 * 60 * 24);
+            const diff = (ahora - new Date(o.timestamp)) / (1000 * 60 * 60 * 24);
             return diff <= 7;
         });
+        const gananciaSemana = opsSemana.reduce((s, o) => s + (o.gananciaUsd || 0), 0);
         
         html += `
-            <div style="background:var(--card); padding:15px; border-radius:10px; border:1px solid var(--border);">
-                <strong><span class="badge badge-${inv}">${inv}</span></strong>
-                <div style="display:flex; justify-content:space-between; margin-top:8px;">
-                    <span>Total:</span>
-                    <span class="${ganancia >= 0 ? 'text-success' : 'text-danger'}">$${ganancia.toFixed(2)}</span>
+            <div style="background:var(--card); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <strong><span class="badge badge-${inv}">${inv}</span></strong>
+                    <span class="${ganancia >= 0 ? 'text-success' : 'text-danger'}" style="font-weight:700;">$${ganancia.toFixed(2)}</span>
                 </div>
-                <div style="display:flex; justify-content:space-between;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:5px 0;">
+                    <span>Total ops:</span>
+                    <span>${opsInv.length}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:5px 0;">
                     <span>Esta semana:</span>
-                    <span>${opsSemana.length} ops</span>
+                    <span class="${gananciaSemana >= 0 ? 'text-success' : 'text-danger'}">$${gananciaSemana.toFixed(2)}</span>
                 </div>
-                <div style="display:flex; justify-content:space-between;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:5px 0;">
                     <span>Rendimiento:</span>
-                    <span>${opsInv.length > 0 ? (ganancia / Math.max(1, opsInv.reduce((s,o) => s + (o.miBs||0), 0)) * 100).toFixed(2) : '0'}%</span>
+                    <span>${rendimiento.toFixed(1)}%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:5px 0;">
+                    <span>MI Total:</span>
+                    <span>Bs ${totalMI.toFixed(2)}</span>
                 </div>
             </div>
         `;
@@ -1308,20 +1496,30 @@ function actualizarResumen(ops) {
 }
 
 // ==================== ADMIN ====================
-function abrirAdmin() { document.getElementById('adminModal').classList.add('active'); }
+function abrirAdmin() {
+    document.getElementById('adminModal').classList.add('active');
+    document.getElementById('adminOpts').classList.add('hidden');
+    document.getElementById('adminPass').value = '';
+}
+
 function verificarAdmin() {
     if (document.getElementById('adminPass').value === ADMIN_PASS) {
         document.getElementById('adminOpts').classList.remove('hidden');
-        document.getElementById('cfgPublico').checked = getConfig().publico;
-        document.getElementById('cfgGraficos').checked = getConfig().graficos;
-    } else { alert('Incorrecta'); }
+        const cfg = getConfig();
+        document.getElementById('cfgPublico').checked = cfg.publico;
+        document.getElementById('cfgGraficos').checked = cfg.graficos;
+    } else {
+        alert('❌ Contraseña incorrecta');
+    }
 }
+
 function guardarConfig() {
     saveConfig({
         publico: document.getElementById('cfgPublico').checked,
         graficos: document.getElementById('cfgGraficos').checked
     });
     refrescarTodo();
+    toast('⚙️ Configuración guardada');
 }
 
 // ==================== UTILIDADES ====================
@@ -1331,10 +1529,13 @@ function toggleTheme() {
 }
 
 function exportarExcel() {
-    const ops = getOps();
-    if (ops.length === 0) { toast('Sin datos', 'error'); return; }
+    const ops = getConfig().publico || esAdmin ? getOps() : getOps().filter(o => o.operador === perfilActivo);
+    if (ops.length === 0) { 
+        toast('⚠️ Sin datos para exportar', 'error'); 
+        return; 
+    }
     
-    let csv = 'Fila,Fecha,Hora,Operador,Inversor,Paso,MI Bs,MI $,PC Bs,%BDV,%BPAY,MO $,Merma,$ Neto,PV Bs,MV Bs,Correr,Gan Bs,Gan $,Nota\n';
+    let csv = 'Fila,Fecha,Hora,Operador,Inversor,Paso,MI Bs,MI $,PC Bs,%BDV,%BPAY,MO $,Merma Total,$ Neto,PV Bs,MV Bs,Correr,Ganancia Bs,Ganancia $,Nota\n';
     ops.forEach((o, i) => {
         csv += `${i+1},${o.fecha},${o.hora},${o.operador},${o.inversor},${o.paso},${o.miBs},${o.miUsd},${o.pcBs},`;
         csv += `${o.pctBDV},${o.pctBPAY},${o.mo},${(o.mermaBDV||0)+(o.mermaBPAY||0)},${o.usdNeto},`;
@@ -1344,9 +1545,9 @@ function exportarExcel() {
     const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `arbitraje_${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `arbitraje_operaciones_${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
-    toast('📥 Exportado');
+    toast('📥 Archivo Excel exportado');
 }
 
 function toast(msg, tipo = 'success') {
@@ -1355,35 +1556,30 @@ function toast(msg, tipo = 'success') {
     t.style.borderLeft = `4px solid ${tipo === 'error' ? 'var(--danger)' : 'var(--success)'}`;
     t.textContent = msg;
     document.body.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; t.style.transition = '0.3s'; setTimeout(() => t.remove(), 300); }, 2500);
+    setTimeout(() => { 
+        t.style.opacity = '0'; 
+        t.style.transition = 'opacity 0.3s'; 
+        setTimeout(() => t.remove(), 300); 
+    }, 2500);
 }
 
 function refrescarTodo() {
     mostrarHistorial();
-    actualizarGrafico(getOps());
-    actualizarComparativa(getOps());
-    actualizarResumen(getOps());
 }
 
 // ==================== INIT ====================
 function init() {
-    // Tema
     if (localStorage.getItem('arbitrajeV2_theme') === 'light') {
         document.body.classList.add('light-mode');
     }
     
-    // Fecha default
-    document.getElementById('s1_monto').focus();
-    
-    // Cargar tickers cada 30s
     cargarTickers();
-    setInterval(cargarTickers, 30000);
+    tickerInterval = setInterval(cargarTickers, 60000); // Actualizar cada 60 segundos
     
     actualizarUI();
     refrescarTodo();
 }
 
-// Cerrar modales
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal-overlay')) {
         e.target.classList.remove('active');
