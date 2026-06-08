@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v16 | Auto-Guardado + Config Simple</title>
+    <title>ArbitrajePro v17 | Sincronización Automática</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -135,7 +135,7 @@
     <div class="app-container">
         <div class="app-header">
             <div class="header-left">
-                <h1><span>💱</span> ArbitrajePro v16</h1>
+                <h1><span>💱</span> ArbitrajePro v17</h1>
                 <div class="user-selector">
                     <span>👤</span>
                     <select id="headerUser" onchange="switchUser()">
@@ -148,6 +148,7 @@
                 </div>
             </div>
             <div class="header-right">
+                <span id="syncStatus" style="font-size:10px;color:var(--success);">💾 Local</span>
                 <div class="market-badge"><span class="dot live" id="dotBCV"></span>BCV:<strong id="hBCV">--</strong></div>
                 <div class="market-badge"><span class="dot live" id="dotBin"></span>P2P:<strong id="hBinCompra">--</strong>/<strong id="hBinVenta">--</strong></div>
                 <button class="btn btn-outline btn-sm" onclick="syncRates()">🔄 Sync</button>
@@ -164,7 +165,7 @@
                 <span class="flow-step-mini">🔄 Correr</span>
             </div>
             <div class="stages-grid">
-                <!-- ============ ETAPA 1 ============ -->
+                <!-- ETAPA 1 -->
                 <div class="stage-col s1">
                     <div class="stage-col-header">🏦 Etapa 1: Compra BDV <span class="stage-badge-sm">Bs → $</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s1_fecha"></div>
@@ -179,7 +180,7 @@
                     </div>
                     <div class="stage-inherit" id="s1_inherit">↑ Heredado de Etapa 3</div>
                 </div>
-                <!-- ============ ETAPA 2 ============ -->
+                <!-- ETAPA 2 -->
                 <div class="stage-col s2">
                     <div class="stage-col-header">💱 Etapa 2: Transferencia <span class="stage-badge-sm">$ → USDT</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s2_fecha"></div>
@@ -195,7 +196,7 @@
                     </div>
                     <div class="stage-inherit" id="s2_inherit">↑ Heredado de Etapa 1</div>
                 </div>
-                <!-- ============ ETAPA 3 ============ -->
+                <!-- ETAPA 3 -->
                 <div class="stage-col s3">
                     <div class="stage-col-header">💎 Etapa 3: Venta P2P <span class="stage-badge-sm">USDT → Bs</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s3_fecha"></div>
@@ -250,21 +251,27 @@
             </div>
             <div class="bottom-content" id="bot-config">
                 <div class="simple-card">
-                    <h4>☁️ Sincronizar entre dispositivos</h4>
-                    <p>Tus datos se guardan automáticamente en este navegador. Si quieres verlos en tu teléfono u otra PC, configura estas opciones:</p>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                        <div><label style="font-size:9px;color:var(--text-secondary);">Token GitHub (opcional)</label><input type="password" id="githubToken" placeholder="ghp_..."></div>
-                        <div><label style="font-size:9px;color:var(--text-secondary);">URL Render (opcional)</label><input type="text" id="renderUrl" placeholder="https://..."></div>
-                    </div>
-                    <div style="display:flex;gap:6px;margin-top:8px;"><button class="btn btn-primary btn-sm" onclick="saveConfig()">💾 Guardar config</button><span style="font-size:9px;color:var(--text-secondary);align-self:center;">⚠️ Si no configuras nada, los datos se guardan solo en este navegador</span></div>
+                    <h4>☁️ Sincronización entre dispositivos</h4>
+                    <p>Tus datos se guardan automáticamente en este navegador. Para verlos en tu teléfono u otra PC, pega aquí la URL de tu servidor Render:</p>
+                    <div><label style="font-size:9px;color:var(--text-secondary);">URL de Render</label><input type="text" id="renderUrlInput" placeholder="https://arbitraje-pro.onrender.com/api"></div>
+                    <button class="btn btn-primary btn-sm" onclick="guardarRenderUrl()" style="margin-top:6px;">💾 Conectar con Render</button>
+                    <p style="font-size:9px;color:var(--warning);margin-top:6px;">⚠️ Si no configuras nada, los datos se guardan solo en este navegador. Una vez configurado, todo se sincroniza automáticamente al guardar.</p>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        const ADMIN_PASS = "Mau10";
-        let currentUser = "MAU", isAdmin = false, ops = [];
-        let githubToken = localStorage.getItem('gh_token') || '';
+        // ============ CONFIGURACIÓN ============
+        const USUARIOS = {
+            'MAU': 'mau123',
+            'MD': 'md123',
+            'CP': 'cp123',
+            'JB': 'jb123',
+            'Admin': 'Mau10'
+        };
+        let currentUser = 'MAU';
+        let isAdmin = false;
+        let ops = [];
         let renderUrl = localStorage.getItem('renderUrl') || '';
         let lineChart, doughnutChart;
         let tasasCache = { bcv: null, binanceVenta: null };
@@ -276,18 +283,55 @@
         function setMoneda3(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
         function setMonedaTV(s,m){document.getElementById('s'+s+'_tv_moneda').value=m;document.getElementById('s'+s+'_tv_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tv_moneda_usd').classList.toggle('active',m==='$');}
 
-        // ============ GUARDADO AUTOMÁTICO ============
+        // ============ SINCRONIZACIÓN ============
+        function guardarRenderUrl(){
+            renderUrl = document.getElementById('renderUrlInput').value.trim();
+            localStorage.setItem('renderUrl', renderUrl);
+            notify('✅ URL de Render guardada. Los datos se sincronizarán automáticamente.');
+            testRenderConnection();
+        }
+
+        async function testRenderConnection(){
+            if(!renderUrl) return;
+            try {
+                const r = await fetch(renderUrl + '/operaciones?user=test');
+                if(r.ok){
+                    document.getElementById('syncStatus').textContent = '☁️ Render';
+                    document.getElementById('syncStatus').style.color = 'var(--success)';
+                    notify('✅ Conectado a Render. Sincronización activa.');
+                }
+            } catch(e) {
+                document.getElementById('syncStatus').textContent = '💾 Local';
+                document.getElementById('syncStatus').style.color = 'var(--warning)';
+            }
+        }
+
+        async function saveToServer(op){
+            if(!renderUrl) return false;
+            try {
+                const r = await fetch(renderUrl + '/operaciones', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(op)
+                });
+                return r.ok;
+            } catch(e) { return false; }
+        }
+
+        async function loadFromServer(){
+            if(!renderUrl) return null;
+            try {
+                const url = isAdmin ? renderUrl + '/operaciones?admin=true' : renderUrl + '/operaciones?user=' + currentUser;
+                const r = await fetch(url);
+                if(r.ok) return await r.json();
+            } catch(e) {}
+            return null;
+        }
+
+        // ============ GUARDADO LOCAL ============
         function getOpsKey(){ return 'arbOps_' + currentUser; }
         function saveLocal(){ localStorage.setItem(getOpsKey(), JSON.stringify(ops)); }
         function loadLocal(){ return JSON.parse(localStorage.getItem(getOpsKey()) || '[]'); }
-
-        function saveConfig(){
-            githubToken = document.getElementById('githubToken').value.trim();
-            renderUrl = document.getElementById('renderUrl').value.trim();
-            localStorage.setItem('gh_token', githubToken);
-            localStorage.setItem('renderUrl', renderUrl);
-            notify('✅ Configuración guardada');
-        }
 
         async function saveStage(s){
             const r = calcStage(s);
@@ -305,32 +349,62 @@
             };
             ops.push(op);
             saveLocal();
+            
+            // Intentar guardar en Render
+            if(renderUrl){
+                const saved = await saveToServer(op);
+                if(saved){
+                    const serverData = await loadFromServer();
+                    if(serverData){ ops = serverData; saveLocal(); }
+                }
+            }
+            
             document.getElementById('s'+s+'_save').disabled = true;
             renderAll();
-            notify('✅ Etapa '+s+' guardada automáticamente');
+            
+            if(renderUrl){
+                notify('✅ Guardado en Local + Render');
+            } else {
+                notify('✅ Guardado localmente');
+            }
         }
 
-        function passToNext(s){
-            const r = calcStage(s);
-            if(!r){ notify('⚠️ Primero haga clic en CALCULAR','error'); return; }
-            if(s===1){
-                document.getElementById('s2_mi_valor').value = (r.usd||0).toFixed(4);
-                document.getElementById('s2_moneda').value='$';document.getElementById('s2_moneda_bs').classList.remove('active');document.getElementById('s2_moneda_usd').classList.add('active');
-                document.getElementById('s2_inv').value = document.getElementById('s1_inv').value;
-                document.getElementById('s2_inherit').classList.add('show');
-                notify('🔄 $'+(r.usd||0).toFixed(2)+' → Etapa 2');
-            }else if(s===2){
-                document.getElementById('s3_mi_valor').value = (r.neto||0).toFixed(4);
-                document.getElementById('s3_moneda').value='$';document.getElementById('s3_moneda_bs').classList.remove('active');document.getElementById('s3_moneda_usd').classList.add('active');
-                document.getElementById('s3_inv').value = document.getElementById('s2_inv').value;
-                document.getElementById('s3_inherit').classList.add('show');
-                notify('🔄 '+(r.neto||0).toFixed(4)+' USDT → Etapa 3');
-            }else{
-                document.getElementById('s1_mi_valor').value = (r.correrBs||r.ventaBs||0).toFixed(2);
-                document.getElementById('s1_moneda').value='Bs';document.getElementById('s1_moneda_bs').classList.add('active');document.getElementById('s1_moneda_usd').classList.remove('active');
-                document.getElementById('s1_inv').value = document.getElementById('s3_inv').value;
-                document.getElementById('s1_inherit').classList.add('show');
-                notify('🔄 Bs '+(r.correrBs||r.ventaBs||0).toFixed(2)+' → Etapa 1');
+        // ============ CARGA DE DATOS ============
+        async function loadOps(){
+            // 1. Intentar cargar de Render
+            const serverData = await loadFromServer();
+            if(serverData && serverData.length > 0){
+                ops = serverData;
+                saveLocal();
+                document.getElementById('syncStatus').textContent = '☁️ Render';
+                document.getElementById('syncStatus').style.color = 'var(--success)';
+            } else {
+                // 2. Cargar de localStorage
+                ops = loadLocal();
+                document.getElementById('syncStatus').textContent = '💾 Local';
+                document.getElementById('syncStatus').style.color = 'var(--warning)';
+            }
+            renderAll();
+        }
+
+        // ============ USUARIOS CON CLAVE ============
+        async function switchUser(){
+            const selected = document.getElementById('headerUser').value;
+            const clave = prompt('🔐 Ingresa tu clave de usuario:');
+            
+            if(!clave){
+                document.getElementById('headerUser').value = currentUser;
+                return;
+            }
+            
+            if(USUARIOS[selected] === clave){
+                currentUser = selected;
+                isAdmin = (selected === 'Admin');
+                notify('✅ Bienvenido, ' + selected);
+                await loadOps();
+            } else {
+                notify('❌ Clave incorrecta para ' + selected, 'error');
+                document.getElementById('headerUser').value = currentUser;
             }
         }
 
@@ -357,19 +431,37 @@
             document.getElementById('s3_result_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_result_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_correr_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_correr_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_save').disabled=false;notify('✅ Bs '+ventaBs.toFixed(2)+' para correr');return {ventaBs,ventaUsd,correrBs:ventaBs,correrUsd:ventaUsd};
         }
 
-        // ============ USUARIO ============
-        async function switchUser(){const s=document.getElementById('headerUser').value;if(s==='Admin'){const p=prompt("🔐 Contraseña:");if(!p){document.getElementById('headerUser').value=currentUser;return;}if(p===ADMIN_PASS){currentUser='Admin';isAdmin=true;notify('🔓 Admin');}else{notify('❌ Incorrecta','error');document.getElementById('headerUser').value=currentUser;return;}}else{currentUser=s;isAdmin=false;}ops=loadLocal();renderAll();}
+        function passToNext(s){
+            const r = calcStage(s);
+            if(!r){ notify('⚠️ Primero haga clic en CALCULAR','error'); return; }
+            if(s===1){
+                document.getElementById('s2_mi_valor').value = (r.usd||0).toFixed(4);
+                document.getElementById('s2_moneda').value='$';document.getElementById('s2_moneda_bs').classList.remove('active');document.getElementById('s2_moneda_usd').classList.add('active');
+                document.getElementById('s2_inv').value = document.getElementById('s1_inv').value;
+                document.getElementById('s2_inherit').classList.add('show');
+                notify('🔄 $'+(r.usd||0).toFixed(2)+' → Etapa 2');
+            }else if(s===2){
+                document.getElementById('s3_mi_valor').value = (r.neto||0).toFixed(4);
+                document.getElementById('s3_moneda').value='$';document.getElementById('s3_moneda_bs').classList.remove('active');document.getElementById('s3_moneda_usd').classList.add('active');
+                document.getElementById('s3_inv').value = document.getElementById('s2_inv').value;
+                document.getElementById('s3_inherit').classList.add('show');
+                notify('🔄 '+(r.neto||0).toFixed(4)+' USDT → Etapa 3');
+            }else{
+                document.getElementById('s1_mi_valor').value = (r.correrBs||r.ventaBs||0).toFixed(2);
+                document.getElementById('s1_moneda').value='Bs';document.getElementById('s1_moneda_bs').classList.add('active');document.getElementById('s1_moneda_usd').classList.remove('active');
+                document.getElementById('s1_inv').value = document.getElementById('s3_inv').value;
+                document.getElementById('s1_inherit').classList.add('show');
+                notify('🔄 Bs '+(r.correrBs||r.ventaBs||0).toFixed(2)+' → Etapa 1');
+            }
+        }
 
-        // ============ ELIMINAR ============
         function delOp(id){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Eliminar?'))return;ops=ops.filter(o=>o.id!==id);saveLocal();renderAll();notify('🗑️ Eliminada');}
         function clearAll(){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Purgar TODO?'))return;ops=[];saveLocal();renderAll();notify('💥 Purgado');}
 
-        // ============ RENDER ============
         function renderAll(){renderHist();renderKPIs();}
         function renderHist(){const tb=document.getElementById('histBody');if(!ops.length){tb.innerHTML='<tr><td colspan="10" style="padding:16px;">Sin datos</td></tr>';return;}tb.innerHTML=ops.map((o,i)=>`<tr><td>${i+1}</td><td>${o.fecha}</td><td><span class="badge-inv badge-s${o.etapa}">E${o.etapa}</span></td><td><span class="badge-inv badge-${o.inv==='MAU'?'MJ':o.inv}">${o.inv}</span></td><td>Bs ${(o.miBs||0).toFixed(2)}</td><td>$ ${(o.miUsd||0).toFixed(2)}</td><td>Bs ${(o.resultBs||0).toFixed(2)}</td><td>$ ${(o.resultUsd||0).toFixed(2)}</td><td>${o.tipo||''}</td><td><button class="btn btn-danger btn-xs" onclick="delOp(${o.id})">✕</button></td></tr>`).reverse().join('');}
         function renderKPIs(){if(!ops.length){document.getElementById('kpiSpread').textContent='0%';document.getElementById('kpiRoi').textContent='0%';document.getElementById('kpiRot').textContent='0';return;}document.getElementById('kpiRot').textContent=ops.filter(o=>o.etapa===3).length;}
 
-        // ============ SIMULADOR ============
         function runSim(){const cap=parseFloat(document.getElementById('simCap').value)||0,tc=parseFloat(document.getElementById('simTc').value)||0,tv=parseFloat(document.getElementById('simTv').value)||0,cic=parseInt(document.getElementById('simCic').value)||0,bdv=parseFloat(document.getElementById('simBdv').value)||0,bpay=parseFloat(document.getElementById('simBpay').value)||0;if(!cap||!tc||!tv||!cic)return;let ca=cap,gt=0,det=[];for(let i=0;i<cic;i++){const u=ca/tc,n=u*(1-(bdv+bpay)/100),r=n*tv,g=r-ca;gt+=g;det.push({ciclo:i+1,cap:ca,neto:n,ret:r,gan:g});ca=r;}const roi=((ca-cap)/cap)*100;document.getElementById('simOut').style.display='block';document.getElementById('simOut').innerHTML=`<strong>Capital Final:</strong> Bs ${ca.toFixed(2)}<br><strong>Ganancia Total:</strong> Bs ${gt.toFixed(2)}<br><strong>ROI:</strong> ${roi.toFixed(1)}%<br><br>${det.map(d=>`C${d.ciclo}: Bs${d.cap.toFixed(0)} → $${d.neto.toFixed(2)} → Bs${d.ret.toFixed(0)} | ${d.gan>=0?'+':''}Bs${d.gan.toFixed(0)}`).join('<br>')}`;}
 
         function renderCharts(){const data=[...ops].sort((a,b)=>a.fecha.localeCompare(b.fecha));const fechas=[...new Set(data.map(o=>o.fecha))];const getData=(inv)=>fechas.map(f=>data.filter(o=>o.fecha===f&&o.inv===inv).reduce((s,o)=>s+(o.gan||0),0));if(lineChart)lineChart.destroy();lineChart=new Chart(document.getElementById('lineChart').getContext('2d'),{type:'line',data:{labels:fechas,datasets:[{label:'MAU',data:getData('MAU'),borderColor:'#10b981',tension:0.3,borderWidth:2},{label:'MD',data:getData('MD'),borderColor:'#2563eb',tension:0.3,borderWidth:2},{label:'CP',data:getData('CP'),borderColor:'#7c3aed',tension:0.3,borderWidth:2},{label:'JB',data:getData('JB'),borderColor:'#db2777',tension:0.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#f0f4f8',font:{size:9}}}},scales:{x:{ticks:{color:'#7a8fa8',font:{size:8}}},y:{ticks:{color:'#7a8fa8',font:{size:8}}}}}});const tMAU=data.filter(o=>o.inv==='MAU').reduce((s,o)=>s+(o.miBs||0),0),tMD=data.filter(o=>o.inv==='MD').reduce((s,o)=>s+(o.miBs||0),0),tCP=data.filter(o=>o.inv==='CP').reduce((s,o)=>s+(o.miBs||0),0),tJB=data.filter(o=>o.inv==='JB').reduce((s,o)=>s+(o.miBs||0),0);if(doughnutChart)doughnutChart.destroy();doughnutChart=new Chart(document.getElementById('doughnutChart').getContext('2d'),{type:'doughnut',data:{labels:['MAU','MD','CP','JB'],datasets:[{data:[tMAU,tMD,tCP,tJB],backgroundColor:['#10b981','#2563eb','#7c3aed','#db2777']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#f0f4f8',font:{size:9}}}}}});}
@@ -379,14 +471,14 @@
         function switchBottom(tab){document.querySelectorAll('.bottom-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.bottom-content').forEach(c=>c.classList.remove('active'));event.target.classList.add('active');document.getElementById('bot-'+tab).classList.add('active');if(tab==='analytics')renderCharts();if(tab==='kpis')renderKPIs();}
         function notify(m,t='success'){const n=document.createElement('div');n.className='notification '+t;n.textContent=m;document.body.appendChild(n);setTimeout(()=>n.remove(),2000);}
 
-        // ============ TASAS ============
         async function syncRates(silent=false){try{const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');const d=await r.json();if(d?.promedio){const t=parseFloat(d.promedio).toFixed(2);tasasCache.bcv=t;document.getElementById('hBCV').textContent='Bs '+t;document.getElementById('dotBCV').className='dot live';const s1tc=document.getElementById('s1_tc_valor');if(s1tc&&!s1tc.value)s1tc.value=t;}}catch(e){document.getElementById('dotBCV').className='dot offline';}try{const proxy='https://corsproxy.io/?';const url='https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';const base={asset:'USDT',fiat:'VES',merchantCheck:false,page:1,rows:3};const[r1,r2]=await Promise.all([fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'SELL'})}),fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'BUY'})})]);const d1=await r1.json(),d2=await r2.json();if(d1?.data?.length){const t=parseFloat(d1.data[0].adv.price).toFixed(2);tasasCache.binanceCompra=t;document.getElementById('hBinCompra').textContent='Bs '+t;}if(d2?.data?.length){const t=parseFloat(d2.data[0].adv.price).toFixed(2);tasasCache.binanceVenta=t;document.getElementById('hBinVenta').textContent='Bs '+t;document.getElementById('dotBin').className='dot live';const s3tv=document.getElementById('s3_tv_valor');if(s3tv&&!s3tv.value)s3tv.value=t;}}catch(e){document.getElementById('dotBin').className='dot offline';}if(!silent)notify('✅ Tasas actualizadas');}
 
         async function init(){
             const today=new Date().toISOString().split('T')[0];['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).value=today;});
-            document.getElementById('githubToken').value=githubToken;document.getElementById('renderUrl').value=renderUrl;
-            ops=loadLocal();renderAll();await syncRates(true);
-            setTimeout(()=>{if(tasasCache.bcv)notify('✅ Listo | BCV:'+tasasCache.bcv+' | P2P:'+(tasasCache.binanceVenta||'--'));},1000);
+            document.getElementById('renderUrlInput').value=renderUrl;
+            await loadOps();
+            await testRenderConnection();
+            await syncRates(true);
             setInterval(()=>syncRates(true),300000);
         }
         init();
