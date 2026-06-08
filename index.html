@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v11 | Render + GitHub Sync</title>
+    <title>ArbitrajePro v12 | Flujo Real Multi-Etapa</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -32,14 +32,14 @@
             background: var(--bg-main);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 12px;
+            padding: 16px;
         }
         .app-container {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
             background: var(--bg-surface);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             padding-bottom: 50px;
@@ -47,7 +47,7 @@
         .app-header {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
-            padding: 10px 18px;
+            padding: 14px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -57,41 +57,45 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
         .header-left h1 {
-            font-size: 17px;
+            font-size: 19px;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .user-selector {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             background: var(--bg-main);
             border: 1px solid var(--border-color);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 11px;
+            padding: 7px 12px;
+            border-radius: 22px;
+            font-size: 12px;
         }
         .user-selector select {
             background: transparent;
             border: none;
             color: var(--text-primary);
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
+            outline: none;
         }
         .header-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
-            font-size: 10px;
+            font-size: 11px;
         }
         .status-badge {
-            font-size: 9px;
-            padding: 3px 8px;
-            border-radius: 10px;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
             font-weight: 600;
         }
         .status-badge.render {
@@ -109,16 +113,16 @@
         .market-badge {
             background: var(--bg-main);
             border: 1px solid var(--border-color);
-            padding: 4px 9px;
-            border-radius: 14px;
-            font-size: 9px;
+            padding: 6px 10px;
+            border-radius: 16px;
+            font-size: 10px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
         }
         .dot {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
@@ -138,22 +142,25 @@
             }
         }
         .btn {
-            padding: 6px 11px;
+            padding: 8px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 9px;
+            font-size: 11px;
             transition: all 0.2s;
             text-transform: uppercase;
             white-space: nowrap;
+            letter-spacing: 0.3px;
         }
         .btn:hover {
             filter: brightness(1.15);
+            transform: translateY(-1px);
         }
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
         .btn-primary {
             background: var(--primary);
@@ -177,35 +184,36 @@
             color: var(--text-primary);
         }
         .btn-sm {
-            padding: 4px 8px;
-            font-size: 8px;
+            padding: 5px 10px;
+            font-size: 10px;
         }
         .btn-xs {
-            padding: 2px 5px;
-            font-size: 7px;
+            padding: 3px 7px;
+            font-size: 8px;
         }
         .main-content {
-            padding: 12px;
+            padding: 16px;
         }
+
         .flow-bar {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 3px;
-            margin-bottom: 12px;
-            padding: 6px 9px;
+            gap: 6px;
+            margin-bottom: 18px;
+            padding: 10px 14px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
             flex-wrap: wrap;
-            font-size: 8px;
+            font-size: 10px;
             color: var(--text-secondary);
         }
         .flow-step-mini {
-            padding: 3px 6px;
-            border-radius: 4px;
+            padding: 5px 10px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 7px;
+            font-size: 9px;
             background: var(--bg-main);
         }
         .flow-step-mini.active {
@@ -219,29 +227,33 @@
         .flow-arrow-mini {
             color: var(--border-color);
             font-weight: bold;
-            font-size: 10px;
+            font-size: 14px;
         }
+
         .stages-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 16px;
+            margin-bottom: 16px;
         }
+
         .stage-col {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 14px;
+            padding: 16px;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
         .stage-col::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 3px;
+            width: 4px;
             height: 100%;
-            border-radius: 10px 0 0 10px;
+            border-radius: 14px 0 0 14px;
         }
         .stage-col.s1::before {
             background: var(--stage-1);
@@ -256,16 +268,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 7px;
-            padding-bottom: 6px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
             border-bottom: 1px solid var(--border-color);
             font-weight: 700;
-            font-size: 11px;
+            font-size: 14px;
         }
         .stage-badge-sm {
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-size: 7px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 9px;
             font-weight: 700;
         }
         .s1 .stage-badge-sm {
@@ -280,66 +292,85 @@
             background: rgba(219, 39, 119, 0.2);
             color: var(--stage-3);
         }
+
         .stage-field {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         .stage-field label {
             display: block;
-            font-size: 7px;
+            font-size: 10px;
             color: var(--text-secondary);
-            margin-bottom: 1px;
+            margin-bottom: 3px;
             font-weight: 600;
         }
         .stage-field input,
         .stage-field select {
             width: 100%;
-            padding: 4px 6px;
+            padding: 10px 12px;
             background: var(--bg-main);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 10px;
+            border-radius: 8px;
+            font-size: 15px;
             color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+        .stage-field input:focus,
+        .stage-field select:focus {
+            outline: none;
+            border-color: var(--primary);
         }
         .stage-field-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4px;
+            gap: 8px;
         }
+
         .stage-result {
             background: var(--bg-main);
-            padding: 4px 6px;
-            border-radius: 4px;
-            margin-top: 2px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-top: 4px;
             display: flex;
             justify-content: space-between;
-            font-size: 8px;
+            align-items: center;
+            font-size: 11px;
         }
         .stage-result .sr-label {
             color: var(--text-secondary);
+            font-weight: 600;
         }
         .stage-result .sr-value {
             font-weight: 700;
+            font-size: 14px;
         }
         .stage-result.highlight {
-            border: 1px solid var(--success);
+            border: 2px solid var(--success);
+            background: rgba(16, 185, 129, 0.05);
         }
-        .stage-result.neto {
+        .stage-result.big {
             text-align: center;
             display: block;
-            padding: 6px;
+            padding: 12px;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .stage-result.big .sr-label {
             font-size: 11px;
+            margin-bottom: 4px;
         }
-        .stage-result.neto .sr-value {
-            font-size: 14px;
+        .stage-result.big .sr-value {
+            font-size: 22px;
             color: var(--info);
+            font-weight: 800;
         }
+
         .stage-alert {
-            padding: 4px 6px;
-            border-radius: 4px;
-            font-size: 7px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 10px;
             font-weight: 600;
             text-align: center;
-            margin-top: 4px;
+            margin-top: 8px;
             display: none;
         }
         .stage-alert.ok {
@@ -354,47 +385,56 @@
             color: var(--danger);
             border: 1px solid var(--danger);
         }
+
         .stage-actions {
             display: flex;
-            gap: 4px;
-            margin-top: 6px;
+            gap: 6px;
+            margin-top: auto;
+            padding-top: 12px;
         }
         .stage-actions .btn {
             flex: 1;
-            font-size: 7px;
-            padding: 4px 6px;
+            font-size: 10px;
+            padding: 8px 10px;
         }
+
         .stage-inherit {
-            font-size: 7px;
+            font-size: 9px;
             color: var(--warning);
             text-align: center;
-            margin-top: 2px;
+            margin-top: 6px;
             display: none;
+            font-weight: 600;
         }
         .stage-inherit.show {
             display: block;
         }
+
         .bottom-tabs {
             display: flex;
-            gap: 2px;
+            gap: 4px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 2px;
+            border-radius: 10px;
+            padding: 4px;
             flex-wrap: wrap;
         }
         .bottom-tab {
             flex: 1;
-            min-width: 50px;
-            padding: 6px 6px;
+            min-width: 60px;
+            padding: 8px 10px;
             border: none;
             background: transparent;
             color: var(--text-secondary);
-            border-radius: 5px;
+            border-radius: 7px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 8px;
+            font-size: 10px;
             text-align: center;
+            transition: all 0.2s;
+        }
+        .bottom-tab:hover {
+            background: rgba(255, 255, 255, 0.04);
         }
         .bottom-tab.active {
             background: var(--primary);
@@ -402,31 +442,34 @@
         }
         .bottom-content {
             display: none;
-            margin-top: 8px;
+            margin-top: 12px;
         }
         .bottom-content.active {
             display: block;
         }
+
         .kpi-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            gap: 10px;
         }
         .kpi-box {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 10px;
             text-align: center;
         }
         .kpi-box .kpi-label {
-            font-size: 7px;
+            font-size: 9px;
             color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .kpi-box .kpi-val {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 700;
-            margin-top: 2px;
+            margin-top: 4px;
         }
         .kpi-box.spread .kpi-val {
             color: var(--primary);
@@ -437,21 +480,23 @@
         .kpi-box.rot .kpi-val {
             color: var(--warning);
         }
+
         .history-table-wrap {
             overflow-x: auto;
-            max-height: 300px;
+            max-height: 350px;
+            border-radius: 10px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8px;
-            min-width: 800px;
+            font-size: 10px;
+            min-width: 900px;
         }
         th {
             background: var(--bg-surface);
             color: var(--text-secondary);
-            padding: 5px 4px;
-            font-size: 7px;
+            padding: 8px 6px;
+            font-size: 9px;
             text-transform: uppercase;
             border-bottom: 1px solid var(--border-color);
             position: sticky;
@@ -459,15 +504,18 @@
             z-index: 5;
         }
         td {
-            padding: 4px;
+            padding: 7px 5px;
             text-align: center;
-            border-bottom: 1px solid rgba(38, 53, 74, 0.5);
+            border-bottom: 1px solid rgba(38, 53, 74, 0.4);
+        }
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
         }
         .badge-inv {
-            padding: 1px 5px;
-            border-radius: 3px;
+            padding: 2px 7px;
+            border-radius: 4px;
             font-weight: 700;
-            font-size: 7px;
+            font-size: 9px;
             color: #fff;
         }
         .badge-MD {
@@ -479,7 +527,10 @@
         .badge-JB {
             background: #db2777;
         }
-        .badge-Carlos {
+        .badge-MJ {
+            background: #10b981;
+        }
+        .badge-MAU {
             background: #10b981;
         }
         .badge-s1 {
@@ -491,47 +542,49 @@
         .badge-s3 {
             background: var(--stage-3);
         }
+
         .config-card {
             background: var(--bg-card);
             border: 1px solid var(--warning);
-            padding: 14px;
-            border-radius: 8px;
-            margin-bottom: 8px;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
         .config-card label {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--text-secondary);
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
         .config-card input {
             width: 100%;
-            padding: 6px;
+            padding: 8px;
             background: var(--bg-main);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: 6px;
             color: #fff;
-            font-size: 10px;
-            margin-bottom: 6px;
+            font-size: 11px;
+            margin-bottom: 8px;
         }
+
         .notification {
             position: fixed;
-            top: 12px;
-            right: 12px;
-            padding: 8px 12px;
+            top: 16px;
+            right: 16px;
+            padding: 10px 16px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             z-index: 2000;
             font-weight: 600;
-            font-size: 10px;
+            font-size: 11px;
             animation: slideIn 0.3s ease;
         }
         .notification.success {
-            border-left: 3px solid var(--success);
+            border-left: 4px solid var(--success);
         }
         .notification.error {
-            border-left: 3px solid var(--danger);
+            border-left: 4px solid var(--danger);
         }
         @keyframes slideIn {
             from {
@@ -543,7 +596,8 @@
                 opacity: 1;
             }
         }
-        @media(max-width:900px) {
+
+        @media(max-width:1000px) {
             .stages-grid {
                 grid-template-columns: 1fr;
             }
@@ -552,13 +606,14 @@
 </head>
 <body>
     <div class="app-container">
+        <!-- HEADER -->
         <div class="app-header">
             <div class="header-left">
-                <h1>💱 ArbitrajePro v11</h1>
+                <h1><span>💱</span> ArbitrajePro v12</h1>
                 <div class="user-selector">
                     <span>👤</span>
                     <select id="headerUser" onchange="switchUser()">
-                        <option value="MJ">MAU</option>
+                        <option value="MAU">MAU</option>
                         <option value="MD">MD</option>
                         <option value="CP">CP</option>
                         <option value="JB">JB</option>
@@ -571,138 +626,213 @@
                 <span class="status-badge github" id="githubStatus">🟢 Gist</span>
                 <div class="market-badge"><span class="dot live" id="dotBCV"></span>BCV:<strong id="hBCV">--</strong></div>
                 <div class="market-badge"><span class="dot live" id="dotBin"></span>P2P:<strong id="hBinCompra">--</strong>/<strong id="hBinVenta">--</strong></div>
-                <button class="btn btn-outline btn-sm" onclick="syncRates()">🔄</button>
+                <button class="btn btn-outline btn-sm" onclick="syncRates()">🔄 Sync</button>
             </div>
         </div>
+
         <div class="main-content">
+            <!-- FLUJO VISUAL -->
             <div class="flow-bar" id="flowBar">
-                <span class="flow-step-mini">💰MI Bs</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">💵Tasa</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">🏦Merma</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">💳Merma</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">💎$Neto</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">📈Venta</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">🔄Correr</span>
+                <span class="flow-step-mini">💰 MI Bs (BDV)</span><span class="flow-arrow-mini">→</span>
+                <span class="flow-step-mini">💵 Compra $ BDV</span><span class="flow-arrow-mini">→</span>
+                <span class="flow-step-mini">🏦 -%BDV</span><span class="flow-arrow-mini">→</span>
+                <span class="flow-step-mini">💳 -%BPAY</span><span class="flow-arrow-mini">→</span>
+                <span class="flow-step-mini">💎 USDT Binance</span><span class="flow-arrow-mini">→</span>
+                <span class="flow-step-mini">📈 × Tasa Venta</span><span class="flow-arrow-mini">→</span>
+                <span class="flow-step-mini">🔄 Saldo Correr</span>
             </div>
+
+            <!-- 3 ETAPAS -->
             <div class="stages-grid" id="stagesGrid">
-                <!-- ETAPA 1 -->
+                <!-- ============ ETAPA 1: COMPRA EN BDV ============ -->
                 <div class="stage-col s1" id="sc1">
-                    <div class="stage-col-header">🏦 Etapa 1: Entrada <span class="stage-badge-sm">BDV→BPAY</span></div>
-                    <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s1_fecha"></div>
-                    <div class="stage-field"><label>👤 Inv</label><select id="s1_inv"><option value="MJ">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s1_mi" step="0.01" onfocus="this.select()" oninput="calcStage(1)"></div>
-                    <div class="stage-field-row">
-                        <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s1_tc" step="0.01" onfocus="this.select()" oninput="calcStage(1)"></div>
-                        <div class="stage-field"><label>📈 Tasa Venta</label><input type="number" id="s1_tv" step="0.01" onfocus="this.select()" oninput="calcStage(1)"></div>
+                    <div class="stage-col-header">🏦 Etapa 1: Compra BDV <span class="stage-badge-sm">Bs → $ BDV</span></div>
+
+                    <div class="stage-field">
+                        <label>📅 Fecha</label>
+                        <input type="date" id="s1_fecha">
                     </div>
-                    <div class="stage-field-row">
-                        <div class="stage-field"><label>🏦 %BDV</label><input type="number" id="s1_bdv" value="3.0" onfocus="this.select()" oninput="calcStage(1)"></div>
-                        <div class="stage-field"><label>💳 %BPAY</label><input type="number" id="s1_bpay" value="3.6" onfocus="this.select()" oninput="calcStage(1)"></div>
+                    <div class="stage-field">
+                        <label>👤 Inversor</label>
+                        <select id="s1_inv">
+                            <option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option>
+                        </select>
                     </div>
-                    <div class="stage-result"><span class="sr-label">💵$Compra:</span><span class="sr-value" id="s1_usd">$0</span></div>
-                    <div class="stage-result"><span class="sr-label">🏦-BDV:</span><span class="sr-value" id="s1_mbdv" style="color:var(--danger);">$0</span></div>
-                    <div class="stage-result"><span class="sr-label">💳-BPAY:</span><span class="sr-value" id="s1_mbpay" style="color:var(--danger);">$0</span></div>
-                    <div class="stage-result neto"><span class="sr-label">💎$NETO</span><span class="sr-value" id="s1_neto">0.000</span></div>
-                    <div class="stage-result"><span class="sr-label">💰BsVenta:</span><span class="sr-value" id="s1_venta">Bs0</span></div>
-                    <div class="stage-result highlight"><span class="sr-label">🔄CORRER:</span><span class="sr-value" id="s1_correr" style="color:var(--warning);">Bs0</span></div>
+                    <div class="stage-field">
+                        <label>💰 Monto Inicial en BDV (Bs)</label>
+                        <input type="number" id="s1_mi" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(1)">
+                    </div>
+                    <div class="stage-field">
+                        <label>💵 Tasa de Compra BDV (Bs/$)</label>
+                        <input type="number" id="s1_tc" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(1)">
+                    </div>
+
+                    <!-- RESULTADOS ETAPA 1 -->
+                    <div class="stage-result big">
+                        <div class="sr-label">💵 Resultado de Compra en $ BDV</div>
+                        <div class="sr-value" id="s1_neto" style="color:var(--info);">$ 0.00</div>
+                    </div>
+                    <div class="stage-result">
+                        <span class="sr-label">💵 $ Bruto:</span>
+                        <span class="sr-value" id="s1_usd">$0.00</span>
+                    </div>
+
                     <div class="stage-alert" id="s1_alert"></div>
+
                     <div class="stage-actions">
-                        <button class="btn btn-success btn-sm" id="s1_save" onclick="saveStage(1)" disabled>💾</button>
-                        <button class="btn btn-primary btn-sm" onclick="passToNext(1)">🔄→E2</button>
+                        <button class="btn btn-success" id="s1_save" onclick="saveStage(1)" disabled>💾 Guardar</button>
+                        <button class="btn btn-primary" onclick="passToNext(1)">🔄 Pasar a Etapa 2 →</button>
                     </div>
+                    <div class="stage-inherit" id="s1_inherit">↑ Heredado de Etapa 3</div>
                 </div>
-                <!-- ETAPA 2 -->
+
+                <!-- ============ ETAPA 2: TRANSFERENCIA A BINANCE ============ -->
                 <div class="stage-col s2" id="sc2">
-                    <div class="stage-col-header">💱 Etapa 2: Intermedia <span class="stage-badge-sm">BPAY→P2P</span></div>
-                    <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s2_fecha"></div>
-                    <div class="stage-field"><label>👤 Inv</label><select id="s2_inv"><option value="MJ">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s2_mi" step="0.01" onfocus="this.select()" oninput="calcStage(2)"></div>
-                    <div class="stage-field-row">
-                        <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s2_tc" step="0.01" onfocus="this.select()" oninput="calcStage(2)"></div>
-                        <div class="stage-field"><label>📈 Tasa Venta</label><input type="number" id="s2_tv" step="0.01" onfocus="this.select()" oninput="calcStage(2)"></div>
+                    <div class="stage-col-header">💱 Etapa 2: Transferencia <span class="stage-badge-sm">$ BDV → USDT</span></div>
+
+                    <div class="stage-field">
+                        <label>📅 Fecha</label>
+                        <input type="date" id="s2_fecha">
+                    </div>
+                    <div class="stage-field">
+                        <label>👤 Inversor</label>
+                        <select id="s2_inv">
+                            <option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option>
+                        </select>
+                    </div>
+                    <div class="stage-field">
+                        <label>💵 $ BDV Recibidos (de Etapa 1)</label>
+                        <input type="number" id="s2_mi" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(2)">
                     </div>
                     <div class="stage-field-row">
-                        <div class="stage-field"><label>🏦 %BDV</label><input type="number" id="s2_bdv" value="3.0" onfocus="this.select()" oninput="calcStage(2)"></div>
-                        <div class="stage-field"><label>💳 %BPAY</label><input type="number" id="s2_bpay" value="3.6" onfocus="this.select()" oninput="calcStage(2)"></div>
+                        <div class="stage-field">
+                            <label>🏦 %C BDV</label>
+                            <input type="number" id="s2_bdv" value="3.0" step="0.01" onfocus="this.select()" oninput="calcStage(2)">
+                        </div>
+                        <div class="stage-field">
+                            <label>💳 %C BPAY</label>
+                            <input type="number" id="s2_bpay" value="3.6" step="0.01" onfocus="this.select()" oninput="calcStage(2)">
+                        </div>
                     </div>
-                    <div class="stage-result"><span class="sr-label">💵$Compra:</span><span class="sr-value" id="s2_usd">$0</span></div>
-                    <div class="stage-result"><span class="sr-label">🏦-BDV:</span><span class="sr-value" id="s2_mbdv" style="color:var(--danger);">$0</span></div>
-                    <div class="stage-result"><span class="sr-label">💳-BPAY:</span><span class="sr-value" id="s2_mbpay" style="color:var(--danger);">$0</span></div>
-                    <div class="stage-result neto"><span class="sr-label">💎$NETO</span><span class="sr-value" id="s2_neto">0.000</span></div>
-                    <div class="stage-result"><span class="sr-label">💰BsVenta:</span><span class="sr-value" id="s2_venta">Bs0</span></div>
-                    <div class="stage-result highlight"><span class="sr-label">🔄CORRER:</span><span class="sr-value" id="s2_correr" style="color:var(--warning);">Bs0</span></div>
+
+                    <!-- RESULTADOS ETAPA 2 -->
+                    <div class="stage-result">
+                        <span class="sr-label">🏦 Resta %C BDV:</span>
+                        <span class="sr-value" id="s2_mbdv" style="color:var(--danger);">-$0.00</span>
+                    </div>
+                    <div class="stage-result">
+                        <span class="sr-label">💳 Resta %C BPAY:</span>
+                        <span class="sr-value" id="s2_mbpay" style="color:var(--danger);">-$0.00</span>
+                    </div>
+                    <div class="stage-result big">
+                        <div class="sr-label">💎 Transferencia a Binance (USDT)</div>
+                        <div class="sr-value" id="s2_neto" style="color:var(--info);">0.000 USDT</div>
+                    </div>
+
                     <div class="stage-alert" id="s2_alert"></div>
+
                     <div class="stage-actions">
-                        <button class="btn btn-success btn-sm" id="s2_save" onclick="saveStage(2)" disabled>💾</button>
-                        <button class="btn btn-primary btn-sm" onclick="passToNext(2)">🔄→E3</button>
+                        <button class="btn btn-success" id="s2_save" onclick="saveStage(2)" disabled>💾 Guardar</button>
+                        <button class="btn btn-primary" onclick="passToNext(2)">🔄 Pasar a Etapa 3 →</button>
                     </div>
+                    <div class="stage-inherit" id="s2_inherit">↑ Heredado de Etapa 1</div>
                 </div>
-                <!-- ETAPA 3 -->
+
+                <!-- ============ ETAPA 3: VENTA EN P2P ============ -->
                 <div class="stage-col s3" id="sc3">
-                    <div class="stage-col-header">💎 Etapa 3: Salida <span class="stage-badge-sm">P2P→Retiro</span></div>
-                    <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s3_fecha"></div>
-                    <div class="stage-field"><label>👤 Inv</label><select id="s3_inv"><option value="MJ">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💰 MI Bs</label><input type="number" id="s3_mi" step="0.01" onfocus="this.select()" oninput="calcStage(3)"></div>
-                    <div class="stage-field-row">
-                        <div class="stage-field"><label>💵 Tasa Compra</label><input type="number" id="s3_tc" step="0.01" onfocus="this.select()" oninput="calcStage(3)"></div>
-                        <div class="stage-field"><label>📈 Tasa Venta</label><input type="number" id="s3_tv" step="0.01" onfocus="this.select()" oninput="calcStage(3)"></div>
+                    <div class="stage-col-header">💎 Etapa 3: Venta P2P <span class="stage-badge-sm">USDT → Bs</span></div>
+
+                    <div class="stage-field">
+                        <label>📅 Fecha</label>
+                        <input type="date" id="s3_fecha">
                     </div>
-                    <div class="stage-field-row">
-                        <div class="stage-field"><label>🏦 %BDV</label><input type="number" id="s3_bdv" value="3.0" onfocus="this.select()" oninput="calcStage(3)"></div>
-                        <div class="stage-field"><label>💳 %BPAY</label><input type="number" id="s3_bpay" value="3.6" onfocus="this.select()" oninput="calcStage(3)"></div>
+                    <div class="stage-field">
+                        <label>👤 Inversor</label>
+                        <select id="s3_inv">
+                            <option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option>
+                        </select>
                     </div>
-                    <div class="stage-result"><span class="sr-label">💵$Compra:</span><span class="sr-value" id="s3_usd">$0</span></div>
-                    <div class="stage-result"><span class="sr-label">🏦-BDV:</span><span class="sr-value" id="s3_mbdv" style="color:var(--danger);">$0</span></div>
-                    <div class="stage-result"><span class="sr-label">💳-BPAY:</span><span class="sr-value" id="s3_mbpay" style="color:var(--danger);">$0</span></div>
-                    <div class="stage-result neto"><span class="sr-label">💎$NETO</span><span class="sr-value" id="s3_neto">0.000</span></div>
-                    <div class="stage-result"><span class="sr-label">💰BsVenta:</span><span class="sr-value" id="s3_venta">Bs0</span></div>
-                    <div class="stage-result highlight"><span class="sr-label">🔄CORRER:</span><span class="sr-value" id="s3_correr" style="color:var(--warning);">Bs0</span></div>
+                    <div class="stage-field">
+                        <label>💎 USDT en Binance (de Etapa 2)</label>
+                        <input type="number" id="s3_mi" step="0.0001" placeholder="0.0000" onfocus="this.select()" oninput="calcStage(3)">
+                    </div>
+                    <div class="stage-field">
+                        <label>📈 Tasa de Venta USDT (Bs)</label>
+                        <input type="number" id="s3_tv" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(3)">
+                    </div>
+
+                    <!-- RESULTADOS ETAPA 3 -->
+                    <div class="stage-result big">
+                        <div class="sr-label">💰 Monto de Venta en Bs</div>
+                        <div class="sr-value" id="s3_venta" style="color:var(--success);">Bs 0.00</div>
+                    </div>
+                    <div class="stage-result highlight big">
+                        <div class="sr-label">🔄 SALDO PARA CORRER</div>
+                        <div class="sr-value" id="s3_correr" style="color:var(--warning);">Bs 0.00</div>
+                    </div>
+
                     <div class="stage-alert" id="s3_alert"></div>
+
                     <div class="stage-actions">
-                        <button class="btn btn-success btn-sm" id="s3_save" onclick="saveStage(3)" disabled>💾</button>
-                        <button class="btn btn-warning btn-sm" onclick="passToNext(3)">🔄→E1</button>
+                        <button class="btn btn-success" id="s3_save" onclick="saveStage(3)" disabled>💾 Guardar</button>
+                        <button class="btn btn-warning" onclick="passToNext(3)">🔄 Volver a Etapa 1 →</button>
                     </div>
+                    <div class="stage-inherit" id="s3_inherit">↑ Heredado de Etapa 2</div>
                 </div>
             </div>
+
+            <!-- TABS INFERIORES -->
             <div class="bottom-tabs">
-                <button class="bottom-tab active" onclick="switchBottom('kpis')">📈KPIs</button>
-                <button class="bottom-tab" onclick="switchBottom('sim')">🔮Sim</button>
-                <button class="bottom-tab" onclick="switchBottom('analytics')">📊Ana</button>
-                <button class="bottom-tab" onclick="switchBottom('history')">📋Hist</button>
-                <button class="bottom-tab" onclick="switchBottom('config')">⚙️Conf</button>
+                <button class="bottom-tab active" onclick="switchBottom('kpis')">📈 KPIs</button>
+                <button class="bottom-tab" onclick="switchBottom('sim')">🔮 Simulador</button>
+                <button class="bottom-tab" onclick="switchBottom('analytics')">📊 Analytics</button>
+                <button class="bottom-tab" onclick="switchBottom('history')">📋 Historial</button>
+                <button class="bottom-tab" onclick="switchBottom('config')">⚙️ Config</button>
             </div>
+
             <div class="bottom-content active" id="bot-kpis">
                 <div class="kpi-row">
-                    <div class="kpi-box spread"><div class="kpi-label">Spread</div><div class="kpi-val" id="kpiSpread">0%</div></div>
-                    <div class="kpi-box roi"><div class="kpi-label">ROI</div><div class="kpi-val" id="kpiRoi">0%</div></div>
+                    <div class="kpi-box spread"><div class="kpi-label">Spread Promedio</div><div class="kpi-val" id="kpiSpread">0%</div></div>
+                    <div class="kpi-box roi"><div class="kpi-label">ROI Acumulado</div><div class="kpi-val" id="kpiRoi">0%</div></div>
                     <div class="kpi-box rot"><div class="kpi-label">Rotaciones</div><div class="kpi-val" id="kpiRot">0</div></div>
                 </div>
             </div>
+
             <div class="bottom-content" id="bot-sim">
-                <div class="sim-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:6px;">
-                    <input type="number" id="simCap" placeholder="Capital" value="10000" style="padding:4px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:9px;border-radius:4px;">
-                    <input type="number" id="simTc" placeholder="Tasa C" value="740" style="padding:4px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:9px;border-radius:4px;">
-                    <input type="number" id="simTv" placeholder="Tasa V" value="800" style="padding:4px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:9px;border-radius:4px;">
-                    <input type="number" id="simCic" placeholder="Ciclos" value="5" style="padding:4px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:9px;border-radius:4px;">
-                    <input type="number" id="simBdv" placeholder="%BDV" value="3.0" style="padding:4px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:9px;border-radius:4px;">
-                    <input type="number" id="simBpay" placeholder="%BPAY" value="3.6" style="padding:4px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:9px;border-radius:4px;">
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;">
+                    <input type="number" id="simCap" placeholder="Capital Bs" value="10000" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:11px;border-radius:6px;">
+                    <input type="number" id="simTc" placeholder="Tasa BDV" value="611" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:11px;border-radius:6px;">
+                    <input type="number" id="simTv" placeholder="Tasa Venta" value="740" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:11px;border-radius:6px;">
+                    <input type="number" id="simCic" placeholder="Ciclos" value="5" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:11px;border-radius:6px;">
+                    <input type="number" id="simBdv" placeholder="%BDV" value="3.0" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:11px;border-radius:6px;">
+                    <input type="number" id="simBpay" placeholder="%BPAY" value="3.6" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:#fff;font-size:11px;border-radius:6px;">
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="runSim()">🔮Proyectar</button>
-                <div id="simOut" style="display:none;margin-top:6px;background:var(--bg-card);padding:10px;border-radius:6px;font-size:9px;"></div>
+                <button class="btn btn-primary btn-sm" onclick="runSim()">🔮 Proyectar</button>
+                <div id="simOut" style="display:none;margin-top:8px;background:var(--bg-card);padding:12px;border-radius:8px;font-size:10px;"></div>
             </div>
+
             <div class="bottom-content" id="bot-analytics">
-                <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;">
-                    <div style="background:var(--bg-card);padding:10px;border-radius:8px;height:250px;"><canvas id="lineChart"></canvas></div>
-                    <div style="background:var(--bg-card);padding:10px;border-radius:8px;height:250px;"><canvas id="doughnutChart"></canvas></div>
+                <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;">
+                    <div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="lineChart"></canvas></div>
+                    <div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="doughnutChart"></canvas></div>
                 </div>
             </div>
+
             <div class="bottom-content" id="bot-history">
-                <div style="display:flex;gap:4px;margin-bottom:4px;">
-                    <button class="btn btn-outline btn-xs" onclick="exportCSV()">📥CSV</button>
-                    <button class="btn btn-danger btn-xs" onclick="clearAll()">🗑️</button>
+                <div style="display:flex;gap:6px;margin-bottom:6px;">
+                    <button class="btn btn-outline btn-xs" onclick="exportCSV()">📥 CSV</button>
+                    <button class="btn btn-danger btn-xs" onclick="clearAll()">🗑️ Purgar</button>
                 </div>
-                <div class="history-table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Et</th><th>Inv</th><th>MI Bs</th><th>$Compra</th><th>-BDV</th><th>-BPAY</th><th>$Neto</th><th>TasaOut</th><th>BsVenta</th><th>Correr</th><th>Gan$</th><th>✕</th></tr></thead><tbody id="histBody"></tbody></table></div>
+                <div class="history-table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>#</th><th>Fecha</th><th>Et</th><th>Inv</th><th>MI</th><th>Resultado</th><th>Tasa</th><th>Ganancia</th><th>✕</th></tr>
+                        </thead>
+                        <tbody id="histBody"></tbody>
+                    </table>
+                </div>
             </div>
+
             <div class="bottom-content" id="bot-config">
                 <div class="config-card">
                     <label>🔗 URL de Render</label>
@@ -711,16 +841,18 @@
                     <input type="password" id="githubToken" placeholder="ghp_...">
                     <label>📁 Gist ID</label>
                     <input type="text" id="gistId" placeholder="a1b2c3d4...">
-                    <div style="display:flex;gap:4px;">
-                        <button class="btn btn-primary btn-sm" onclick="saveConfig()">💾Guardar</button>
-                        <button class="btn btn-outline btn-sm" onclick="createGist()">🆕Crear Gist</button>
-                        <button class="btn btn-warning btn-sm" onclick="syncGistToRender()">🔄Sync Gist→Render</button>
+                    <div style="display:flex;gap:6px;">
+                        <button class="btn btn-primary btn-sm" onclick="saveConfig()">💾 Guardar</button>
+                        <button class="btn btn-outline btn-sm" onclick="createGist()">🆕 Crear Gist</button>
+                        <button class="btn btn-warning btn-sm" onclick="syncGistToRender()">🔄 Sync Gist→Render</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
+        // ============ CONFIGURACIÓN ============
         const ADMIN_PASS = "Mau10";
         let currentUser = "MAU",
             isAdmin = false,
@@ -732,6 +864,7 @@
             githubOnline = false;
         let lineChart, doughnutChart;
 
+        // ============ CONFIG ============
         function saveConfig() {
             renderUrl = document.getElementById('renderUrl').value.trim();
             githubToken = document.getElementById('githubToken').value.trim();
@@ -755,6 +888,7 @@
             document.getElementById('githubStatus').className = 'status-badge ' + (githubOnline ? 'github' : 'local');
         }
 
+        // ============ CARGA DE DATOS ============
         async function loadFromRender() { if (!renderOnline) return null; try { const url = isAdmin ?
                     `${renderUrl}/operaciones?admin=true` : `${renderUrl}/operaciones?user=${currentUser}`; const r =
                 await fetch(url); if (r.ok) return await r.json(); } catch (e) {} return null; }
@@ -777,8 +911,8 @@
                 gistData = await loadFromGist(); if (!gistData || !gistData.length) { notify(
                     'Sin datos en Gist', 'error'); return; } try { const r = await fetch(`${renderUrl}/sync`, { method: 'POST',
                     headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ operaciones: gistData }) }); if (r
-                    .ok) { notify('✅ Sync Gist→Render completado'); await loadOps(); } } catch (e) { notify(
-                    'Error sync', 'error'); } }
+                    .ok) { notify('✅ Sync completado');
+                await loadOps(); } } catch (e) { notify('Error sync', 'error'); } }
 
         async function loadOps() {
             await checkConnections();
@@ -795,6 +929,7 @@
                 saveToGist(); if (githubOnline) await saveToGist();
             renderAll(); }
 
+        // ============ USUARIO ============
         async function switchUser() { const s = document.getElementById('headerUser').value; if (s === 'Admin') { const p =
                     prompt("🔐 Contraseña:"); if (!p) { document.getElementById('headerUser').value = currentUser; return; } if (
                     p === ADMIN_PASS) { currentUser = 'Admin';
@@ -803,209 +938,184 @@
                     document.getElementById('headerUser').value = currentUser; return; } } else { currentUser = s;
                 isAdmin = false; } await loadOps(); }
 
-        function calc(s) { const mi = parseFloat(document.getElementById(`s${s}_mi`).value) || 0,
-                tc = parseFloat(document.getElementById(`s${s}_tc`).value) || 0,
-                tv = parseFloat(document.getElementById(`s${s}_tv`).value) || 0,
-                bdv = parseFloat(document.getElementById(`s${s}_bdv`).value) || 0,
-                bpay = parseFloat(document.getElementById(`s${s}_bpay`).value) || 0; if (!mi || !tc || !tv) { document
-                    .getElementById(`s${s}_usd`).textContent = '$0';
-                document.getElementById(`s${s}_mbdv`).textContent = '$0';
-                document.getElementById(`s${s}_mbpay`).textContent = '$0';
-                document.getElementById(`s${s}_neto`).textContent = '0.000';
-                document.getElementById(`s${s}_venta`).textContent = 'Bs0';
-                document.getElementById(`s${s}_correr`).textContent = 'Bs0';
-                document.getElementById(`s${s}_alert`).style.display = 'none';
-                document.getElementById(`s${s}_save`).disabled = true; return null; } const u = mi / tc,
-                mb = u * (bdv / 100),
-                mp = u * (bpay / 100),
-                n = u - mb - mp,
-                v = n * tv,
-                c = v,
-                g = tc > 0 ? (v - mi) / tc : 0,
-                peq = tc / (1 - (bdv + bpay) / 100),
-                ok = tv > peq;
-            document.getElementById(`s${s}_usd`).textContent = '$' + u.toFixed(2);
-            document.getElementById(`s${s}_mbdv`).textContent = '-$' + mb.toFixed(2);
-            document.getElementById(`s${s}_mbpay`).textContent = '-$' + mp.toFixed(2);
-            document.getElementById(`s${s}_neto`).textContent = n.toFixed(3);
-            document.getElementById(`s${s}_venta`).textContent = 'Bs' + v.toFixed(2);
-            document.getElementById(`s${s}_correr`).textContent = 'Bs' + c.toFixed(2); const al = document.getElementById(
-                `s${s}_alert`),
-                sv = document.getElementById(`s${s}_save`); if (ok) { al.className = 'stage-alert ok';
-                al.textContent = '✅Eq:' + peq.toFixed(1);
-                sv.disabled = false;
-                sv.style.background = 'var(--success)'; } else { al.className = 'stage-alert bad';
-                al.textContent = '⚠️Mín:' + peq.toFixed(1);
-                sv.disabled = false;
-                sv.style.background = 'var(--danger)'; } return { mi, tc, tv, bdv, bpay, usd: u, mbdv: mb, mbpay: mp, neto: n,
-                venta: v, correr: c, gan: g }; }
+        // ============ CÁLCULOS POR ETAPA ============
+        function calcStage(stage) {
+            if (stage === 1) return calcEtapa1();
+            if (stage === 2) return calcEtapa2();
+            if (stage === 3) return calcEtapa3();
+        }
 
-        function calcStage(s) { calc(s); }
+        // ETAPA 1: Monto Bs BDV → $ BDV
+        function calcEtapa1() {
+            const mi = parseFloat(document.getElementById('s1_mi').value) || 0;
+            const tc = parseFloat(document.getElementById('s1_tc').value) || 0;
+            if (!mi || !tc) {
+                document.getElementById('s1_usd').textContent = '$0.00';
+                document.getElementById('s1_neto').textContent = '$ 0.00';
+                document.getElementById('s1_alert').style.display = 'none';
+                document.getElementById('s1_save').disabled = true;
+                return null;
+            }
+            const usd = mi / tc;
+            document.getElementById('s1_usd').textContent = '$' + usd.toFixed(2);
+            document.getElementById('s1_neto').textContent = '$ ' + usd.toFixed(2);
+            document.getElementById('s1_alert').style.display = 'none';
+            document.getElementById('s1_save').disabled = false;
+            document.getElementById('s1_save').style.background = 'var(--success)';
+            return { mi, tc, usd };
+        }
 
-        async function saveStage(s) { const r = calc(s); if (!r) return; const op = { id: Date.now(), fecha: document
-                    .getElementById(`s${s}_fecha`).value || new Date().toISOString().split('T')[0], etapa: s, inv: document
-                    .getElementById(`s${s}_inv`).value, ...r };
-            ops.push(op); if (renderOnline) await saveToRender(op);
+        // ETAPA 2: $ BDV → Resta % → USDT Binance
+        function calcEtapa2() {
+            const usdBDV = parseFloat(document.getElementById('s2_mi').value) || 0;
+            const bdv = parseFloat(document.getElementById('s2_bdv').value) || 0;
+            const bpay = parseFloat(document.getElementById('s2_bpay').value) || 0;
+            if (!usdBDV) {
+                document.getElementById('s2_mbdv').textContent = '-$0.00';
+                document.getElementById('s2_mbpay').textContent = '-$0.00';
+                document.getElementById('s2_neto').textContent = '0.000 USDT';
+                document.getElementById('s2_alert').style.display = 'none';
+                document.getElementById('s2_save').disabled = true;
+                return null;
+            }
+            const mbdv = usdBDV * (bdv / 100);
+            const mbpay = usdBDV * (bpay / 100);
+            const neto = usdBDV - mbdv - mbpay;
+            document.getElementById('s2_mbdv').textContent = '-$' + mbdv.toFixed(2);
+            document.getElementById('s2_mbpay').textContent = '-$' + mbpay.toFixed(2);
+            document.getElementById('s2_neto').textContent = neto.toFixed(4) + ' USDT';
+            document.getElementById('s2_alert').style.display = 'none';
+            document.getElementById('s2_save').disabled = false;
+            document.getElementById('s2_save').style.background = 'var(--success)';
+            return { usdBDV, bdv, bpay, mbdv, mbpay, neto };
+        }
+
+        // ETAPA 3: USDT × Tasa Venta → Bs Venta + Saldo Correr
+        function calcEtapa3() {
+            const usdt = parseFloat(document.getElementById('s3_mi').value) || 0;
+            const tv = parseFloat(document.getElementById('s3_tv').value) || 0;
+            if (!usdt || !tv) {
+                document.getElementById('s3_venta').textContent = 'Bs 0.00';
+                document.getElementById('s3_correr').textContent = 'Bs 0.00';
+                document.getElementById('s3_alert').style.display = 'none';
+                document.getElementById('s3_save').disabled = true;
+                return null;
+            }
+            const venta = usdt * tv;
+            const correr = venta;
+            document.getElementById('s3_venta').textContent = 'Bs ' + venta.toFixed(2);
+            document.getElementById('s3_correr').textContent = 'Bs ' + correr.toFixed(2);
+            document.getElementById('s3_alert').style.display = 'none';
+            document.getElementById('s3_save').disabled = false;
+            document.getElementById('s3_save').style.background = 'var(--success)';
+            return { usdt, tv, venta, correr };
+        }
+
+        // ============ GUARDAR ============
+        async function saveStage(s) {
+            let r, op;
+            if (s === 1) {
+                r = calcEtapa1();
+                if (!r) return;
+                op = { id: Date.now(), fecha: document.getElementById('s1_fecha').value || new Date().toISOString().split('T')[0], etapa: 1, inv: document.getElementById('s1_inv').value, mi: r.mi, tc: r.tc, usd: r.usd, resultado: r.usd, tipo: 'Compra BDV' };
+            } else if (s === 2) {
+                r = calcEtapa2();
+                if (!r) return;
+                op = { id: Date.now(), fecha: document.getElementById('s2_fecha').value || new Date().toISOString().split('T')[0], etapa: 2, inv: document.getElementById('s2_inv').value, mi: r.usdBDV, bdv: r.bdv, bpay: r.bpay, mbdv: r.mbdv, mbpay: r.mbpay, neto: r.neto, resultado: r.neto, tipo: 'Transferencia Binance' };
+            } else {
+                r = calcEtapa3();
+                if (!r) return;
+                op = { id: Date.now(), fecha: document.getElementById('s3_fecha').value || new Date().toISOString().split('T')[0], etapa: 3, inv: document.getElementById('s3_inv').value, mi: r.usdt, tv: r.tv, venta: r.venta, correr: r.correr, resultado: r.correr, tipo: 'Venta P2P' };
+            }
+            ops.push(op);
+            if (renderOnline) await saveToRender(op);
             await saveOps();
             document.getElementById(`s${s}_save`).disabled = true;
-            document.getElementById(`s${s}_alert`).style.display = 'none';
-            notify('✅Guardado'); }
+            notify('✅ Etapa ' + s + ' guardada');
+        }
 
-        function passToNext(s) { const r = calc(s); if (!r) { notify('Complete campos', 'error'); return; } const n = s ===
-                3 ? 1 : s + 1;
-            document.getElementById(`s${n}_mi`).value = r.correr.toFixed(2);
-            document.getElementById(`s${n}_inv`).value = document.getElementById(`s${s}_inv`).value;
-            calcStage(n);
-            notify('🔄→E' + n); }
+        function passToNext(s) {
+            if (s === 1) {
+                const r = calcEtapa1();
+                if (!r) { notify('Complete los campos', 'error'); return; }
+                document.getElementById('s2_mi').value = r.usd.toFixed(4);
+                document.getElementById('s2_inv').value = document.getElementById('s1_inv').value;
+                document.getElementById('s2_inherit').classList.add('show');
+                calcEtapa2();
+                notify('🔄 $' + r.usd.toFixed(2) + ' BDV → Etapa 2');
+            } else if (s === 2) {
+                const r = calcEtapa2();
+                if (!r) { notify('Complete los campos', 'error'); return; }
+                document.getElementById('s3_mi').value = r.neto.toFixed(4);
+                document.getElementById('s3_inv').value = document.getElementById('s2_inv').value;
+                document.getElementById('s3_inherit').classList.add('show');
+                calcEtapa3();
+                notify('🔄 ' + r.neto.toFixed(4) + ' USDT → Etapa 3');
+            } else {
+                const r = calcEtapa3();
+                if (!r) { notify('Complete los campos', 'error'); return; }
+                document.getElementById('s1_mi').value = r.correr.toFixed(2);
+                document.getElementById('s1_inv').value = document.getElementById('s3_inv').value;
+                document.getElementById('s1_inherit').classList.add('show');
+                calcEtapa1();
+                notify('🔄 Bs ' + r.correr.toFixed(2) + ' → Etapa 1');
+            }
+        }
 
-        async function delOp(id) { if (!isAdmin) { notify('⚠️Solo Admin', 'error'); return; } const p = prompt(
-                "Contraseña:"); if (!p || p !== ADMIN_PASS) { notify('❌', 'error'); return; } if (!confirm(
-                '¿Eliminar?')) return;
-            ops = ops.filter(o => o.id !== id); if (renderOnline) { try { await fetch(
-                        `${renderUrl}/operaciones/${id}?password=${p}`, { method: 'DELETE' }); } catch (e) {} }
+        // ============ ELIMINAR ============
+        async function delOp(id) { if (!isAdmin) { notify('⚠️ Solo Admin', 'error'); return; } const p = prompt("Contraseña:"); if (!p || p !== ADMIN_PASS) { notify('❌', 'error'); return; } if (!confirm('¿Eliminar?')) return;
+            ops = ops.filter(o => o.id !== id); if (renderOnline) { try { await fetch(`${renderUrl}/operaciones/${id}?password=${p}`, { method: 'DELETE' }); } catch (e) {} }
             await saveOps();
-            notify('🗑️'); }
+            notify('🗑️ Eliminada'); }
 
-        async function clearAll() { if (!isAdmin) { notify('⚠️Solo Admin', 'error'); return; } const p = prompt(
-                "Contraseña:"); if (!p || p !== ADMIN_PASS) { notify('❌', 'error'); return; } if (!confirm(
-                '¿Purgar TODO?')) return;
-            ops = []; if (renderOnline) { try { await fetch(`${renderUrl}/admin/purge?password=${p}`, { method: 'DELETE' }); } catch (
-                e) {} }
+        async function clearAll() { if (!isAdmin) { notify('⚠️ Solo Admin', 'error'); return; } const p = prompt("Contraseña:"); if (!p || p !== ADMIN_PASS) { notify('❌', 'error'); return; } if (!confirm('¿Purgar TODO?')) return;
+            ops = []; if (renderOnline) { try { await fetch(`${renderUrl}/admin/purge?password=${p}`, { method: 'DELETE' }); } catch (e) {} }
             await saveOps();
-            notify('💥'); }
+            notify('💥 Purgado'); }
 
+        // ============ RENDER ============
         function renderAll() { renderHist();
             renderKPIs(); }
 
-        function renderHist() { const tb = document.getElementById('histBody'); if (!ops.length) { tb.innerHTML =
-                    '<tr><td colspan="14" style="padding:12px;">Sin datos</td></tr>'; return; }
+        function renderHist() { const tb = document.getElementById('histBody'); if (!ops.length) { tb.innerHTML = '<tr><td colspan="9" style="padding:16px;">Sin datos</td></tr>'; return; }
             tb.innerHTML = ops.map((o, i) => `
-                <tr><td>${i+1}</td><td>${o.fecha}</td><td><span class="badge-inv badge-s${o.etapa}">E${o.etapa}</span></td><td><span class="badge-inv badge-${o.inv==='Carlos'?'Carlos':o.inv}">${o.inv}</span></td><td>Bs${o.mi.toFixed(0)}</td><td>$${o.usd.toFixed(2)}</td><td style="color:var(--danger);">-$${o.mbdv.toFixed(2)}</td><td style="color:var(--danger);">-$${o.mbpay.toFixed(2)}</td><td><strong>$${o.neto.toFixed(2)}</strong></td><td>Bs${o.tv.toFixed(1)}</td><td>Bs${o.venta.toFixed(0)}</td><td>Bs${o.correr.toFixed(0)}</td><td style="color:${o.gan>=0?'var(--success)':'var(--danger)'};">$${o.gan.toFixed(2)}</td><td><button class="btn btn-danger btn-xs" onclick="delOp(${o.id})">✕</button></td></tr>`)
-                .reverse().join(''); }
+                <tr>
+                    <td>${i+1}</td><td>${o.fecha}</td>
+                    <td><span class="badge-inv badge-s${o.etapa}">E${o.etapa}</span></td>
+                    <td><span class="badge-inv badge-${o.inv==='MAU'?'MJ':o.inv}">${o.inv}</span></td>
+                    <td>${o.mi?.toFixed(2)||'0'}</td>
+                    <td><strong>${o.resultado?.toFixed(2)||'0'}</strong></td>
+                    <td>${o.tc||o.tv||'-'}</td>
+                    <td style="color:var(--success);">${o.tipo||''}</td>
+                    <td><button class="btn btn-danger btn-xs" onclick="delOp(${o.id})">✕</button></td>
+                </tr>`).reverse().join(''); }
 
-        function renderKPIs() { if (!ops.length) { document.getElementById('kpiSpread').textContent = '0%';
-                document.getElementById('kpiRoi').textContent = '0%';
-                document.getElementById('kpiRot').textContent = '0'; return; } let ss = 0,
-                ce = 0,
-                cf = 0,
-                gb = 0;
-            ops.forEach(o => { if (o.etapa === 1 && !ops.some(x => x.etapa === 3 && x.correr === o.mi)) cf += o
-                .mi; if (o.gan) gb += o.gan; if (o.etapa === 3 && o.tc && o.tv) { ce++;
-                    ss += ((o.tv - o.tc) / o.tc) * 100; } });
-            document.getElementById('kpiSpread').textContent = (ce ? ss / ce : 0).toFixed(1) + '%';
-            document.getElementById('kpiRoi').textContent = (cf ? (gb / cf) * 100 : 0).toFixed(1) + '%';
-            document.getElementById('kpiRot').textContent = ce; }
+        function renderKPIs() { if (!ops.length) { document.getElementById('kpiSpread').textContent='0%'; document.getElementById('kpiRoi').textContent='0%'; document.getElementById('kpiRot').textContent='0'; return; }
+            document.getElementById('kpiSpread').textContent = '--';
+            document.getElementById('kpiRoi').textContent = '--';
+            document.getElementById('kpiRot').textContent = ops.filter(o=>o.etapa===3).length; }
 
-        function runSim() { const cap = parseFloat(document.getElementById('simCap').value) || 0,
-                tc = parseFloat(document.getElementById('simTc').value) || 0,
-                tv = parseFloat(document.getElementById('simTv').value) || 0,
-                cic = parseInt(document.getElementById('simCic').value) || 0,
-                bdv = parseFloat(document.getElementById('simBdv').value) || 0,
-                bpay = parseFloat(document.getElementById('simBpay').value) || 0; if (!cap || !tc || !tv || !cic)
-            return;
-            let ca = cap,
-                gt = 0,
-                det = []; for (let i = 0; i < cic; i++) { const u = ca / tc,
-                    n = u * (1 - (bdv + bpay) / 100),
-                    r = n * tv,
-                    g = r - ca;
-                gt += g;
-                det.push({ ciclo: i + 1, cap: ca, neto: n, ret: r, gan: g });
-                ca = r; } const roi = ((ca - cap) / cap) * 100;
-            document.getElementById('simOut').style.display = 'block';
-            document.getElementById('simOut').innerHTML =
-                `<strong>Final:</strong>Bs${ca.toFixed(2)} <strong>Gan:</strong>Bs${gt.toFixed(2)} <strong>ROI:</strong>${roi.toFixed(1)}%<br>${det.map(d=>`C${d.ciclo}:Bs${d.cap.toFixed(0)}→$${d.neto.toFixed(2)}→Bs${d.ret.toFixed(0)}|${d.gan>=0?'+':''}Bs${d.gan.toFixed(0)}`).join('<br>')}`; }
+        function runSim() { const cap=parseFloat(document.getElementById('simCap').value)||0,tc=parseFloat(document.getElementById('simTc').value)||0,tv=parseFloat(document.getElementById('simTv').value)||0,cic=parseInt(document.getElementById('simCic').value)||0,bdv=parseFloat(document.getElementById('simBdv').value)||0,bpay=parseFloat(document.getElementById('simBpay').value)||0; if(!cap||!tc||!tv||!cic)return;
+            let ca=cap,gt=0,det=[]; for(let i=0;i<cic;i++){const u=ca/tc,n=u*(1-(bdv+bpay)/100),r=n*tv,g=r-ca;gt+=g;det.push({ciclo:i+1,cap:ca,neto:n,ret:r,gan:g});ca=r;}
+            const roi=((ca-cap)/cap)*100;
+            document.getElementById('simOut').style.display='block';
+            document.getElementById('simOut').innerHTML=`<strong>Final:</strong>Bs${ca.toFixed(2)} <strong>Gan:</strong>Bs${gt.toFixed(2)} <strong>ROI:</strong>${roi.toFixed(1)}%<br>${det.map(d=>`C${d.ciclo}:Bs${d.cap.toFixed(0)}→$${d.neto.toFixed(2)}→Bs${d.ret.toFixed(0)}|${d.gan>=0?'+':''}Bs${d.gan.toFixed(0)}`).join('<br>')}`; }
 
-        function renderCharts() { const data = [...ops].sort((a, b) => a.fecha.localeCompare(b.fecha)); const fechas = [
-                ...new Set(data.map(o => o.fecha))
-            ]; const getData = (inv) => fechas.map(f => data.filter(o => o.fecha === f && o.inv === inv).reduce((s,
-                o) => s + (o.gan || 0), 0)); if (lineChart) lineChart.destroy();
-            lineChart = new Chart(document.getElementById('lineChart').getContext('2d'), { type: 'line', data: { labels: fechas,
-                    datasets: [{ label: 'Carlos', data: getData('Carlos'), borderColor: '#10b981', tension: 0.3,
-                        borderWidth: 2 }, { label: 'MD', data: getData('MD'), borderColor: '#2563eb', tension: 0.3,
-                        borderWidth: 2 }, { label: 'CP', data: getData('CP'), borderColor: '#7c3aed', tension: 0.3,
-                        borderWidth: 2 }, { label: 'JB', data: getData('JB'), borderColor: '#db2777', tension: 0.3,
-                        borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#f0f4f8', font: { size: 9 } } } },
-                    scales: { x: { ticks: { color: '#7a8fa8', font: { size: 8 } } }, y: { ticks: { color: '#7a8fa8',
-                                font: { size: 8 } } } } } }); const tCarlos = data.filter(o => o.inv === 'Carlos')
-                .reduce((s, o) => s + o.mi, 0),
-                tMD = data.filter(o => o.inv === 'MD').reduce((s, o) => s + o.mi, 0),
-                tCP = data.filter(o => o.inv === 'CP').reduce((s, o) => s + o.mi, 0),
-                tJB = data.filter(o => o.inv === 'JB').reduce((s, o) => s + o.mi, 0); if (doughnutChart) doughnutChart
-                .destroy();
-            doughnutChart = new Chart(document.getElementById('doughnutChart').getContext('2d'), { type: 'doughnut',
-                data: { labels: ['Carlos', 'MD', 'CP', 'JB'], datasets: [{ data: [tCarlos, tMD, tCP, tJB],
-                        backgroundColor: ['#10b981', '#2563eb', '#7c3aed', '#db2777'] }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom',
-                            labels: { color: '#f0f4f8', font: { size: 9 } } } } } }); }
+        function renderCharts() { const data=[...ops].sort((a,b)=>a.fecha.localeCompare(b.fecha)); const fechas=[...new Set(data.map(o=>o.fecha))]; const getData=(inv)=>fechas.map(f=>data.filter(o=>o.fecha===f&&o.inv===inv).reduce((s,o)=>s+(o.gan||0),0)); if(lineChart)lineChart.destroy();
+            lineChart=new Chart(document.getElementById('lineChart').getContext('2d'),{type:'line',data:{labels:fechas,datasets:[{label:'MAU',data:getData('MAU'),borderColor:'#10b981',tension:0.3,borderWidth:2},{label:'MD',data:getData('MD'),borderColor:'#2563eb',tension:0.3,borderWidth:2},{label:'CP',data:getData('CP'),borderColor:'#7c3aed',tension:0.3,borderWidth:2},{label:'JB',data:getData('JB'),borderColor:'#db2777',tension:0.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#f0f4f8',font:{size:9}}}},scales:{x:{ticks:{color:'#7a8fa8',font:{size:8}}},y:{ticks:{color:'#7a8fa8',font:{size:8}}}}}});
+            const tMAU=data.filter(o=>o.inv==='MAU').reduce((s,o)=>s+(o.mi||0),0),tMD=data.filter(o=>o.inv==='MD').reduce((s,o)=>s+(o.mi||0),0),tCP=data.filter(o=>o.inv==='CP').reduce((s,o)=>s+(o.mi||0),0),tJB=data.filter(o=>o.inv==='JB').reduce((s,o)=>s+(o.mi||0),0); if(doughnutChart)doughnutChart.destroy();
+            doughnutChart=new Chart(document.getElementById('doughnutChart').getContext('2d'),{type:'doughnut',data:{labels:['MAU','MD','CP','JB'],datasets:[{data:[tMAU,tMD,tCP,tJB],backgroundColor:['#10b981','#2563eb','#7c3aed','#db2777']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#f0f4f8',font:{size:9}}}}}}); }
 
-        function exportCSV() { let csv =
-                'Fecha,Etapa,Inversor,MI Bs,$Compra,-BDV,-BPAY,$Neto,TasaOut,BsVenta,Correr,Ganancia$\n';
-            ops.forEach(o => { csv +=
-                    `${o.fecha},${o.etapa},${o.inv},${o.mi},${o.usd},${o.mbdv},${o.mbpay},${o.neto},${o.tv},${o.venta},${o.correr},${o.gan}\n`; });
-            downloadBlob(csv, 'historial.csv', 'text/csv'); }
+        function exportCSV() { let csv='Fecha,Etapa,Inversor,MI,Resultado,Tipo\n'; ops.forEach(o=>{csv+=`${o.fecha},${o.etapa},${o.inv},${o.mi||''},${o.resultado||''},${o.tipo||''}\n`;}); downloadBlob(csv,'historial.csv','text/csv'); }
+        function downloadBlob(d,n,t){const b=new Blob(['\ufeff'+d],{type:t});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();}
+        async function createGist(){if(!githubToken){notify('Ingresa token GitHub','error');return;}const data={description:'ArbitrajePro',public:false,files:{'arbitraje_data.json':{content:JSON.stringify({operaciones:ops},null,2)}}};try{const r=await fetch('https://api.github.com/gists',{method:'POST',headers:{'Authorization':'token '+githubToken,'Content-Type':'application/json'},body:JSON.stringify(data)});const j=await r.json();if(j.id){gistId=j.id;document.getElementById('gistId').value=gistId;localStorage.setItem('gh_gist_id',gistId);githubOnline=true;notify('✅ Gist:'+gistId);}else{notify('❌'+(j.message||'Error'),'error');}}catch(e){notify('Error','error');}}
 
-        function downloadBlob(d, n, t) { const b = new Blob(['\ufeff' + d], { type: t });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(b);
-            a.download = n;
-            a.click(); }
+        function switchBottom(tab){document.querySelectorAll('.bottom-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.bottom-content').forEach(c=>c.classList.remove('active'));event.target.classList.add('active');document.getElementById('bot-'+tab).classList.add('active');if(tab==='analytics')renderCharts();if(tab==='kpis')renderKPIs();}
+        function notify(m,t='success'){const n=document.createElement('div');n.className='notification '+t;n.textContent=m;document.body.appendChild(n);setTimeout(()=>n.remove(),2000);}
 
-        async function createGist() { if (!githubToken) { notify('Ingresa token GitHub', 'error'); return; } const data = {
-                description: 'ArbitrajePro', public: false, files: { 'arbitraje_data.json': { content: JSON.stringify({ operaciones: ops }, null, 2) } } }; try { const r =
-                    await fetch('https://api.github.com/gists', { method: 'POST', headers: { 'Authorization': 'token ' +
-                            githubToken, 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); const j =
-                    await r.json(); if (j.id) { gistId = j.id;
-                    document.getElementById('gistId').value = gistId;
-                    localStorage.setItem('gh_gist_id', gistId);
-                    githubOnline = true;
-                    notify('✅Gist:' + gistId); } else { notify('❌' + (j.message || 'Error'), 'error'); } } catch (e) { notify(
-                        'Error', 'error'); } }
+        async function syncRates(){try{const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');const d=await r.json();if(d?.promedio){const t=parseFloat(d.promedio).toFixed(2);document.getElementById('hBCV').textContent='Bs'+t;document.getElementById('dotBCV').className='dot live';['s1_tc'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=t;});}}catch(e){document.getElementById('dotBCV').className='dot offline';}try{const proxy='https://corsproxy.io/?';const url='https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';const base={asset:'USDT',fiat:'VES',merchantCheck:false,page:1,rows:3};const[r1,r2]=await Promise.all([fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'SELL'})}),fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'BUY'})})]);const d1=await r1.json(),d2=await r2.json();if(d1.data?.length){const t=parseFloat(d1.data[0].adv.price).toFixed(2);document.getElementById('hBinCompra').textContent='Bs'+t;}if(d2.data?.length){const t=parseFloat(d2.data[0].adv.price).toFixed(2);document.getElementById('hBinVenta').textContent='Bs'+t;document.getElementById('dotBin').className='dot live';['s3_tv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=t;});}}catch(e){document.getElementById('dotBin').className='dot offline';}}
 
-        function switchBottom(tab) { document.querySelectorAll('.bottom-tab').forEach(t => t.classList.remove(
-                'active'));
-            document.querySelectorAll('.bottom-content').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('bot-' + tab).classList.add('active'); if (tab === 'analytics')
-            renderCharts(); if (tab === 'kpis') renderKPIs(); }
-
-        function notify(m, t = 'success') { const n = document.createElement('div');
-            n.className = 'notification ' + t;
-            n.textContent = m;
-            document.body.appendChild(n);
-            setTimeout(() => n.remove(), 2000); }
-
-        async function syncRates() { try { const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
-                const d = await r.json(); if (d?.promedio) { const t = parseFloat(d.promedio).toFixed(2);
-                    document.getElementById('hBCV').textContent = 'Bs' + t;
-                    document.getElementById('dotBCV').className = 'dot live'; } } catch (e) { document.getElementById(
-                        'dotBCV').className = 'dot offline'; } try { const proxy = 'https://corsproxy.io/?';
-                const url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';
-                const base = { asset: 'USDT', fiat: 'VES', merchantCheck: false, page: 1, rows: 3 };
-                const [r1, r2] = await Promise.all([fetch(proxy + encodeURIComponent(url), { method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...base,
-                            tradeType: 'SELL' }) }), fetch(proxy + encodeURIComponent(url), { method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...base,
-                            tradeType: 'BUY' }) })]);
-                const d1 = await r1.json(),
-                    d2 = await r2.json(); if (d1.data?.length) { const t = parseFloat(d1.data[0].adv.price).toFixed(
-                        2);
-                    document.getElementById('hBinCompra').textContent = 'Bs' + t; } if (d2.data?.length) { const t =
-                        parseFloat(d2.data[0].adv.price).toFixed(2);
-                    document.getElementById('hBinVenta').textContent = 'Bs' + t;
-                    document.getElementById('dotBin').className = 'dot live'; } } catch (e) { document.getElementById(
-                    'dotBin').className = 'dot offline'; } }
-
-        async function init() { const today = new Date().toISOString().split('T')[0];
-            ['s1_fecha', 's2_fecha', 's3_fecha'].forEach(id => { if (document.getElementById(id)) document.getElementById(
-                    id).value = today; });
-            document.getElementById('renderUrl').value = renderUrl;
-            document.getElementById('githubToken').value = githubToken;
-            document.getElementById('gistId').value = gistId;
-            await loadOps();
-            syncRates();
-            setInterval(syncRates, 300000); }
+        async function init(){const today=new Date().toISOString().split('T')[0];['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).value=today;});document.getElementById('renderUrl').value=renderUrl;document.getElementById('githubToken').value=githubToken;document.getElementById('gistId').value=gistId;await loadOps();syncRates();setInterval(syncRates,300000);}
         init();
     </script>
 </body>
