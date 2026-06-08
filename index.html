@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v14 | Doble Resultado Bs/$ + AutoSync</title>
+    <title>ArbitrajePro v15 | Botón Calcular + Doble Resultado Bs/$ + AutoSync</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -48,6 +48,7 @@
         .btn-warning { background:var(--warning); color:#fff; }
         .btn-danger { background:var(--danger); color:#fff; }
         .btn-outline { background:transparent; border:1px solid var(--border-color); color:var(--text-primary); }
+        .btn-calc { background:var(--info); color:#fff; font-size:13px; padding:10px; width:100%; margin-top:8px; }
         .btn-sm { padding:5px 10px; font-size:10px; }
         .btn-xs { padding:3px 7px; font-size:8px; }
         .main-content { padding:16px; }
@@ -144,7 +145,7 @@
     <div class="app-container">
         <div class="app-header">
             <div class="header-left">
-                <h1><span>💱</span> ArbitrajePro v14</h1>
+                <h1><span>💱</span> ArbitrajePro v15</h1>
                 <div class="user-selector">
                     <span>👤</span>
                     <select id="headerUser" onchange="switchUser()">
@@ -184,7 +185,7 @@
                     <div class="stage-field">
                         <label>💰 Monto Inicial en BDV</label>
                         <div class="input-moneda">
-                            <input type="number" id="s1_mi_valor" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(1)">
+                            <input type="number" id="s1_mi_valor" step="0.01" placeholder="0.00" onfocus="this.select()">
                             <div class="moneda-selector">
                                 <button class="moneda-btn active" id="s1_moneda_bs" onclick="setMoneda(1,'Bs')">Bs</button>
                                 <button class="moneda-btn" id="s1_moneda_usd" onclick="setMoneda(1,'$')">$</button>
@@ -195,7 +196,7 @@
                     <div class="stage-field">
                         <label>💵 Tasa de Compra BDV (Bs/$)</label>
                         <div class="input-moneda">
-                            <input type="number" id="s1_tc_valor" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(1)">
+                            <input type="number" id="s1_tc_valor" step="0.01" placeholder="0.00" onfocus="this.select()">
                             <div class="moneda-selector">
                                 <button class="moneda-btn active" id="s1_tc_moneda_bs" onclick="setMonedaTC(1,'Bs')">Bs</button>
                                 <button class="moneda-btn" id="s1_tc_moneda_usd" onclick="setMonedaTC(1,'$')">$</button>
@@ -203,6 +204,8 @@
                         </div>
                         <input type="hidden" id="s1_tc_moneda" value="Bs">
                     </div>
+                    <!-- BOTÓN CALCULAR ETAPA 1 -->
+                    <button class="btn btn-calc" onclick="calcStage(1)">📊 CALCULAR</button>
                     <div class="stage-result big">
                         <div class="sr-label">💵 Resultado de Compra en $ BDV</div>
                         <div class="dual-result">
@@ -226,7 +229,7 @@
                     <div class="stage-field">
                         <label>💵 $ BDV Recibidos (de Etapa 1)</label>
                         <div class="input-moneda">
-                            <input type="number" id="s2_mi_valor" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(2)">
+                            <input type="number" id="s2_mi_valor" step="0.01" placeholder="0.00" onfocus="this.select()">
                             <div class="moneda-selector">
                                 <button class="moneda-btn" id="s2_moneda_bs" onclick="setMoneda2(2,'Bs')">Bs</button>
                                 <button class="moneda-btn active" id="s2_moneda_usd" onclick="setMoneda2(2,'$')">$</button>
@@ -235,9 +238,11 @@
                         <input type="hidden" id="s2_moneda" value="$">
                     </div>
                     <div class="stage-field-row">
-                        <div class="stage-field"><label>🏦 %C BDV</label><input type="number" id="s2_bdv" value="3.0" step="0.01" onfocus="this.select()" oninput="calcStage(2)"></div>
-                        <div class="stage-field"><label>💳 %C BPAY</label><input type="number" id="s2_bpay" value="3.6" step="0.01" onfocus="this.select()" oninput="calcStage(2)"></div>
+                        <div class="stage-field"><label>🏦 %C BDV</label><input type="number" id="s2_bdv" value="3.0" step="0.01" onfocus="this.select()"></div>
+                        <div class="stage-field"><label>💳 %C BPAY</label><input type="number" id="s2_bpay" value="3.6" step="0.01" onfocus="this.select()"></div>
                     </div>
+                    <!-- BOTÓN CALCULAR ETAPA 2 -->
+                    <button class="btn btn-calc" onclick="calcStage(2)">📊 CALCULAR</button>
                     <div class="stage-result"><span class="sr-label">🏦 Resta %C BDV:</span><span class="sr-value" id="s2_mbdv" style="color:var(--danger);">-$0.00</span></div>
                     <div class="stage-result"><span class="sr-label">💳 Resta %C BPAY:</span><span class="sr-value" id="s2_mbpay" style="color:var(--danger);">-$0.00</span></div>
                     <div class="stage-result big">
@@ -263,7 +268,7 @@
                     <div class="stage-field">
                         <label>💎 USDT en Binance (de Etapa 2)</label>
                         <div class="input-moneda">
-                            <input type="number" id="s3_mi_valor" step="0.0001" placeholder="0.0000" onfocus="this.select()" oninput="calcStage(3)">
+                            <input type="number" id="s3_mi_valor" step="0.0001" placeholder="0.0000" onfocus="this.select()">
                             <div class="moneda-selector">
                                 <button class="moneda-btn" id="s3_moneda_bs" onclick="setMoneda3(3,'Bs')">Bs</button>
                                 <button class="moneda-btn active" id="s3_moneda_usd" onclick="setMoneda3(3,'$')">$</button>
@@ -274,7 +279,7 @@
                     <div class="stage-field">
                         <label>📈 Tasa de Venta USDT (Bs)</label>
                         <div class="input-moneda">
-                            <input type="number" id="s3_tv_valor" step="0.01" placeholder="0.00" onfocus="this.select()" oninput="calcStage(3)">
+                            <input type="number" id="s3_tv_valor" step="0.01" placeholder="0.00" onfocus="this.select()">
                             <div class="moneda-selector">
                                 <button class="moneda-btn active" id="s3_tv_moneda_bs" onclick="setMonedaTV(3,'Bs')">Bs</button>
                                 <button class="moneda-btn" id="s3_tv_moneda_usd" onclick="setMonedaTV(3,'$')">$</button>
@@ -282,6 +287,8 @@
                         </div>
                         <input type="hidden" id="s3_tv_moneda" value="Bs">
                     </div>
+                    <!-- BOTÓN CALCULAR ETAPA 3 -->
+                    <button class="btn btn-calc" onclick="calcStage(3)">📊 CALCULAR</button>
                     <div class="stage-result big">
                         <div class="sr-label">💰 Monto de Venta en Bs</div>
                         <div class="dual-result">
@@ -372,11 +379,11 @@
         let tasasCache = { bcv: null, binanceCompra: null, binanceVenta: null, lastUpdate: null };
 
         // ============ SELECTOR DE MONEDA ============
-        function setMoneda(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');calcStage(s);}
-        function setMonedaTC(s,m){document.getElementById('s'+s+'_tc_moneda').value=m;document.getElementById('s'+s+'_tc_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tc_moneda_usd').classList.toggle('active',m==='$');calcStage(s);}
-        function setMoneda2(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');calcStage(s);}
-        function setMoneda3(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');calcStage(s);}
-        function setMonedaTV(s,m){document.getElementById('s'+s+'_tv_moneda').value=m;document.getElementById('s'+s+'_tv_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tv_moneda_usd').classList.toggle('active',m==='$');calcStage(s);}
+        function setMoneda(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
+        function setMonedaTC(s,m){document.getElementById('s'+s+'_tc_moneda').value=m;document.getElementById('s'+s+'_tc_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tc_moneda_usd').classList.toggle('active',m==='$');}
+        function setMoneda2(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
+        function setMoneda3(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
+        function setMonedaTV(s,m){document.getElementById('s'+s+'_tv_moneda').value=m;document.getElementById('s'+s+'_tv_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tv_moneda_usd').classList.toggle('active',m==='$');}
 
         // ============ CONFIG ============
         function saveConfig(){renderUrl=document.getElementById('renderUrl').value.trim();githubToken=document.getElementById('githubToken').value.trim();gistId=document.getElementById('gistId').value.trim();localStorage.setItem('renderUrl',renderUrl);localStorage.setItem('gh_token',githubToken);localStorage.setItem('gh_gist_id',gistId);notify('✅ Config guardada');checkConnections();}
@@ -390,29 +397,29 @@
         async function saveOps(){localStorage.setItem('arbOps_local',JSON.stringify(ops));if(renderOnline)await saveToGist();if(githubOnline)await saveToGist();renderAll();}
         async function switchUser(){const s=document.getElementById('headerUser').value;if(s==='Admin'){const p=prompt("🔐 Contraseña:");if(!p){document.getElementById('headerUser').value=currentUser;return;}if(p===ADMIN_PASS){currentUser='Admin';isAdmin=true;notify('🔓 Admin');}else{notify('❌ Incorrecta','error');document.getElementById('headerUser').value=currentUser;return;}}else{currentUser=s;isAdmin=false;}await loadOps();}
 
-        // ============ CÁLCULOS CON DOBLE RESULTADO ============
+        // ============ CÁLCULOS CON BOTÓN ============
         function calcStage(s){if(s===1)return calcEtapa1();if(s===2)return calcEtapa2();if(s===3)return calcEtapa3();}
         function calcEtapa1(){
             const miV=parseFloat(document.getElementById('s1_mi_valor').value)||0,miM=document.getElementById('s1_moneda').value,tcV=parseFloat(document.getElementById('s1_tc_valor').value)||0;
-            if(!miV||!tcV){document.getElementById('s1_result_bs').textContent='Bs 0.00';document.getElementById('s1_result_usd').textContent='$ 0.00';document.getElementById('s1_alert').style.display='none';document.getElementById('s1_save').disabled=true;return null;}
-            let usd,bs;if(miM==='Bs'){usd=miV/tc;bs=miV;}else{usd=miV;bs=miV*tc;}
-            document.getElementById('s1_result_bs').textContent='Bs '+bs.toFixed(2);document.getElementById('s1_result_usd').textContent='$ '+usd.toFixed(2);document.getElementById('s1_alert').style.display='none';document.getElementById('s1_save').disabled=false;document.getElementById('s1_save').style.background='var(--success)';
+            if(!miV||!tcV){document.getElementById('s1_result_bs').textContent='Bs 0.00';document.getElementById('s1_result_usd').textContent='$ 0.00';document.getElementById('s1_alert').style.display='none';document.getElementById('s1_save').disabled=true;notify('⚠️ Complete todos los campos de la Etapa 1','error');return null;}
+            let usd,bs;if(miM==='Bs'){usd=miV/tcV;bs=miV;}else{usd=miV;bs=miV*tcV;}
+            document.getElementById('s1_result_bs').textContent='Bs '+bs.toFixed(2);document.getElementById('s1_result_usd').textContent='$ '+usd.toFixed(2);document.getElementById('s1_alert').style.display='none';document.getElementById('s1_save').disabled=false;document.getElementById('s1_save').style.background='var(--success)';notify('✅ Etapa 1 calculada: $'+usd.toFixed(2)+' BDV');
             return {miV,miM,tcV,usd,bs};
         }
         function calcEtapa2(){
             const miV=parseFloat(document.getElementById('s2_mi_valor').value)||0,miM=document.getElementById('s2_moneda').value,bdv=parseFloat(document.getElementById('s2_bdv').value)||0,bpay=parseFloat(document.getElementById('s2_bpay').value)||0;
-            if(!miV){document.getElementById('s2_result_bs').textContent='Bs 0.00';document.getElementById('s2_result_usd').textContent='0.0000';document.getElementById('s2_alert').style.display='none';document.getElementById('s2_save').disabled=true;return null;}
+            if(!miV){document.getElementById('s2_result_bs').textContent='Bs 0.00';document.getElementById('s2_result_usd').textContent='0.0000';document.getElementById('s2_alert').style.display='none';document.getElementById('s2_save').disabled=true;notify('⚠️ Ingrese el monto en $ BDV','error');return null;}
             let usdBDV;if(miM==='Bs'){const tc=parseFloat(document.getElementById('s1_tc_valor').value)||611;usdBDV=miV/tc;}else{usdBDV=miV;}
             const mbdv=usdBDV*(bdv/100),mbpay=usdBDV*(bpay/100),neto=usdBDV-mbdv-mbpay,bsEquiv=neto*(parseFloat(document.getElementById('s3_tv_valor').value)||740);
-            document.getElementById('s2_mbdv').textContent='-$'+mbdv.toFixed(2);document.getElementById('s2_mbpay').textContent='-$'+mbpay.toFixed(2);document.getElementById('s2_result_bs').textContent='Bs '+bsEquiv.toFixed(2);document.getElementById('s2_result_usd').textContent=neto.toFixed(4);document.getElementById('s2_alert').style.display='none';document.getElementById('s2_save').disabled=false;document.getElementById('s2_save').style.background='var(--success)';
+            document.getElementById('s2_mbdv').textContent='-$'+mbdv.toFixed(2);document.getElementById('s2_mbpay').textContent='-$'+mbpay.toFixed(2);document.getElementById('s2_result_bs').textContent='Bs '+bsEquiv.toFixed(2);document.getElementById('s2_result_usd').textContent=neto.toFixed(4);document.getElementById('s2_alert').style.display='none';document.getElementById('s2_save').disabled=false;document.getElementById('s2_save').style.background='var(--success)';notify('✅ Etapa 2 calculada: '+neto.toFixed(4)+' USDT');
             return {usdBDV,bdv,bpay,mbdv,mbpay,neto,bsEquiv};
         }
         function calcEtapa3(){
             const miV=parseFloat(document.getElementById('s3_mi_valor').value)||0,miM=document.getElementById('s3_moneda').value,tvV=parseFloat(document.getElementById('s3_tv_valor').value)||0;
-            if(!miV||!tvV){document.getElementById('s3_result_bs').textContent='Bs 0.00';document.getElementById('s3_result_usd').textContent='$ 0.00';document.getElementById('s3_correr_bs').textContent='Bs 0.00';document.getElementById('s3_correr_usd').textContent='$ 0.00';document.getElementById('s3_alert').style.display='none';document.getElementById('s3_save').disabled=true;return null;}
+            if(!miV||!tvV){document.getElementById('s3_result_bs').textContent='Bs 0.00';document.getElementById('s3_result_usd').textContent='$ 0.00';document.getElementById('s3_correr_bs').textContent='Bs 0.00';document.getElementById('s3_correr_usd').textContent='$ 0.00';document.getElementById('s3_alert').style.display='none';document.getElementById('s3_save').disabled=true;notify('⚠️ Complete todos los campos de la Etapa 3','error');return null;}
             let usdt,bsEntrada;if(miM==='Bs'){usdt=miV/tvV;bsEntrada=miV;}else{usdt=miV;bsEntrada=miV*tvV;}
             const ventaBs=usdt*tvV,ventaUsd=ventaBs/tvV;
-            document.getElementById('s3_result_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_result_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_correr_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_correr_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_alert').style.display='none';document.getElementById('s3_save').disabled=false;document.getElementById('s3_save').style.background='var(--success)';
+            document.getElementById('s3_result_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_result_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_correr_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_correr_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_alert').style.display='none';document.getElementById('s3_save').disabled=false;document.getElementById('s3_save').style.background='var(--success)';notify('✅ Etapa 3 calculada: Bs '+ventaBs.toFixed(2)+' para correr');
             return {usdt,tvV,ventaBs,ventaUsd,correrBs:ventaBs,correrUsd:ventaUsd};
         }
 
@@ -421,9 +428,9 @@
             ops.push(op);if(renderOnline)await saveToRender(op);await saveOps();document.getElementById('s'+s+'_save').disabled=true;notify('✅ Etapa '+s+' guardada');}
 
         function passToNext(s){
-            if(s===1){const r=calcEtapa1();if(!r){notify('Complete los campos','error');return;}document.getElementById('s2_mi_valor').value=r.usd.toFixed(4);document.getElementById('s2_moneda').value='$';document.getElementById('s2_moneda_bs').classList.remove('active');document.getElementById('s2_moneda_usd').classList.add('active');document.getElementById('s2_inv').value=document.getElementById('s1_inv').value;document.getElementById('s2_inherit').classList.add('show');calcEtapa2();notify('🔄 $'+r.usd.toFixed(2)+' BDV → Etapa 2');}
-            else if(s===2){const r=calcEtapa2();if(!r){notify('Complete los campos','error');return;}document.getElementById('s3_mi_valor').value=r.neto.toFixed(4);document.getElementById('s3_moneda').value='$';document.getElementById('s3_moneda_bs').classList.remove('active');document.getElementById('s3_moneda_usd').classList.add('active');document.getElementById('s3_inv').value=document.getElementById('s2_inv').value;document.getElementById('s3_inherit').classList.add('show');calcEtapa3();notify('🔄 '+r.neto.toFixed(4)+' USDT → Etapa 3');}
-            else{const r=calcEtapa3();if(!r){notify('Complete los campos','error');return;}document.getElementById('s1_mi_valor').value=r.correrBs.toFixed(2);document.getElementById('s1_moneda').value='Bs';document.getElementById('s1_moneda_bs').classList.add('active');document.getElementById('s1_moneda_usd').classList.remove('active');document.getElementById('s1_inv').value=document.getElementById('s3_inv').value;document.getElementById('s1_inherit').classList.add('show');calcEtapa1();notify('🔄 Bs '+r.correrBs.toFixed(2)+' → Etapa 1');}
+            if(s===1){const r=calcEtapa1();if(!r){notify('⚠️ Primero haga clic en CALCULAR','error');return;}document.getElementById('s2_mi_valor').value=r.usd.toFixed(4);document.getElementById('s2_moneda').value='$';document.getElementById('s2_moneda_bs').classList.remove('active');document.getElementById('s2_moneda_usd').classList.add('active');document.getElementById('s2_inv').value=document.getElementById('s1_inv').value;document.getElementById('s2_inherit').classList.add('show');notify('🔄 $'+r.usd.toFixed(2)+' BDV → Etapa 2');}
+            else if(s===2){const r=calcEtapa2();if(!r){notify('⚠️ Primero haga clic en CALCULAR','error');return;}document.getElementById('s3_mi_valor').value=r.neto.toFixed(4);document.getElementById('s3_moneda').value='$';document.getElementById('s3_moneda_bs').classList.remove('active');document.getElementById('s3_moneda_usd').classList.add('active');document.getElementById('s3_inv').value=document.getElementById('s2_inv').value;document.getElementById('s3_inherit').classList.add('show');notify('🔄 '+r.neto.toFixed(4)+' USDT → Etapa 3');}
+            else{const r=calcEtapa3();if(!r){notify('⚠️ Primero haga clic en CALCULAR','error');return;}document.getElementById('s1_mi_valor').value=r.correrBs.toFixed(2);document.getElementById('s1_moneda').value='Bs';document.getElementById('s1_moneda_bs').classList.add('active');document.getElementById('s1_moneda_usd').classList.remove('active');document.getElementById('s1_inv').value=document.getElementById('s3_inv').value;document.getElementById('s1_inherit').classList.add('show');notify('🔄 Bs '+r.correrBs.toFixed(2)+' → Etapa 1');}
         }
 
         async function delOp(id){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}const p=prompt("Contraseña:");if(!p||p!==ADMIN_PASS){notify('❌','error');return;}if(!confirm('¿Eliminar?'))return;ops=ops.filter(o=>o.id!==id);if(renderOnline){try{await fetch(`${renderUrl}/operaciones/${id}?password=${p}`,{method:'DELETE'});}catch(e){}}await saveOps();notify('🗑️ Eliminada');}
@@ -444,21 +451,9 @@
         function notify(m,t='success'){const n=document.createElement('div');n.className='notification '+t;n.textContent=m;document.body.appendChild(n);setTimeout(()=>n.remove(),2000);}
 
         // ============ SINCRONIZACIÓN AUTOMÁTICA ============
-        async function syncRates(silent=false){
-            if(!silent)notify('🔄 Sincronizando tasas...','info');
-            try{const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');const d=await r.json();if(d?.promedio){const t=parseFloat(d.promedio).toFixed(2);tasasCache.bcv=t;tasasCache.lastUpdate=new Date();document.getElementById('hBCV').textContent='Bs '+t;document.getElementById('dotBCV').className='dot live';const s1tc=document.getElementById('s1_tc_valor');if(s1tc&&!s1tc.value){s1tc.value=t;document.getElementById('s1_tc_moneda').value='Bs';document.getElementById('s1_tc_moneda_bs').classList.add('active');document.getElementById('s1_tc_moneda_usd').classList.remove('active');}}}catch(e){document.getElementById('dotBCV').className='dot offline';}
-            try{const proxy='https://corsproxy.io/?';const url='https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';const base={asset:'USDT',fiat:'VES',merchantCheck:false,page:1,rows:3};const[r1,r2]=await Promise.all([fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'SELL'})}),fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'BUY'})})]);const d1=await r1.json(),d2=await r2.json();if(d1?.data?.length){const t=parseFloat(d1.data[0].adv.price).toFixed(2);tasasCache.binanceCompra=t;document.getElementById('hBinCompra').textContent='Bs '+t;}if(d2?.data?.length){const t=parseFloat(d2.data[0].adv.price).toFixed(2);tasasCache.binanceVenta=t;document.getElementById('hBinVenta').textContent='Bs '+t;document.getElementById('dotBin').className='dot live';const s3tv=document.getElementById('s3_tv_valor');if(s3tv&&!s3tv.value){s3tv.value=t;document.getElementById('s3_tv_moneda').value='Bs';document.getElementById('s3_tv_moneda_bs').classList.add('active');document.getElementById('s3_tv_moneda_usd').classList.remove('active');}}}catch(e){document.getElementById('dotBin').className='dot offline';}
-            if(document.getElementById('s1_mi_valor')?.value)calcStage(1);if(document.getElementById('s2_mi_valor')?.value)calcStage(2);if(document.getElementById('s3_mi_valor')?.value)calcStage(3);
-            if(!silent){if(tasasCache.bcv&&tasasCache.binanceVenta){notify('✅ Tasas actualizadas');}else{notify('⚠️ Tasas parciales','error');}}
-        }
+        async function syncRates(silent=false){if(!silent)notify('🔄 Sincronizando tasas...','info');try{const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');const d=await r.json();if(d?.promedio){const t=parseFloat(d.promedio).toFixed(2);tasasCache.bcv=t;tasasCache.lastUpdate=new Date();document.getElementById('hBCV').textContent='Bs '+t;document.getElementById('dotBCV').className='dot live';const s1tc=document.getElementById('s1_tc_valor');if(s1tc&&!s1tc.value){s1tc.value=t;document.getElementById('s1_tc_moneda').value='Bs';document.getElementById('s1_tc_moneda_bs').classList.add('active');document.getElementById('s1_tc_moneda_usd').classList.remove('active');}}}catch(e){document.getElementById('dotBCV').className='dot offline';}try{const proxy='https://corsproxy.io/?';const url='https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';const base={asset:'USDT',fiat:'VES',merchantCheck:false,page:1,rows:3};const[r1,r2]=await Promise.all([fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'SELL'})}),fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'BUY'})})]);const d1=await r1.json(),d2=await r2.json();if(d1?.data?.length){const t=parseFloat(d1.data[0].adv.price).toFixed(2);tasasCache.binanceCompra=t;document.getElementById('hBinCompra').textContent='Bs '+t;}if(d2?.data?.length){const t=parseFloat(d2.data[0].adv.price).toFixed(2);tasasCache.binanceVenta=t;document.getElementById('hBinVenta').textContent='Bs '+t;document.getElementById('dotBin').className='dot live';const s3tv=document.getElementById('s3_tv_valor');if(s3tv&&!s3tv.value){s3tv.value=t;document.getElementById('s3_tv_moneda').value='Bs';document.getElementById('s3_tv_moneda_bs').classList.add('active');document.getElementById('s3_tv_moneda_usd').classList.remove('active');}}}catch(e){document.getElementById('dotBin').className='dot offline';}if(!silent){if(tasasCache.bcv&&tasasCache.binanceVenta){notify('✅ Tasas actualizadas');}else{notify('⚠️ Tasas parciales','error');}}}
 
-        async function init(){
-            const today=new Date().toISOString().split('T')[0];['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).value=today;});
-            document.getElementById('renderUrl').value=renderUrl;document.getElementById('githubToken').value=githubToken;document.getElementById('gistId').value=gistId;
-            await loadOps();await syncRates(true);
-            setTimeout(()=>{if(tasasCache.bcv&&tasasCache.binanceVenta){notify('✅ App lista | BCV:'+tasasCache.bcv+' | P2P:'+tasasCache.binanceVenta);}},1000);
-            setInterval(()=>syncRates(true),300000);
-        }
+        async function init(){const today=new Date().toISOString().split('T')[0];['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).value=today;});document.getElementById('renderUrl').value=renderUrl;document.getElementById('githubToken').value=githubToken;document.getElementById('gistId').value=gistId;await loadOps();await syncRates(true);setTimeout(()=>{if(tasasCache.bcv&&tasasCache.binanceVenta){notify('✅ App lista | BCV:'+tasasCache.bcv+' | P2P:'+tasasCache.binanceVenta);}},1000);setInterval(()=>syncRates(true),300000);}
         init();
     </script>
 </body>
