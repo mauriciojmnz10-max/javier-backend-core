@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v19 | Panel Admin + Permisos</title>
+    <title>ArbitrajePro v20 | Sincronización Automática</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -39,7 +39,6 @@
         .btn-outline { background:transparent; border:1px solid var(--border-color); color:var(--text-primary); }
         .btn-calc { background:var(--info); color:#fff; font-size:13px; padding:10px; width:100%; margin-top:8px; }
         .btn-theme { background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:16px; padding:6px 10px; border-radius:50%; cursor:pointer; width:38px; height:38px; display:flex; align-items:center; justify-content:center; }
-        .btn-admin { background:var(--danger); color:#fff; font-weight:700; }
         .btn-sm { padding:5px 10px; font-size:10px; } .btn-xs { padding:3px 7px; font-size:8px; }
         .main-content { padding:16px; }
         .flow-bar { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:18px; padding:10px 14px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; flex-wrap:wrap; font-size:10px; color:var(--text-secondary); }
@@ -119,7 +118,7 @@
     <div class="app-container">
         <div class="app-header">
             <div class="header-left">
-                <h1><span>💱</span> ArbitrajePro v19</h1>
+                <h1><span>💱</span> ArbitrajePro v20</h1>
                 <div class="user-selector">
                     <span>👤</span>
                     <select id="headerUser" onchange="switchUser()">
@@ -131,7 +130,7 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-theme" onclick="toggleTheme()" id="themeBtn">🌙</button>
-                <span id="syncStatus" style="font-size:10px;color:var(--success);">💾 Local</span>
+                <span id="syncStatus" style="font-size:10px;color:var(--success);">☁️ Conectado</span>
                 <div class="market-badge"><span class="dot live" id="dotBCV"></span>BCV:<strong id="hBCV">--</strong></div>
                 <div class="market-badge"><span class="dot live" id="dotBin"></span>P2P:<strong id="hBinCompra">--</strong>/<strong id="hBinVenta">--</strong></div>
                 <button class="btn btn-outline btn-sm" onclick="syncRates()">🔄 Sync</button>
@@ -189,77 +188,31 @@
                 <button class="bottom-tab" onclick="switchBottom('sim')">🔮 Sim</button>
                 <button class="bottom-tab" onclick="switchBottom('analytics')">📊 Ana</button>
                 <button class="bottom-tab" onclick="switchBottom('history')">📋 Hist</button>
-                <button class="bottom-tab" onclick="switchBottom('config')">⚙️ Sync</button>
             </div>
-            <div class="bottom-content active" id="bot-kpis"><div class="kpi-row"><div class="kpi-box spread"><div class="kpi-label">Spread Promedio</div><div class="kpi-val" id="kpiSpread">0%</div></div><div class="kpi-box roi"><div class="kpi-label">ROI Acumulado</div><div class="kpi-val" id="kpiRoi">0%</div></div><div class="kpi-box rot"><div class="kpi-label">Rotaciones</div><div class="kpi-val" id="kpiRot">0</div></div></div></div>
-            <div class="bottom-content" id="bot-sim"><div class="simple-card"><h4>🔮 Proyectar ganancias</h4><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div><label style="font-size:9px;">Capital (Bs)</label><input type="number" id="simCap" value="10000" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">Tasa compra</label><input type="number" id="simTc" value="611" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">Tasa venta</label><input type="number" id="simTv" value="740" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">Ciclos</label><input type="number" id="simCic" value="5" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">% BDV</label><input type="number" id="simBdv" value="3.0" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">% BPAY</label><input type="number" id="simBpay" value="3.6" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div></div><button class="btn btn-primary btn-sm" onclick="runSim()">🔮 Calcular</button><div id="simOut" style="display:none;margin-top:8px;background:var(--bg-main);padding:12px;border-radius:8px;font-size:10px;"></div></div></div>
+            <div class="bottom-content active" id="bot-kpis"><div class="kpi-row"><div class="kpi-box spread"><div class="kpi-label">Spread</div><div class="kpi-val" id="kpiSpread">0%</div></div><div class="kpi-box roi"><div class="kpi-label">ROI</div><div class="kpi-val" id="kpiRoi">0%</div></div><div class="kpi-box rot"><div class="kpi-label">Rotaciones</div><div class="kpi-val" id="kpiRot">0</div></div></div></div>
+            <div class="bottom-content" id="bot-sim"><div class="simple-card"><h4>🔮 Simulador</h4><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;"><input type="number" id="simCap" value="10000" placeholder="Capital" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simTc" value="611" placeholder="Tasa C" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simTv" value="740" placeholder="Tasa V" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simCic" value="5" placeholder="Ciclos" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simBdv" value="3.0" placeholder="%BDV" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simBpay" value="3.6" placeholder="%BPAY" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"></div><button class="btn btn-primary btn-sm" onclick="runSim()">🔮 Proyectar</button><div id="simOut" style="display:none;margin-top:8px;background:var(--bg-main);padding:12px;border-radius:8px;font-size:10px;"></div></div></div>
             <div class="bottom-content" id="bot-analytics"><div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;"><div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="lineChart"></canvas></div><div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="doughnutChart"></canvas></div></div></div>
             <div class="bottom-content" id="bot-history"><div style="display:flex;gap:6px;margin-bottom:6px;"><button class="btn btn-outline btn-xs" onclick="exportCSV()">📥 CSV</button><button class="btn btn-danger btn-xs" onclick="clearAll()">🗑️ Purgar</button></div><div class="history-table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Et</th><th>Inv</th><th>MI Bs</th><th>MI $</th><th>Result Bs</th><th>Result $</th><th>Tipo</th><th>✕</th></tr></thead><tbody id="histBody"></tbody></table></div></div>
-            <div class="bottom-content" id="bot-config"><div class="simple-card"><h4>☁️ Sincronización</h4><div><label style="font-size:9px;">URL de Render</label><input type="text" id="renderUrlInput" placeholder="https://arbitraje-pro.onrender.com/api"></div><button class="btn btn-primary btn-sm" onclick="guardarRenderUrl()" style="margin-top:6px;">💾 Conectar</button></div></div>
-            <!-- PANEL ADMIN (solo visible para Admin) -->
             <div class="bottom-content" id="bot-admin">
-                <div class="simple-card admin-panel">
-                    <h4>🔧 Panel de Administración</h4>
-                    <p>Gestiona permisos, usuarios y configuración global del sistema</p>
-                    <div class="admin-grid">
-                        <!-- PERMISOS DE USUARIOS -->
-                        <div class="simple-card">
-                            <h5>👥 Permisos de Usuarios</h5>
-                            <p style="font-size:9px;">Controla qué puede ver cada usuario</p>
-                            <div id="permisosContainer"></div>
-                        </div>
-                        <!-- VISIÓN GLOBAL -->
-                        <div class="simple-card">
-                            <h5>🌍 Visión Global</h5>
-                            <p style="font-size:9px;">Resumen de todos los usuarios</p>
-                            <div id="resumenGlobal" style="font-size:10px;"></div>
-                            <button class="btn btn-outline btn-xs" onclick="verHistorialGlobal()" style="margin-top:8px;">📋 Ver historial de todos</button>
-                            <button class="btn btn-danger btn-xs" onclick="purgarTodoAdmin()" style="margin-top:4px;">🗑️ Purgar TODOS los datos</button>
-                        </div>
-                        <!-- CAMBIAR CLAVES -->
-                        <div class="simple-card">
-                            <h5>🔑 Gestionar Claves</h5>
-                            <div style="display:flex;gap:4px;margin-bottom:4px;">
-                                <select id="adminUserSelect" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;">
-                                    <option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option>
-                                </select>
-                                <input type="password" id="adminNewPass" placeholder="Nueva clave" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;">
-                                <button class="btn btn-primary btn-xs" onclick="cambiarClave()">Cambiar</button>
-                            </div>
-                        </div>
-                        <!-- EXPORTAR TODO -->
-                        <div class="simple-card">
-                            <h5>📥 Exportar Datos</h5>
-                            <button class="btn btn-outline btn-xs" onclick="exportarTodoCSV()">📥 CSV Global</button>
-                            <button class="btn btn-outline btn-xs" onclick="exportarTodoJSON()" style="margin-top:4px;">📥 JSON Global</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="simple-card admin-panel"><h4>🔧 Panel Admin</h4><div class="admin-grid"><div class="simple-card"><h5>👥 Permisos</h5><div id="permisosContainer"></div></div><div class="simple-card"><h5>🌍 Global</h5><div id="resumenGlobal" style="font-size:10px;"></div><button class="btn btn-outline btn-xs" onclick="verHistorialGlobal()" style="margin-top:8px;">📋 Ver todos</button><button class="btn btn-danger btn-xs" onclick="purgarTodoAdmin()" style="margin-top:4px;">🗑️ Purgar TODO</button></div><div class="simple-card"><h5>🔑 Claves</h5><div style="display:flex;gap:4px;margin-bottom:4px;"><select id="adminUserSelect" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select><input type="password" id="adminNewPass" placeholder="Nueva clave" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;"><button class="btn btn-primary btn-xs" onclick="cambiarClave()">Cambiar</button></div></div><div class="simple-card"><h5>📥 Exportar</h5><button class="btn btn-outline btn-xs" onclick="exportarTodoCSV()">📥 CSV Global</button><button class="btn btn-outline btn-xs" onclick="exportarTodoJSON()" style="margin-top:4px;">📥 JSON Global</button></div></div></div>
             </div>
         </div>
     </div>
     <script>
-        // ============ CONFIGURACIÓN ============
+        // ============ CONFIGURACIÓN PRE-CONFIGURADA ============
+        const RENDER_URL = "https://asistente-javier.onrender.com/api";
         const USUARIOS = { 'MAU':'mau123', 'MD':'md123', 'CP':'cp123', 'JB':'jb123', 'Admin':'Mau10' };
-        // Permisos: qué usuarios pueden ver historial de otros
         let permisos = JSON.parse(localStorage.getItem('adminPermisos') || '{"MAU":false,"MD":false,"CP":false,"JB":false}');
         let currentUser = 'MAU', isAdmin = false, ops = [];
-        let renderUrl = localStorage.getItem('renderUrl') || '';
         let lineChart, doughnutChart;
         let tasasCache = { bcv: null, binanceVenta: null };
+        let renderOnline = false;
 
         // ============ TEMA ============
-        function toggleTheme(){
-            const html=document.documentElement, btn=document.getElementById('themeBtn');
-            if(html.getAttribute('data-theme')==='dark'){html.setAttribute('data-theme','light');btn.textContent='☀️';localStorage.setItem('theme','light');}
-            else{html.setAttribute('data-theme','dark');btn.textContent='🌙';localStorage.setItem('theme','dark');}
-            if(lineChart)renderCharts();if(doughnutChart)renderCharts();
-        }
+        function toggleTheme(){const h=document.documentElement,b=document.getElementById('themeBtn');if(h.getAttribute('data-theme')==='dark'){h.setAttribute('data-theme','light');b.textContent='☀️';localStorage.setItem('theme','light');}else{h.setAttribute('data-theme','dark');b.textContent='🌙';localStorage.setItem('theme','dark');}if(lineChart)renderCharts();if(doughnutChart)renderCharts();}
 
         // ============ ENTER ============
-        document.addEventListener('keydown',function(e){
-            if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();const n=document.getElementById(e.target.getAttribute('data-next'));if(n){if(n.tagName==='SELECT')n.focus();else if(n.closest('.input-moneda')){const i=n.closest('.input-moneda').querySelector('input');if(i)i.focus();}else n.focus();}}
-        });
+        document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();const n=document.getElementById(e.target.getAttribute('data-next'));if(n){if(n.tagName==='SELECT')n.focus();else if(n.closest('.input-moneda')){const i=n.closest('.input-moneda').querySelector('input');if(i)i.focus();}else n.focus();}}});
 
         // ============ MONEDA ============
         function setMoneda(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
@@ -268,11 +221,10 @@
         function setMoneda3(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
         function setMonedaTV(s,m){document.getElementById('s'+s+'_tv_moneda').value=m;document.getElementById('s'+s+'_tv_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tv_moneda_usd').classList.toggle('active',m==='$');}
 
-        // ============ SINCRONIZACIÓN ============
-        function guardarRenderUrl(){renderUrl=document.getElementById('renderUrlInput').value.trim();localStorage.setItem('renderUrl',renderUrl);notify('✅ URL guardada');testRenderConnection();}
-        async function testRenderConnection(){if(!renderUrl)return;try{const r=await fetch(renderUrl+'/operaciones?user=test');if(r.ok){document.getElementById('syncStatus').textContent='☁️ Render';document.getElementById('syncStatus').style.color='var(--success)';}}catch(e){document.getElementById('syncStatus').textContent='💾 Local';document.getElementById('syncStatus').style.color='var(--warning)';}}
-        async function saveToServer(op){if(!renderUrl)return false;try{const r=await fetch(renderUrl+'/operaciones',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(op)});return r.ok;}catch(e){return false;}}
-        async function loadFromServer(user){if(!renderUrl)return null;try{const url=renderUrl+'/operaciones?user='+(user||currentUser);const r=await fetch(url);if(r.ok)return await r.json();}catch(e){}return null;}
+        // ============ SINCRONIZACIÓN AUTOMÁTICA ============
+        async function checkRenderConnection(){try{const r=await fetch(RENDER_URL+'/operaciones?user=test');renderOnline=r.ok;document.getElementById('syncStatus').textContent=renderOnline?'☁️ Conectado':'⚠️ Sin conexión';document.getElementById('syncStatus').style.color=renderOnline?'var(--success)':'var(--warning)';}catch(e){renderOnline=false;document.getElementById('syncStatus').textContent='⚠️ Sin conexión';document.getElementById('syncStatus').style.color='var(--warning)';}}
+        async function saveToServer(op){if(!renderOnline)return false;try{const r=await fetch(RENDER_URL+'/operaciones',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(op)});return r.ok;}catch(e){return false;}}
+        async function loadFromServer(user){if(!renderOnline)return null;try{const url=RENDER_URL+'/operaciones?user='+(user||currentUser);const r=await fetch(url);if(r.ok)return await r.json();}catch(e){}return null;}
 
         function getOpsKey(u){return 'arbOps_'+(u||currentUser);}
         function saveLocal(u){localStorage.setItem(getOpsKey(u),JSON.stringify(ops));}
@@ -282,16 +234,17 @@
             const r=calcStage(s);if(!r)return;
             const op={id:Date.now(),fecha:document.getElementById('s'+s+'_fecha').value||new Date().toISOString().split('T')[0],etapa:s,inv:document.getElementById('s'+s+'_inv').value,miBs:r.miBs||r.bs||r.bsEquiv||r.correrBs||0,miUsd:r.miUsd||r.usd||r.usdBDV||r.usdt||0,resultBs:r.resultBs||r.bs||r.bsEquiv||r.ventaBs||0,resultUsd:r.resultUsd||r.usd||r.neto||r.ventaUsd||0,tipo:s===1?'Compra BDV':s===2?'Transferencia Binance':'Venta P2P'};
             ops.push(op);saveLocal();
-            if(renderUrl){await saveToServer(op);const sd=await loadFromServer();if(sd){ops=sd;saveLocal();}}
+            if(renderOnline){const saved=await saveToServer(op);if(saved){const sd=await loadFromServer();if(sd){ops=sd;saveLocal();}}}
             document.getElementById('s'+s+'_save').disabled=true;renderAll();
-            notify(renderUrl?'✅ Guardado (Local + Render)':'✅ Guardado localmente');
+            notify(renderOnline?'✅ Guardado y sincronizado':'✅ Guardado localmente');
         }
 
         async function loadOps(u){
             const user=u||currentUser;
+            await checkRenderConnection();
             const serverData=await loadFromServer(user);
-            if(serverData&&serverData.length>0){ops=serverData;saveLocal(user);document.getElementById('syncStatus').textContent='☁️ Render';document.getElementById('syncStatus').style.color='var(--success)';}
-            else{ops=loadLocal(user);document.getElementById('syncStatus').textContent='💾 Local';document.getElementById('syncStatus').style.color='var(--warning)';}
+            if(serverData&&serverData.length>0){ops=serverData;saveLocal(user);}
+            else{ops=loadLocal(user);}
             renderAll();
         }
 
@@ -312,105 +265,23 @@
 
         function updateAdminTabs(){
             const tabs=document.getElementById('bottomTabs');
-            // Eliminar pestaña admin si existe
-            const existing=document.getElementById('adminTabBtn');
-            if(existing)existing.remove();
-            const existingContent=document.getElementById('bot-admin');
-            if(existingContent)existingContent.classList.remove('active');
-            
-            if(isAdmin){
-                const btn=document.createElement('button');
-                btn.className='bottom-tab admin-tab';
-                btn.id='adminTabBtn';
-                btn.textContent='🔧 Admin';
-                btn.onclick=function(){switchBottom('admin');};
-                tabs.appendChild(btn);
-                renderAdminPanel();
-            }
+            const existing=document.getElementById('adminTabBtn');if(existing)existing.remove();
+            const ec=document.getElementById('bot-admin');if(ec)ec.classList.remove('active');
+            if(isAdmin){const btn=document.createElement('button');btn.className='bottom-tab admin-tab';btn.id='adminTabBtn';btn.textContent='🔧 Admin';btn.onclick=function(){switchBottom('admin');};tabs.appendChild(btn);renderAdminPanel();}
         }
 
         function renderAdminPanel(){
-            // Permisos
-            const pc=document.getElementById('permisosContainer');
-            pc.innerHTML='';
-            ['MAU','MD','CP','JB'].forEach(u=>{
-                pc.innerHTML+=`
-                    <div class="permiso-row">
-                        <span style="font-weight:600;">👤 ${u}</span>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <span style="font-size:9px;">Ver otros</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" ${permisos[u]?'checked':''} onchange="togglePermiso('${u}')">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>`;
-            });
-            // Resumen global
+            const pc=document.getElementById('permisosContainer');pc.innerHTML='';
+            ['MAU','MD','CP','JB'].forEach(u=>{pc.innerHTML+=`<div class="permiso-row"><span style="font-weight:600;">👤 ${u}</span><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:9px;">Ver otros</span><label class="toggle-switch"><input type="checkbox" ${permisos[u]?'checked':''} onchange="togglePermiso('${u}')"><span class="toggle-slider"></span></label></div></div>`;});
             actualizarResumenGlobal();
         }
-
-        function togglePermiso(user){
-            permisos[user]=!permisos[user];
-            localStorage.setItem('adminPermisos',JSON.stringify(permisos));
-            notify('✅ Permiso de '+user+' actualizado');
-        }
-
-        function actualizarResumenGlobal(){
-            const rg=document.getElementById('resumenGlobal');
-            let html='';
-            ['MAU','MD','CP','JB'].forEach(u=>{
-                const opsU=loadLocal(u);
-                const total=opsU.reduce((s,o)=>s+(o.resultBs||0),0);
-                html+=`<div class="permiso-row"><span>👤 ${u}</span><span>${opsU.length} ops | Bs ${total.toFixed(0)}</span></div>`;
-            });
-            rg.innerHTML=html;
-        }
-
-        async function verHistorialGlobal(){
-            let todas=[];
-            for(const u of ['MAU','MD','CP','JB']){
-                const opsU=loadLocal(u);
-                todas=todas.concat(opsU.map(o=>({...o,inv:u})));
-            }
-            ops=todas.sort((a,b)=>b.id-a.id);
-            renderAll();
-            switchBottom('history');
-            notify('📋 Mostrando historial de TODOS los usuarios');
-        }
-
-        function cambiarClave(){
-            const user=document.getElementById('adminUserSelect').value;
-            const nueva=document.getElementById('adminNewPass').value;
-            if(!nueva){notify('Ingrese nueva clave','error');return;}
-            USUARIOS[user]=nueva;
-            notify('✅ Clave de '+user+' cambiada a: '+nueva);
-            document.getElementById('adminNewPass').value='';
-        }
-
-        function purgarTodoAdmin(){
-            if(!confirm('⚠️ ¿Purgar TODOS los datos de TODOS los usuarios? Esta acción NO se puede deshacer.'))return;
-            ['MAU','MD','CP','JB'].forEach(u=>{localStorage.removeItem('arbOps_'+u);});
-            ops=[];saveLocal();renderAll();
-            notify('💥 Todos los datos han sido purgados');
-        }
-
-        function exportarTodoCSV(){
-            let csv='Usuario,Fecha,Etapa,MI Bs,MI $,Result Bs,Result $,Tipo\n';
-            ['MAU','MD','CP','JB'].forEach(u=>{
-                const opsU=loadLocal(u);
-                opsU.forEach(o=>{csv+=`${u},${o.fecha},${o.etapa},${o.miBs||0},${o.miUsd||0},${o.resultBs||0},${o.resultUsd||0},${o.tipo||''}\n`;});
-            });
-            downloadBlob(csv,'historial_global.csv','text/csv');
-            notify('📥 CSV Global exportado');
-        }
-
-        function exportarTodoJSON(){
-            const data={};
-            ['MAU','MD','CP','JB'].forEach(u=>{data[u]=loadLocal(u);});
-            downloadBlob(JSON.stringify(data,null,2),'backup_global.json','application/json');
-            notify('📥 JSON Global exportado');
-        }
+        function togglePermiso(user){permisos[user]=!permisos[user];localStorage.setItem('adminPermisos',JSON.stringify(permisos));notify('✅ Permiso actualizado');}
+        function actualizarResumenGlobal(){const rg=document.getElementById('resumenGlobal');let html='';['MAU','MD','CP','JB'].forEach(u=>{const opsU=loadLocal(u);const total=opsU.reduce((s,o)=>s+(o.resultBs||0),0);html+=`<div class="permiso-row"><span>👤 ${u}</span><span>${opsU.length} ops | Bs ${total.toFixed(0)}</span></div>`;});rg.innerHTML=html;}
+        async function verHistorialGlobal(){let todas=[];for(const u of['MAU','MD','CP','JB']){const opsU=loadLocal(u);todas=todas.concat(opsU.map(o=>({...o,inv:u})));}ops=todas.sort((a,b)=>b.id-a.id);renderAll();switchBottom('history');notify('📋 Historial global');}
+        function cambiarClave(){const u=document.getElementById('adminUserSelect').value;const n=document.getElementById('adminNewPass').value;if(!n){notify('Ingrese nueva clave','error');return;}USUARIOS[u]=n;notify('✅ Clave cambiada');document.getElementById('adminNewPass').value='';}
+        function purgarTodoAdmin(){if(!confirm('⚠️ ¿Purgar TODOS los datos?'))return;['MAU','MD','CP','JB'].forEach(u=>{localStorage.removeItem('arbOps_'+u);});ops=[];saveLocal();renderAll();notify('💥 Purgado');}
+        function exportarTodoCSV(){let csv='Usuario,Fecha,Etapa,MI Bs,MI $,Result Bs,Result $,Tipo\n';['MAU','MD','CP','JB'].forEach(u=>{const opsU=loadLocal(u);opsU.forEach(o=>{csv+=`${u},${o.fecha},${o.etapa},${o.miBs||0},${o.miUsd||0},${o.resultBs||0},${o.resultUsd||0},${o.tipo||''}\n`;});});downloadBlob(csv,'historial_global.csv','text/csv');notify('📥 CSV exportado');}
+        function exportarTodoJSON(){const data={};['MAU','MD','CP','JB'].forEach(u=>{data[u]=loadLocal(u);});downloadBlob(JSON.stringify(data,null,2),'backup_global.json','application/json');notify('📥 JSON exportado');}
 
         // ============ CÁLCULOS ============
         function calcStage(s){if(s===1)return calcEtapa1();if(s===2)return calcEtapa2();if(s===3)return calcEtapa3();}
@@ -421,7 +292,7 @@
         function passToNext(s){const r=calcStage(s);if(!r){notify('⚠️ Primero CALCULAR','error');return;}if(s===1){document.getElementById('s2_mi_valor').value=(r.usd||0).toFixed(4);document.getElementById('s2_moneda').value='$';document.getElementById('s2_moneda_bs').classList.remove('active');document.getElementById('s2_moneda_usd').classList.add('active');document.getElementById('s2_inv').value=document.getElementById('s1_inv').value;notify('🔄 $'+(r.usd||0).toFixed(2)+' → Etapa 2');}else if(s===2){document.getElementById('s3_mi_valor').value=(r.neto||0).toFixed(4);document.getElementById('s3_moneda').value='$';document.getElementById('s3_moneda_bs').classList.remove('active');document.getElementById('s3_moneda_usd').classList.add('active');document.getElementById('s3_inv').value=document.getElementById('s2_inv').value;notify('🔄 '+(r.neto||0).toFixed(4)+' USDT → Etapa 3');}else{document.getElementById('s1_mi_valor').value=(r.correrBs||r.ventaBs||0).toFixed(2);document.getElementById('s1_moneda').value='Bs';document.getElementById('s1_moneda_bs').classList.add('active');document.getElementById('s1_moneda_usd').classList.remove('active');document.getElementById('s1_inv').value=document.getElementById('s3_inv').value;notify('🔄 Bs '+(r.correrBs||r.ventaBs||0).toFixed(2)+' → Etapa 1');}}
 
         function delOp(id){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Eliminar?'))return;ops=ops.filter(o=>o.id!==id);saveLocal();renderAll();notify('🗑️ Eliminada');}
-        function clearAll(){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Purgar datos de '+currentUser+'?'))return;ops=[];saveLocal();renderAll();notify('💥 Purgado');}
+        function clearAll(){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Purgar?'))return;ops=[];saveLocal();renderAll();notify('💥 Purgado');}
 
         function renderAll(){renderHist();renderKPIs();}
         function renderHist(){const tb=document.getElementById('histBody');if(!ops.length){tb.innerHTML='<tr><td colspan="10" style="padding:16px;">Sin datos</td></tr>';return;}tb.innerHTML=ops.map((o,i)=>`<tr><td>${i+1}</td><td>${o.fecha}</td><td><span class="badge-inv badge-s${o.etapa}">E${o.etapa}</span></td><td><span class="badge-inv badge-${o.inv==='MAU'?'MJ':o.inv}">${o.inv}</span></td><td>Bs ${(o.miBs||0).toFixed(2)}</td><td>$ ${(o.miUsd||0).toFixed(2)}</td><td>Bs ${(o.resultBs||0).toFixed(2)}</td><td>$ ${(o.resultUsd||0).toFixed(2)}</td><td>${o.tipo||''}</td><td><button class="btn btn-danger btn-xs" onclick="delOp(${o.id})">✕</button></td></tr>`).reverse().join('');}
@@ -433,17 +304,7 @@
 
         function exportCSV(){let csv='Fecha,Etapa,Inversor,MI Bs,MI $,Result Bs,Result $,Tipo\n';ops.forEach(o=>{csv+=`${o.fecha},${o.etapa},${o.inv},${o.miBs||0},${o.miUsd||0},${o.resultBs||0},${o.resultUsd||0},${o.tipo||''}\n`;});downloadBlob(csv,'historial.csv','text/csv');}
         function downloadBlob(d,n,t){const b=new Blob(['\ufeff'+d],{type:t});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();}
-        function switchBottom(tab){
-            document.querySelectorAll('.bottom-tab').forEach(t=>t.classList.remove('active'));
-            document.querySelectorAll('.bottom-content').forEach(c=>c.classList.remove('active'));
-            if(event&&event.target)event.target.classList.add('active');
-            else{document.querySelector(`.bottom-tab[onclick*="${tab}"]`)?.classList.add('active');}
-            const content=document.getElementById('bot-'+tab);
-            if(content)content.classList.add('active');
-            if(tab==='analytics')renderCharts();
-            if(tab==='kpis')renderKPIs();
-            if(tab==='admin')renderAdminPanel();
-        }
+        function switchBottom(tab){document.querySelectorAll('.bottom-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.bottom-content').forEach(c=>c.classList.remove('active'));if(event&&event.target)event.target.classList.add('active');else{const btn=document.querySelector(`.bottom-tab[onclick*="${tab}"]`);if(btn)btn.classList.add('active');}const content=document.getElementById('bot-'+tab);if(content)content.classList.add('active');if(tab==='analytics')renderCharts();if(tab==='kpis')renderKPIs();if(tab==='admin')renderAdminPanel();}
         function notify(m,t='success'){const n=document.createElement('div');n.className='notification '+t;n.textContent=m;document.body.appendChild(n);setTimeout(()=>n.remove(),2000);}
 
         async function syncRates(silent=false){try{const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');const d=await r.json();if(d?.promedio){const t=parseFloat(d.promedio).toFixed(2);tasasCache.bcv=t;document.getElementById('hBCV').textContent='Bs '+t;document.getElementById('dotBCV').className='dot live';const s1tc=document.getElementById('s1_tc_valor');if(s1tc&&!s1tc.value)s1tc.value=t;}}catch(e){document.getElementById('dotBCV').className='dot offline';}try{const proxy='https://corsproxy.io/?';const url='https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';const base={asset:'USDT',fiat:'VES',merchantCheck:false,page:1,rows:3};const[r1,r2]=await Promise.all([fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'SELL'})}),fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'BUY'})})]);const d1=await r1.json(),d2=await r2.json();if(d1?.data?.length){const t=parseFloat(d1.data[0].adv.price).toFixed(2);tasasCache.binanceCompra=t;document.getElementById('hBinCompra').textContent='Bs '+t;}if(d2?.data?.length){const t=parseFloat(d2.data[0].adv.price).toFixed(2);tasasCache.binanceVenta=t;document.getElementById('hBinVenta').textContent='Bs '+t;document.getElementById('dotBin').className='dot live';const s3tv=document.getElementById('s3_tv_valor');if(s3tv&&!s3tv.value)s3tv.value=t;}}catch(e){document.getElementById('dotBin').className='dot offline';}if(!silent)notify('✅ Tasas actualizadas');}
@@ -451,10 +312,10 @@
         async function init(){
             const savedTheme=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('themeBtn').textContent=savedTheme==='dark'?'🌙':'☀️';
             const today=new Date().toISOString().split('T')[0];['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).value=today;});
-            document.getElementById('renderUrlInput').value=renderUrl;
             ['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=currentUser;});
             updateAdminTabs();
-            await loadOps();await testRenderConnection();await syncRates(true);
+            await loadOps();
+            await syncRates(true);
             setInterval(()=>syncRates(true),300000);
         }
         init();
