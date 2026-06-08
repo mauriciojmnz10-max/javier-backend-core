@@ -3,46 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v18 | Modo Claro/Oscuro + Enter + Usuario Auto</title>
+    <title>ArbitrajePro v19 | Panel Admin + Permisos</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        /* ============ TEMAS ============ */
         :root {
-            --bg-main: #0b0f19;
-            --bg-surface: #121824;
-            --bg-card: #1a2336;
-            --border-color: #26354a;
-            --text-primary: #f0f4f8;
-            --text-secondary: #7a8fa8;
-            --primary: #4361ee;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --info: #06b6d4;
-            --stage-1: #4361ee;
-            --stage-2: #7c3aed;
-            --stage-3: #db2777;
+            --bg-main: #0b0f19; --bg-surface: #121824; --bg-card: #1a2336;
+            --border-color: #26354a; --text-primary: #f0f4f8; --text-secondary: #7a8fa8;
+            --primary: #4361ee; --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --info: #06b6d4;
+            --stage-1: #4361ee; --stage-2: #7c3aed; --stage-3: #db2777;
         }
         [data-theme="light"] {
-            --bg-main: #f8fafc;
-            --bg-surface: #ffffff;
-            --bg-card: #f1f5f9;
-            --border-color: #cbd5e1;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --primary: #3b82f6;
-            --success: #059669;
-            --danger: #dc2626;
-            --warning: #d97706;
-            --info: #0891b2;
-            --stage-1: #3b82f6;
-            --stage-2: #7c3aed;
-            --stage-3: #db2777;
+            --bg-main: #f8fafc; --bg-surface: #ffffff; --bg-card: #f1f5f9;
+            --border-color: #cbd5e1; --text-primary: #0f172a; --text-secondary: #475569;
+            --primary: #3b82f6; --success: #059669; --danger: #dc2626; --warning: #d97706; --info: #0891b2;
+            --stage-1: #3b82f6; --stage-2: #7c3aed; --stage-3: #db2777;
         }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
         body { background:var(--bg-main); color:var(--text-primary); min-height:100vh; padding:16px; transition:background 0.3s, color 0.3s; }
-        .app-container { max-width:1300px; margin:0 auto; background:var(--bg-surface); border:1px solid var(--border-color); border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,0.3); overflow:hidden; padding-bottom:50px; transition:background 0.3s; }
-        .app-header { background:var(--bg-card); border-bottom:1px solid var(--border-color); padding:14px 22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; transition:background 0.3s; }
+        .app-container { max-width:1300px; margin:0 auto; background:var(--bg-surface); border:1px solid var(--border-color); border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,0.3); overflow:hidden; padding-bottom:50px; }
+        .app-header { background:var(--bg-card); border-bottom:1px solid var(--border-color); padding:14px 22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
         .header-left { display:flex; align-items:center; gap:16px; }
         .header-left h1 { font-size:19px; font-weight:700; display:flex; align-items:center; gap:8px; }
         .user-selector { display:flex; align-items:center; gap:6px; background:var(--bg-main); border:1px solid var(--border-color); padding:7px 12px; border-radius:22px; font-size:12px; }
@@ -50,121 +29,108 @@
         .header-right { display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:11px; }
         .market-badge { background:var(--bg-main); border:1px solid var(--border-color); padding:6px 10px; border-radius:16px; font-size:10px; display:flex; align-items:center; gap:5px; }
         .dot { width:7px; height:7px; border-radius:50%; animation:pulse 2s infinite; }
-        .dot.live { background:var(--success); }
-        .dot.offline { background:var(--danger); }
+        .dot.live { background:var(--success); } .dot.offline { background:var(--danger); }
         @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
         .btn { padding:8px 14px; border:none; border-radius:8px; cursor:pointer; font-weight:600; font-size:11px; transition:all 0.2s; text-transform:uppercase; white-space:nowrap; letter-spacing:0.3px; }
         .btn:hover { filter:brightness(1.15); transform:translateY(-1px); }
         .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
-        .btn-primary { background:var(--primary); color:#fff; }
-        .btn-success { background:var(--success); color:#fff; }
-        .btn-warning { background:var(--warning); color:#fff; }
-        .btn-danger { background:var(--danger); color:#fff; }
+        .btn-primary { background:var(--primary); color:#fff; } .btn-success { background:var(--success); color:#fff; }
+        .btn-warning { background:var(--warning); color:#fff; } .btn-danger { background:var(--danger); color:#fff; }
         .btn-outline { background:transparent; border:1px solid var(--border-color); color:var(--text-primary); }
         .btn-calc { background:var(--info); color:#fff; font-size:13px; padding:10px; width:100%; margin-top:8px; }
         .btn-theme { background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:16px; padding:6px 10px; border-radius:50%; cursor:pointer; width:38px; height:38px; display:flex; align-items:center; justify-content:center; }
-        .btn-sm { padding:5px 10px; font-size:10px; }
-        .btn-xs { padding:3px 7px; font-size:8px; }
+        .btn-admin { background:var(--danger); color:#fff; font-weight:700; }
+        .btn-sm { padding:5px 10px; font-size:10px; } .btn-xs { padding:3px 7px; font-size:8px; }
         .main-content { padding:16px; }
-        .flow-bar { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:18px; padding:10px 14px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; flex-wrap:wrap; font-size:10px; color:var(--text-secondary); transition:background 0.3s; }
+        .flow-bar { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:18px; padding:10px 14px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; flex-wrap:wrap; font-size:10px; color:var(--text-secondary); }
         .flow-step-mini { padding:5px 10px; border-radius:6px; font-weight:600; font-size:9px; background:var(--bg-main); }
-        .flow-step-mini.active { background:var(--primary); color:#fff; }
-        .flow-step-mini.completed { background:var(--success); color:#fff; }
+        .flow-step-mini.active { background:var(--primary); color:#fff; } .flow-step-mini.completed { background:var(--success); color:#fff; }
         .flow-arrow-mini { color:var(--border-color); font-weight:bold; font-size:14px; }
         .stages-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
-        .stage-col { background:var(--bg-card); border:1px solid var(--border-color); border-radius:14px; padding:16px; position:relative; display:flex; flex-direction:column; transition:background 0.3s; }
+        .stage-col { background:var(--bg-card); border:1px solid var(--border-color); border-radius:14px; padding:16px; position:relative; display:flex; flex-direction:column; }
         .stage-col::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; border-radius:14px 0 0 14px; }
-        .stage-col.s1::before { background:var(--stage-1); }
-        .stage-col.s2::before { background:var(--stage-2); }
-        .stage-col.s3::before { background:var(--stage-3); }
+        .stage-col.s1::before { background:var(--stage-1); } .stage-col.s2::before { background:var(--stage-2); } .stage-col.s3::before { background:var(--stage-3); }
         .stage-col-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--border-color); font-weight:700; font-size:14px; }
         .stage-badge-sm { padding:4px 10px; border-radius:8px; font-size:9px; font-weight:700; }
-        .s1 .stage-badge-sm { background:rgba(67,97,238,0.2); color:var(--stage-1); }
-        .s2 .stage-badge-sm { background:rgba(124,58,237,0.2); color:var(--stage-2); }
-        .s3 .stage-badge-sm { background:rgba(219,39,119,0.2); color:var(--stage-3); }
+        .s1 .stage-badge-sm { background:rgba(67,97,238,0.2); color:var(--stage-1); } .s2 .stage-badge-sm { background:rgba(124,58,237,0.2); color:var(--stage-2); } .s3 .stage-badge-sm { background:rgba(219,39,119,0.2); color:var(--stage-3); }
         .stage-field { margin-bottom:10px; }
         .stage-field label { display:block; font-size:10px; color:var(--text-secondary); margin-bottom:3px; font-weight:600; }
-        .stage-field input,.stage-field select { width:100%; padding:10px 12px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:8px; font-size:15px; color:var(--text-primary); transition:border-color 0.2s; }
+        .stage-field input,.stage-field select { width:100%; padding:10px 12px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:8px; font-size:15px; color:var(--text-primary); }
         .stage-field input:focus,.stage-field select:focus { outline:none; border-color:var(--primary); }
         .stage-field-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-        .input-moneda { display:flex; gap:0; background:var(--bg-main); border:1px solid var(--border-color); border-radius:8px; overflow:hidden; transition:border-color 0.2s; }
+        .input-moneda { display:flex; background:var(--bg-main); border:1px solid var(--border-color); border-radius:8px; overflow:hidden; }
         .input-moneda:focus-within { border-color:var(--primary); }
         .input-moneda input { flex:1; border:none!important; background:transparent!important; padding:10px 12px!important; font-size:15px!important; color:var(--text-primary)!important; border-radius:0!important; min-width:0; }
         .input-moneda input:focus { outline:none; }
         .moneda-selector { display:flex; border-left:1px solid var(--border-color); background:var(--bg-card); }
-        .moneda-btn { padding:10px 14px; border:none; background:transparent; color:var(--text-secondary); cursor:pointer; font-weight:700; font-size:12px; transition:all 0.2s; white-space:nowrap; }
-        .moneda-btn:hover { background:rgba(0,0,0,0.05); }
+        .moneda-btn { padding:10px 14px; border:none; background:transparent; color:var(--text-secondary); cursor:pointer; font-weight:700; font-size:12px; }
         .moneda-btn.active { background:var(--primary); color:#fff; }
-        .stage-result { background:var(--bg-main); padding:10px 12px; border-radius:8px; margin-top:4px; display:flex; justify-content:space-between; align-items:center; font-size:11px; }
         .dual-result { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px; }
         .dual-box { background:var(--bg-main); padding:10px; border-radius:8px; text-align:center; border:1px solid var(--border-color); }
         .dual-box .dual-label { font-size:9px; color:var(--text-secondary); text-transform:uppercase; margin-bottom:3px; font-weight:600; }
         .dual-box .dual-value { font-size:17px; font-weight:700; }
-        .dual-box.bs { border-left:3px solid var(--warning); }
-        .dual-box.usd { border-left:3px solid var(--info); }
-        .dual-box.bs .dual-value { color:var(--warning); }
-        .dual-box.usd .dual-value { color:var(--info); }
+        .dual-box.bs { border-left:3px solid var(--warning); } .dual-box.usd { border-left:3px solid var(--info); }
+        .dual-box.bs .dual-value { color:var(--warning); } .dual-box.usd .dual-value { color:var(--info); }
         .stage-actions { display:flex; gap:6px; margin-top:auto; padding-top:12px; }
         .stage-actions .btn { flex:1; font-size:10px; padding:8px 10px; }
         .stage-inherit { font-size:9px; color:var(--warning); text-align:center; margin-top:6px; display:none; font-weight:600; }
         .stage-inherit.show { display:block; }
-        .bottom-tabs { display:flex; gap:4px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:4px; flex-wrap:wrap; transition:background 0.3s; }
-        .bottom-tab { flex:1; min-width:60px; padding:8px 10px; border:none; background:transparent; color:var(--text-secondary); border-radius:7px; cursor:pointer; font-weight:600; font-size:10px; text-align:center; transition:all 0.2s; }
+        .bottom-tabs { display:flex; gap:4px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:4px; flex-wrap:wrap; }
+        .bottom-tab { flex:1; min-width:50px; padding:8px 8px; border:none; background:transparent; color:var(--text-secondary); border-radius:7px; cursor:pointer; font-weight:600; font-size:9px; text-align:center; }
         .bottom-tab:hover { background:rgba(0,0,0,0.05); }
         .bottom-tab.active { background:var(--primary); color:#fff; }
+        .bottom-tab.admin-tab { background:rgba(239,68,68,0.15); color:var(--danger); }
         .bottom-content { display:none; margin-top:12px; }
         .bottom-content.active { display:block; }
         .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-        .kpi-box { background:var(--bg-card); border:1px solid var(--border-color); padding:14px; border-radius:10px; text-align:center; transition:background 0.3s; }
-        .kpi-box .kpi-label { font-size:9px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; }
+        .kpi-box { background:var(--bg-card); border:1px solid var(--border-color); padding:14px; border-radius:10px; text-align:center; }
+        .kpi-box .kpi-label { font-size:9px; color:var(--text-secondary); text-transform:uppercase; }
         .kpi-box .kpi-val { font-size:22px; font-weight:700; margin-top:4px; }
-        .kpi-box.spread .kpi-val { color:var(--primary); }
-        .kpi-box.roi .kpi-val { color:var(--success); }
-        .kpi-box.rot .kpi-val { color:var(--warning); }
+        .kpi-box.spread .kpi-val { color:var(--primary); } .kpi-box.roi .kpi-val { color:var(--success); } .kpi-box.rot .kpi-val { color:var(--warning); }
         .history-table-wrap { overflow-x:auto; max-height:350px; border-radius:10px; }
         table { width:100%; border-collapse:collapse; font-size:10px; min-width:900px; }
         th { background:var(--bg-card); color:var(--text-secondary); padding:8px 6px; font-size:9px; text-transform:uppercase; border-bottom:1px solid var(--border-color); position:sticky; top:0; z-index:5; }
         td { padding:7px 5px; text-align:center; border-bottom:1px solid rgba(128,128,128,0.2); }
         tr:hover td { background:rgba(128,128,128,0.05); }
         .badge-inv { padding:2px 7px; border-radius:4px; font-weight:700; font-size:9px; color:#fff; }
-        .badge-MD { background:#2563eb; }
-        .badge-CP { background:#7c3aed; }
-        .badge-JB { background:#db2777; }
-        .badge-MJ { background:#10b981; }
-        .badge-MAU { background:#10b981; }
-        .badge-s1 { background:var(--stage-1); }
-        .badge-s2 { background:var(--stage-2); }
-        .badge-s3 { background:var(--stage-3); }
-        .simple-card { background:var(--bg-card); border:1px solid var(--border-color); padding:16px; border-radius:10px; margin-bottom:8px; transition:background 0.3s; }
+        .badge-MD { background:#2563eb; } .badge-CP { background:#7c3aed; } .badge-JB { background:#db2777; }
+        .badge-MJ { background:#10b981; } .badge-MAU { background:#10b981; }
+        .badge-s1 { background:var(--stage-1); } .badge-s2 { background:var(--stage-2); } .badge-s3 { background:var(--stage-3); }
+        .simple-card { background:var(--bg-card); border:1px solid var(--border-color); padding:16px; border-radius:10px; margin-bottom:8px; }
         .simple-card h4 { font-size:13px; margin-bottom:6px; }
         .simple-card p { font-size:10px; color:var(--text-secondary); margin-bottom:8px; }
         .simple-card input { width:100%; padding:8px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); font-size:11px; margin-bottom:6px; }
+        .admin-panel { border:2px solid var(--danger); }
+        .admin-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .permiso-row { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--bg-main); border-radius:8px; margin-bottom:4px; }
+        .toggle-switch { position:relative; width:44px; height:22px; }
+        .toggle-switch input { opacity:0; width:0; height:0; }
+        .toggle-slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:var(--border-color); border-radius:22px; transition:0.3s; }
+        .toggle-slider:before { position:absolute; content:""; height:16px; width:16px; left:3px; bottom:3px; background:white; border-radius:50%; transition:0.3s; }
+        .toggle-switch input:checked + .toggle-slider { background:var(--success); }
+        .toggle-switch input:checked + .toggle-slider:before { transform:translateX(22px); }
         .notification { position:fixed; top:16px; right:16px; padding:10px 16px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; z-index:2000; font-weight:600; font-size:11px; animation:slideIn 0.3s ease; }
-        .notification.success { border-left:4px solid var(--success); }
-        .notification.error { border-left:4px solid var(--danger); }
-        .notification.info { border-left:4px solid var(--info); }
+        .notification.success { border-left:4px solid var(--success); } .notification.error { border-left:4px solid var(--danger); } .notification.info { border-left:4px solid var(--info); }
         @keyframes slideIn { from{transform:translateX(100%);opacity:0;} to{transform:translateX(0);opacity:1;} }
-        @media(max-width:1000px){ .stages-grid{grid-template-columns:1fr;} }
+        @media(max-width:1000px){ .stages-grid{grid-template-columns:1fr;} .admin-grid{grid-template-columns:1fr;} }
     </style>
 </head>
 <body>
     <div class="app-container">
         <div class="app-header">
             <div class="header-left">
-                <h1><span>💱</span> ArbitrajePro v18</h1>
+                <h1><span>💱</span> ArbitrajePro v19</h1>
                 <div class="user-selector">
                     <span>👤</span>
                     <select id="headerUser" onchange="switchUser()">
-                        <option value="MAU">MAU</option>
-                        <option value="MD">MD</option>
-                        <option value="CP">CP</option>
-                        <option value="JB">JB</option>
+                        <option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option>
                         <option value="Admin">🔑 Admin</option>
                     </select>
                 </div>
+                <span id="adminBadge" style="display:none;background:var(--danger);color:#fff;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;">ADMIN</span>
             </div>
             <div class="header-right">
-                <button class="btn btn-theme" onclick="toggleTheme()" title="Cambiar modo claro/oscuro" id="themeBtn">🌙</button>
+                <button class="btn btn-theme" onclick="toggleTheme()" id="themeBtn">🌙</button>
                 <span id="syncStatus" style="font-size:10px;color:var(--success);">💾 Local</span>
                 <div class="market-badge"><span class="dot live" id="dotBCV"></span>BCV:<strong id="hBCV">--</strong></div>
                 <div class="market-badge"><span class="dot live" id="dotBin"></span>P2P:<strong id="hBinCompra">--</strong>/<strong id="hBinVenta">--</strong></div>
@@ -187,116 +153,115 @@
                     <div class="stage-col-header">🏦 Etapa 1: Compra BDV <span class="stage-badge-sm">Bs → $</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s1_fecha" data-next="s1_inv"></div>
                     <div class="stage-field"><label>👤 Inversor</label><select id="s1_inv" data-next="s1_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💰 Monto Inicial en BDV</label><div class="input-moneda"><input type="number" id="s1_mi_valor" step="0.01" placeholder="0.00" onfocus="this.select()" data-next="s1_tc_valor"><div class="moneda-selector"><button class="moneda-btn active" id="s1_moneda_bs" onclick="setMoneda(1,'Bs')">Bs</button><button class="moneda-btn" id="s1_moneda_usd" onclick="setMoneda(1,'$')">$</button></div></div><input type="hidden" id="s1_moneda" value="Bs"></div>
-                    <div class="stage-field"><label>💵 Tasa de Compra (Bs/$)</label><div class="input-moneda"><input type="number" id="s1_tc_valor" step="0.01" placeholder="0.00" onfocus="this.select()" data-next="s1_calc_btn"><div class="moneda-selector"><button class="moneda-btn active" id="s1_tc_moneda_bs" onclick="setMonedaTC(1,'Bs')">Bs</button><button class="moneda-btn" id="s1_tc_moneda_usd" onclick="setMonedaTC(1,'$')">$</button></div></div><input type="hidden" id="s1_tc_moneda" value="Bs"></div>
+                    <div class="stage-field"><label>💰 Monto Inicial en BDV</label><div class="input-moneda"><input type="number" id="s1_mi_valor" step="0.01" onfocus="this.select()" data-next="s1_tc_valor"><div class="moneda-selector"><button class="moneda-btn active" id="s1_moneda_bs" onclick="setMoneda(1,'Bs')">Bs</button><button class="moneda-btn" id="s1_moneda_usd" onclick="setMoneda(1,'$')">$</button></div></div><input type="hidden" id="s1_moneda" value="Bs"></div>
+                    <div class="stage-field"><label>💵 Tasa de Compra (Bs/$)</label><div class="input-moneda"><input type="number" id="s1_tc_valor" step="0.01" onfocus="this.select()" data-next="s1_calc_btn"><div class="moneda-selector"><button class="moneda-btn active" id="s1_tc_moneda_bs" onclick="setMonedaTC(1,'Bs')">Bs</button><button class="moneda-btn" id="s1_tc_moneda_usd" onclick="setMonedaTC(1,'$')">$</button></div></div><input type="hidden" id="s1_tc_moneda" value="Bs"></div>
                     <button class="btn btn-calc" id="s1_calc_btn" onclick="calcStage(1)">📊 CALCULAR</button>
                     <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Monto en Bs</div><div class="dual-value" id="s1_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">Monto en $</div><div class="dual-value" id="s1_result_usd">$ 0.00</div></div></div></div>
-                    <div class="stage-actions">
-                        <button class="btn btn-success" id="s1_save" onclick="saveStage(1)" disabled>💾 Guardar</button>
-                        <button class="btn btn-primary" onclick="passToNext(1)">🔄 Pasar → E2</button>
-                    </div>
-                    <div class="stage-inherit" id="s1_inherit">↑ Heredado de Etapa 3</div>
+                    <div class="stage-actions"><button class="btn btn-success" id="s1_save" onclick="saveStage(1)" disabled>💾 Guardar</button><button class="btn btn-primary" onclick="passToNext(1)">🔄 Pasar → E2</button></div>
                 </div>
                 <!-- ETAPA 2 -->
                 <div class="stage-col s2">
                     <div class="stage-col-header">💱 Etapa 2: Transferencia <span class="stage-badge-sm">$ → USDT</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s2_fecha" data-next="s2_inv"></div>
                     <div class="stage-field"><label>👤 Inversor</label><select id="s2_inv" data-next="s2_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💵 $ BDV Recibidos</label><div class="input-moneda"><input type="number" id="s2_mi_valor" step="0.01" placeholder="0.00" onfocus="this.select()" data-next="s2_bdv"><div class="moneda-selector"><button class="moneda-btn" id="s2_moneda_bs" onclick="setMoneda2(2,'Bs')">Bs</button><button class="moneda-btn active" id="s2_moneda_usd" onclick="setMoneda2(2,'$')">$</button></div></div><input type="hidden" id="s2_moneda" value="$"></div>
+                    <div class="stage-field"><label>💵 $ BDV Recibidos</label><div class="input-moneda"><input type="number" id="s2_mi_valor" step="0.01" onfocus="this.select()" data-next="s2_bdv"><div class="moneda-selector"><button class="moneda-btn" id="s2_moneda_bs" onclick="setMoneda2(2,'Bs')">Bs</button><button class="moneda-btn active" id="s2_moneda_usd" onclick="setMoneda2(2,'$')">$</button></div></div><input type="hidden" id="s2_moneda" value="$"></div>
                     <div class="stage-field-row"><div class="stage-field"><label>🏦 %C BDV</label><input type="number" id="s2_bdv" value="3.0" step="0.01" onfocus="this.select()" data-next="s2_bpay"></div><div class="stage-field"><label>💳 %C BPAY</label><input type="number" id="s2_bpay" value="3.6" step="0.01" onfocus="this.select()" data-next="s2_calc_btn"></div></div>
                     <button class="btn btn-calc" id="s2_calc_btn" onclick="calcStage(2)">📊 CALCULAR</button>
                     <div style="margin-top:4px;"><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);"><span>🏦 -BDV: <b id="s2_mbdv" style="color:var(--danger);">-$0.00</b></span><span>💳 -BPAY: <b id="s2_mbpay" style="color:var(--danger);">-$0.00</b></span></div></div>
                     <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Equiv. Bs</div><div class="dual-value" id="s2_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">USDT</div><div class="dual-value" id="s2_result_usd">0.0000</div></div></div></div>
-                    <div class="stage-actions">
-                        <button class="btn btn-success" id="s2_save" onclick="saveStage(2)" disabled>💾 Guardar</button>
-                        <button class="btn btn-primary" onclick="passToNext(2)">🔄 Pasar → E3</button>
-                    </div>
-                    <div class="stage-inherit" id="s2_inherit">↑ Heredado de Etapa 1</div>
+                    <div class="stage-actions"><button class="btn btn-success" id="s2_save" onclick="saveStage(2)" disabled>💾 Guardar</button><button class="btn btn-primary" onclick="passToNext(2)">🔄 Pasar → E3</button></div>
                 </div>
                 <!-- ETAPA 3 -->
                 <div class="stage-col s3">
                     <div class="stage-col-header">💎 Etapa 3: Venta P2P <span class="stage-badge-sm">USDT → Bs</span></div>
                     <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s3_fecha" data-next="s3_inv"></div>
                     <div class="stage-field"><label>👤 Inversor</label><select id="s3_inv" data-next="s3_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💎 USDT en Binance</label><div class="input-moneda"><input type="number" id="s3_mi_valor" step="0.0001" placeholder="0.0000" onfocus="this.select()" data-next="s3_tv_valor"><div class="moneda-selector"><button class="moneda-btn" id="s3_moneda_bs" onclick="setMoneda3(3,'Bs')">Bs</button><button class="moneda-btn active" id="s3_moneda_usd" onclick="setMoneda3(3,'$')">$</button></div></div><input type="hidden" id="s3_moneda" value="$"></div>
-                    <div class="stage-field"><label>📈 Tasa de Venta (Bs)</label><div class="input-moneda"><input type="number" id="s3_tv_valor" step="0.01" placeholder="0.00" onfocus="this.select()" data-next="s3_calc_btn"><div class="moneda-selector"><button class="moneda-btn active" id="s3_tv_moneda_bs" onclick="setMonedaTV(3,'Bs')">Bs</button><button class="moneda-btn" id="s3_tv_moneda_usd" onclick="setMonedaTV(3,'$')">$</button></div></div><input type="hidden" id="s3_tv_moneda" value="Bs"></div>
+                    <div class="stage-field"><label>💎 USDT en Binance</label><div class="input-moneda"><input type="number" id="s3_mi_valor" step="0.0001" onfocus="this.select()" data-next="s3_tv_valor"><div class="moneda-selector"><button class="moneda-btn" id="s3_moneda_bs" onclick="setMoneda3(3,'Bs')">Bs</button><button class="moneda-btn active" id="s3_moneda_usd" onclick="setMoneda3(3,'$')">$</button></div></div><input type="hidden" id="s3_moneda" value="$"></div>
+                    <div class="stage-field"><label>📈 Tasa de Venta (Bs)</label><div class="input-moneda"><input type="number" id="s3_tv_valor" step="0.01" onfocus="this.select()" data-next="s3_calc_btn"><div class="moneda-selector"><button class="moneda-btn active" id="s3_tv_moneda_bs" onclick="setMonedaTV(3,'Bs')">Bs</button><button class="moneda-btn" id="s3_tv_moneda_usd" onclick="setMonedaTV(3,'$')">$</button></div></div><input type="hidden" id="s3_tv_moneda" value="Bs"></div>
                     <button class="btn btn-calc" id="s3_calc_btn" onclick="calcStage(3)">📊 CALCULAR</button>
                     <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Venta Bs</div><div class="dual-value" id="s3_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">Equiv. $</div><div class="dual-value" id="s3_result_usd">$ 0.00</div></div></div></div>
-                    <div style="margin-top:6px;background:var(--bg-main);padding:10px;border-radius:8px;border:2px solid var(--success);text-align:center;">
-                        <div style="font-size:9px;color:var(--text-secondary);">🔄 SALDO PARA CORRER</div>
-                        <div class="dual-result" style="margin-top:4px;"><div class="dual-box bs"><div class="dual-label">Bs</div><div class="dual-value" id="s3_correr_bs" style="color:var(--warning);">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">$</div><div class="dual-value" id="s3_correr_usd" style="color:var(--info);">$ 0.00</div></div></div>
-                    </div>
-                    <div class="stage-actions">
-                        <button class="btn btn-success" id="s3_save" onclick="saveStage(3)" disabled>💾 Guardar</button>
-                        <button class="btn btn-warning" onclick="passToNext(3)">🔄 Volver → E1</button>
-                    </div>
-                    <div class="stage-inherit" id="s3_inherit">↑ Heredado de Etapa 2</div>
+                    <div style="margin-top:6px;background:var(--bg-main);padding:10px;border-radius:8px;border:2px solid var(--success);text-align:center;"><div style="font-size:9px;color:var(--text-secondary);">🔄 SALDO PARA CORRER</div><div class="dual-result" style="margin-top:4px;"><div class="dual-box bs"><div class="dual-label">Bs</div><div class="dual-value" id="s3_correr_bs" style="color:var(--warning);">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">$</div><div class="dual-value" id="s3_correr_usd" style="color:var(--info);">$ 0.00</div></div></div></div>
+                    <div class="stage-actions"><button class="btn btn-success" id="s3_save" onclick="saveStage(3)" disabled>💾 Guardar</button><button class="btn btn-warning" onclick="passToNext(3)">🔄 Volver → E1</button></div>
                 </div>
             </div>
-            <div class="bottom-tabs">
+            <div class="bottom-tabs" id="bottomTabs">
                 <button class="bottom-tab active" onclick="switchBottom('kpis')">📈 KPIs</button>
-                <button class="bottom-tab" onclick="switchBottom('sim')">🔮 Simulador</button>
-                <button class="bottom-tab" onclick="switchBottom('analytics')">📊 Analytics</button>
-                <button class="bottom-tab" onclick="switchBottom('history')">📋 Historial</button>
-                <button class="bottom-tab" onclick="switchBottom('config')">⚙️ Sincronizar</button>
+                <button class="bottom-tab" onclick="switchBottom('sim')">🔮 Sim</button>
+                <button class="bottom-tab" onclick="switchBottom('analytics')">📊 Ana</button>
+                <button class="bottom-tab" onclick="switchBottom('history')">📋 Hist</button>
+                <button class="bottom-tab" onclick="switchBottom('config')">⚙️ Sync</button>
             </div>
-            <div class="bottom-content active" id="bot-kpis">
-                <div class="kpi-row"><div class="kpi-box spread"><div class="kpi-label">Spread Promedio</div><div class="kpi-val" id="kpiSpread">0%</div></div><div class="kpi-box roi"><div class="kpi-label">ROI Acumulado</div><div class="kpi-val" id="kpiRoi">0%</div></div><div class="kpi-box rot"><div class="kpi-label">Rotaciones</div><div class="kpi-val" id="kpiRot">0</div></div></div>
-            </div>
-            <div class="bottom-content" id="bot-sim">
-                <div class="simple-card"><h4>🔮 Proyectar ganancias</h4><p>Simula cuánto ganarías haciendo varios ciclos seguidos</p><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div><label style="font-size:9px;color:var(--text-secondary);">Capital inicial (Bs)</label><input type="number" id="simCap" value="10000" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;color:var(--text-secondary);">Tasa compra $</label><input type="number" id="simTc" value="611" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;color:var(--text-secondary);">Tasa venta USDT</label><input type="number" id="simTv" value="740" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;color:var(--text-secondary);">Ciclos</label><input type="number" id="simCic" value="5" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;color:var(--text-secondary);">% BDV</label><input type="number" id="simBdv" value="3.0" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;color:var(--text-secondary);">% BPAY</label><input type="number" id="simBpay" value="3.6" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div></div><button class="btn btn-primary btn-sm" onclick="runSim()">🔮 Calcular proyección</button><div id="simOut" style="display:none;margin-top:8px;background:var(--bg-main);padding:12px;border-radius:8px;font-size:10px;"></div></div>
-            </div>
+            <div class="bottom-content active" id="bot-kpis"><div class="kpi-row"><div class="kpi-box spread"><div class="kpi-label">Spread Promedio</div><div class="kpi-val" id="kpiSpread">0%</div></div><div class="kpi-box roi"><div class="kpi-label">ROI Acumulado</div><div class="kpi-val" id="kpiRoi">0%</div></div><div class="kpi-box rot"><div class="kpi-label">Rotaciones</div><div class="kpi-val" id="kpiRot">0</div></div></div></div>
+            <div class="bottom-content" id="bot-sim"><div class="simple-card"><h4>🔮 Proyectar ganancias</h4><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div><label style="font-size:9px;">Capital (Bs)</label><input type="number" id="simCap" value="10000" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">Tasa compra</label><input type="number" id="simTc" value="611" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">Tasa venta</label><input type="number" id="simTv" value="740" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">Ciclos</label><input type="number" id="simCic" value="5" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">% BDV</label><input type="number" id="simBdv" value="3.0" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div><div><label style="font-size:9px;">% BPAY</label><input type="number" id="simBpay" value="3.6" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;width:100%;"></div></div><button class="btn btn-primary btn-sm" onclick="runSim()">🔮 Calcular</button><div id="simOut" style="display:none;margin-top:8px;background:var(--bg-main);padding:12px;border-radius:8px;font-size:10px;"></div></div></div>
             <div class="bottom-content" id="bot-analytics"><div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;"><div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="lineChart"></canvas></div><div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="doughnutChart"></canvas></div></div></div>
             <div class="bottom-content" id="bot-history"><div style="display:flex;gap:6px;margin-bottom:6px;"><button class="btn btn-outline btn-xs" onclick="exportCSV()">📥 CSV</button><button class="btn btn-danger btn-xs" onclick="clearAll()">🗑️ Purgar</button></div><div class="history-table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Et</th><th>Inv</th><th>MI Bs</th><th>MI $</th><th>Result Bs</th><th>Result $</th><th>Tipo</th><th>✕</th></tr></thead><tbody id="histBody"></tbody></table></div></div>
-            <div class="bottom-content" id="bot-config"><div class="simple-card"><h4>☁️ Sincronización entre dispositivos</h4><p>Pega aquí la URL de tu servidor Render para sincronizar datos entre todos tus dispositivos:</p><div><label style="font-size:9px;color:var(--text-secondary);">URL de Render</label><input type="text" id="renderUrlInput" placeholder="https://arbitraje-pro.onrender.com/api"></div><button class="btn btn-primary btn-sm" onclick="guardarRenderUrl()" style="margin-top:6px;">💾 Conectar con Render</button><p style="font-size:9px;color:var(--warning);margin-top:6px;">⚠️ Los datos siempre se guardan en este navegador. Con Render se sincronizan entre dispositivos.</p></div></div>
+            <div class="bottom-content" id="bot-config"><div class="simple-card"><h4>☁️ Sincronización</h4><div><label style="font-size:9px;">URL de Render</label><input type="text" id="renderUrlInput" placeholder="https://arbitraje-pro.onrender.com/api"></div><button class="btn btn-primary btn-sm" onclick="guardarRenderUrl()" style="margin-top:6px;">💾 Conectar</button></div></div>
+            <!-- PANEL ADMIN (solo visible para Admin) -->
+            <div class="bottom-content" id="bot-admin">
+                <div class="simple-card admin-panel">
+                    <h4>🔧 Panel de Administración</h4>
+                    <p>Gestiona permisos, usuarios y configuración global del sistema</p>
+                    <div class="admin-grid">
+                        <!-- PERMISOS DE USUARIOS -->
+                        <div class="simple-card">
+                            <h5>👥 Permisos de Usuarios</h5>
+                            <p style="font-size:9px;">Controla qué puede ver cada usuario</p>
+                            <div id="permisosContainer"></div>
+                        </div>
+                        <!-- VISIÓN GLOBAL -->
+                        <div class="simple-card">
+                            <h5>🌍 Visión Global</h5>
+                            <p style="font-size:9px;">Resumen de todos los usuarios</p>
+                            <div id="resumenGlobal" style="font-size:10px;"></div>
+                            <button class="btn btn-outline btn-xs" onclick="verHistorialGlobal()" style="margin-top:8px;">📋 Ver historial de todos</button>
+                            <button class="btn btn-danger btn-xs" onclick="purgarTodoAdmin()" style="margin-top:4px;">🗑️ Purgar TODOS los datos</button>
+                        </div>
+                        <!-- CAMBIAR CLAVES -->
+                        <div class="simple-card">
+                            <h5>🔑 Gestionar Claves</h5>
+                            <div style="display:flex;gap:4px;margin-bottom:4px;">
+                                <select id="adminUserSelect" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;">
+                                    <option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option>
+                                </select>
+                                <input type="password" id="adminNewPass" placeholder="Nueva clave" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;">
+                                <button class="btn btn-primary btn-xs" onclick="cambiarClave()">Cambiar</button>
+                            </div>
+                        </div>
+                        <!-- EXPORTAR TODO -->
+                        <div class="simple-card">
+                            <h5>📥 Exportar Datos</h5>
+                            <button class="btn btn-outline btn-xs" onclick="exportarTodoCSV()">📥 CSV Global</button>
+                            <button class="btn btn-outline btn-xs" onclick="exportarTodoJSON()" style="margin-top:4px;">📥 JSON Global</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script>
+        // ============ CONFIGURACIÓN ============
         const USUARIOS = { 'MAU':'mau123', 'MD':'md123', 'CP':'cp123', 'JB':'jb123', 'Admin':'Mau10' };
+        // Permisos: qué usuarios pueden ver historial de otros
+        let permisos = JSON.parse(localStorage.getItem('adminPermisos') || '{"MAU":false,"MD":false,"CP":false,"JB":false}');
         let currentUser = 'MAU', isAdmin = false, ops = [];
         let renderUrl = localStorage.getItem('renderUrl') || '';
         let lineChart, doughnutChart;
         let tasasCache = { bcv: null, binanceVenta: null };
 
-        // ============ TEMA CLARO/OSCURO ============
+        // ============ TEMA ============
         function toggleTheme(){
-            const html = document.documentElement;
-            const btn = document.getElementById('themeBtn');
-            if(html.getAttribute('data-theme') === 'dark'){
-                html.setAttribute('data-theme', 'light');
-                btn.textContent = '☀️';
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.setAttribute('data-theme', 'dark');
-                btn.textContent = '🌙';
-                localStorage.setItem('theme', 'dark');
-            }
-            if(lineChart) renderCharts();
-            if(doughnutChart) renderCharts();
+            const html=document.documentElement, btn=document.getElementById('themeBtn');
+            if(html.getAttribute('data-theme')==='dark'){html.setAttribute('data-theme','light');btn.textContent='☀️';localStorage.setItem('theme','light');}
+            else{html.setAttribute('data-theme','dark');btn.textContent='🌙';localStorage.setItem('theme','dark');}
+            if(lineChart)renderCharts();if(doughnutChart)renderCharts();
         }
 
-        // ============ ENTER PARA SIGUIENTE CAMPO ============
-        document.addEventListener('keydown', function(e){
-            if(e.key === 'Enter' && e.target.tagName === 'INPUT'){
-                e.preventDefault();
-                const nextId = e.target.getAttribute('data-next');
-                if(nextId){
-                    const nextEl = document.getElementById(nextId);
-                    if(nextEl){
-                        if(nextEl.tagName === 'SELECT'){
-                            nextEl.focus();
-                        } else if(nextEl.closest('.input-moneda')){
-                            const input = nextEl.closest('.input-moneda').querySelector('input');
-                            if(input) input.focus();
-                        } else {
-                            nextEl.focus();
-                        }
-                    }
-                }
-            }
+        // ============ ENTER ============
+        document.addEventListener('keydown',function(e){
+            if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();const n=document.getElementById(e.target.getAttribute('data-next'));if(n){if(n.tagName==='SELECT')n.focus();else if(n.closest('.input-moneda')){const i=n.closest('.input-moneda').querySelector('input');if(i)i.focus();}else n.focus();}}
         });
 
-        // ============ SELECTOR DE MONEDA ============
+        // ============ MONEDA ============
         function setMoneda(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
         function setMonedaTC(s,m){document.getElementById('s'+s+'_tc_moneda').value=m;document.getElementById('s'+s+'_tc_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tc_moneda_usd').classList.toggle('active',m==='$');}
         function setMoneda2(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
@@ -307,25 +272,26 @@
         function guardarRenderUrl(){renderUrl=document.getElementById('renderUrlInput').value.trim();localStorage.setItem('renderUrl',renderUrl);notify('✅ URL guardada');testRenderConnection();}
         async function testRenderConnection(){if(!renderUrl)return;try{const r=await fetch(renderUrl+'/operaciones?user=test');if(r.ok){document.getElementById('syncStatus').textContent='☁️ Render';document.getElementById('syncStatus').style.color='var(--success)';}}catch(e){document.getElementById('syncStatus').textContent='💾 Local';document.getElementById('syncStatus').style.color='var(--warning)';}}
         async function saveToServer(op){if(!renderUrl)return false;try{const r=await fetch(renderUrl+'/operaciones',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(op)});return r.ok;}catch(e){return false;}}
-        async function loadFromServer(){if(!renderUrl)return null;try{const url=isAdmin?renderUrl+'/operaciones?admin=true':renderUrl+'/operaciones?user='+currentUser;const r=await fetch(url);if(r.ok)return await r.json();}catch(e){}return null;}
+        async function loadFromServer(user){if(!renderUrl)return null;try{const url=renderUrl+'/operaciones?user='+(user||currentUser);const r=await fetch(url);if(r.ok)return await r.json();}catch(e){}return null;}
 
-        function getOpsKey(){return 'arbOps_'+currentUser;}
-        function saveLocal(){localStorage.setItem(getOpsKey(),JSON.stringify(ops));}
-        function loadLocal(){return JSON.parse(localStorage.getItem(getOpsKey())||'[]');}
+        function getOpsKey(u){return 'arbOps_'+(u||currentUser);}
+        function saveLocal(u){localStorage.setItem(getOpsKey(u),JSON.stringify(ops));}
+        function loadLocal(u){return JSON.parse(localStorage.getItem(getOpsKey(u))||'[]');}
 
         async function saveStage(s){
             const r=calcStage(s);if(!r)return;
             const op={id:Date.now(),fecha:document.getElementById('s'+s+'_fecha').value||new Date().toISOString().split('T')[0],etapa:s,inv:document.getElementById('s'+s+'_inv').value,miBs:r.miBs||r.bs||r.bsEquiv||r.correrBs||0,miUsd:r.miUsd||r.usd||r.usdBDV||r.usdt||0,resultBs:r.resultBs||r.bs||r.bsEquiv||r.ventaBs||0,resultUsd:r.resultUsd||r.usd||r.neto||r.ventaUsd||0,tipo:s===1?'Compra BDV':s===2?'Transferencia Binance':'Venta P2P'};
             ops.push(op);saveLocal();
-            if(renderUrl){const saved=await saveToServer(op);if(saved){const serverData=await loadFromServer();if(serverData){ops=serverData;saveLocal();}}}
+            if(renderUrl){await saveToServer(op);const sd=await loadFromServer();if(sd){ops=sd;saveLocal();}}
             document.getElementById('s'+s+'_save').disabled=true;renderAll();
             notify(renderUrl?'✅ Guardado (Local + Render)':'✅ Guardado localmente');
         }
 
-        async function loadOps(){
-            const serverData=await loadFromServer();
-            if(serverData&&serverData.length>0){ops=serverData;saveLocal();document.getElementById('syncStatus').textContent='☁️ Render';document.getElementById('syncStatus').style.color='var(--success)';}
-            else{ops=loadLocal();document.getElementById('syncStatus').textContent='💾 Local';document.getElementById('syncStatus').style.color='var(--warning)';}
+        async function loadOps(u){
+            const user=u||currentUser;
+            const serverData=await loadFromServer(user);
+            if(serverData&&serverData.length>0){ops=serverData;saveLocal(user);document.getElementById('syncStatus').textContent='☁️ Render';document.getElementById('syncStatus').style.color='var(--success)';}
+            else{ops=loadLocal(user);document.getElementById('syncStatus').textContent='💾 Local';document.getElementById('syncStatus').style.color='var(--warning)';}
             renderAll();
         }
 
@@ -336,56 +302,159 @@
             if(!clave){document.getElementById('headerUser').value=currentUser;return;}
             if(USUARIOS[selected]===clave){
                 currentUser=selected;isAdmin=(selected==='Admin');
-                // Actualizar campos de inversor
-                ['s1_inv','s2_inv','s3_inv'].forEach(id=>{
-                    const el=document.getElementById(id);
-                    if(el) el.value=selected;
-                });
-                notify('✅ Bienvenido, '+selected);
+                document.getElementById('adminBadge').style.display=isAdmin?'inline':'none';
+                ['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=selected;});
+                updateAdminTabs();
                 await loadOps();
+                notify('✅ Bienvenido, '+selected);
             }else{notify('❌ Clave incorrecta','error');document.getElementById('headerUser').value=currentUser;}
+        }
+
+        function updateAdminTabs(){
+            const tabs=document.getElementById('bottomTabs');
+            // Eliminar pestaña admin si existe
+            const existing=document.getElementById('adminTabBtn');
+            if(existing)existing.remove();
+            const existingContent=document.getElementById('bot-admin');
+            if(existingContent)existingContent.classList.remove('active');
+            
+            if(isAdmin){
+                const btn=document.createElement('button');
+                btn.className='bottom-tab admin-tab';
+                btn.id='adminTabBtn';
+                btn.textContent='🔧 Admin';
+                btn.onclick=function(){switchBottom('admin');};
+                tabs.appendChild(btn);
+                renderAdminPanel();
+            }
+        }
+
+        function renderAdminPanel(){
+            // Permisos
+            const pc=document.getElementById('permisosContainer');
+            pc.innerHTML='';
+            ['MAU','MD','CP','JB'].forEach(u=>{
+                pc.innerHTML+=`
+                    <div class="permiso-row">
+                        <span style="font-weight:600;">👤 ${u}</span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="font-size:9px;">Ver otros</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${permisos[u]?'checked':''} onchange="togglePermiso('${u}')">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>`;
+            });
+            // Resumen global
+            actualizarResumenGlobal();
+        }
+
+        function togglePermiso(user){
+            permisos[user]=!permisos[user];
+            localStorage.setItem('adminPermisos',JSON.stringify(permisos));
+            notify('✅ Permiso de '+user+' actualizado');
+        }
+
+        function actualizarResumenGlobal(){
+            const rg=document.getElementById('resumenGlobal');
+            let html='';
+            ['MAU','MD','CP','JB'].forEach(u=>{
+                const opsU=loadLocal(u);
+                const total=opsU.reduce((s,o)=>s+(o.resultBs||0),0);
+                html+=`<div class="permiso-row"><span>👤 ${u}</span><span>${opsU.length} ops | Bs ${total.toFixed(0)}</span></div>`;
+            });
+            rg.innerHTML=html;
+        }
+
+        async function verHistorialGlobal(){
+            let todas=[];
+            for(const u of ['MAU','MD','CP','JB']){
+                const opsU=loadLocal(u);
+                todas=todas.concat(opsU.map(o=>({...o,inv:u})));
+            }
+            ops=todas.sort((a,b)=>b.id-a.id);
+            renderAll();
+            switchBottom('history');
+            notify('📋 Mostrando historial de TODOS los usuarios');
+        }
+
+        function cambiarClave(){
+            const user=document.getElementById('adminUserSelect').value;
+            const nueva=document.getElementById('adminNewPass').value;
+            if(!nueva){notify('Ingrese nueva clave','error');return;}
+            USUARIOS[user]=nueva;
+            notify('✅ Clave de '+user+' cambiada a: '+nueva);
+            document.getElementById('adminNewPass').value='';
+        }
+
+        function purgarTodoAdmin(){
+            if(!confirm('⚠️ ¿Purgar TODOS los datos de TODOS los usuarios? Esta acción NO se puede deshacer.'))return;
+            ['MAU','MD','CP','JB'].forEach(u=>{localStorage.removeItem('arbOps_'+u);});
+            ops=[];saveLocal();renderAll();
+            notify('💥 Todos los datos han sido purgados');
+        }
+
+        function exportarTodoCSV(){
+            let csv='Usuario,Fecha,Etapa,MI Bs,MI $,Result Bs,Result $,Tipo\n';
+            ['MAU','MD','CP','JB'].forEach(u=>{
+                const opsU=loadLocal(u);
+                opsU.forEach(o=>{csv+=`${u},${o.fecha},${o.etapa},${o.miBs||0},${o.miUsd||0},${o.resultBs||0},${o.resultUsd||0},${o.tipo||''}\n`;});
+            });
+            downloadBlob(csv,'historial_global.csv','text/csv');
+            notify('📥 CSV Global exportado');
+        }
+
+        function exportarTodoJSON(){
+            const data={};
+            ['MAU','MD','CP','JB'].forEach(u=>{data[u]=loadLocal(u);});
+            downloadBlob(JSON.stringify(data,null,2),'backup_global.json','application/json');
+            notify('📥 JSON Global exportado');
         }
 
         // ============ CÁLCULOS ============
         function calcStage(s){if(s===1)return calcEtapa1();if(s===2)return calcEtapa2();if(s===3)return calcEtapa3();}
-        function calcEtapa1(){const miV=parseFloat(document.getElementById('s1_mi_valor').value)||0,miM=document.getElementById('s1_moneda').value,tcV=parseFloat(document.getElementById('s1_tc_valor').value)||0;if(!miV||!tcV){document.getElementById('s1_result_bs').textContent='Bs 0.00';document.getElementById('s1_result_usd').textContent='$ 0.00';document.getElementById('s1_save').disabled=true;notify('⚠️ Complete todos los campos','error');return null;}let usd,bs;if(miM==='Bs'){usd=miV/tcV;bs=miV;}else{usd=miV;bs=miV*tcV;}document.getElementById('s1_result_bs').textContent='Bs '+bs.toFixed(2);document.getElementById('s1_result_usd').textContent='$ '+usd.toFixed(2);document.getElementById('s1_save').disabled=false;notify('✅ $'+usd.toFixed(2)+' BDV');return{bs,usd};}
+        function calcEtapa1(){const miV=parseFloat(document.getElementById('s1_mi_valor').value)||0,miM=document.getElementById('s1_moneda').value,tcV=parseFloat(document.getElementById('s1_tc_valor').value)||0;if(!miV||!tcV){document.getElementById('s1_result_bs').textContent='Bs 0.00';document.getElementById('s1_result_usd').textContent='$ 0.00';document.getElementById('s1_save').disabled=true;notify('⚠️ Complete los campos','error');return null;}let usd,bs;if(miM==='Bs'){usd=miV/tcV;bs=miV;}else{usd=miV;bs=miV*tcV;}document.getElementById('s1_result_bs').textContent='Bs '+bs.toFixed(2);document.getElementById('s1_result_usd').textContent='$ '+usd.toFixed(2);document.getElementById('s1_save').disabled=false;notify('✅ $'+usd.toFixed(2)+' BDV');return{bs,usd};}
         function calcEtapa2(){const miV=parseFloat(document.getElementById('s2_mi_valor').value)||0,miM=document.getElementById('s2_moneda').value,bdv=parseFloat(document.getElementById('s2_bdv').value)||0,bpay=parseFloat(document.getElementById('s2_bpay').value)||0;if(!miV){document.getElementById('s2_result_bs').textContent='Bs 0.00';document.getElementById('s2_result_usd').textContent='0.0000';document.getElementById('s2_save').disabled=true;notify('⚠️ Ingrese el monto','error');return null;}let usdBDV;if(miM==='Bs'){const tc=parseFloat(document.getElementById('s1_tc_valor').value)||611;usdBDV=miV/tc;}else{usdBDV=miV;}const mbdv=usdBDV*(bdv/100),mbpay=usdBDV*(bpay/100),neto=usdBDV-mbdv-mbpay,bsEquiv=neto*(parseFloat(document.getElementById('s3_tv_valor').value)||740);document.getElementById('s2_mbdv').textContent='-$'+mbdv.toFixed(2);document.getElementById('s2_mbpay').textContent='-$'+mbpay.toFixed(2);document.getElementById('s2_result_bs').textContent='Bs '+bsEquiv.toFixed(2);document.getElementById('s2_result_usd').textContent=neto.toFixed(4);document.getElementById('s2_save').disabled=false;notify('✅ '+neto.toFixed(4)+' USDT');return{usdBDV,neto,bsEquiv};}
-        function calcEtapa3(){const miV=parseFloat(document.getElementById('s3_mi_valor').value)||0,miM=document.getElementById('s3_moneda').value,tvV=parseFloat(document.getElementById('s3_tv_valor').value)||0;if(!miV||!tvV){document.getElementById('s3_result_bs').textContent='Bs 0.00';document.getElementById('s3_result_usd').textContent='$ 0.00';document.getElementById('s3_correr_bs').textContent='Bs 0.00';document.getElementById('s3_correr_usd').textContent='$ 0.00';document.getElementById('s3_save').disabled=true;notify('⚠️ Complete todos los campos','error');return null;}let usdt;if(miM==='Bs'){usdt=miV/tvV;}else{usdt=miV;}const ventaBs=usdt*tvV,ventaUsd=ventaBs/tvV;document.getElementById('s3_result_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_result_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_correr_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_correr_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_save').disabled=false;notify('✅ Bs '+ventaBs.toFixed(2)+' para correr');return{ventaBs,ventaUsd,correrBs:ventaBs,correrUsd:ventaUsd};}
+        function calcEtapa3(){const miV=parseFloat(document.getElementById('s3_mi_valor').value)||0,miM=document.getElementById('s3_moneda').value,tvV=parseFloat(document.getElementById('s3_tv_valor').value)||0;if(!miV||!tvV){document.getElementById('s3_result_bs').textContent='Bs 0.00';document.getElementById('s3_result_usd').textContent='$ 0.00';document.getElementById('s3_correr_bs').textContent='Bs 0.00';document.getElementById('s3_correr_usd').textContent='$ 0.00';document.getElementById('s3_save').disabled=true;notify('⚠️ Complete los campos','error');return null;}let usdt;if(miM==='Bs'){usdt=miV/tvV;}else{usdt=miV;}const ventaBs=usdt*tvV,ventaUsd=ventaBs/tvV;document.getElementById('s3_result_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_result_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_correr_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_correr_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_save').disabled=false;notify('✅ Bs '+ventaBs.toFixed(2)+' para correr');return{ventaBs,ventaUsd,correrBs:ventaBs,correrUsd:ventaUsd};}
 
-        function passToNext(s){const r=calcStage(s);if(!r){notify('⚠️ Primero haga clic en CALCULAR','error');return;}if(s===1){document.getElementById('s2_mi_valor').value=(r.usd||0).toFixed(4);document.getElementById('s2_moneda').value='$';document.getElementById('s2_moneda_bs').classList.remove('active');document.getElementById('s2_moneda_usd').classList.add('active');document.getElementById('s2_inv').value=document.getElementById('s1_inv').value;document.getElementById('s2_inherit').classList.add('show');notify('🔄 $'+(r.usd||0).toFixed(2)+' → Etapa 2');}else if(s===2){document.getElementById('s3_mi_valor').value=(r.neto||0).toFixed(4);document.getElementById('s3_moneda').value='$';document.getElementById('s3_moneda_bs').classList.remove('active');document.getElementById('s3_moneda_usd').classList.add('active');document.getElementById('s3_inv').value=document.getElementById('s2_inv').value;document.getElementById('s3_inherit').classList.add('show');notify('🔄 '+(r.neto||0).toFixed(4)+' USDT → Etapa 3');}else{document.getElementById('s1_mi_valor').value=(r.correrBs||r.ventaBs||0).toFixed(2);document.getElementById('s1_moneda').value='Bs';document.getElementById('s1_moneda_bs').classList.add('active');document.getElementById('s1_moneda_usd').classList.remove('active');document.getElementById('s1_inv').value=document.getElementById('s3_inv').value;document.getElementById('s1_inherit').classList.add('show');notify('🔄 Bs '+(r.correrBs||r.ventaBs||0).toFixed(2)+' → Etapa 1');}}
+        function passToNext(s){const r=calcStage(s);if(!r){notify('⚠️ Primero CALCULAR','error');return;}if(s===1){document.getElementById('s2_mi_valor').value=(r.usd||0).toFixed(4);document.getElementById('s2_moneda').value='$';document.getElementById('s2_moneda_bs').classList.remove('active');document.getElementById('s2_moneda_usd').classList.add('active');document.getElementById('s2_inv').value=document.getElementById('s1_inv').value;notify('🔄 $'+(r.usd||0).toFixed(2)+' → Etapa 2');}else if(s===2){document.getElementById('s3_mi_valor').value=(r.neto||0).toFixed(4);document.getElementById('s3_moneda').value='$';document.getElementById('s3_moneda_bs').classList.remove('active');document.getElementById('s3_moneda_usd').classList.add('active');document.getElementById('s3_inv').value=document.getElementById('s2_inv').value;notify('🔄 '+(r.neto||0).toFixed(4)+' USDT → Etapa 3');}else{document.getElementById('s1_mi_valor').value=(r.correrBs||r.ventaBs||0).toFixed(2);document.getElementById('s1_moneda').value='Bs';document.getElementById('s1_moneda_bs').classList.add('active');document.getElementById('s1_moneda_usd').classList.remove('active');document.getElementById('s1_inv').value=document.getElementById('s3_inv').value;notify('🔄 Bs '+(r.correrBs||r.ventaBs||0).toFixed(2)+' → Etapa 1');}}
 
         function delOp(id){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Eliminar?'))return;ops=ops.filter(o=>o.id!==id);saveLocal();renderAll();notify('🗑️ Eliminada');}
-        function clearAll(){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Purgar TODO?'))return;ops=[];saveLocal();renderAll();notify('💥 Purgado');}
+        function clearAll(){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Purgar datos de '+currentUser+'?'))return;ops=[];saveLocal();renderAll();notify('💥 Purgado');}
 
         function renderAll(){renderHist();renderKPIs();}
         function renderHist(){const tb=document.getElementById('histBody');if(!ops.length){tb.innerHTML='<tr><td colspan="10" style="padding:16px;">Sin datos</td></tr>';return;}tb.innerHTML=ops.map((o,i)=>`<tr><td>${i+1}</td><td>${o.fecha}</td><td><span class="badge-inv badge-s${o.etapa}">E${o.etapa}</span></td><td><span class="badge-inv badge-${o.inv==='MAU'?'MJ':o.inv}">${o.inv}</span></td><td>Bs ${(o.miBs||0).toFixed(2)}</td><td>$ ${(o.miUsd||0).toFixed(2)}</td><td>Bs ${(o.resultBs||0).toFixed(2)}</td><td>$ ${(o.resultUsd||0).toFixed(2)}</td><td>${o.tipo||''}</td><td><button class="btn btn-danger btn-xs" onclick="delOp(${o.id})">✕</button></td></tr>`).reverse().join('');}
         function renderKPIs(){if(!ops.length){document.getElementById('kpiSpread').textContent='0%';document.getElementById('kpiRoi').textContent='0%';document.getElementById('kpiRot').textContent='0';return;}document.getElementById('kpiRot').textContent=ops.filter(o=>o.etapa===3).length;}
 
-        function runSim(){const cap=parseFloat(document.getElementById('simCap').value)||0,tc=parseFloat(document.getElementById('simTc').value)||0,tv=parseFloat(document.getElementById('simTv').value)||0,cic=parseInt(document.getElementById('simCic').value)||0,bdv=parseFloat(document.getElementById('simBdv').value)||0,bpay=parseFloat(document.getElementById('simBpay').value)||0;if(!cap||!tc||!tv||!cic)return;let ca=cap,gt=0,det=[];for(let i=0;i<cic;i++){const u=ca/tc,n=u*(1-(bdv+bpay)/100),r=n*tv,g=r-ca;gt+=g;det.push({ciclo:i+1,cap:ca,neto:n,ret:r,gan:g});ca=r;}const roi=((ca-cap)/cap)*100;document.getElementById('simOut').style.display='block';document.getElementById('simOut').innerHTML=`<strong>Capital Final:</strong> Bs ${ca.toFixed(2)}<br><strong>Ganancia Total:</strong> Bs ${gt.toFixed(2)}<br><strong>ROI:</strong> ${roi.toFixed(1)}%<br><br>${det.map(d=>`C${d.ciclo}: Bs${d.cap.toFixed(0)} → $${d.neto.toFixed(2)} → Bs${d.ret.toFixed(0)} | ${d.gan>=0?'+':''}Bs${d.gan.toFixed(0)}`).join('<br>')}`;}
+        function runSim(){const cap=parseFloat(document.getElementById('simCap').value)||0,tc=parseFloat(document.getElementById('simTc').value)||0,tv=parseFloat(document.getElementById('simTv').value)||0,cic=parseInt(document.getElementById('simCic').value)||0,bdv=parseFloat(document.getElementById('simBdv').value)||0,bpay=parseFloat(document.getElementById('simBpay').value)||0;if(!cap||!tc||!tv||!cic)return;let ca=cap,gt=0,det=[];for(let i=0;i<cic;i++){const u=ca/tc,n=u*(1-(bdv+bpay)/100),r=n*tv,g=r-ca;gt+=g;det.push({ciclo:i+1,cap:ca,neto:n,ret:r,gan:g});ca=r;}const roi=((ca-cap)/cap)*100;document.getElementById('simOut').style.display='block';document.getElementById('simOut').innerHTML=`<strong>Final:</strong> Bs ${ca.toFixed(2)}<br><strong>Ganancia:</strong> Bs ${gt.toFixed(2)}<br><strong>ROI:</strong> ${roi.toFixed(1)}%<br><br>${det.map(d=>`C${d.ciclo}: Bs${d.cap.toFixed(0)} → $${d.neto.toFixed(2)} → Bs${d.ret.toFixed(0)} | ${d.gan>=0?'+':''}Bs${d.gan.toFixed(0)}`).join('<br>')}`;}
 
-        function renderCharts(){const data=[...ops].sort((a,b)=>a.fecha.localeCompare(b.fecha));const fechas=[...new Set(data.map(o=>o.fecha))];const getData=(inv)=>fechas.map(f=>data.filter(o=>o.fecha===f&&o.inv===inv).reduce((s,o)=>s+(o.gan||0),0));if(lineChart)lineChart.destroy();const isDark=document.documentElement.getAttribute('data-theme')==='dark';const gridColor=isDark?'#26354a':'#cbd5e1';const textColor=isDark?'#7a8fa8':'#475569';lineChart=new Chart(document.getElementById('lineChart').getContext('2d'),{type:'line',data:{labels:fechas,datasets:[{label:'MAU',data:getData('MAU'),borderColor:'#10b981',tension:0.3,borderWidth:2},{label:'MD',data:getData('MD'),borderColor:'#2563eb',tension:0.3,borderWidth:2},{label:'CP',data:getData('CP'),borderColor:'#7c3aed',tension:0.3,borderWidth:2},{label:'JB',data:getData('JB'),borderColor:'#db2777',tension:0.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:textColor,font:{size:9}}}},scales:{x:{ticks:{color:textColor,font:{size:8}},grid:{color:gridColor}},y:{ticks:{color:textColor,font:{size:8}},grid:{color:gridColor}}}}});const tMAU=data.filter(o=>o.inv==='MAU').reduce((s,o)=>s+(o.miBs||0),0),tMD=data.filter(o=>o.inv==='MD').reduce((s,o)=>s+(o.miBs||0),0),tCP=data.filter(o=>o.inv==='CP').reduce((s,o)=>s+(o.miBs||0),0),tJB=data.filter(o=>o.inv==='JB').reduce((s,o)=>s+(o.miBs||0),0);if(doughnutChart)doughnutChart.destroy();doughnutChart=new Chart(document.getElementById('doughnutChart').getContext('2d'),{type:'doughnut',data:{labels:['MAU','MD','CP','JB'],datasets:[{data:[tMAU,tMD,tCP,tJB],backgroundColor:['#10b981','#2563eb','#7c3aed','#db2777']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:textColor,font:{size:9}}}}}});}
+        function renderCharts(){const data=[...ops].sort((a,b)=>a.fecha.localeCompare(b.fecha));const fechas=[...new Set(data.map(o=>o.fecha))];const getData=(inv)=>fechas.map(f=>data.filter(o=>o.fecha===f&&o.inv===inv).reduce((s,o)=>s+(o.gan||0),0));if(lineChart)lineChart.destroy();const isDark=document.documentElement.getAttribute('data-theme')==='dark';const gc=isDark?'#26354a':'#cbd5e1';const tc=isDark?'#7a8fa8':'#475569';lineChart=new Chart(document.getElementById('lineChart').getContext('2d'),{type:'line',data:{labels:fechas,datasets:[{label:'MAU',data:getData('MAU'),borderColor:'#10b981',tension:0.3,borderWidth:2},{label:'MD',data:getData('MD'),borderColor:'#2563eb',tension:0.3,borderWidth:2},{label:'CP',data:getData('CP'),borderColor:'#7c3aed',tension:0.3,borderWidth:2},{label:'JB',data:getData('JB'),borderColor:'#db2777',tension:0.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tc,font:{size:9}}}},scales:{x:{ticks:{color:tc,font:{size:8}},grid:{color:gc}},y:{ticks:{color:tc,font:{size:8}},grid:{color:gc}}}}});const tMAU=data.filter(o=>o.inv==='MAU').reduce((s,o)=>s+(o.miBs||0),0),tMD=data.filter(o=>o.inv==='MD').reduce((s,o)=>s+(o.miBs||0),0),tCP=data.filter(o=>o.inv==='CP').reduce((s,o)=>s+(o.miBs||0),0),tJB=data.filter(o=>o.inv==='JB').reduce((s,o)=>s+(o.miBs||0),0);if(doughnutChart)doughnutChart.destroy();doughnutChart=new Chart(document.getElementById('doughnutChart').getContext('2d'),{type:'doughnut',data:{labels:['MAU','MD','CP','JB'],datasets:[{data:[tMAU,tMD,tCP,tJB],backgroundColor:['#10b981','#2563eb','#7c3aed','#db2777']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:9}}}}}});}
 
         function exportCSV(){let csv='Fecha,Etapa,Inversor,MI Bs,MI $,Result Bs,Result $,Tipo\n';ops.forEach(o=>{csv+=`${o.fecha},${o.etapa},${o.inv},${o.miBs||0},${o.miUsd||0},${o.resultBs||0},${o.resultUsd||0},${o.tipo||''}\n`;});downloadBlob(csv,'historial.csv','text/csv');}
         function downloadBlob(d,n,t){const b=new Blob(['\ufeff'+d],{type:t});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();}
-        function switchBottom(tab){document.querySelectorAll('.bottom-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.bottom-content').forEach(c=>c.classList.remove('active'));event.target.classList.add('active');document.getElementById('bot-'+tab).classList.add('active');if(tab==='analytics')renderCharts();if(tab==='kpis')renderKPIs();}
+        function switchBottom(tab){
+            document.querySelectorAll('.bottom-tab').forEach(t=>t.classList.remove('active'));
+            document.querySelectorAll('.bottom-content').forEach(c=>c.classList.remove('active'));
+            if(event&&event.target)event.target.classList.add('active');
+            else{document.querySelector(`.bottom-tab[onclick*="${tab}"]`)?.classList.add('active');}
+            const content=document.getElementById('bot-'+tab);
+            if(content)content.classList.add('active');
+            if(tab==='analytics')renderCharts();
+            if(tab==='kpis')renderKPIs();
+            if(tab==='admin')renderAdminPanel();
+        }
         function notify(m,t='success'){const n=document.createElement('div');n.className='notification '+t;n.textContent=m;document.body.appendChild(n);setTimeout(()=>n.remove(),2000);}
 
         async function syncRates(silent=false){try{const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');const d=await r.json();if(d?.promedio){const t=parseFloat(d.promedio).toFixed(2);tasasCache.bcv=t;document.getElementById('hBCV').textContent='Bs '+t;document.getElementById('dotBCV').className='dot live';const s1tc=document.getElementById('s1_tc_valor');if(s1tc&&!s1tc.value)s1tc.value=t;}}catch(e){document.getElementById('dotBCV').className='dot offline';}try{const proxy='https://corsproxy.io/?';const url='https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';const base={asset:'USDT',fiat:'VES',merchantCheck:false,page:1,rows:3};const[r1,r2]=await Promise.all([fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'SELL'})}),fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'BUY'})})]);const d1=await r1.json(),d2=await r2.json();if(d1?.data?.length){const t=parseFloat(d1.data[0].adv.price).toFixed(2);tasasCache.binanceCompra=t;document.getElementById('hBinCompra').textContent='Bs '+t;}if(d2?.data?.length){const t=parseFloat(d2.data[0].adv.price).toFixed(2);tasasCache.binanceVenta=t;document.getElementById('hBinVenta').textContent='Bs '+t;document.getElementById('dotBin').className='dot live';const s3tv=document.getElementById('s3_tv_valor');if(s3tv&&!s3tv.value)s3tv.value=t;}}catch(e){document.getElementById('dotBin').className='dot offline';}if(!silent)notify('✅ Tasas actualizadas');}
 
         async function init(){
-            // Cargar tema guardado
-            const savedTheme=localStorage.getItem('theme')||'dark';
-            document.documentElement.setAttribute('data-theme',savedTheme);
-            document.getElementById('themeBtn').textContent=savedTheme==='dark'?'🌙':'☀️';
-            
-            const today=new Date().toISOString().split('T')[0];
-            ['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).value=today;});
+            const savedTheme=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('themeBtn').textContent=savedTheme==='dark'?'🌙':'☀️';
+            const today=new Date().toISOString().split('T')[0];['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).value=today;});
             document.getElementById('renderUrlInput').value=renderUrl;
-            // Establecer inversor predeterminado
             ['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=currentUser;});
-            await loadOps();
-            await testRenderConnection();
-            await syncRates(true);
+            updateAdminTabs();
+            await loadOps();await testRenderConnection();await syncRates(true);
             setInterval(()=>syncRates(true),300000);
         }
         init();
