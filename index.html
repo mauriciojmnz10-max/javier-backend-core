@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v20 | Sincronización Automática</title>
+    <title>ArbitrajePro v21 | Sincronización Automática</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -118,7 +118,7 @@
     <div class="app-container">
         <div class="app-header">
             <div class="header-left">
-                <h1><span>💱</span> ArbitrajePro v20</h1>
+                <h1><span>💱</span> ArbitrajePro v21</h1>
                 <div class="user-selector">
                     <span>👤</span>
                     <select id="headerUser" onchange="switchUser()">
@@ -199,8 +199,7 @@
         </div>
     </div>
     <script>
-        // ============ CONFIGURACIÓN PRE-CONFIGURADA ============
-        const RENDER_URL = "https://asistente-javier.onrender.com/api";
+        const RENDER_URL = "https://arbitraje-pro.onrender.com/api";
         const USUARIOS = { 'MAU':'mau123', 'MD':'md123', 'CP':'cp123', 'JB':'jb123', 'Admin':'Mau10' };
         let permisos = JSON.parse(localStorage.getItem('adminPermisos') || '{"MAU":false,"MD":false,"CP":false,"JB":false}');
         let currentUser = 'MAU', isAdmin = false, ops = [];
@@ -208,20 +207,14 @@
         let tasasCache = { bcv: null, binanceVenta: null };
         let renderOnline = false;
 
-        // ============ TEMA ============
         function toggleTheme(){const h=document.documentElement,b=document.getElementById('themeBtn');if(h.getAttribute('data-theme')==='dark'){h.setAttribute('data-theme','light');b.textContent='☀️';localStorage.setItem('theme','light');}else{h.setAttribute('data-theme','dark');b.textContent='🌙';localStorage.setItem('theme','dark');}if(lineChart)renderCharts();if(doughnutChart)renderCharts();}
-
-        // ============ ENTER ============
         document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();const n=document.getElementById(e.target.getAttribute('data-next'));if(n){if(n.tagName==='SELECT')n.focus();else if(n.closest('.input-moneda')){const i=n.closest('.input-moneda').querySelector('input');if(i)i.focus();}else n.focus();}}});
-
-        // ============ MONEDA ============
         function setMoneda(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
         function setMonedaTC(s,m){document.getElementById('s'+s+'_tc_moneda').value=m;document.getElementById('s'+s+'_tc_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tc_moneda_usd').classList.toggle('active',m==='$');}
         function setMoneda2(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
         function setMoneda3(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
         function setMonedaTV(s,m){document.getElementById('s'+s+'_tv_moneda').value=m;document.getElementById('s'+s+'_tv_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tv_moneda_usd').classList.toggle('active',m==='$');}
 
-        // ============ SINCRONIZACIÓN AUTOMÁTICA ============
         async function checkRenderConnection(){try{const r=await fetch(RENDER_URL+'/operaciones?user=test');renderOnline=r.ok;document.getElementById('syncStatus').textContent=renderOnline?'☁️ Conectado':'⚠️ Sin conexión';document.getElementById('syncStatus').style.color=renderOnline?'var(--success)':'var(--warning)';}catch(e){renderOnline=false;document.getElementById('syncStatus').textContent='⚠️ Sin conexión';document.getElementById('syncStatus').style.color='var(--warning)';}}
         async function saveToServer(op){if(!renderOnline)return false;try{const r=await fetch(RENDER_URL+'/operaciones',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(op)});return r.ok;}catch(e){return false;}}
         async function loadFromServer(user){if(!renderOnline)return null;try{const url=RENDER_URL+'/operaciones?user='+(user||currentUser);const r=await fetch(url);if(r.ok)return await r.json();}catch(e){}return null;}
@@ -239,51 +232,20 @@
             notify(renderOnline?'✅ Guardado y sincronizado':'✅ Guardado localmente');
         }
 
-        async function loadOps(u){
-            const user=u||currentUser;
-            await checkRenderConnection();
-            const serverData=await loadFromServer(user);
-            if(serverData&&serverData.length>0){ops=serverData;saveLocal(user);}
-            else{ops=loadLocal(user);}
-            renderAll();
-        }
+        async function loadOps(u){const user=u||currentUser;await checkRenderConnection();const serverData=await loadFromServer(user);if(serverData&&serverData.length>0){ops=serverData;saveLocal(user);}else{ops=loadLocal(user);}renderAll();}
 
-        // ============ USUARIOS ============
-        async function switchUser(){
-            const selected=document.getElementById('headerUser').value;
-            const clave=prompt('🔐 Ingresa tu clave:');
-            if(!clave){document.getElementById('headerUser').value=currentUser;return;}
-            if(USUARIOS[selected]===clave){
-                currentUser=selected;isAdmin=(selected==='Admin');
-                document.getElementById('adminBadge').style.display=isAdmin?'inline':'none';
-                ['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=selected;});
-                updateAdminTabs();
-                await loadOps();
-                notify('✅ Bienvenido, '+selected);
-            }else{notify('❌ Clave incorrecta','error');document.getElementById('headerUser').value=currentUser;}
-        }
+        async function switchUser(){const selected=document.getElementById('headerUser').value;const clave=prompt('🔐 Ingresa tu clave:');if(!clave){document.getElementById('headerUser').value=currentUser;return;}if(USUARIOS[selected]===clave){currentUser=selected;isAdmin=(selected==='Admin');document.getElementById('adminBadge').style.display=isAdmin?'inline':'none';['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=selected;});updateAdminTabs();await loadOps();notify('✅ Bienvenido, '+selected);}else{notify('❌ Clave incorrecta','error');document.getElementById('headerUser').value=currentUser;}}
 
-        function updateAdminTabs(){
-            const tabs=document.getElementById('bottomTabs');
-            const existing=document.getElementById('adminTabBtn');if(existing)existing.remove();
-            const ec=document.getElementById('bot-admin');if(ec)ec.classList.remove('active');
-            if(isAdmin){const btn=document.createElement('button');btn.className='bottom-tab admin-tab';btn.id='adminTabBtn';btn.textContent='🔧 Admin';btn.onclick=function(){switchBottom('admin');};tabs.appendChild(btn);renderAdminPanel();}
-        }
-
-        function renderAdminPanel(){
-            const pc=document.getElementById('permisosContainer');pc.innerHTML='';
-            ['MAU','MD','CP','JB'].forEach(u=>{pc.innerHTML+=`<div class="permiso-row"><span style="font-weight:600;">👤 ${u}</span><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:9px;">Ver otros</span><label class="toggle-switch"><input type="checkbox" ${permisos[u]?'checked':''} onchange="togglePermiso('${u}')"><span class="toggle-slider"></span></label></div></div>`;});
-            actualizarResumenGlobal();
-        }
+        function updateAdminTabs(){const tabs=document.getElementById('bottomTabs');const existing=document.getElementById('adminTabBtn');if(existing)existing.remove();const ec=document.getElementById('bot-admin');if(ec)ec.classList.remove('active');if(isAdmin){const btn=document.createElement('button');btn.className='bottom-tab admin-tab';btn.id='adminTabBtn';btn.textContent='🔧 Admin';btn.onclick=function(){switchBottom('admin');};tabs.appendChild(btn);renderAdminPanel();}}
+        function renderAdminPanel(){const pc=document.getElementById('permisosContainer');pc.innerHTML='';['MAU','MD','CP','JB'].forEach(u=>{pc.innerHTML+=`<div class="permiso-row"><span style="font-weight:600;">👤 ${u}</span><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:9px;">Ver otros</span><label class="toggle-switch"><input type="checkbox" ${permisos[u]?'checked':''} onchange="togglePermiso('${u}')"><span class="toggle-slider"></span></label></div></div>`;});actualizarResumenGlobal();}
         function togglePermiso(user){permisos[user]=!permisos[user];localStorage.setItem('adminPermisos',JSON.stringify(permisos));notify('✅ Permiso actualizado');}
         function actualizarResumenGlobal(){const rg=document.getElementById('resumenGlobal');let html='';['MAU','MD','CP','JB'].forEach(u=>{const opsU=loadLocal(u);const total=opsU.reduce((s,o)=>s+(o.resultBs||0),0);html+=`<div class="permiso-row"><span>👤 ${u}</span><span>${opsU.length} ops | Bs ${total.toFixed(0)}</span></div>`;});rg.innerHTML=html;}
         async function verHistorialGlobal(){let todas=[];for(const u of['MAU','MD','CP','JB']){const opsU=loadLocal(u);todas=todas.concat(opsU.map(o=>({...o,inv:u})));}ops=todas.sort((a,b)=>b.id-a.id);renderAll();switchBottom('history');notify('📋 Historial global');}
         function cambiarClave(){const u=document.getElementById('adminUserSelect').value;const n=document.getElementById('adminNewPass').value;if(!n){notify('Ingrese nueva clave','error');return;}USUARIOS[u]=n;notify('✅ Clave cambiada');document.getElementById('adminNewPass').value='';}
         function purgarTodoAdmin(){if(!confirm('⚠️ ¿Purgar TODOS los datos?'))return;['MAU','MD','CP','JB'].forEach(u=>{localStorage.removeItem('arbOps_'+u);});ops=[];saveLocal();renderAll();notify('💥 Purgado');}
-        function exportarTodoCSV(){let csv='Usuario,Fecha,Etapa,MI Bs,MI $,Result Bs,Result $,Tipo\n';['MAU','MD','CP','JB'].forEach(u=>{const opsU=loadLocal(u);opsU.forEach(o=>{csv+=`${u},${o.fecha},${o.etapa},${o.miBs||0},${o.miUsd||0},${o.resultBs||0},${o.resultUsd||0},${o.tipo||''}\n`;});});downloadBlob(csv,'historial_global.csv','text/csv');notify('📥 CSV exportado');}
-        function exportarTodoJSON(){const data={};['MAU','MD','CP','JB'].forEach(u=>{data[u]=loadLocal(u);});downloadBlob(JSON.stringify(data,null,2),'backup_global.json','application/json');notify('📥 JSON exportado');}
+        function exportarTodoCSV(){let csv='Usuario,Fecha,Etapa,MI Bs,MI $,Result Bs,Result $,Tipo\n';['MAU','MD','CP','JB'].forEach(u=>{const opsU=loadLocal(u);opsU.forEach(o=>{csv+=`${u},${o.fecha},${o.etapa},${o.miBs||0},${o.miUsd||0},${o.resultBs||0},${o.resultUsd||0},${o.tipo||''}\n`;});});downloadBlob(csv,'historial_global.csv','text/csv');}
+        function exportarTodoJSON(){const data={};['MAU','MD','CP','JB'].forEach(u=>{data[u]=loadLocal(u);});downloadBlob(JSON.stringify(data,null,2),'backup_global.json','application/json');}
 
-        // ============ CÁLCULOS ============
         function calcStage(s){if(s===1)return calcEtapa1();if(s===2)return calcEtapa2();if(s===3)return calcEtapa3();}
         function calcEtapa1(){const miV=parseFloat(document.getElementById('s1_mi_valor').value)||0,miM=document.getElementById('s1_moneda').value,tcV=parseFloat(document.getElementById('s1_tc_valor').value)||0;if(!miV||!tcV){document.getElementById('s1_result_bs').textContent='Bs 0.00';document.getElementById('s1_result_usd').textContent='$ 0.00';document.getElementById('s1_save').disabled=true;notify('⚠️ Complete los campos','error');return null;}let usd,bs;if(miM==='Bs'){usd=miV/tcV;bs=miV;}else{usd=miV;bs=miV*tcV;}document.getElementById('s1_result_bs').textContent='Bs '+bs.toFixed(2);document.getElementById('s1_result_usd').textContent='$ '+usd.toFixed(2);document.getElementById('s1_save').disabled=false;notify('✅ $'+usd.toFixed(2)+' BDV');return{bs,usd};}
         function calcEtapa2(){const miV=parseFloat(document.getElementById('s2_mi_valor').value)||0,miM=document.getElementById('s2_moneda').value,bdv=parseFloat(document.getElementById('s2_bdv').value)||0,bpay=parseFloat(document.getElementById('s2_bpay').value)||0;if(!miV){document.getElementById('s2_result_bs').textContent='Bs 0.00';document.getElementById('s2_result_usd').textContent='0.0000';document.getElementById('s2_save').disabled=true;notify('⚠️ Ingrese el monto','error');return null;}let usdBDV;if(miM==='Bs'){const tc=parseFloat(document.getElementById('s1_tc_valor').value)||611;usdBDV=miV/tc;}else{usdBDV=miV;}const mbdv=usdBDV*(bdv/100),mbpay=usdBDV*(bpay/100),neto=usdBDV-mbdv-mbpay,bsEquiv=neto*(parseFloat(document.getElementById('s3_tv_valor').value)||740);document.getElementById('s2_mbdv').textContent='-$'+mbdv.toFixed(2);document.getElementById('s2_mbpay').textContent='-$'+mbpay.toFixed(2);document.getElementById('s2_result_bs').textContent='Bs '+bsEquiv.toFixed(2);document.getElementById('s2_result_usd').textContent=neto.toFixed(4);document.getElementById('s2_save').disabled=false;notify('✅ '+neto.toFixed(4)+' USDT');return{usdBDV,neto,bsEquiv};}
