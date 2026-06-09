@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbitrajePro v21 | Sincronización Automática</title>
+    <title>ArbitrajePro v22 | Acceso Seguro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -11,21 +11,113 @@
             --border-color: #26354a; --text-primary: #f0f4f8; --text-secondary: #7a8fa8;
             --primary: #4361ee; --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --info: #06b6d4;
             --stage-1: #4361ee; --stage-2: #7c3aed; --stage-3: #db2777;
+            --gold: #f0c040;
         }
         [data-theme="light"] {
             --bg-main: #f8fafc; --bg-surface: #ffffff; --bg-card: #f1f5f9;
             --border-color: #cbd5e1; --text-primary: #0f172a; --text-secondary: #475569;
             --primary: #3b82f6; --success: #059669; --danger: #dc2626; --warning: #d97706; --info: #0891b2;
             --stage-1: #3b82f6; --stage-2: #7c3aed; --stage-3: #db2777;
+            --gold: #b8860b;
         }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
-        body { background:var(--bg-main); color:var(--text-primary); min-height:100vh; padding:16px; transition:background 0.3s, color 0.3s; }
+        body { background:var(--bg-main); color:var(--text-primary); min-height:100vh; transition:background 0.3s, color 0.3s; display:flex; align-items:center; justify-content:center; }
+        
+        /* ============ PANTALLA DE LOGIN ============ */
+        .login-screen {
+            display:flex; align-items:center; justify-content:center; width:100%; min-height:100vh; padding:20px;
+            background: linear-gradient(135deg, #0b0f19 0%, #1a1040 40%, #0d1b2a 100%);
+            position:relative; overflow:hidden;
+        }
+        [data-theme="light"] .login-screen {
+            background: linear-gradient(135deg, #f8fafc 0%, #e8e0f0 40%, #e0ecf4 100%);
+        }
+        .login-particles {
+            position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;
+        }
+        .particle {
+            position:absolute; background:var(--primary); border-radius:50%; opacity:0.15;
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%,100% { transform:translateY(0) rotate(0deg); }
+            50% { transform:translateY(-30px) rotate(180deg); }
+        }
+        .login-card {
+            background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px;
+            padding:40px 36px; width:100%; max-width:420px; text-align:center;
+            box-shadow:0 20px 60px rgba(0,0,0,0.5); z-index:1;
+            animation: slideUp 0.6s ease;
+        }
+        @keyframes slideUp {
+            from { opacity:0; transform:translateY(40px); }
+            to { opacity:1; transform:translateY(0); }
+        }
+        .login-logo {
+            font-size:48px; margin-bottom:8px; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { transform:scale(1); }
+            50% { transform:scale(1.08); }
+        }
+        .login-title {
+            font-size:26px; font-weight:800; margin-bottom:4px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text;
+        }
+        .login-subtitle {
+            font-size:12px; color:var(--text-secondary); margin-bottom:28px;
+        }
+        .login-field {
+            margin-bottom:16px; text-align:left;
+        }
+        .login-field label {
+            display:block; font-size:11px; color:var(--text-secondary); margin-bottom:5px; font-weight:600;
+            text-transform:uppercase; letter-spacing:0.5px;
+        }
+        .login-field select, .login-field input {
+            width:100%; padding:12px 16px; background:var(--bg-main); border:1px solid var(--border-color);
+            border-radius:12px; font-size:15px; color:var(--text-primary); transition:all 0.3s;
+        }
+        .login-field select:focus, .login-field input:focus {
+            outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(67,97,238,0.15);
+        }
+        .btn-login {
+            width:100%; padding:14px; border:none; border-radius:12px; cursor:pointer;
+            font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:1px;
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            color:#fff; margin-top:8px; transition:all 0.3s;
+        }
+        .btn-login:hover {
+            transform:translateY(-2px); box-shadow:0 10px 30px rgba(67,97,238,0.4);
+        }
+        .login-error {
+            color:var(--danger); font-size:11px; margin-top:6px; display:none; font-weight:600;
+        }
+        .login-footer {
+            font-size:10px; color:var(--text-secondary); margin-top:20px;
+        }
+        .theme-toggle-login {
+            position:absolute; top:20px; right:20px; z-index:10;
+            background:var(--bg-card); border:1px solid var(--border-color);
+            color:var(--text-primary); font-size:18px; width:44px; height:44px;
+            border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
+            transition:all 0.3s;
+        }
+        .theme-toggle-login:hover { transform:scale(1.1); }
+
+        /* ============ APP (OCULTA HASTA LOGIN) ============ */
+        .app-screen {
+            display:none; width:100%; padding:16px;
+        }
+        .app-screen.active { display:block; }
         .app-container { max-width:1300px; margin:0 auto; background:var(--bg-surface); border:1px solid var(--border-color); border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,0.3); overflow:hidden; padding-bottom:50px; }
         .app-header { background:var(--bg-card); border-bottom:1px solid var(--border-color); padding:14px 22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
         .header-left { display:flex; align-items:center; gap:16px; }
         .header-left h1 { font-size:19px; font-weight:700; display:flex; align-items:center; gap:8px; }
-        .user-selector { display:flex; align-items:center; gap:6px; background:var(--bg-main); border:1px solid var(--border-color); padding:7px 12px; border-radius:22px; font-size:12px; }
-        .user-selector select { background:transparent; border:none; color:var(--text-primary); font-weight:600; font-size:13px; cursor:pointer; outline:none; }
+        .user-badge { display:flex; align-items:center; gap:6px; background:var(--bg-main); border:1px solid var(--border-color); padding:7px 14px; border-radius:22px; font-size:12px; font-weight:600; }
+        .user-badge .logout-btn { background:transparent; border:none; color:var(--danger); cursor:pointer; font-weight:700; font-size:14px; margin-left:4px; }
         .header-right { display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:11px; }
         .market-badge { background:var(--bg-main); border:1px solid var(--border-color); padding:6px 10px; border-radius:16px; font-size:10px; display:flex; align-items:center; gap:5px; }
         .dot { width:7px; height:7px; border-radius:50%; animation:pulse 2s infinite; }
@@ -115,100 +207,181 @@
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="app-header">
-            <div class="header-left">
-                <h1><span>💱</span> ArbitrajePro v21</h1>
-                <div class="user-selector">
-                    <span>👤</span>
-                    <select id="headerUser" onchange="switchUser()">
-                        <option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option>
-                        <option value="Admin">🔑 Admin</option>
-                    </select>
-                </div>
-                <span id="adminBadge" style="display:none;background:var(--danger);color:#fff;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;">ADMIN</span>
+
+    <!-- ============ PANTALLA DE LOGIN ============ -->
+    <div class="login-screen" id="loginScreen">
+        <button class="theme-toggle-login" onclick="toggleThemeLogin()" id="themeBtnLogin">🌙</button>
+        <div class="login-particles" id="particles"></div>
+        <div class="login-card">
+            <div class="login-logo">💱</div>
+            <div class="login-title">ArbitrajePro</div>
+            <div class="login-subtitle">Sistema de Cálculo y Control de Arbitraje</div>
+            <div class="login-field">
+                <label>👤 Usuario</label>
+                <select id="loginUser">
+                    <option value="MAU">MAU</option>
+                    <option value="MD">MD</option>
+                    <option value="CP">CP</option>
+                    <option value="JB">JB</option>
+                    <option value="Admin">🔑 Admin</option>
+                </select>
             </div>
-            <div class="header-right">
-                <button class="btn btn-theme" onclick="toggleTheme()" id="themeBtn">🌙</button>
-                <span id="syncStatus" style="font-size:10px;color:var(--success);">☁️ Conectado</span>
-                <div class="market-badge"><span class="dot live" id="dotBCV"></span>BCV:<strong id="hBCV">--</strong></div>
-                <div class="market-badge"><span class="dot live" id="dotBin"></span>P2P:<strong id="hBinCompra">--</strong>/<strong id="hBinVenta">--</strong></div>
-                <button class="btn btn-outline btn-sm" onclick="syncRates()">🔄 Sync</button>
+            <div class="login-field">
+                <label>🔒 Clave de Acceso</label>
+                <input type="password" id="loginPass" placeholder="Ingresa tu clave" onkeydown="if(event.key==='Enter')doLogin()">
             </div>
+            <div class="login-error" id="loginError">⚠️ Usuario o clave incorrectos</div>
+            <button class="btn-login" onclick="doLogin()">🚀 Ingresar al Sistema</button>
+            <div class="login-footer">🔐 Acceso restringido · ArbitrajePro v22</div>
         </div>
-        <div class="main-content">
-            <div class="flow-bar" id="flowBar">
-                <span class="flow-step-mini">💰 MI Bs</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">💵 Compra $</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">🏦 -%BDV</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">💳 -%BPAY</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">💎 USDT</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">📈 Venta</span><span class="flow-arrow-mini">→</span>
-                <span class="flow-step-mini">🔄 Correr</span>
-            </div>
-            <div class="stages-grid">
-                <!-- ETAPA 1 -->
-                <div class="stage-col s1">
-                    <div class="stage-col-header">🏦 Etapa 1: Compra BDV <span class="stage-badge-sm">Bs → $</span></div>
-                    <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s1_fecha" data-next="s1_inv"></div>
-                    <div class="stage-field"><label>👤 Inversor</label><select id="s1_inv" data-next="s1_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💰 Monto Inicial en BDV</label><div class="input-moneda"><input type="number" id="s1_mi_valor" step="0.01" onfocus="this.select()" data-next="s1_tc_valor"><div class="moneda-selector"><button class="moneda-btn active" id="s1_moneda_bs" onclick="setMoneda(1,'Bs')">Bs</button><button class="moneda-btn" id="s1_moneda_usd" onclick="setMoneda(1,'$')">$</button></div></div><input type="hidden" id="s1_moneda" value="Bs"></div>
-                    <div class="stage-field"><label>💵 Tasa de Compra (Bs/$)</label><div class="input-moneda"><input type="number" id="s1_tc_valor" step="0.01" onfocus="this.select()" data-next="s1_calc_btn"><div class="moneda-selector"><button class="moneda-btn active" id="s1_tc_moneda_bs" onclick="setMonedaTC(1,'Bs')">Bs</button><button class="moneda-btn" id="s1_tc_moneda_usd" onclick="setMonedaTC(1,'$')">$</button></div></div><input type="hidden" id="s1_tc_moneda" value="Bs"></div>
-                    <button class="btn btn-calc" id="s1_calc_btn" onclick="calcStage(1)">📊 CALCULAR</button>
-                    <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Monto en Bs</div><div class="dual-value" id="s1_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">Monto en $</div><div class="dual-value" id="s1_result_usd">$ 0.00</div></div></div></div>
-                    <div class="stage-actions"><button class="btn btn-success" id="s1_save" onclick="saveStage(1)" disabled>💾 Guardar</button><button class="btn btn-primary" onclick="passToNext(1)">🔄 Pasar → E2</button></div>
+    </div>
+
+    <!-- ============ APP PRINCIPAL (OCULTA HASTA LOGIN) ============ -->
+    <div class="app-screen" id="appScreen">
+        <div class="app-container">
+            <div class="app-header">
+                <div class="header-left">
+                    <h1><span>💱</span> ArbitrajePro v22</h1>
+                    <div class="user-badge">
+                        👤 <span id="currentUserName">MAU</span>
+                        <button class="logout-btn" onclick="logout()" title="Cerrar sesión">✕</button>
+                    </div>
+                    <span id="adminBadge" style="display:none;background:var(--danger);color:#fff;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;">ADMIN</span>
                 </div>
-                <!-- ETAPA 2 -->
-                <div class="stage-col s2">
-                    <div class="stage-col-header">💱 Etapa 2: Transferencia <span class="stage-badge-sm">$ → USDT</span></div>
-                    <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s2_fecha" data-next="s2_inv"></div>
-                    <div class="stage-field"><label>👤 Inversor</label><select id="s2_inv" data-next="s2_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💵 $ BDV Recibidos</label><div class="input-moneda"><input type="number" id="s2_mi_valor" step="0.01" onfocus="this.select()" data-next="s2_bdv"><div class="moneda-selector"><button class="moneda-btn" id="s2_moneda_bs" onclick="setMoneda2(2,'Bs')">Bs</button><button class="moneda-btn active" id="s2_moneda_usd" onclick="setMoneda2(2,'$')">$</button></div></div><input type="hidden" id="s2_moneda" value="$"></div>
-                    <div class="stage-field-row"><div class="stage-field"><label>🏦 %C BDV</label><input type="number" id="s2_bdv" value="3.0" step="0.01" onfocus="this.select()" data-next="s2_bpay"></div><div class="stage-field"><label>💳 %C BPAY</label><input type="number" id="s2_bpay" value="3.6" step="0.01" onfocus="this.select()" data-next="s2_calc_btn"></div></div>
-                    <button class="btn btn-calc" id="s2_calc_btn" onclick="calcStage(2)">📊 CALCULAR</button>
-                    <div style="margin-top:4px;"><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);"><span>🏦 -BDV: <b id="s2_mbdv" style="color:var(--danger);">-$0.00</b></span><span>💳 -BPAY: <b id="s2_mbpay" style="color:var(--danger);">-$0.00</b></span></div></div>
-                    <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Equiv. Bs</div><div class="dual-value" id="s2_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">USDT</div><div class="dual-value" id="s2_result_usd">0.0000</div></div></div></div>
-                    <div class="stage-actions"><button class="btn btn-success" id="s2_save" onclick="saveStage(2)" disabled>💾 Guardar</button><button class="btn btn-primary" onclick="passToNext(2)">🔄 Pasar → E3</button></div>
-                </div>
-                <!-- ETAPA 3 -->
-                <div class="stage-col s3">
-                    <div class="stage-col-header">💎 Etapa 3: Venta P2P <span class="stage-badge-sm">USDT → Bs</span></div>
-                    <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s3_fecha" data-next="s3_inv"></div>
-                    <div class="stage-field"><label>👤 Inversor</label><select id="s3_inv" data-next="s3_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
-                    <div class="stage-field"><label>💎 USDT en Binance</label><div class="input-moneda"><input type="number" id="s3_mi_valor" step="0.0001" onfocus="this.select()" data-next="s3_tv_valor"><div class="moneda-selector"><button class="moneda-btn" id="s3_moneda_bs" onclick="setMoneda3(3,'Bs')">Bs</button><button class="moneda-btn active" id="s3_moneda_usd" onclick="setMoneda3(3,'$')">$</button></div></div><input type="hidden" id="s3_moneda" value="$"></div>
-                    <div class="stage-field"><label>📈 Tasa de Venta (Bs)</label><div class="input-moneda"><input type="number" id="s3_tv_valor" step="0.01" onfocus="this.select()" data-next="s3_calc_btn"><div class="moneda-selector"><button class="moneda-btn active" id="s3_tv_moneda_bs" onclick="setMonedaTV(3,'Bs')">Bs</button><button class="moneda-btn" id="s3_tv_moneda_usd" onclick="setMonedaTV(3,'$')">$</button></div></div><input type="hidden" id="s3_tv_moneda" value="Bs"></div>
-                    <button class="btn btn-calc" id="s3_calc_btn" onclick="calcStage(3)">📊 CALCULAR</button>
-                    <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Venta Bs</div><div class="dual-value" id="s3_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">Equiv. $</div><div class="dual-value" id="s3_result_usd">$ 0.00</div></div></div></div>
-                    <div style="margin-top:6px;background:var(--bg-main);padding:10px;border-radius:8px;border:2px solid var(--success);text-align:center;"><div style="font-size:9px;color:var(--text-secondary);">🔄 SALDO PARA CORRER</div><div class="dual-result" style="margin-top:4px;"><div class="dual-box bs"><div class="dual-label">Bs</div><div class="dual-value" id="s3_correr_bs" style="color:var(--warning);">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">$</div><div class="dual-value" id="s3_correr_usd" style="color:var(--info);">$ 0.00</div></div></div></div>
-                    <div class="stage-actions"><button class="btn btn-success" id="s3_save" onclick="saveStage(3)" disabled>💾 Guardar</button><button class="btn btn-warning" onclick="passToNext(3)">🔄 Volver → E1</button></div>
+                <div class="header-right">
+                    <button class="btn btn-theme" onclick="toggleTheme()" id="themeBtn">🌙</button>
+                    <span id="syncStatus" style="font-size:10px;color:var(--success);">☁️ Conectado</span>
+                    <div class="market-badge"><span class="dot live" id="dotBCV"></span>BCV:<strong id="hBCV">--</strong></div>
+                    <div class="market-badge"><span class="dot live" id="dotBin"></span>P2P:<strong id="hBinCompra">--</strong>/<strong id="hBinVenta">--</strong></div>
+                    <button class="btn btn-outline btn-sm" onclick="syncRates()">🔄 Sync</button>
                 </div>
             </div>
-            <div class="bottom-tabs" id="bottomTabs">
-                <button class="bottom-tab active" onclick="switchBottom('kpis')">📈 KPIs</button>
-                <button class="bottom-tab" onclick="switchBottom('sim')">🔮 Sim</button>
-                <button class="bottom-tab" onclick="switchBottom('analytics')">📊 Ana</button>
-                <button class="bottom-tab" onclick="switchBottom('history')">📋 Hist</button>
-            </div>
-            <div class="bottom-content active" id="bot-kpis"><div class="kpi-row"><div class="kpi-box spread"><div class="kpi-label">Spread</div><div class="kpi-val" id="kpiSpread">0%</div></div><div class="kpi-box roi"><div class="kpi-label">ROI</div><div class="kpi-val" id="kpiRoi">0%</div></div><div class="kpi-box rot"><div class="kpi-label">Rotaciones</div><div class="kpi-val" id="kpiRot">0</div></div></div></div>
-            <div class="bottom-content" id="bot-sim"><div class="simple-card"><h4>🔮 Simulador</h4><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;"><input type="number" id="simCap" value="10000" placeholder="Capital" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simTc" value="611" placeholder="Tasa C" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simTv" value="740" placeholder="Tasa V" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simCic" value="5" placeholder="Ciclos" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simBdv" value="3.0" placeholder="%BDV" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simBpay" value="3.6" placeholder="%BPAY" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"></div><button class="btn btn-primary btn-sm" onclick="runSim()">🔮 Proyectar</button><div id="simOut" style="display:none;margin-top:8px;background:var(--bg-main);padding:12px;border-radius:8px;font-size:10px;"></div></div></div>
-            <div class="bottom-content" id="bot-analytics"><div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;"><div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="lineChart"></canvas></div><div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="doughnutChart"></canvas></div></div></div>
-            <div class="bottom-content" id="bot-history"><div style="display:flex;gap:6px;margin-bottom:6px;"><button class="btn btn-outline btn-xs" onclick="exportCSV()">📥 CSV</button><button class="btn btn-danger btn-xs" onclick="clearAll()">🗑️ Purgar</button></div><div class="history-table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Et</th><th>Inv</th><th>MI Bs</th><th>MI $</th><th>Result Bs</th><th>Result $</th><th>Tipo</th><th>✕</th></tr></thead><tbody id="histBody"></tbody></table></div></div>
-            <div class="bottom-content" id="bot-admin">
-                <div class="simple-card admin-panel"><h4>🔧 Panel Admin</h4><div class="admin-grid"><div class="simple-card"><h5>👥 Permisos</h5><div id="permisosContainer"></div></div><div class="simple-card"><h5>🌍 Global</h5><div id="resumenGlobal" style="font-size:10px;"></div><button class="btn btn-outline btn-xs" onclick="verHistorialGlobal()" style="margin-top:8px;">📋 Ver todos</button><button class="btn btn-danger btn-xs" onclick="purgarTodoAdmin()" style="margin-top:4px;">🗑️ Purgar TODO</button></div><div class="simple-card"><h5>🔑 Claves</h5><div style="display:flex;gap:4px;margin-bottom:4px;"><select id="adminUserSelect" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select><input type="password" id="adminNewPass" placeholder="Nueva clave" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;"><button class="btn btn-primary btn-xs" onclick="cambiarClave()">Cambiar</button></div></div><div class="simple-card"><h5>📥 Exportar</h5><button class="btn btn-outline btn-xs" onclick="exportarTodoCSV()">📥 CSV Global</button><button class="btn btn-outline btn-xs" onclick="exportarTodoJSON()" style="margin-top:4px;">📥 JSON Global</button></div></div></div>
+            <div class="main-content">
+                <div class="flow-bar" id="flowBar">
+                    <span class="flow-step-mini">💰 MI Bs</span><span class="flow-arrow-mini">→</span>
+                    <span class="flow-step-mini">💵 Compra $</span><span class="flow-arrow-mini">→</span>
+                    <span class="flow-step-mini">🏦 -%BDV</span><span class="flow-arrow-mini">→</span>
+                    <span class="flow-step-mini">💳 -%BPAY</span><span class="flow-arrow-mini">→</span>
+                    <span class="flow-step-mini">💎 USDT</span><span class="flow-arrow-mini">→</span>
+                    <span class="flow-step-mini">📈 Venta</span><span class="flow-arrow-mini">→</span>
+                    <span class="flow-step-mini">🔄 Correr</span>
+                </div>
+                <div class="stages-grid">
+                    <!-- ETAPA 1 -->
+                    <div class="stage-col s1">
+                        <div class="stage-col-header">🏦 Etapa 1: Compra BDV <span class="stage-badge-sm">Bs → $</span></div>
+                        <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s1_fecha" data-next="s1_inv"></div>
+                        <div class="stage-field"><label>👤 Inversor</label><select id="s1_inv" data-next="s1_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                        <div class="stage-field"><label>💰 Monto Inicial en BDV</label><div class="input-moneda"><input type="number" id="s1_mi_valor" step="0.01" onfocus="this.select()" data-next="s1_tc_valor"><div class="moneda-selector"><button class="moneda-btn active" id="s1_moneda_bs" onclick="setMoneda(1,'Bs')">Bs</button><button class="moneda-btn" id="s1_moneda_usd" onclick="setMoneda(1,'$')">$</button></div></div><input type="hidden" id="s1_moneda" value="Bs"></div>
+                        <div class="stage-field"><label>💵 Tasa de Compra (Bs/$)</label><div class="input-moneda"><input type="number" id="s1_tc_valor" step="0.01" onfocus="this.select()" data-next="s1_calc_btn"><div class="moneda-selector"><button class="moneda-btn active" id="s1_tc_moneda_bs" onclick="setMonedaTC(1,'Bs')">Bs</button><button class="moneda-btn" id="s1_tc_moneda_usd" onclick="setMonedaTC(1,'$')">$</button></div></div><input type="hidden" id="s1_tc_moneda" value="Bs"></div>
+                        <button class="btn btn-calc" id="s1_calc_btn" onclick="calcStage(1)">📊 CALCULAR</button>
+                        <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Monto en Bs</div><div class="dual-value" id="s1_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">Monto en $</div><div class="dual-value" id="s1_result_usd">$ 0.00</div></div></div></div>
+                        <div class="stage-actions"><button class="btn btn-success" id="s1_save" onclick="saveStage(1)" disabled>💾 Guardar</button><button class="btn btn-primary" onclick="passToNext(1)">🔄 Pasar → E2</button></div>
+                    </div>
+                    <!-- ETAPA 2 -->
+                    <div class="stage-col s2">
+                        <div class="stage-col-header">💱 Etapa 2: Transferencia <span class="stage-badge-sm">$ → USDT</span></div>
+                        <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s2_fecha" data-next="s2_inv"></div>
+                        <div class="stage-field"><label>👤 Inversor</label><select id="s2_inv" data-next="s2_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                        <div class="stage-field"><label>💵 $ BDV Recibidos</label><div class="input-moneda"><input type="number" id="s2_mi_valor" step="0.01" onfocus="this.select()" data-next="s2_bdv"><div class="moneda-selector"><button class="moneda-btn" id="s2_moneda_bs" onclick="setMoneda2(2,'Bs')">Bs</button><button class="moneda-btn active" id="s2_moneda_usd" onclick="setMoneda2(2,'$')">$</button></div></div><input type="hidden" id="s2_moneda" value="$"></div>
+                        <div class="stage-field-row"><div class="stage-field"><label>🏦 %C BDV</label><input type="number" id="s2_bdv" value="3.0" step="0.01" onfocus="this.select()" data-next="s2_bpay"></div><div class="stage-field"><label>💳 %C BPAY</label><input type="number" id="s2_bpay" value="3.6" step="0.01" onfocus="this.select()" data-next="s2_calc_btn"></div></div>
+                        <button class="btn btn-calc" id="s2_calc_btn" onclick="calcStage(2)">📊 CALCULAR</button>
+                        <div style="margin-top:4px;"><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);"><span>🏦 -BDV: <b id="s2_mbdv" style="color:var(--danger);">-$0.00</b></span><span>💳 -BPAY: <b id="s2_mbpay" style="color:var(--danger);">-$0.00</b></span></div></div>
+                        <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Equiv. Bs</div><div class="dual-value" id="s2_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">USDT</div><div class="dual-value" id="s2_result_usd">0.0000</div></div></div></div>
+                        <div class="stage-actions"><button class="btn btn-success" id="s2_save" onclick="saveStage(2)" disabled>💾 Guardar</button><button class="btn btn-primary" onclick="passToNext(2)">🔄 Pasar → E3</button></div>
+                    </div>
+                    <!-- ETAPA 3 -->
+                    <div class="stage-col s3">
+                        <div class="stage-col-header">💎 Etapa 3: Venta P2P <span class="stage-badge-sm">USDT → Bs</span></div>
+                        <div class="stage-field"><label>📅 Fecha</label><input type="date" id="s3_fecha" data-next="s3_inv"></div>
+                        <div class="stage-field"><label>👤 Inversor</label><select id="s3_inv" data-next="s3_mi_valor"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select></div>
+                        <div class="stage-field"><label>💎 USDT en Binance</label><div class="input-moneda"><input type="number" id="s3_mi_valor" step="0.0001" onfocus="this.select()" data-next="s3_tv_valor"><div class="moneda-selector"><button class="moneda-btn" id="s3_moneda_bs" onclick="setMoneda3(3,'Bs')">Bs</button><button class="moneda-btn active" id="s3_moneda_usd" onclick="setMoneda3(3,'$')">$</button></div></div><input type="hidden" id="s3_moneda" value="$"></div>
+                        <div class="stage-field"><label>📈 Tasa de Venta (Bs)</label><div class="input-moneda"><input type="number" id="s3_tv_valor" step="0.01" onfocus="this.select()" data-next="s3_calc_btn"><div class="moneda-selector"><button class="moneda-btn active" id="s3_tv_moneda_bs" onclick="setMonedaTV(3,'Bs')">Bs</button><button class="moneda-btn" id="s3_tv_moneda_usd" onclick="setMonedaTV(3,'$')">$</button></div></div><input type="hidden" id="s3_tv_moneda" value="Bs"></div>
+                        <button class="btn btn-calc" id="s3_calc_btn" onclick="calcStage(3)">📊 CALCULAR</button>
+                        <div style="margin-top:8px;"><div class="dual-result"><div class="dual-box bs"><div class="dual-label">Venta Bs</div><div class="dual-value" id="s3_result_bs">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">Equiv. $</div><div class="dual-value" id="s3_result_usd">$ 0.00</div></div></div></div>
+                        <div style="margin-top:6px;background:var(--bg-main);padding:10px;border-radius:8px;border:2px solid var(--success);text-align:center;"><div style="font-size:9px;color:var(--text-secondary);">🔄 SALDO PARA CORRER</div><div class="dual-result" style="margin-top:4px;"><div class="dual-box bs"><div class="dual-label">Bs</div><div class="dual-value" id="s3_correr_bs" style="color:var(--warning);">Bs 0.00</div></div><div class="dual-box usd"><div class="dual-label">$</div><div class="dual-value" id="s3_correr_usd" style="color:var(--info);">$ 0.00</div></div></div></div>
+                        <div class="stage-actions"><button class="btn btn-success" id="s3_save" onclick="saveStage(3)" disabled>💾 Guardar</button><button class="btn btn-warning" onclick="passToNext(3)">🔄 Volver → E1</button></div>
+                    </div>
+                </div>
+                <div class="bottom-tabs" id="bottomTabs">
+                    <button class="bottom-tab active" onclick="switchBottom('kpis')">📈 KPIs</button>
+                    <button class="bottom-tab" onclick="switchBottom('sim')">🔮 Sim</button>
+                    <button class="bottom-tab" onclick="switchBottom('analytics')">📊 Ana</button>
+                    <button class="bottom-tab" onclick="switchBottom('history')">📋 Hist</button>
+                </div>
+                <div class="bottom-content active" id="bot-kpis"><div class="kpi-row"><div class="kpi-box spread"><div class="kpi-label">Spread</div><div class="kpi-val" id="kpiSpread">0%</div></div><div class="kpi-box roi"><div class="kpi-label">ROI</div><div class="kpi-val" id="kpiRoi">0%</div></div><div class="kpi-box rot"><div class="kpi-label">Rotaciones</div><div class="kpi-val" id="kpiRot">0</div></div></div></div>
+                <div class="bottom-content" id="bot-sim"><div class="simple-card"><h4>🔮 Simulador</h4><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;"><input type="number" id="simCap" value="10000" placeholder="Capital" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simTc" value="611" placeholder="Tasa C" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simTv" value="740" placeholder="Tasa V" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simCic" value="5" placeholder="Ciclos" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simBdv" value="3.0" placeholder="%BDV" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"><input type="number" id="simBpay" value="3.6" placeholder="%BPAY" style="padding:8px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);font-size:11px;border-radius:6px;"></div><button class="btn btn-primary btn-sm" onclick="runSim()">🔮 Proyectar</button><div id="simOut" style="display:none;margin-top:8px;background:var(--bg-main);padding:12px;border-radius:8px;font-size:10px;"></div></div></div>
+                <div class="bottom-content" id="bot-analytics"><div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;"><div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="lineChart"></canvas></div><div style="background:var(--bg-card);padding:12px;border-radius:10px;height:280px;"><canvas id="doughnutChart"></canvas></div></div></div>
+                <div class="bottom-content" id="bot-history"><div style="display:flex;gap:6px;margin-bottom:6px;"><button class="btn btn-outline btn-xs" onclick="exportCSV()">📥 CSV</button><button class="btn btn-danger btn-xs" onclick="clearAll()">🗑️ Purgar</button></div><div class="history-table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Et</th><th>Inv</th><th>MI Bs</th><th>MI $</th><th>Result Bs</th><th>Result $</th><th>Tipo</th><th>✕</th></tr></thead><tbody id="histBody"></tbody></table></div></div>
+                <div class="bottom-content" id="bot-admin">
+                    <div class="simple-card admin-panel"><h4>🔧 Panel Admin</h4><div class="admin-grid"><div class="simple-card"><h5>👥 Permisos</h5><div id="permisosContainer"></div></div><div class="simple-card"><h5>🌍 Global</h5><div id="resumenGlobal" style="font-size:10px;"></div><button class="btn btn-outline btn-xs" onclick="verHistorialGlobal()" style="margin-top:8px;">📋 Ver todos</button><button class="btn btn-danger btn-xs" onclick="purgarTodoAdmin()" style="margin-top:4px;">🗑️ Purgar TODO</button></div><div class="simple-card"><h5>🔑 Claves</h5><div style="display:flex;gap:4px;margin-bottom:4px;"><select id="adminUserSelect" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;"><option value="MAU">MAU</option><option value="MD">MD</option><option value="CP">CP</option><option value="JB">JB</option></select><input type="password" id="adminNewPass" placeholder="Nueva clave" style="flex:1;padding:6px;background:var(--bg-main);border:1px solid var(--border-color);color:var(--text-primary);border-radius:4px;font-size:10px;"><button class="btn btn-primary btn-xs" onclick="cambiarClave()">Cambiar</button></div></div><div class="simple-card"><h5>📥 Exportar</h5><button class="btn btn-outline btn-xs" onclick="exportarTodoCSV()">📥 CSV Global</button><button class="btn btn-outline btn-xs" onclick="exportarTodoJSON()" style="margin-top:4px;">📥 JSON Global</button></div></div></div>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
+        // ============ CONFIGURACIÓN ============
         const RENDER_URL = "https://arbitraje-pro.onrender.com/api";
         const USUARIOS = { 'MAU':'mau123', 'MD':'md123', 'CP':'cp123', 'JB':'jb123', 'Admin':'Mau10' };
         let permisos = JSON.parse(localStorage.getItem('adminPermisos') || '{"MAU":false,"MD":false,"CP":false,"JB":false}');
-        let currentUser = 'MAU', isAdmin = false, ops = [];
+        let currentUser = null, isAdmin = false, ops = [];
         let lineChart, doughnutChart;
         let tasasCache = { bcv: null, binanceVenta: null };
         let renderOnline = false;
 
-        function toggleTheme(){const h=document.documentElement,b=document.getElementById('themeBtn');if(h.getAttribute('data-theme')==='dark'){h.setAttribute('data-theme','light');b.textContent='☀️';localStorage.setItem('theme','light');}else{h.setAttribute('data-theme','dark');b.textContent='🌙';localStorage.setItem('theme','dark');}if(lineChart)renderCharts();if(doughnutChart)renderCharts();}
-        document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();const n=document.getElementById(e.target.getAttribute('data-next'));if(n){if(n.tagName==='SELECT')n.focus();else if(n.closest('.input-moneda')){const i=n.closest('.input-moneda').querySelector('input');if(i)i.focus();}else n.focus();}}});
+        // ============ PARTICLES ============
+        (function(){const c=document.getElementById('particles');for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle';const s=Math.random()*8+4;p.style.width=s+'px';p.style.height=s+'px';p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';p.style.animationDelay=Math.random()*6+'s';p.style.animationDuration=(Math.random()*4+4)+'s';c.appendChild(p);}})();
+
+        // ============ TEMA LOGIN ============
+        function toggleThemeLogin(){
+            const h=document.documentElement,b=document.getElementById('themeBtnLogin');
+            if(h.getAttribute('data-theme')==='dark'){h.setAttribute('data-theme','light');b.textContent='☀️';localStorage.setItem('theme','light');}
+            else{h.setAttribute('data-theme','dark');b.textContent='🌙';localStorage.setItem('theme','dark');}
+        }
+
+        // ============ LOGIN ============
+        function doLogin(){
+            const user=document.getElementById('loginUser').value;
+            const pass=document.getElementById('loginPass').value;
+            const err=document.getElementById('loginError');
+            if(!pass){err.style.display='block';err.textContent='⚠️ Ingresa tu clave de acceso';return;}
+            if(USUARIOS[user]===pass){
+                currentUser=user;isAdmin=(user==='Admin');
+                document.getElementById('loginScreen').style.display='none';
+                document.getElementById('appScreen').classList.add('active');
+                document.getElementById('currentUserName').textContent=user;
+                document.getElementById('adminBadge').style.display=isAdmin?'inline':'none';
+                ['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=user;});
+                updateAdminTabs();
+                loadOps();
+                syncRates(true);
+                setInterval(()=>syncRates(true),300000);
+            }else{
+                err.style.display='block';
+                err.textContent='⚠️ Usuario o clave incorrectos';
+                document.getElementById('loginPass').value='';
+            }
+        }
+
+        function logout(){
+            currentUser=null;isAdmin=false;ops=[];
+            document.getElementById('loginScreen').style.display='flex';
+            document.getElementById('appScreen').classList.remove('active');
+            document.getElementById('loginPass').value='';
+            document.getElementById('loginError').style.display='none';
+        }
+
+        // ============ TEMA APP ============
+        function toggleTheme(){
+            const h=document.documentElement,b=document.getElementById('themeBtn'),bl=document.getElementById('themeBtnLogin');
+            if(h.getAttribute('data-theme')==='dark'){h.setAttribute('data-theme','light');b.textContent='☀️';bl.textContent='☀️';localStorage.setItem('theme','light');}
+            else{h.setAttribute('data-theme','dark');b.textContent='🌙';bl.textContent='🌙';localStorage.setItem('theme','dark');}
+            if(lineChart)renderCharts();if(doughnutChart)renderCharts();
+        }
+
+        // ============ RESTO DE FUNCIONES (MISMO QUE v21) ============
+        document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'&&e.target.id!=='loginPass'){e.preventDefault();const n=document.getElementById(e.target.getAttribute('data-next'));if(n){if(n.tagName==='SELECT')n.focus();else if(n.closest('.input-moneda')){const i=n.closest('.input-moneda').querySelector('input');if(i)i.focus();}else n.focus();}}});
         function setMoneda(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
         function setMonedaTC(s,m){document.getElementById('s'+s+'_tc_moneda').value=m;document.getElementById('s'+s+'_tc_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tc_moneda_usd').classList.toggle('active',m==='$');}
         function setMoneda2(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
@@ -233,8 +406,6 @@
         }
 
         async function loadOps(u){const user=u||currentUser;await checkRenderConnection();const serverData=await loadFromServer(user);if(serverData&&serverData.length>0){ops=serverData;saveLocal(user);}else{ops=loadLocal(user);}renderAll();}
-
-        async function switchUser(){const selected=document.getElementById('headerUser').value;const clave=prompt('🔐 Ingresa tu clave:');if(!clave){document.getElementById('headerUser').value=currentUser;return;}if(USUARIOS[selected]===clave){currentUser=selected;isAdmin=(selected==='Admin');document.getElementById('adminBadge').style.display=isAdmin?'inline':'none';['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=selected;});updateAdminTabs();await loadOps();notify('✅ Bienvenido, '+selected);}else{notify('❌ Clave incorrecta','error');document.getElementById('headerUser').value=currentUser;}}
 
         function updateAdminTabs(){const tabs=document.getElementById('bottomTabs');const existing=document.getElementById('adminTabBtn');if(existing)existing.remove();const ec=document.getElementById('bot-admin');if(ec)ec.classList.remove('active');if(isAdmin){const btn=document.createElement('button');btn.className='bottom-tab admin-tab';btn.id='adminTabBtn';btn.textContent='🔧 Admin';btn.onclick=function(){switchBottom('admin');};tabs.appendChild(btn);renderAdminPanel();}}
         function renderAdminPanel(){const pc=document.getElementById('permisosContainer');pc.innerHTML='';['MAU','MD','CP','JB'].forEach(u=>{pc.innerHTML+=`<div class="permiso-row"><span style="font-weight:600;">👤 ${u}</span><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:9px;">Ver otros</span><label class="toggle-switch"><input type="checkbox" ${permisos[u]?'checked':''} onchange="togglePermiso('${u}')"><span class="toggle-slider"></span></label></div></div>`;});actualizarResumenGlobal();}
@@ -271,16 +442,10 @@
 
         async function syncRates(silent=false){try{const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');const d=await r.json();if(d?.promedio){const t=parseFloat(d.promedio).toFixed(2);tasasCache.bcv=t;document.getElementById('hBCV').textContent='Bs '+t;document.getElementById('dotBCV').className='dot live';const s1tc=document.getElementById('s1_tc_valor');if(s1tc&&!s1tc.value)s1tc.value=t;}}catch(e){document.getElementById('dotBCV').className='dot offline';}try{const proxy='https://corsproxy.io/?';const url='https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';const base={asset:'USDT',fiat:'VES',merchantCheck:false,page:1,rows:3};const[r1,r2]=await Promise.all([fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'SELL'})}),fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'BUY'})})]);const d1=await r1.json(),d2=await r2.json();if(d1?.data?.length){const t=parseFloat(d1.data[0].adv.price).toFixed(2);tasasCache.binanceCompra=t;document.getElementById('hBinCompra').textContent='Bs '+t;}if(d2?.data?.length){const t=parseFloat(d2.data[0].adv.price).toFixed(2);tasasCache.binanceVenta=t;document.getElementById('hBinVenta').textContent='Bs '+t;document.getElementById('dotBin').className='dot live';const s3tv=document.getElementById('s3_tv_valor');if(s3tv&&!s3tv.value)s3tv.value=t;}}catch(e){document.getElementById('dotBin').className='dot offline';}if(!silent)notify('✅ Tasas actualizadas');}
 
-        async function init(){
-            const savedTheme=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('themeBtn').textContent=savedTheme==='dark'?'🌙':'☀️';
-            const today=new Date().toISOString().split('T')[0];['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).value=today;});
-            ['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=currentUser;});
-            updateAdminTabs();
-            await loadOps();
-            await syncRates(true);
-            setInterval(()=>syncRates(true),300000);
-        }
-        init();
+        // Inicializar tema
+        const savedTheme=localStorage.getItem('theme')||'dark';
+        document.documentElement.setAttribute('data-theme',savedTheme);
+        document.getElementById('themeBtnLogin').textContent=savedTheme==='dark'?'🌙':'☀️';
     </script>
 </body>
 </html>
