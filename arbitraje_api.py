@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import sqlite3
 import os
+from datetime import datetime
 
 app = FastAPI(title="ArbitrajePro API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
@@ -21,6 +22,8 @@ def init_db():
         conn.execute("""CREATE TABLE IF NOT EXISTS operaciones (
             id INTEGER PRIMARY KEY AUTOINCREMENT, fecha TEXT, etapa INTEGER, inv TEXT,
             miBs REAL, miUsd REAL, resultBs REAL, resultUsd REAL, tipo TEXT)""")
+        conn.execute("""CREATE TABLE IF NOT EXISTS sesiones (
+            usuario TEXT PRIMARY KEY, inicio TEXT, ultima_accion TEXT, dispositivo TEXT)""")
         conn.commit()
 init_db()
 
@@ -31,17 +34,16 @@ class Operacion(BaseModel):
     resultBs: float = 0; resultUsd: float = 0
     tipo: str = ""
 
-class AdminAuth(BaseModel):
-    password: str
+class Sesion(BaseModel):
+    usuario: str
+    inicio: str
+    ultima_accion: str
+    dispositivo: str = "💻 Escritorio"
 
 @app.get("/")
 def root(): return {"status": "online", "app": "ArbitrajePro API v2"}
 
-@app.post("/api/admin/verify")
-def verify_admin(auth: AdminAuth):
-    if auth.password != ADMIN_PASSWORD: raise HTTPException(status_code=401)
-    return {"status": "success"}
-
+# ============ OPERACIONES ============
 @app.get("/api/operaciones")
 def get_operaciones(user: Optional[str] = None, admin: Optional[bool] = False):
     with get_db() as conn:
@@ -70,6 +72,44 @@ def purge_all(password: str):
     if password != ADMIN_PASSWORD: raise HTTPException(status_code=401)
     with get_db() as conn: conn.execute("DELETE FROM operaciones"); conn.commit()
     return {"status": "success"}
+
+# ============ SESIONES (MONITOREO REAL) ============
+@app.get("/api/sesiones")
+def get_sesiones():
+    with get_db() as conn:
+        rows = conn.execute("SELECT * FROM sesiones").fetchall()
+        return [dict(row) for row in rows]
+
+@app.post("/api/sesiones")
+def save_sesion(sesion: Sesion):
+    with get_db() as conn:
+        conn.execute("INSERT OR REPLACE INTO sesiones (usuario, inicio, ultima_accion, dispositivo) VALUES (?,?,?,?)",
+                     (sesion.usuario, sesion.inicio, sesion.ultima_accion, sesion.dispositivo))
+        conn.commit()
+    return {"status": "success"}
+
+@app.put("/api/sesiones/{usuario}")
+def update_sesion(usuario: str):
+    with get_db() as conn:
+        conn.execute("UPDATE sesiones SET ultima_accion = ? WHERE usuario = ?", 
+                     (datetime.now().isoformat(), usuario))
+        conn.commit()
+    return {"status": "success"}
+
+@app.delete("/api/sesiones/{usuario}")
+def delete_sesion(usuario: str):
+    with get_db() as conn:
+        conn.execute("DELETE FROM sesiones WHERE usuario = ?", (usuario,))
+        conn.commit()
+    return {"status": "success"}
+
+# ============ LIMPIEZA AUTOMÁTICA DE SESIONES INACTIVAS ============
+@app.delete("/api/sesiones/cleanup")
+def cleanup_sesiones():
+    with get_db() as conn:
+        conn.execute("DELETE FROM sesiones WHERE datetime(ultima_accion) < datetime('now', '-30 minutes')")
+        conn.commit()
+    return {"status": "cleaned"}
 
 if __name__ == "__main__":
     import uvicorn
