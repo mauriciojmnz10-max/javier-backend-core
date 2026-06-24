@@ -288,35 +288,54 @@
                 if (tc !== 0) {
                     montoUSD = miValor / tc;
                 } else {
-                    // Si no hay tasa, no podemos convertir, dejamos montoUSD en 0
-                    // y no actualizamos las comisiones para evitar errores.
-                    // Pero la función debe actualizar con montoUSD = 0? Mejor no actualizar.
-                    // Dejamos los valores actuales.
-                    return;
+                    // Si no hay tasa, el monto en USD para rangos es 0
+                    montoUSD = 0;
                 }
             } else {
                 // moneda es '$'
                 montoUSD = miValor;
             }
             
-            const bdv = getComisionBDV(montoUSD);
-            const bpay = getComisionBPAY(montoUSD);
+            // Rangos dinámicos
+            let bdv, bpay, msgBdv, msgBpay;
+            if (montoUSD < 100) {
+                bdv = 2.5;
+                msgBdv = 'Tramo Estándar (<100$)';
+            } else if (montoUSD < 1000) {
+                bdv = 2.25;
+                msgBdv = 'Tramo Intermedio (100-999$)';
+            } else {
+                bdv = 2.0;
+                msgBdv = 'Tramo Mayorista (≥1000$)';
+            }
+
+            if (montoUSD < 50) {
+                bpay = 4.5;
+                msgBpay = 'Tramo Bajo (<50$)';
+            } else if (montoUSD < 500) {
+                bpay = 3.6;
+                msgBpay = 'Tramo Medio (50-499$)';
+            } else {
+                bpay = 3.0;
+                msgBpay = 'Tramo Alto (≥500$)';
+            }
+            
             document.getElementById('s2_bdv').value = bdv.toFixed(2);
             document.getElementById('s2_bpay').value = bpay.toFixed(2);
-            document.getElementById('s2_info_bdv').textContent = getMensajeBDV(montoUSD);
-            document.getElementById('s2_info_bpay').textContent = getMensajeBPAY(montoUSD);
+            document.getElementById('s2_info_bdv').textContent = msgBdv;
+            document.getElementById('s2_info_bpay').textContent = msgBpay;
         }
 
         function calcEtapa2() {
-            // Primero actualizamos comisiones según el monto actual
+            // 1. Actualizar comisiones dinámicas
             actualizarComisionesEtapa2();
-            
+
             const mv = parseFloat(document.getElementById('s2_mi_valor').value) || 0;
             const mm = document.getElementById('s2_moneda').value;
             const bv = parseFloat(document.getElementById('s2_bdv').value) || 0;
             const bp = parseFloat(document.getElementById('s2_bpay').value) || 0;
-            
-            // Si no hay monto, limpiamos y desactivamos guardar
+
+            // 2. Si no hay monto, limpiar y desactivar guardar
             if (mv === 0) {
                 document.getElementById('s2_mbdv').textContent = '-$0.00';
                 document.getElementById('s2_mbpay').textContent = '-$0.00';
@@ -325,8 +344,8 @@
                 document.getElementById('s2_save').disabled = true;
                 return null;
             }
-            
-            // Calcular monto base en USD (u)
+
+            // 3. Calcular monto base en USD (u)
             let u;
             if (mm === 'Bs') {
                 let tc = parseFloat(document.getElementById('s1_tc_valor').value) || 0;
@@ -336,31 +355,158 @@
             } else {
                 u = mv;
             }
-            
-            // Comisiones
+
+            // 4. Comisiones
             const mb = u * (bv / 100);
             const mp = u * (bp / 100);
             const n = u - mb - mp; // USDT neto
-            
-            // Tasa de venta (Bs por USDT)
+
+            // 5. Tasa de venta (Bs por USDT)
             let tv = parseFloat(document.getElementById('s3_tv_valor').value) || 0;
             if (tv === 0 && tasasCache.binanceVenta) tv = parseFloat(tasasCache.binanceVenta);
             if (tv === 0) tv = 740; // fallback final
-            
+
             const be = n * tv; // equivalente en Bs
-            
-            // Actualizar DOM
+
+            // 6. Actualizar DOM
             document.getElementById('s2_mbdv').textContent = '-$' + mb.toFixed(2);
             document.getElementById('s2_mbpay').textContent = '-$' + mp.toFixed(2);
             document.getElementById('s2_result_bs').textContent = 'Bs ' + be.toFixed(2);
             document.getElementById('s2_result_usd').textContent = n.toFixed(4);
             document.getElementById('s2_save').disabled = false;
-            
+
             notify('✅ ' + n.toFixed(4) + ' USDT');
             return { usdBDV: u, neto: n, bsEquiv: be };
         }
 
-        // ============ RESTO DE FUNCIONES ============
+        // ============ syncRates (corregida) ============
+        async function syncRates(s = false) {
+            // Tasas BCV
+            try {
+                const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+                const d = await r.json();
+                if (d?.promedio) {
+                    const t = parseFloat(d.promedio).toFixed(2);
+                    tasasCache.bcv = t;
+                    document.getElementById('hBCV').textContent = 'Bs' + t;
+                    document.getElementById('dotBCV').className = 'dot live';
+                    const el = document.getElementById('s1_tc_valor');
+                    if (el && !el.value) el.value = t;
+                }
+            } catch (e) {
+                document.getElementById('dotBCV').className = 'dot offline';
+            }
+
+            // Tasas Binance P2P
+            try {
+                const proxy = 'https://corsproxy.io/?';
+                const url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';
+                const base = {
+                    asset: 'USDT',
+                    fiat: 'VES',
+                    merchantCheck: false,
+                    page: 1,
+                    rows: 3
+                };
+                const [r1, r2] = await Promise.all([
+                    fetch(proxy + encodeURIComponent(url), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...base, tradeType: 'SELL' })
+                    }),
+                    fetch(proxy + encodeURIComponent(url), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...base, tradeType: 'BUY' })
+                    })
+                ]);
+                const d1 = await r1.json();
+                const d2 = await r2.json();
+
+                if (d1?.data?.length) {
+                    const compra = parseFloat(d1.data[0].adv.price).toFixed(2);
+                    document.getElementById('hBinCompra').textContent = 'Bs ' + compra;
+                }
+                if (d2?.data?.length) {
+                    const venta = parseFloat(d2.data[0].adv.price).toFixed(2);
+                    document.getElementById('hBinVenta').textContent = 'Bs ' + venta;
+                    tasasCache.binanceVenta = venta; // guardamos el valor numérico como string
+                    document.getElementById('dotBin').className = 'dot live';
+                    const el = document.getElementById('s3_tv_valor');
+                    if (el && !el.value) el.value = venta;
+                }
+            } catch (e) {
+                document.getElementById('dotBin').className = 'dot offline';
+            }
+
+            if (!s) notify('✅ Tasas actualizadas');
+        }
+
+        // ============ calcEtapa1 (corregida) ============
+        function calcEtapa1() {
+            const mv = parseFloat(document.getElementById('s1_mi_valor').value) || 0;
+            const mm = document.getElementById('s1_moneda').value;
+            let tv = parseFloat(document.getElementById('s1_tc_valor').value) || 0;
+            if (tv === 0 && tasasCache.bcv) tv = parseFloat(tasasCache.bcv);
+            if (tv === 0) tv = 611; // fallback final
+
+            if (mv === 0) {
+                document.getElementById('s1_result_bs').textContent = 'Bs 0.00';
+                document.getElementById('s1_result_usd').textContent = '$ 0.00';
+                document.getElementById('s1_save').disabled = true;
+                return null;
+            }
+
+            let u, b;
+            if (mm === 'Bs') {
+                u = mv / tv;
+                b = mv;
+            } else {
+                u = mv;
+                b = mv * tv;
+            }
+            document.getElementById('s1_result_bs').textContent = 'Bs ' + b.toFixed(2);
+            document.getElementById('s1_result_usd').textContent = '$ ' + u.toFixed(2);
+            document.getElementById('s1_save').disabled = false;
+            notify('✅ $' + u.toFixed(2) + ' BDV');
+            return { bs: b, usd: u };
+        }
+
+        // ============ calcEtapa3 (corregida) ============
+        function calcEtapa3() {
+            const mv = parseFloat(document.getElementById('s3_mi_valor').value) || 0;
+            const mm = document.getElementById('s3_moneda').value;
+            let tv = parseFloat(document.getElementById('s3_tv_valor').value) || 0;
+            if (tv === 0 && tasasCache.binanceVenta) tv = parseFloat(tasasCache.binanceVenta);
+            if (tv === 0) tv = 740; // fallback final
+
+            if (mv === 0) {
+                document.getElementById('s3_result_bs').textContent = 'Bs 0.00';
+                document.getElementById('s3_result_usd').textContent = '$ 0.00';
+                document.getElementById('s3_correr_bs').textContent = 'Bs 0.00';
+                document.getElementById('s3_correr_usd').textContent = '$ 0.00';
+                document.getElementById('s3_save').disabled = true;
+                return null;
+            }
+
+            let usdt;
+            if (mm === 'Bs') {
+                usdt = mv / tv;
+            } else {
+                usdt = mv;
+            }
+            const ventaBs = usdt * tv;
+            const ventaUsd = ventaBs / tv;
+            document.getElementById('s3_result_bs').textContent = 'Bs ' + ventaBs.toFixed(2);
+            document.getElementById('s3_result_usd').textContent = '$ ' + ventaUsd.toFixed(2);
+            document.getElementById('s3_correr_bs').textContent = 'Bs ' + ventaBs.toFixed(2);
+            document.getElementById('s3_correr_usd').textContent = '$ ' + ventaUsd.toFixed(2);
+            document.getElementById('s3_save').disabled = false;
+            notify('✅ Bs ' + ventaBs.toFixed(2) + ' para correr');
+            return { ventaBs: ventaBs, ventaUsd: ventaUsd, correrBs: ventaBs, correrUsd: ventaUsd, usdt: usdt, tv: tv };
+        }
+
+        // ============ RESTO DE FUNCIONES (sin cambios) ============
         document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'&&e.target.id!=='loginPass'){e.preventDefault();const n=document.getElementById(e.target.getAttribute('data-next'));if(n){if(n.tagName==='SELECT')n.focus();else if(n.closest('.input-moneda')){const i=n.closest('.input-moneda').querySelector('input');if(i)i.focus();}else n.focus();}}});
         function setMoneda(s,m){document.getElementById('s'+s+'_moneda').value=m;document.getElementById('s'+s+'_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_moneda_usd').classList.toggle('active',m==='$');}
         function setMonedaTC(s,m){document.getElementById('s'+s+'_tc_moneda').value=m;document.getElementById('s'+s+'_tc_moneda_bs').classList.toggle('active',m==='Bs');document.getElementById('s'+s+'_tc_moneda_usd').classList.toggle('active',m==='$');}
@@ -391,8 +537,6 @@
         function actualizarEstadoMantenimiento(){const a=localStorage.getItem('maintMode')==='true';document.getElementById('maintMode').checked=a;document.getElementById('maintStatus').textContent=a?'🚧 MANTENIMIENTO':'Normal';document.getElementById('maintStatus').style.color=a?'var(--danger)':'var(--success)';}
         async function verConexionesRender(){const el=document.getElementById('renderConnStatus');el.textContent='⏳';try{const r=await fetch(RENDER_URL+'/operaciones?user=test');el.textContent=r.ok?'✅ Conectado':'❌ Error';el.style.color=r.ok?'var(--success)':'var(--danger)';}catch(e){el.textContent='❌ Offline';el.style.color='var(--danger)';}}
         function calcStage(s){if(s===1)return calcEtapa1();if(s===2)return calcEtapa2();if(s===3)return calcEtapa3();}
-        function calcEtapa1(){const mv=parseFloat(document.getElementById('s1_mi_valor').value)||0,mm=document.getElementById('s1_moneda').value,tv=parseFloat(document.getElementById('s1_tc_valor').value)||0;if(!mv||!tv){document.getElementById('s1_result_bs').textContent='Bs 0.00';document.getElementById('s1_result_usd').textContent='$ 0.00';document.getElementById('s1_save').disabled=true;return null;}let u,b;if(mm==='Bs'){u=mv/tv;b=mv;}else{u=mv;b=mv*tv;}document.getElementById('s1_result_bs').textContent='Bs '+b.toFixed(2);document.getElementById('s1_result_usd').textContent='$ '+u.toFixed(2);document.getElementById('s1_save').disabled=false;notify('✅ $'+u.toFixed(2)+' BDV');return{bs:b,usd:u};}
-        function calcEtapa3(){const mv=parseFloat(document.getElementById('s3_mi_valor').value)||0;const mm=document.getElementById('s3_moneda').value;const tv=parseFloat(document.getElementById('s3_tv_valor').value)||0;if(!mv||!tv){document.getElementById('s3_result_bs').textContent='Bs 0.00';document.getElementById('s3_result_usd').textContent='$ 0.00';document.getElementById('s3_correr_bs').textContent='Bs 0.00';document.getElementById('s3_correr_usd').textContent='$ 0.00';document.getElementById('s3_save').disabled=true;notify('⚠️ Complete todos los campos de la Etapa 3','error');return null;}let usdt;if(mm==='Bs'){usdt=mv/tv;}else{usdt=mv;}const ventaBs=usdt*tv;const ventaUsd=ventaBs/tv;document.getElementById('s3_result_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_result_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_correr_bs').textContent='Bs '+ventaBs.toFixed(2);document.getElementById('s3_correr_usd').textContent='$ '+ventaUsd.toFixed(2);document.getElementById('s3_save').disabled=false;notify('✅ Bs '+ventaBs.toFixed(2)+' para correr');return{ventaBs:ventaBs,ventaUsd:ventaUsd,correrBs:ventaBs,correrUsd:ventaUsd,usdt:usdt,tv:tv};}
         function passToNext(s){const r=calcStage(s);if(!r){notify('⚠️ Primero CALCULAR','error');return;}if(s===1){document.getElementById('s2_mi_valor').value=(r.usd||0).toFixed(4);document.getElementById('s2_moneda').value='$';document.getElementById('s2_moneda_bs').classList.remove('active');document.getElementById('s2_moneda_usd').classList.add('active');document.getElementById('s2_inv').value=document.getElementById('s1_inv').value;notify('🔄 $'+(r.usd||0).toFixed(2)+' → E2');}else if(s===2){document.getElementById('s3_mi_valor').value=(r.neto||0).toFixed(4);document.getElementById('s3_moneda').value='$';document.getElementById('s3_moneda_bs').classList.remove('active');document.getElementById('s3_moneda_usd').classList.add('active');document.getElementById('s3_inv').value=document.getElementById('s2_inv').value;notify('🔄 '+(r.neto||0).toFixed(4)+' USDT → E3');}else{document.getElementById('s1_mi_valor').value=(r.correrBs||0).toFixed(2);document.getElementById('s1_moneda').value='Bs';document.getElementById('s1_moneda_bs').classList.add('active');document.getElementById('s1_moneda_usd').classList.remove('active');document.getElementById('s1_inv').value=document.getElementById('s3_inv').value;notify('🔄 Bs '+(r.correrBs||0).toFixed(2)+' → E1');}}
         function delOp(id){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Eliminar?'))return;ops=ops.filter(o=>o.id!==id);saveLocal();renderAll();registrarActividad('Eliminó operación');notify('🗑️ Eliminada');}
         function clearAll(){if(!isAdmin){notify('⚠️ Solo Admin','error');return;}if(!confirm('¿Purgar?'))return;ops=[];saveLocal();renderAll();registrarActividad('Purgó datos');notify('💥 Purgado');}
@@ -406,7 +550,6 @@
         function downloadBlob(d,n,t){const b=new Blob(['\ufeff'+d],{type:t});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();}
         function switchBottom(tab){document.querySelectorAll('.bottom-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.bottom-content').forEach(c=>c.classList.remove('active'));if(event&&event.target)event.target.classList.add('active');else{const btn=document.querySelector(`.bottom-tab[onclick*="${tab}"]`);if(btn)btn.classList.add('active');}const content=document.getElementById('bot-'+tab);if(content)content.classList.add('active');if(tab==='analytics')renderCharts();if(tab==='kpis')renderKPIs();if(tab==='admin')renderAdminPanel();}
         function notify(m,t='success'){const n=document.createElement('div');n.className='notification '+t;n.textContent=m;document.body.appendChild(n);setTimeout(()=>n.remove(),2000);}
-        async function syncRates(s=false){try{const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');const d=await r.json();if(d?.promedio){const t=parseFloat(d.promedio).toFixed(2);tasasCache.bcv=t;document.getElementById('hBCV').textContent='Bs'+t;document.getElementById('dotBCV').className='dot live';const el=document.getElementById('s1_tc_valor');if(el&&!el.value)el.value=t;}}catch(e){document.getElementById('dotBCV').className='dot offline';}try{const proxy='https://corsproxy.io/?';const url='https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';const base={asset:'USDT',fiat:'VES',merchantCheck:false,page:1,rows:3};const[r1,r2]=await Promise.all([fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'SELL'})}),fetch(proxy+encodeURIComponent(url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,tradeType:'BUY'})})]);const d1=await r1.json(),d2=await r2.json();if(d1?.data?.length){const t=parseFloat(d1.data[0].adv.price).toFixed(2);document.getElementById('hBinCompra').textContent='Bs'+t;}if(d2?.data?.length){const t=parseFloat(d2.data[0].adv.price).toFixed(2);tasasCache.binanceVenta=t;document.getElementById('hBinVenta').textContent='Bs'+t;document.getElementById('dotBin').className='dot live';const el=document.getElementById('s3_tv_valor');if(el&&!el.value)el.value=t;}}catch(e){document.getElementById('dotBin').className='dot offline';}if(!s)notify('✅ Tasas actualizadas');}
         const savedTheme=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',savedTheme);document.getElementById('themeBtnLogin').textContent=savedTheme==='dark'?'🌙':'☀️';
 
         // Inicializar comisiones dinámicas en etapa 2 y listener en tiempo real
