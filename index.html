@@ -253,7 +253,7 @@
         function doLogin(){const u=document.getElementById('loginUser').value,p=document.getElementById('loginPass').value,err=document.getElementById('loginError');err.style.display='none';if(!p){err.style.display='block';err.textContent='⚠️ Ingresa tu clave';return;}if(localStorage.getItem('maintMode')==='true'&&u!=='Admin'){err.style.display='block';err.textContent='🚧 Mantenimiento. Solo Admin.';return;}if(USUARIOS[u]===p){currentUser=u;isAdmin=(u==='Admin');document.getElementById('loginScreen').style.display='none';document.getElementById('appScreen').classList.add('active');document.getElementById('currentUserName').textContent=u;document.getElementById('adminBadge').style.display=isAdmin?'inline':'none';const today=new Date().toISOString().split('T')[0];['s1_fecha','s2_fecha','s3_fecha'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today;});['s1_inv','s2_inv','s3_inv'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=u;});cargarActividad();guardarSesionServidor(u);updateAdminTabs();loadOps();syncRates(true);setInterval(()=>syncRates(true),300000);iniciarMonitoreoReal();registrarActividad('Inició sesión');const ab=parseInt(localStorage.getItem('autoBackupInterval')||'0');if(ab>0){document.getElementById('autoBackupInterval').value=ab;configurarAutoBackup();}}else{err.style.display='block';err.textContent='⚠️ Clave incorrecta';document.getElementById('loginPass').value='';}}
         function logout(){if(currentUser){registrarActividad('Cerró sesión');eliminarSesionServidor(currentUser);}detenerMonitoreoReal();currentUser=null;isAdmin=false;ops=[];document.getElementById('loginScreen').style.display='flex';document.getElementById('appScreen').classList.remove('active');document.getElementById('loginPass').value='';document.getElementById('loginError').style.display='none';if(autoBackupTimer)clearInterval(autoBackupTimer);}
         
-        // ============ COMISIONES DINÁMICAS POR TRAMOS (ETAPA 2) ============
+        // ============ COMISIONES DINÁMICAS POR TRAMOS (ETAPA 2) - CORREGIDAS ============
         function getComisionBDV(montoUSD) {
             if (montoUSD < 100) return 2.5;
             else if (montoUSD < 1000) return 2.25;
@@ -274,21 +274,31 @@
             else if (montoUSD < 500) return "Tramo Medio (50-499$)";
             else return "Tramo Alto (≥500$)";
         }
+        
         function actualizarComisionesEtapa2() {
             const miValor = parseFloat(document.getElementById('s2_mi_valor').value) || 0;
             const moneda = document.getElementById('s2_moneda').value;
-            let montoUSD = miValor;
+            let montoUSD = 0;
+            
             if (moneda === 'Bs') {
                 let tc = parseFloat(document.getElementById('s1_tc_valor').value) || 0;
                 if (tc === 0 && tasasCache.bcv) {
                     tc = parseFloat(tasasCache.bcv);
                 }
-                if (tc === 0) {
-                    // No se puede calcular, no actualizar comisiones
+                if (tc !== 0) {
+                    montoUSD = miValor / tc;
+                } else {
+                    // Si no hay tasa, no podemos convertir, dejamos montoUSD en 0
+                    // y no actualizamos las comisiones para evitar errores.
+                    // Pero la función debe actualizar con montoUSD = 0? Mejor no actualizar.
+                    // Dejamos los valores actuales.
                     return;
                 }
-                montoUSD = miValor / tc;
+            } else {
+                // moneda es '$'
+                montoUSD = miValor;
             }
+            
             const bdv = getComisionBDV(montoUSD);
             const bpay = getComisionBPAY(montoUSD);
             document.getElementById('s2_bdv').value = bdv.toFixed(2);
@@ -297,15 +307,17 @@
             document.getElementById('s2_info_bpay').textContent = getMensajeBPAY(montoUSD);
         }
 
-        // ============ FUNCIÓN calcEtapa2 CORREGIDA ============
-        function calcEtapa2(){
+        function calcEtapa2() {
+            // Primero actualizamos comisiones según el monto actual
             actualizarComisionesEtapa2();
+            
             const mv = parseFloat(document.getElementById('s2_mi_valor').value) || 0;
             const mm = document.getElementById('s2_moneda').value;
             const bv = parseFloat(document.getElementById('s2_bdv').value) || 0;
             const bp = parseFloat(document.getElementById('s2_bpay').value) || 0;
             
-            if(!mv){
+            // Si no hay monto, limpiamos y desactivamos guardar
+            if (mv === 0) {
                 document.getElementById('s2_mbdv').textContent = '-$0.00';
                 document.getElementById('s2_mbpay').textContent = '-$0.00';
                 document.getElementById('s2_result_bs').textContent = 'Bs 0.00';
@@ -314,26 +326,30 @@
                 return null;
             }
             
+            // Calcular monto base en USD (u)
             let u;
-            if(mm === 'Bs'){
+            if (mm === 'Bs') {
                 let tc = parseFloat(document.getElementById('s1_tc_valor').value) || 0;
                 if (tc === 0 && tasasCache.bcv) tc = parseFloat(tasasCache.bcv);
-                if (tc === 0) tc = 611;
+                if (tc === 0) tc = 611; // fallback final
                 u = mv / tc;
             } else {
                 u = mv;
             }
             
+            // Comisiones
             const mb = u * (bv / 100);
             const mp = u * (bp / 100);
-            const n = u - mb - mp;
+            const n = u - mb - mp; // USDT neto
             
+            // Tasa de venta (Bs por USDT)
             let tv = parseFloat(document.getElementById('s3_tv_valor').value) || 0;
             if (tv === 0 && tasasCache.binanceVenta) tv = parseFloat(tasasCache.binanceVenta);
-            if (tv === 0) tv = 740;
+            if (tv === 0) tv = 740; // fallback final
             
-            const be = n * tv;
+            const be = n * tv; // equivalente en Bs
             
+            // Actualizar DOM
             document.getElementById('s2_mbdv').textContent = '-$' + mb.toFixed(2);
             document.getElementById('s2_mbpay').textContent = '-$' + mp.toFixed(2);
             document.getElementById('s2_result_bs').textContent = 'Bs ' + be.toFixed(2);
